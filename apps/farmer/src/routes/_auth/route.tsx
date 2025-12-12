@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useRouter } from "@tanstack/react-router";
 import { NavBar } from "../../components/navbar/auth-navbar";
 import { getuserLocationStatus } from "../../utils/user-location";
 import { authClient } from "../../lib/auth/auth-client";
@@ -12,7 +12,11 @@ export const Route = createFileRoute("/_auth")({
       console.log("isLocationFormSubmitted", isLocationFormSubmitted);
 
       if (!isLocationFormSubmitted) {
-        if (!location.pathname.includes("/location")) {
+        if (
+          !location.pathname.includes("/location") &&
+          !location.pathname.includes("/check-email") &&
+          !location.pathname.includes("/verify-email")
+        ) {
           // Try to preserve the authType context (sign-in or sign-up)
           const currentAuthType = location.pathname.includes("sign-up")
             ? "sign-up"
@@ -37,11 +41,12 @@ export const Route = createFileRoute("/_auth")({
 });
 
 function RouteComponent() {
+  const router = useRouter();
   return (
     <div className="w-full flex">
       <div className="md:w-2/5  w-full h-screen">
         <div>
-          <NavBar title="Cropia" buttontext="Back" />
+          <NavBar title="Cropia" buttontext="Back" handleClick={() => router.history.back()} />
         </div>
         <div className="w-full justify-center flex items-center h-full -mt-20">
           <Outlet />

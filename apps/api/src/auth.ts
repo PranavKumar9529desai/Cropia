@@ -65,8 +65,15 @@ export const auth = betterAuth({
         `,
       });
     },
-    async sendEmailVerification({ user, url, token }: { user: { name: string; email: string }; url: string, token: string }) {
+  },
+  emailVerification: {
+    enabled: true, // 1. Explicitly set to true
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    // 2. FIXED NAME: Changed from 'sendEmailVerification' to 'sendVerificationEmail'
+    async sendVerificationEmail({ user, url, token }) {
       const verifyLink = `${frontendUrl}/verify-email?token=${token || url.split("=")[1]}`;
+
       await transporter.sendMail({
         from: SENDER_EMAIL,
         to: user.email,
