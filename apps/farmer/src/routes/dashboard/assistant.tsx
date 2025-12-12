@@ -109,7 +109,7 @@ function RouteComponent() {
                     })
                   ) : (
                     <Markdown options={{ overrides: MarkdownComponents }}>
-                      {/* @ts-ignore */}
+                      {/* @ts-expect-error */}
                       {m.content}
                     </Markdown>
                   )}

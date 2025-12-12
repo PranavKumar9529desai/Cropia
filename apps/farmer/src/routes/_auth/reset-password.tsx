@@ -1,10 +1,10 @@
-import { createFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { ResetPasswordCard } from '@repo/ui/components/auth/reset-password-card'
 import { authClient } from '../../lib/auth/auth-client'
 
 // Define search params validation to get the token from URL safely
-interface ResetSearch {
+export interface ResetSearch {
   token: string
 }
 

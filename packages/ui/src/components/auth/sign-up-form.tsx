@@ -1,5 +1,6 @@
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
+import type { ReactNode } from "react";
 import {
   Form,
   FormControl,
@@ -34,8 +35,8 @@ export type SignUpFormValues = z.infer<typeof signUpFormSchema>;
 
 export interface SignUpFormProps {
   onSubmit: (values: SignUpFormValues) => Promise<void>;
-  signInLink: React.ReactNode;
-  googleButton?: React.ReactNode;
+  signInLink: ReactNode;
+  googleButton?: ReactNode;
   isSubmitting?: boolean;
 }
 

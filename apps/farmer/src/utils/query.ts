@@ -10,6 +10,7 @@ const response = await apiClient.api.locations.$post({
     address: "asd",
     village: "as",
     country: "as",
+    district: "as",
   },
 });
 

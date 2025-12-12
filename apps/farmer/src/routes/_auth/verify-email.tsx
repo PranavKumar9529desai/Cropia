@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { VerifyEmailCard } from '@repo/ui/components/auth/verify-email-card'
 import { authClient } from '@/lib/auth/auth-client'
 
-interface VerifySearch {
+export interface VerifySearch {
   token: string
 }
 

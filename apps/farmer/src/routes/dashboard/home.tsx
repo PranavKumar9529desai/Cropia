@@ -30,7 +30,7 @@ import {
   DialogTrigger,
 } from "@repo/ui/components/dialog";
 // Define the data structure based on the backend response
-interface WeatherData {
+export interface WeatherData {
   name: string;
   location: {
     city: string;

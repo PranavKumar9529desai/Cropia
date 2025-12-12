@@ -1,4 +1,4 @@
-import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "@repo/ui/components/sonner";
 import {
   SignUpForm,
@@ -9,7 +9,6 @@ import { GoogleButton } from "./google-button";
 
 export const SignUp = () => {
   const navigate = useNavigate();
-  const router = useRouter();
 
   const handleSubmit = async (values: SignUpFormValues) => {
     const toastId = toast.loading("Creating Account...");

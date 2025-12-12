@@ -19,9 +19,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      const { data, error } = await authClient.getSession();
+      const { data } = await authClient.getSession();
       setUser(data?.user || null)
-    } catch (error) {
+    } catch {
       setUser(null)
     }
     finally {
@@ -44,6 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   </AuthContext.Provider>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext)
   if (!context) throw new Error("useAuth must be used within AuthProvider")

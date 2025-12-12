@@ -1,5 +1,5 @@
 import { Button } from "@repo/ui/components/button"
-import { Link, useRouter } from "@tanstack/react-router"
+import { Link } from "@tanstack/react-router"
 import { ArrowBigLeft } from "lucide-react"
 
 export const NavBar = ({ title, buttontext, handleClick }: { title: string, buttontext: string, handleClick: () => void }) => {

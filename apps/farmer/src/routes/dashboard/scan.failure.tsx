@@ -5,5 +5,5 @@ export const Route = createFileRoute('/dashboard/scan/failure')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/dashboard/scan/failure"!</div>
+  return <div>Hello &quot;/dashboard/scan/failure&quot;!</div>
 }
