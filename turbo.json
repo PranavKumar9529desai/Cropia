@@ -1,0 +1,65 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "globalEnv": [
+    "DATABASE_URL",
+    "BACKEND_PORT",
+    "NODE_ENV"
+  ],
+  "tasks": {
+    "db:generate": {
+      "cache": false,
+      "inputs": [
+        "prisma/schema.prisma"
+      ]
+    },
+    "db:up": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false,
+      "inputs": [
+        "prisma/schema.prisma"
+      ]
+    },
+    "db:push": {
+      "cache": false,
+      "inputs": [
+        "prisma/schema.prisma"
+      ]
+    },
+    "build": {
+      "dependsOn": [
+        "^build",
+        "^db:generate"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ]
+    },
+    "check-types": {
+      "dependsOn": [
+        "^check-types",
+        "^db:generate"
+      ]
+    },
+    "dev": {
+      "dependsOn": [
+        "^db:generate",
+        "^db:up"
+      ],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

@@ -1,0 +1,9 @@
+node_modules
+.turbo
+.env.local
+.env.production
+.env
+dist
+.histroy
+.vscode
+histroy

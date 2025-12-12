@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+  
+}
+
+model User {
+  id            String    @id @map("_id")
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  location      Location?
+  member        Member[]
+  invitation    Invitation[]
+  scans         Scan[]    
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @map("_id")
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  activeOrganizationId String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @map("_id")
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @map("_id")
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Organization {
+  id          String       @id @map("_id")
+  name        String
+  slug        String
+  logo        String?
+  createdAt   DateTime
+  metadata    String?
+  members     Member[]
+  invitations Invitation[]
+  scans         Scan[]    
+
+  @@unique([slug])
+  @@map("organization")
+}
+
+model Member {
+  id             String       @id @map("_id")
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String       @default("member")
+  createdAt      DateTime
+
+  @@index([organizationId])
+  @@index([userId])
+  @@map("member")
+}
+
+model Invitation {
+  id             String       @id @map("_id")
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String       @default("pending")
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitation")
+}
+
+model Location {
+  id String @id @default(auto()) @map("_id") @db.ObjectId 
+
+  // Coordinates
+  latitude  Float
+  longitude Float
+
+  // Address Details
+  address String?
+  village String?
+  district String?
+
+  // Required fields
+  city    String
+  state   String
+  pincode String
+  country String @default("India")
+
+  // Relation to User
+  // The Foreign Key references BetterAuth's custom string ID (not ObjectID)
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+
+model Scan {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 1. CLOUDINARY DATA
+  imageUrl  String   // The public URL
+  publicId  String   // The ID needed to delete/manage the image
+
+  // 2. AI METADATA (From Gatekeeper)
+  crop         String   // e.g. "Sugarcane"
+  visualIssue  String?  // e.g. "Yellow spots" (Gatekeeper finding)
+  diagnosis    String?  // e.g. "Rust" (Expert finding - strictly medical)
+  confidence   Float?   // e.g. 0.98
+
+  // 3. LOCATION SNAPSHOT (The "Frozen" Location)
+  // We copy these FROM the User.location table AT THE MOMENT of upload.
+  // We do NOT link by ID. This ensures historical accuracy for the Admin.
+  city      String?
+  district  String?  // Mapped from 'state' or 'city' depending on your logic
+  village   String?
+  pincode   String?
+  latitude  Float?
+  longitude Float?
+
+  // 4. RELATIONS
+  // Note: userId is a String because BetterAuth uses String IDs
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  organizationId String?       @map("organizationId") // Standard String for BetterAuth Org ID
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // 5. INDEXES (For Dashboard Speed)
+  @@index([userId])
+  @@index([organizationId])
+  // This index powers the "Admin Outbreak Alert" query
+  @@index([city, createdAt]) 
+  @@map("scan")
+}

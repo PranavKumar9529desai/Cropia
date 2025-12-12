@@ -1,0 +1,46 @@
+{
+  "name": "farmer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ai-sdk/react": "^2.0.108",
+    "@repo/api": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@tanstack/react-router": "^1.139.3",
+    "ai": "^5.0.108",
+    "embla-carousel-autoplay": "^8.6.0",
+    "markdown-to-jsx": "^9.3.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-webcam": "^7.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@tanstack/router-devtools": "^1.139.3",
+    "@tanstack/router-plugin": "^1.139.3",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "10.4.17",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "8.4.35",
+    "tailwindcss": "3.4.17",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4",
+    "vite-plugin-pwa": "^1.2.0",
+    "@repo/typescript-config": "workspace:*",
+    "@repo/eslint-config": "workspace:*"
+  }
+}
