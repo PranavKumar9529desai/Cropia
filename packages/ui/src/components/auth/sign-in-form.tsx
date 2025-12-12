@@ -34,6 +34,7 @@ export interface SignInFormProps {
     onSubmit: (values: SignInFormValues) => Promise<void>;
     signUpLink: ReactNode;
     googleButton?: ReactNode;
+    forgotPasswordLink?: ReactNode;
     isSubmitting?: boolean;
 }
 
@@ -41,6 +42,7 @@ export const SignInForm = ({
     onSubmit,
     signUpLink,
     googleButton,
+    forgotPasswordLink,
     isSubmitting,
 }: SignInFormProps) => {
     const form = useForm<SignInFormValues>({
@@ -56,7 +58,7 @@ export const SignInForm = ({
     };
 
     return (
-        <Card className="w-full max-w-sm border-none shadow-none">
+        <Card className="w-full max-w-md border-none shadow-none">
             <CardHeader className="text-3xl font-bold text-primary space-y-2">
                 <CardTitle>Sign In</CardTitle>
                 <CardDescription>Sign in to start using Cropia.</CardDescription>
@@ -85,7 +87,10 @@ export const SignInForm = ({
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <div className="flex items-center justify-between">
+                                        <FormLabel>Password</FormLabel>
+                                        {forgotPasswordLink}
+                                    </div>
                                     <FormControl>
                                         <Input
                                             type="password"

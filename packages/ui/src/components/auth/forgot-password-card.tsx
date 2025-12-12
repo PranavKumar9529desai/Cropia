@@ -56,7 +56,7 @@ export function ForgotPasswordCard({
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="m@gmail.com"
                 {...register('email')}
               />
               {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
