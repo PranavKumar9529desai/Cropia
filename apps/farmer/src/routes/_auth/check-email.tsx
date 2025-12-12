@@ -4,7 +4,7 @@ import { CheckEmailCard } from "@repo/ui/components/auth/check-email-card";
 import { authClient } from "../../lib/auth/auth-client";
 
 // Validate that an email is passed in the URL
-interface CheckEmailSearch {
+export interface CheckEmailSearch {
   email: string;
 }
 
@@ -30,7 +30,7 @@ function CheckEmailPage() {
         return;
       }
       toast.success("Verification email sent!");
-    } catch (err) {
+    } catch {
       toast.error("Something went wrong");
     }
   };
