@@ -14,6 +14,7 @@
     --tracking-wider: calc(var(--tracking-normal) + 0.05em);
     --tracking-widest: calc(var(--tracking-normal) + 0.1em)
   }
+
   :root {
     --background: oklch(0.9711 0.0074 80.7211);
     --foreground: oklch(0.3000 0.0358 30.2042);
@@ -70,6 +71,7 @@
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
     --tracking-normal: 0em;
   }
+
   .dark {
     --background: oklch(0.2683 0.0279 150.7681);
     --foreground: oklch(0.9423 0.0097 72.6595);
@@ -96,7 +98,7 @@
     --chart-4: oklch(0.6291 0.1543 144.2031);
     --chart-5: oklch(0.5752 0.1446 144.1813);
     --radius: 0.5rem;
-    
+
     --font-sans: Montserrat, sans-serif;
     --font-serif: Merriweather, serif;
     --font-mono: Source Code Pro, monospace;
@@ -117,6 +119,7 @@
     --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   }
+
   body {
     letter-spacing: var(--tracking-normal);
   }
@@ -126,10 +129,8 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
-
-
-

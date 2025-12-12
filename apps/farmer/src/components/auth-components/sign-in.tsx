@@ -59,6 +59,14 @@ export const SignIn = () => {
           Sign Up
         </Link>
       }
+      forgotPasswordLink={
+        <Link
+          to="/forgot-password"
+          className="font-light text-sm  hover:text-primary hover:underline decoration-primary p-2 duration-200 transition-colors"
+        >
+          Forgot Password ?
+        </Link>
+      }
       googleButton={<GoogleButton title="Continue With Google" />}
     />
   );
