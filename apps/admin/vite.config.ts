@@ -6,10 +6,10 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   server: {
-    port: 5001,
+    port: 5000,
   },
   preview: {
-    port: 5001
+    port: 5000
   },
   plugins: [
     tanstackRouter({
@@ -23,8 +23,8 @@ export default defineConfig({
       manifestFilename: 'site.webmanifest',
 
       manifest: {
-        name: "Cropia Admin",
-        short_name: "Cropia Admin",
+        name: "Cropia",
+        short_name: "Cropia",
         icons: [
           {
             src: "/favicon/web-app-manifest-192x192.png",
