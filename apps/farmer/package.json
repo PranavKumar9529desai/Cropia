@@ -15,7 +15,6 @@
     "@repo/ui": "workspace:*",
     "@tanstack/react-router": "^1.139.3",
     "ai": "^5.0.108",
-    "embla-carousel-autoplay": "^8.6.0",
     "markdown-to-jsx": "^9.3.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

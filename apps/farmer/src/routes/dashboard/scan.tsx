@@ -100,7 +100,7 @@ function ScanPage() {
       <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md mx-auto">
         {mode === "selection" && (
           <div className="grid grid-cols-1 gap-4 w-full">
-            <div className="">
+            <div className="-mt-20">
 
               <PageHeader
                 title="Scan Crop"
@@ -216,8 +216,8 @@ function ScanPage() {
         )}
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
+        <DialogContent className="sm:max-w-md w-[90%] rounded-lg">
           <DialogHeader>
             <DialogTitle
               className={
