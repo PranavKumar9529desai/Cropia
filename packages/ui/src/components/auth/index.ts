@@ -7,7 +7,7 @@ export type { SignUpFormProps, SignUpFormValues } from "./sign-up-form";
 export { GoogleButton } from "./google-button";
 export type { GoogleButtonProps } from "./google-button";
 
-export { HeroCarousel } from "./slide-show";
+export { SlideShowCard } from "./slide-show-card"
 
 export { CheckEmailCard } from "./check-email-card";
 export { VerifyEmailCard } from "./verify-email-card";

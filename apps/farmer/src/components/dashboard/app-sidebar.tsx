@@ -71,7 +71,7 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
             alt="Cropia Logo"
             className="size-10 shrink-0"
           />
-          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden">
+          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand">
             <span className="text-lg font-bold text-foreground">Cropia</span>
             <span className="text-xs text-muted-foreground">Smart Farming</span>
           </div>

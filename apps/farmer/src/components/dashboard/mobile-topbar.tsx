@@ -22,10 +22,10 @@ export function MobileTopbar() {
                     {(title === 'Cropia' || title === 'Home') ? (
                         <>
                             <img src="/favicon/favicon.svg" alt="Logo" className="w-8 h-8" />
-                            <span className="font-bold text-xl tracking-tight">Cropia</span>
+                            <span className="font-brand font-bold text-2xl tracking-tight">Cropia</span>
                         </>
                     ) : (
-                        <span className="font-bold text-2xl tracking-tight text-primary">{title}</span>
+                        <span className="font-brand font-bold text-2xl tracking-tight text-primary">{title}</span>
                     )}
                 </div>
             }

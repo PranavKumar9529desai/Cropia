@@ -59,7 +59,7 @@ function RouteComponent() {
           <MobileTopbar />
         </div>
         {/* <DashboardHeader /> */}
-        <div className="flex flex-1 flex-col p-4 md:p-6 overflow-y-auto md:overflow-visible pb-24 md:pb-6">
+        <div className="flex flex-1 flex-col p-4 md:p-6 overflow-y-auto md:overflow-visible pb-24 md:pb-6 no-scrollbar">
           <Outlet />
         </div>
       </SidebarInset>
