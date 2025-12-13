@@ -2,7 +2,6 @@ import { createFileRoute, Outlet, redirect, useRouter } from "@tanstack/react-ro
 import { NavBar } from "../../components/navbar/auth-navbar";
 import { getuserLocationStatus } from "../../utils/user-location";
 import { authClient } from "../../lib/auth/auth-client";
-import { HeroCarousel } from "@repo/ui/components/auth/slide-show";
 import { SlideShow } from "@/components/auth-components/slide-show";
 export const Route = createFileRoute("/_auth")({
   beforeLoad: async ({ location }) => {
@@ -49,7 +48,7 @@ function RouteComponent() {
         <div>
           <NavBar title="Cropia" buttontext="Back" handleClick={() => router.history.back()} />
         </div>
-        <div className="w-full justify-center flex items-center h-full -mt-20">
+        <div className="w-full justify-center flex items-center h-full -mt-20 ">
           <Outlet />
         </div>
       </div>

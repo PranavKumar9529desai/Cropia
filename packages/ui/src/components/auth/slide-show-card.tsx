@@ -4,9 +4,9 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselPrevious,
-    CarouselNext,
+    type CarouselApi,
 } from "@repo/ui/components/carousel"
+import { cn } from "@repo/ui/lib/utils"
 
 // Define the shape of a single slide
 export interface Slide {
@@ -21,23 +21,41 @@ interface SlideShowCardProps {
 }
 
 export function SlideShowCard({ slides }: SlideShowCardProps) {
+    const [api, setApi] = React.useState<CarouselApi>()
+    const [current, setCurrent] = React.useState(0)
+    const [count, setCount] = React.useState(0)
+
     // Autoplay configuration
     const plugin = React.useRef(
         Autoplay({ delay: 5000, stopOnInteraction: false })
     )
 
+    React.useEffect(() => {
+        if (!api) {
+            return
+        }
+
+        setCount(api.scrollSnapList().length)
+        setCurrent(api.selectedScrollSnap())
+
+        api.on("select", () => {
+            setCurrent(api.selectedScrollSnap())
+        })
+    }, [api])
+
     return (
-        <div className="relative w-full h-full bg-zinc-900 overflow-hidden">
+        <div className="relative w-full h-full overflow-hidden">
             <Carousel
+                setApi={setApi}
                 plugins={[plugin.current]}
                 className="w-full h-full"
                 opts={{ loop: true }}
             >
-                <CarouselContent className="h-full ml-0">
+                <CarouselContent className="h-full ml-0 ">
                     {slides.map((slide) => (
                         <CarouselItem key={slide.id} className="pl-0 h-full w-full relative">
                             {/* Image Container */}
-                            <div className="flex h-full w-full items-center justify-center p-8 pb-32">
+                            <div className="flex h-full w-full items-center justify-center p-8  ">
                                 <img
                                     src={slide.image}
                                     alt={slide.title}
@@ -47,11 +65,11 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
 
                             {/* Glassmorphism Text Overlay */}
                             <div className="absolute bottom-20 left-0 right-0 z-10 flex justify-center px-6">
-                                <div className="bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-2xl max-w-md w-full text-center shadow-lg">
-                                    <h3 className="text-2xl font-bold text-white mb-2">
+                                <div className="bg-card/60 backdrop-blur-md border border-border/50 p-6 rounded-2xl max-w-md w-full text-center shadow-lg">
+                                    <h3 className="text-2xl font-bold text-card-foreground mb-2">
                                         {slide.title}
                                     </h3>
-                                    <p className="text-zinc-200 text-sm font-medium">
+                                    <p className="text-muted-foreground text-sm font-medium">
                                         {slide.hook}
                                     </p>
                                 </div>
@@ -60,8 +78,22 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
                     ))}
                 </CarouselContent>
 
-                <CarouselPrevious className="absolute left-6 bottom-6 border-white/20 bg-black/20 text-white hover:bg-white hover:text-black" />
-                <CarouselNext className="absolute right-6 bottom-6 border-white/20 bg-black/20 text-white hover:bg-white hover:text-black" />
+                {/* Pagination Dots */}
+                <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20 ">
+                    {Array.from({ length: count }).map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => api?.scrollTo(index)}
+                            className={cn(
+                                "h-2 w-2 rounded-full transition-all duration-300 focus:outline-none",
+                                index === current
+                                    ? "bg-primary w-6"
+                                    : "bg-primary hover:bg-primary/50"
+                            )}
+                            aria-label={`Go to slide ${index + 1}`}
+                        />
+                    ))}
+                </div>
             </Carousel>
         </div>
     )
