@@ -15,7 +15,7 @@ const app = new Hono()
       origin: [
         ...(process.env.FRONTEND_URL_FARMER_APP ? [process.env.FRONTEND_URL_FARMER_APP] : []),
         ...(process.env.FRONTEND_URL_ADMIN_APP ? [process.env.FRONTEND_URL_ADMIN_APP] : []),
-        ...(process.env.NODE_ENV !== 'production' ? ["http://localhost:5000", "http://localhost:5001"] : [])
+        ...(process.env.NODE_ENV !== 'production' ? ["http://localhost:5000", "http://localhost:5001", "http://65.2.9.16:4000"] : [])
       ].filter(Boolean),
       // filter removes any undefined url in the arrays
 
