@@ -27,7 +27,7 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
 
     // Autoplay configuration
     const plugin = React.useRef(
-        Autoplay({ delay: 5000, stopOnInteraction: false })
+        Autoplay({ delay: 5000, stopOnInteraction: true })
     )
 
     React.useEffect(() => {
@@ -55,7 +55,7 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
                     {slides.map((slide) => (
                         <CarouselItem key={slide.id} className="pl-0 h-full w-full relative">
                             {/* Image Container */}
-                            <div className="flex h-full w-full items-center justify-center p-8  ">
+                            <div className="flex h-full w-full items-center justify-center p-8 pb-32  ">
                                 <img
                                     src={slide.image}
                                     alt={slide.title}

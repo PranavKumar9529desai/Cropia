@@ -44,15 +44,15 @@ function RouteComponent() {
   const router = useRouter();
   return (
     <div className="w-full flex">
-      <div className="md:w-2/5  w-full h-screen">
-        <div>
+      <div className="md:w-2/5  w-full h-screen relative">
+        <div className="absolute top-0 w-full">
           <NavBar title="Cropia" buttontext="Back" handleClick={() => router.history.back()} />
         </div>
-        <div className="w-full justify-center flex items-center h-full -mt-20 ">
+        <div className="w-full justify-center flex items-center h-full  bg-background ">
           <Outlet />
         </div>
       </div>
-      <div className="md:flex hidden w-3/5 h-screen">
+      <div className="md:flex hidden w-3/5 h-screen bg-background">
         < SlideShow />
       </div>
     </div>
