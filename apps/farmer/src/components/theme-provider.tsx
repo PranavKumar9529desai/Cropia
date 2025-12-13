@@ -38,22 +38,23 @@ export function ThemeProvider({
     if (theme === "system") {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-      // 1. Check immediately
-      const applySystemTheme = () => {
-        const systemTheme = mediaQuery.matches ? "dark" : "light";
-        // Remove both first to prevent conflicts
+      const updateSystemTheme = (matches: boolean) => {
+        const systemTheme = matches ? "dark" : "light";
         root.classList.remove("light", "dark");
         root.classList.add(systemTheme);
       };
 
-      applySystemTheme();
+      // Initial check
+      updateSystemTheme(mediaQuery.matches);
 
-      // 2. Add Listener (The "Live" Update)
-      // This fires if the user changes their OS theme while looking at your site
-      mediaQuery.addEventListener("change", applySystemTheme);
+      // Listener for changes
+      const listener = (event: MediaQueryListEvent) => {
+        updateSystemTheme(event.matches);
+      };
 
-      // Cleanup listener when component unmounts
-      return () => mediaQuery.removeEventListener("change", applySystemTheme);
+      mediaQuery.addEventListener("change", listener);
+
+      return () => mediaQuery.removeEventListener("change", listener);
     }
 
     root.classList.add(theme);

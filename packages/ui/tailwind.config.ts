@@ -86,7 +86,10 @@ const sharedConfg = {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				shimmer: 'shimmer 2s infinite',
 
-			}
+			},
+			fontFamily: {
+				brand: ["Outfit", "sans-serif"],
+			},
 		}
 	},
 	plugins: [tailwindcssAnimate],

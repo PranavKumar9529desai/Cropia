@@ -100,7 +100,7 @@ function ScanPage() {
       <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md mx-auto">
         {mode === "selection" && (
           <div className="grid grid-cols-1 gap-4 w-full">
-            <div className="">
+            <div className="-mt-20">
 
               <PageHeader
                 title="Scan Crop"
@@ -216,62 +216,74 @@ function ScanPage() {
         )}
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle
-              className={
-                analysisResult?.isValid ? "text-green-600" : "text-red-600"
-              }
-            >
-              {analysisResult?.isValid
-                ? "Analysis Successful"
-                : "Issue Detected"}
-            </DialogTitle>
-            <DialogDescription>
-              Here are the results from the crop analysis.
-            </DialogDescription>
-          </DialogHeader>
-
-          {analysisResult && (
-            <div className="flex flex-col gap-4">
-              <div
-                className={`p-4 rounded-lg border ${analysisResult.isValid ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}
-              >
-                <h4
-                  className={`font-semibold mb-1 ${analysisResult.isValid ? "text-green-800" : "text-red-800"}`}
-                >
-                  {analysisResult.isValid
-                    ? "Valid Crop Detected"
-                    : "Invalid Crop"}
-                </h4>
-                <p
-                  className={`text-sm ${analysisResult.isValid ? "text-green-700" : "text-red-700"}`}
-                >
-                  {analysisResult.isValid
-                    ? analysisResult.metadata?.visualIssue
-                    : analysisResult.rejectionReason}
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>Confidence Score</span>
-                <span className="font-medium text-foreground">
-                  {((analysisResult.metadata?.confidence || 0) * 100).toFixed(
-                    1,
-                  )}
-                  %
-                </span>
-              </div>
-
-              <Button
-                onClick={() => setIsDialogOpen(false)}
-                className="w-full mt-2"
-              >
-                Close
-              </Button>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
+        <DialogContent className="sm:max-w-md w-[90%] rounded-lg overflow-hidden p-0 gap-0">
+          {image && (
+            <div className="relative w-full h-48 bg-muted">
+              <img
+                src={image}
+                alt="Analyzed crop"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             </div>
           )}
+
+          <div className="p-6 pt-4 flex flex-col gap-4">
+            <DialogHeader>
+              <DialogTitle
+                className={`text-xl ${analysisResult?.isValid ? "text-green-600" : "text-red-600"
+                  }`}
+              >
+                {analysisResult?.isValid
+                  ? "Analysis Successful"
+                  : "Issue Detected"}
+              </DialogTitle>
+              <DialogDescription>
+                Analysis results for the captured crop.
+              </DialogDescription>
+            </DialogHeader>
+
+            {analysisResult && (
+              <>
+                <div
+                  className={`p-4 rounded-lg border ${analysisResult.isValid ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}
+                >
+                  <h4
+                    className={`font-semibold mb-1 ${analysisResult.isValid ? "text-green-800" : "text-red-800"}`}
+                  >
+                    {analysisResult.isValid
+                      ? "Valid Crop Detected"
+                      : "Invalid Crop"}
+                  </h4>
+                  <p
+                    className={`text-sm ${analysisResult.isValid ? "text-green-700" : "text-red-700"}`}
+                  >
+                    {analysisResult.isValid
+                      ? analysisResult.metadata?.visualIssue
+                      : analysisResult.rejectionReason}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between text-sm text-muted-foreground bg-muted/30 p-3 rounded-lg">
+                  <span>Confidence Score</span>
+                  <span className="font-bold text-foreground">
+                    {((analysisResult.metadata?.confidence || 0) * 100).toFixed(
+                      1,
+                    )}
+                    %
+                  </span>
+                </div>
+
+                <Button
+                  onClick={() => setIsDialogOpen(false)}
+                  className="w-full mt-2"
+                >
+                  Close
+                </Button>
+              </>
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
