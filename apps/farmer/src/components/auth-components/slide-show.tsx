@@ -23,6 +23,9 @@ const SLIDES = [
 ];
 
 export function SlideShow() {
+    console.log("slides are ", SLIDES)
+    console.log("slide 3 is ", import.meta.env.VITE_SLIDE_3)
+    console.log("backend url is ", import.meta.env.VITE_BACKEND_URL)
     return (
         <SlideShowCard slides={SLIDES} />
     );
