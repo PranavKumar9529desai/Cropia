@@ -112,7 +112,7 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
       </SidebarContent>
 
       <SidebarFooter className="*ring-none">
-        <SidebarSeparator className="" />
+        <SidebarSeparator className="bg-primary" />
         <SidebarMenuItem className="ring-none">
           <SidebarMenuButton asChild
             tooltip={"profile"}
