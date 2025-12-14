@@ -51,7 +51,6 @@ const createLocationSchema = z.object({
 
 type CreateLocationInputType = z.infer<typeof createLocationSchema>;
 
-const loadingToast = toast.loading("Loading...");
 
 export const Route = createFileRoute("/_auth/$authType/location")({
   loader: async ({ params }) => {

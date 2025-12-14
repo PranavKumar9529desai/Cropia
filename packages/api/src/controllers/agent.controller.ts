@@ -9,6 +9,7 @@ import {
   getCropContext,
 } from "../utils/agents/assistant-agent/context";
 import { generateFarmerPrompt } from "../utils/agents/assistant-agent/prompt";
+import { FarmerContext } from "../utils/agents/assistant-agent/types";
 
 
 const AiController = new Hono<{
@@ -97,7 +98,7 @@ const AiController = new Hono<{
       return c.json({ error: "User Context Not Found" }, 404);
     }
 
-    const systemPrompt = generateFarmerPrompt(chatContext.data);
+    const systemPrompt = generateFarmerPrompt(chatContext.data as FarmerContext);
 
     // AI SDK v5: streamText returns the result object immediately`
     const result = await streamText({

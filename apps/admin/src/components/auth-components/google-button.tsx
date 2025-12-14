@@ -26,7 +26,7 @@ export const GoogleButton = ({ title }: { title: string }) => {
 
       // After Google sign-in, redirect to sign-in/location
       // The location page will check if user already has location data
-      navigate({ to: "/$authType/location", params: { authType: "sign-in" } });
+      navigate({ to: "/dashboard" });
     } catch {
       toast.error("Something Went Wrong...!", { id: toastId });
       setIsLoading(false);
