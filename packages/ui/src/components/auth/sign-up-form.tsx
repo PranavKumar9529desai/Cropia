@@ -38,6 +38,8 @@ export interface SignUpFormProps {
   signInLink: ReactNode;
   googleButton?: ReactNode;
   isSubmitting?: boolean;
+  defaultValues?: Partial<SignUpFormValues>;
+  emailReadOnly?: boolean;
 }
 
 export const SignUpForm = ({
@@ -45,6 +47,8 @@ export const SignUpForm = ({
   signInLink,
   googleButton,
   isSubmitting,
+  defaultValues,
+  emailReadOnly = false,
 }: SignUpFormProps) => {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpFormSchema),
@@ -52,6 +56,7 @@ export const SignUpForm = ({
       username: "",
       email: "",
       password: "",
+      ...defaultValues,
     },
   });
 
@@ -91,7 +96,12 @@ export const SignUpForm = ({
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
+                    <Input
+                      placeholder="Enter your email"
+                      {...field}
+                      disabled={emailReadOnly}
+                      className={emailReadOnly ? "opacity-50 cursor-not-allowed" : ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

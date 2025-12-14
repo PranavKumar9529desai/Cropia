@@ -9,6 +9,7 @@ import {
   getCropContext,
 } from "../utils/agents/assistant-agent/context";
 import { generateFarmerPrompt } from "../utils/agents/assistant-agent/prompt";
+import { FarmerContext } from "../utils/agents/assistant-agent/types";
 
 
 const AiController = new Hono<{
@@ -56,13 +57,16 @@ const AiController = new Hono<{
             imageUrl: uploadResult.secure_url,
             publicId: uploadResult.public_id,
             crop: result.metadata.crop,
+
             visualIssue: result.metadata.visualIssue,
             diagnosis: null, // Expert finding, initially null
             confidence: result.metadata.confidence,
 
             // Location Snapshot
+            state: userLocation?.state,
+            district: userLocation?.district,
             city: userLocation?.city,
-            district: userLocation?.state, // Using state as district proxy for now
+            taluka: userLocation?.taluka,
             village: userLocation?.village,
             pincode: userLocation?.pincode,
             latitude: userLocation?.latitude,
@@ -94,7 +98,7 @@ const AiController = new Hono<{
       return c.json({ error: "User Context Not Found" }, 404);
     }
 
-    const systemPrompt = generateFarmerPrompt(chatContext.data);
+    const systemPrompt = generateFarmerPrompt(chatContext.data as FarmerContext);
 
     // AI SDK v5: streamText returns the result object immediately`
     const result = await streamText({

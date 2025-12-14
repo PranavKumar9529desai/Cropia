@@ -3,6 +3,8 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { prisma } from '@repo/db';
 import type { auth } from "../auth"
+import { fetchStates, fetchDistricts, fetchTalukas, fetchVillages } from '../utils/location-helpers';
+
 // Validation schema matching the frontend form
 const createLocationSchema = z.object({
   latitude: z.number().min(-90).max(90),
@@ -12,6 +14,7 @@ const createLocationSchema = z.object({
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   district: z.string().min(1, "District is required"),
+  taluka: z.string().optional(),
   pincode: z.string().min(1, "Pincode is required"),
   country: z.string().default("India"),
 });
@@ -25,6 +28,57 @@ const LocationController = new Hono<{
     userId: string;
   }
 }>()
+  // --- PROXY ENDPOINTS FOR INDIA LOCATION API ---
+
+  .get('/states', async (c) => {
+    try {
+      const states = await fetchStates();
+      return c.json({ success: true, data: { states } });
+    } catch (error) {
+      console.error('Error fetching states:', error);
+      return c.json({ success: false, error: 'Failed to fetch states' }, 500);
+    }
+  })
+
+  .get('/districts/:state_name', async (c) => {
+    try {
+      const state_name = c.req.param('state_name');
+      console.log("state_name is ", state_name);
+      const districts = await fetchDistricts(state_name);
+      return c.json({ success: true, data: { districts } });
+    } catch (error) {
+      console.error('Error fetching districts:', error);
+      return c.json({ success: false, error: 'Failed to fetch districts' }, 500);
+    }
+  })
+
+  .get('/talukas/:district_name', async (c) => {
+    try {
+      const district_name = c.req.param('district_name');
+      const talukas = await fetchTalukas(district_name);
+      return c.json({ success: true, data: { talukas } });
+    } catch (error) {
+      console.error('Error fetching talukas:', error);
+      return c.json({ success: false, error: 'Failed to fetch talukas' }, 500);
+    }
+  })
+
+  .get('/villages', async (c) => {
+    try {
+      const { state, district, taluka } = c.req.query();
+      if (!state || !district || !taluka) {
+        return c.json({ success: false, error: 'State, District, and Taluka are required' }, 400);
+      }
+
+      const villages = await fetchVillages(state, district, taluka);
+      return c.json({ success: true, data: { villages } });
+    } catch (error) {
+      console.error('Error fetching villages:', error);
+      return c.json({ success: false, error: 'Failed to fetch villages' }, 500);
+    }
+  })
+
+
   // Get location by user ID (from context)
   .get('/', async (c) => {
     try {
@@ -48,6 +102,7 @@ const LocationController = new Hono<{
           city: true,
           state: true,
           district: true,
+          taluka: true,
           pincode: true,
           country: true,
           user: {
@@ -121,6 +176,7 @@ const LocationController = new Hono<{
             city: data.city,
             state: data.state,
             district: data.district,
+            taluka: data.taluka,
             pincode: data.pincode,
             country: data.country,
           }
@@ -136,6 +192,7 @@ const LocationController = new Hono<{
             city: data.city,
             state: data.state,
             district: data.district,
+            taluka: data.taluka,
             pincode: data.pincode,
             country: data.country,
             userId: userId,
@@ -188,6 +245,7 @@ const LocationController = new Hono<{
           ...(data.city !== undefined && { city: data.city }),
           ...(data.state !== undefined && { state: data.state }),
           ...(data.district !== undefined && { district: data.district }),
+          ...(data.taluka !== undefined && { taluka: data.taluka }),
           ...(data.pincode !== undefined && { pincode: data.pincode }),
           ...(data.country !== undefined && { country: data.country }),
         }

@@ -5,38 +5,38 @@ generator client {
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
-  
 }
 
 model User {
-  id            String    @id @map("_id")
+  id            String       @id @map("_id")
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean      @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   sessions      Session[]
   accounts      Account[]
   location      Location?
   member        Member[]
   invitation    Invitation[]
-  scans         Scan[]    
+  scans         Scan[]
+
   @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id        String   @id @map("_id")
-  expiresAt DateTime
-  token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
-  userId    String
+  id                   String   @id @map("_id")
+  expiresAt            DateTime
+  token                String
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  ipAddress            String?
+  userAgent            String?
+  userId               String
   activeOrganizationId String?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
   @@index([userId])
@@ -84,7 +84,7 @@ model Organization {
   metadata    String?
   members     Member[]
   invitations Invitation[]
-  scans         Scan[]    
+  scans       Scan[]
 
   @@unique([slug])
   @@map("organization")
@@ -96,8 +96,16 @@ model Member {
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   userId         String
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role           String       @default("member")
-  createdAt      DateTime
+  role           String       @default("member") // e.g., "owner", "admin", "viewer"
+
+  // --- JURISDICTION CONTROL ---
+  // Stores the scope of this admin's power.
+  // Structure: { state: "Maharashtra", district: "Kolhapur", taluka: "Hatkanangale" }
+  // If a field is missing, they have no power at that level.
+  // If a field is "*", they have full power.
+  jurisdiction Json?
+
+  createdAt DateTime
 
   @@index([organizationId])
   @@index([userId])
@@ -122,34 +130,36 @@ model Invitation {
 }
 
 model Location {
-  id String @id @default(auto()) @map("_id") @db.ObjectId 
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  // Coordinates
+  // Coordinates (From GPS)
   latitude  Float
   longitude Float
 
   // Address Details
   address String?
-  village String?
-  district String?
 
-  // Required fields
-  city    String
-  state   String
+  // --- API VALIDATED FIELDS ---
+  // These must match the India Location API values exactly
+  state    String // e.g. "Maharashtra"
+  district String // e.g. "Kolhapur"
+  taluka   String? // e.g. "Hatkanangale" (Sub-District/Tehsil)
+  village  String? // e.g. "Wathar"
+
+  city    String? // Optional: User might enter a nearby city if village is missing
   pincode String
-  country String @default("India")
+  country String  @default("India")
 
   // Relation to User
-  // The Foreign Key references BetterAuth's custom string ID (not ObjectID)
   userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Indexes for Geo-Spatial lookups (if needed later)
+  @@index([state, district, taluka])
 }
-
-
-
 
 model Scan {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -157,37 +167,43 @@ model Scan {
   updatedAt DateTime @updatedAt
 
   // 1. CLOUDINARY DATA
-  imageUrl  String   // The public URL
-  publicId  String   // The ID needed to delete/manage the image
+  imageUrl String
+  publicId String
 
-  // 2. AI METADATA (From Gatekeeper)
-  crop         String   // e.g. "Sugarcane"
-  visualIssue  String?  // e.g. "Yellow spots" (Gatekeeper finding)
-  diagnosis    String?  // e.g. "Rust" (Expert finding - strictly medical)
-  confidence   Float?   // e.g. 0.98
+  // 2. AI METADATA 
+  crop        String
+  visualIssue String?
+  diagnosis   String?
+  confidence  Float?
 
-  // 3. LOCATION SNAPSHOT (The "Frozen" Location)
-  // We copy these FROM the User.location table AT THE MOMENT of upload.
-  // We do NOT link by ID. This ensures historical accuracy for the Admin.
-  city      String?
-  district  String?  // Mapped from 'state' or 'city' depending on your logic
+  // 3. LOCATION SNAPSHOT 
+  // Copied from User.location at upload time.
+  // WE MUST COPY ALL LEVELS to enable fast Admin Filtering.
+  state     String? // <-- NEW: Allows "State Level" dashboards
+  district  String?
+  taluka    String? // <-- NEW: Allows "Taluka Level" dashboards
   village   String?
+  city      String?
   pincode   String?
   latitude  Float?
   longitude Float?
 
   // 4. RELATIONS
-  // Note: userId is a String because BetterAuth uses String IDs
-  userId         String
-  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  organizationId String?       @map("organizationId") // Standard String for BetterAuth Org ID
+  organizationId String?       @map("organizationId")
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  // 5. INDEXES (For Dashboard Speed)
+  // 5. INDEXES (Powering "The Watchtower")
   @@index([userId])
   @@index([organizationId])
-  // This index powers the "Admin Outbreak Alert" query
-  @@index([city, createdAt]) 
+  // Dashboard Queries:
+  // "Show me all scans in Maharashtra"
+  @@index([state, createdAt])
+  // "Show me all scans in Kolhapur"
+  @@index([district, createdAt])
+  // "Show me all scans in Hatkanangale"
+  @@index([taluka, createdAt])
   @@map("scan")
 }

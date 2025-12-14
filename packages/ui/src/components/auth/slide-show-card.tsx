@@ -6,7 +6,6 @@ import {
     CarouselItem,
     type CarouselApi,
 } from "@repo/ui/components/carousel"
-import { cn } from "@repo/ui/lib/utils"
 
 // Define the shape of a single slide
 export interface Slide {
@@ -22,9 +21,8 @@ interface SlideShowCardProps {
 
 export function SlideShowCard({ slides }: SlideShowCardProps) {
     const [api, setApi] = React.useState<CarouselApi>()
-    const [current, setCurrent] = React.useState(0)
-    const [count, setCount] = React.useState(0)
-
+    const [, setCurrent] = React.useState(0)
+    const [, setCount] = React.useState(0)
     // Autoplay configuration
     const plugin = React.useRef(
         Autoplay({ delay: 5000, stopOnInteraction: true })
@@ -44,7 +42,7 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
     }, [api])
 
     return (
-        <div className="relative w-full h-full overflow-hidden">
+        <div className="relative w-full h-full overflow-hidden -mt-10">
             <Carousel
                 setApi={setApi}
                 plugins={[plugin.current]}
@@ -55,7 +53,7 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
                     {slides.map((slide) => (
                         <CarouselItem key={slide.id} className="pl-0 h-full w-full relative">
                             {/* Image Container */}
-                            <div className="flex h-full w-full items-center justify-center p-8 pb-32  ">
+                            <div className="flex h-full w-full items-center justify-center p-8 pb-40  ">
                                 <img
                                     src={slide.image}
                                     alt={slide.title}
@@ -64,7 +62,7 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
                             </div>
 
                             {/* Glassmorphism Text Overlay */}
-                            <div className="absolute bottom-20 left-0 right-0 z-10 flex justify-center px-6">
+                            <div className="absolute bottom-24 left-0 right-0 z-10 flex justify-center px-6">
                                 <div className="bg-card/60 backdrop-blur-md border border-border/50 p-6 rounded-2xl max-w-md w-full text-center shadow-lg">
                                     <h3 className="text-2xl font-bold text-card-foreground mb-2">
                                         {slide.title}
@@ -79,7 +77,7 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
                 </CarouselContent>
 
                 {/* Pagination Dots */}
-                <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20 ">
+                {/* <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20 ">
                     {Array.from({ length: count }).map((_, index) => (
                         <button
                             key={index}
@@ -93,7 +91,7 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
                             aria-label={`Go to slide ${index + 1}`}
                         />
                     ))}
-                </div>
+                </div> */}
             </Carousel>
         </div>
     )

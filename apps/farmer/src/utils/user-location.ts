@@ -33,6 +33,7 @@ interface LocationValues {
   city: string;
   district: string;
   state: string;
+  taluka?: string;
   pincode: string;
   country: string;
 }
@@ -57,4 +58,50 @@ export const getuserlocation = async () => {
     const { user: _user, ...locationDetails } = data;
     return { ...locationDetails };
   }
+};
+
+export const getStates = async () => {
+  const response = await apiClient.api.locations.states.$get();
+  const result = await response.json();
+  if (!result.success) {
+    throw (result as any).error || "Failed to fetch states";
+  }
+  return result.data.states;
+};
+
+export const getDistricts = async (stateName: string) => {
+  const response = await apiClient.api.locations.districts[":state_name"].$get({
+    param: { state_name: stateName },
+  });
+  const result = await response.json();
+  if (!result.success) {
+    throw (result as any).error || "Failed to fetch districts";
+  }
+  return result.data.districts;
+};
+
+export const getTalukas = async (districtName: string) => {
+  const response = await apiClient.api.locations.talukas[":district_name"].$get({
+    param: { district_name: districtName },
+  });
+  const result = await response.json();
+  if (!result.success) {
+    throw (result as any).error || "Failed to fetch talukas";
+  }
+  return result.data.talukas;
+};
+
+export const getVillages = async (state: string, district: string, taluka: string) => {
+  const response = await apiClient.api.locations.villages.$get({
+    query: {
+      state,
+      district,
+      taluka,
+    },
+  });
+  const result = await response.json();
+  if (!result.success) {
+    throw (result as any).error || "Failed to fetch villages";
+  }
+  return result.data.villages;
 };

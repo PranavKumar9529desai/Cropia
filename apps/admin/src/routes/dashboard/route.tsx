@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import BottomNav from "../../components/dashboard/bottom-navigation";
 import { AppSidebar } from "../../components/dashboard/app-sidebar";
+// import { DashboardHeader } from '../../components/dashboard/dashboard-header'
 import {
   SidebarProvider,
   SidebarInset,
@@ -8,7 +9,6 @@ import {
 } from "@repo/ui/components/sidebar";
 import { MobileTopbar } from "../../components/dashboard/mobile-topbar";
 
-import { getuserLocationStatus } from "../../utils/user-location";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async ({ context }) => {
@@ -18,14 +18,7 @@ export const Route = createFileRoute("/dashboard")({
         to: "/sign-in",
       });
     }
-    const isLocationFormSubmitted = await getuserLocationStatus();
 
-    if (!isLocationFormSubmitted) {
-      throw redirect({
-        to: "/$authType/location",
-        params: { authType: "sign-in" },
-      });
-    }
   },
   loader: async ({ context }) => {
     const data = context.auth;

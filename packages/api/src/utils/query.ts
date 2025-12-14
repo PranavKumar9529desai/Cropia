@@ -1,7 +1,7 @@
 import { auth } from "../auth";
 
 async function main() {
-    const email = "admin@cropia.com";
+    const email = "fullstackwebdeveloper123@gmail.com";
     const password = "password123";
     const name = "Admin User";
 
