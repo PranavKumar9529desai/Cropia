@@ -32,14 +32,10 @@ export const SignIn = () => {
 
       await router.invalidate();
 
-      // Check if user has location data
       const session = await authClient.getSession();
       if (session?.data?.user) {
-        // Note: We'll need to fetch location data from the API
-        // For now, we'll redirect to location page and let it handle the check
         navigate({
-          to: "/$authType/location",
-          params: { authType: "sign-in" },
+          to: "/dashboard"
         });
       }
     } catch {

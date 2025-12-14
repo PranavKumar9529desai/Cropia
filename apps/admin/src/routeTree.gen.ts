@@ -13,19 +13,13 @@ import { Route as SkeltonRouteImport } from './routes/skelton'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as DashboardScanRouteImport } from './routes/dashboard/scan'
-import { Route as DashboardHomeRouteImport } from './routes/dashboard/home'
-import { Route as DashboardAssistantRouteImport } from './routes/dashboard/assistant'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
-import { Route as DashboardScanSuccessRouteImport } from './routes/dashboard/scan.success'
-import { Route as DashboardScanFailureRouteImport } from './routes/dashboard/scan.failure'
-import { Route as AuthAuthTypeLocationRouteImport } from './routes/_auth/$authType.location'
+import { Route as AuthAcceptInviteRouteImport } from './routes/_auth/accept-invite'
 
 const SkeltonRoute = SkeltonRouteImport.update({
   id: '/skelton',
@@ -45,26 +39,6 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardScanRoute = DashboardScanRouteImport.update({
-  id: '/scan',
-  path: '/scan',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardHomeRoute = DashboardHomeRouteImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardAssistantRoute = DashboardAssistantRouteImport.update({
-  id: '/assistant',
-  path: '/assistant',
-  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -96,76 +70,49 @@ const AuthCheckEmailRoute = AuthCheckEmailRouteImport.update({
   path: '/check-email',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const DashboardScanSuccessRoute = DashboardScanSuccessRouteImport.update({
-  id: '/success',
-  path: '/success',
-  getParentRoute: () => DashboardScanRoute,
-} as any)
-const DashboardScanFailureRoute = DashboardScanFailureRouteImport.update({
-  id: '/failure',
-  path: '/failure',
-  getParentRoute: () => DashboardScanRoute,
-} as any)
-const AuthAuthTypeLocationRoute = AuthAuthTypeLocationRouteImport.update({
-  id: '/$authType/location',
-  path: '/$authType/location',
+const AuthAcceptInviteRoute = AuthAcceptInviteRouteImport.update({
+  id: '/accept-invite',
+  path: '/accept-invite',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRoute
   '/skelton': typeof SkeltonRoute
+  '/accept-invite': typeof AuthAcceptInviteRoute
   '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/dashboard/assistant': typeof DashboardAssistantRoute
-  '/dashboard/home': typeof DashboardHomeRoute
-  '/dashboard/scan': typeof DashboardScanRouteWithChildren
-  '/dashboard/': typeof DashboardIndexRoute
-  '/$authType/location': typeof AuthAuthTypeLocationRoute
-  '/dashboard/scan/failure': typeof DashboardScanFailureRoute
-  '/dashboard/scan/success': typeof DashboardScanSuccessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRoute
   '/skelton': typeof SkeltonRoute
+  '/accept-invite': typeof AuthAcceptInviteRoute
   '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/verify-email': typeof AuthVerifyEmailRoute
-  '/dashboard/assistant': typeof DashboardAssistantRoute
-  '/dashboard/home': typeof DashboardHomeRoute
-  '/dashboard/scan': typeof DashboardScanRouteWithChildren
-  '/dashboard': typeof DashboardIndexRoute
-  '/$authType/location': typeof AuthAuthTypeLocationRoute
-  '/dashboard/scan/failure': typeof DashboardScanFailureRoute
-  '/dashboard/scan/success': typeof DashboardScanSuccessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
-  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRoute
   '/skelton': typeof SkeltonRoute
+  '/_auth/accept-invite': typeof AuthAcceptInviteRoute
   '/_auth/check-email': typeof AuthCheckEmailRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
-  '/dashboard/assistant': typeof DashboardAssistantRoute
-  '/dashboard/home': typeof DashboardHomeRoute
-  '/dashboard/scan': typeof DashboardScanRouteWithChildren
-  '/dashboard/': typeof DashboardIndexRoute
-  '/_auth/$authType/location': typeof AuthAuthTypeLocationRoute
-  '/dashboard/scan/failure': typeof DashboardScanFailureRoute
-  '/dashboard/scan/success': typeof DashboardScanSuccessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -173,61 +120,44 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/skelton'
+    | '/accept-invite'
     | '/check-email'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/verify-email'
-    | '/dashboard/assistant'
-    | '/dashboard/home'
-    | '/dashboard/scan'
-    | '/dashboard/'
-    | '/$authType/location'
-    | '/dashboard/scan/failure'
-    | '/dashboard/scan/success'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dashboard'
     | '/skelton'
+    | '/accept-invite'
     | '/check-email'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/verify-email'
-    | '/dashboard/assistant'
-    | '/dashboard/home'
-    | '/dashboard/scan'
-    | '/dashboard'
-    | '/$authType/location'
-    | '/dashboard/scan/failure'
-    | '/dashboard/scan/success'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/dashboard'
     | '/skelton'
+    | '/_auth/accept-invite'
     | '/_auth/check-email'
     | '/_auth/forgot-password'
     | '/_auth/reset-password'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
     | '/_auth/verify-email'
-    | '/dashboard/assistant'
-    | '/dashboard/home'
-    | '/dashboard/scan'
-    | '/dashboard/'
-    | '/_auth/$authType/location'
-    | '/dashboard/scan/failure'
-    | '/dashboard/scan/success'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  DashboardRouteRoute: typeof DashboardRouteRoute
   SkeltonRoute: typeof SkeltonRoute
 }
 
@@ -260,34 +190,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/scan': {
-      id: '/dashboard/scan'
-      path: '/scan'
-      fullPath: '/dashboard/scan'
-      preLoaderRoute: typeof DashboardScanRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/home': {
-      id: '/dashboard/home'
-      path: '/home'
-      fullPath: '/dashboard/home'
-      preLoaderRoute: typeof DashboardHomeRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/assistant': {
-      id: '/dashboard/assistant'
-      path: '/assistant'
-      fullPath: '/dashboard/assistant'
-      preLoaderRoute: typeof DashboardAssistantRouteImport
-      parentRoute: typeof DashboardRouteRoute
     }
     '/_auth/verify-email': {
       id: '/_auth/verify-email'
@@ -331,90 +233,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCheckEmailRouteImport
       parentRoute: typeof AuthRouteRoute
     }
-    '/dashboard/scan/success': {
-      id: '/dashboard/scan/success'
-      path: '/success'
-      fullPath: '/dashboard/scan/success'
-      preLoaderRoute: typeof DashboardScanSuccessRouteImport
-      parentRoute: typeof DashboardScanRoute
-    }
-    '/dashboard/scan/failure': {
-      id: '/dashboard/scan/failure'
-      path: '/failure'
-      fullPath: '/dashboard/scan/failure'
-      preLoaderRoute: typeof DashboardScanFailureRouteImport
-      parentRoute: typeof DashboardScanRoute
-    }
-    '/_auth/$authType/location': {
-      id: '/_auth/$authType/location'
-      path: '/$authType/location'
-      fullPath: '/$authType/location'
-      preLoaderRoute: typeof AuthAuthTypeLocationRouteImport
+    '/_auth/accept-invite': {
+      id: '/_auth/accept-invite'
+      path: '/accept-invite'
+      fullPath: '/accept-invite'
+      preLoaderRoute: typeof AuthAcceptInviteRouteImport
       parentRoute: typeof AuthRouteRoute
     }
   }
 }
 
 interface AuthRouteRouteChildren {
+  AuthAcceptInviteRoute: typeof AuthAcceptInviteRoute
   AuthCheckEmailRoute: typeof AuthCheckEmailRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthSignInRoute: typeof AuthSignInRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
-  AuthAuthTypeLocationRoute: typeof AuthAuthTypeLocationRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthAcceptInviteRoute: AuthAcceptInviteRoute,
   AuthCheckEmailRoute: AuthCheckEmailRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,
-  AuthAuthTypeLocationRoute: AuthAuthTypeLocationRoute,
 }
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
-interface DashboardScanRouteChildren {
-  DashboardScanFailureRoute: typeof DashboardScanFailureRoute
-  DashboardScanSuccessRoute: typeof DashboardScanSuccessRoute
-}
-
-const DashboardScanRouteChildren: DashboardScanRouteChildren = {
-  DashboardScanFailureRoute: DashboardScanFailureRoute,
-  DashboardScanSuccessRoute: DashboardScanSuccessRoute,
-}
-
-const DashboardScanRouteWithChildren = DashboardScanRoute._addFileChildren(
-  DashboardScanRouteChildren,
-)
-
-interface DashboardRouteRouteChildren {
-  DashboardAssistantRoute: typeof DashboardAssistantRoute
-  DashboardHomeRoute: typeof DashboardHomeRoute
-  DashboardScanRoute: typeof DashboardScanRouteWithChildren
-  DashboardIndexRoute: typeof DashboardIndexRoute
-}
-
-const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
-  DashboardAssistantRoute: DashboardAssistantRoute,
-  DashboardHomeRoute: DashboardHomeRoute,
-  DashboardScanRoute: DashboardScanRouteWithChildren,
-  DashboardIndexRoute: DashboardIndexRoute,
-}
-
-const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
-  DashboardRouteRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  DashboardRouteRoute: DashboardRouteRoute,
   SkeltonRoute: SkeltonRoute,
 }
 export const routeTree = rootRouteImport

@@ -61,7 +61,7 @@ function RouteComponent() {
         message={message}
         onGoToLogin={() => navigate({ to: '/sign-in' })}
         onVerify={() => window.location.reload()}
-        onContinue={() => navigate({ to: '/$authType/location', params: { authType: 'farmer' } })}
+        onContinue={() => navigate({ to: '/dashboard' })}
       />
     </div>
   )
