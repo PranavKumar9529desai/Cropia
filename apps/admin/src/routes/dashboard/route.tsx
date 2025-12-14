@@ -8,9 +8,7 @@ import {
   SidebarTrigger,
 } from "@repo/ui/components/sidebar";
 import { MobileTopbar } from "../../components/dashboard/mobile-topbar";
-import { authClient } from "../../lib/auth/auth-client";
 
-import { getuserLocationStatus } from "../../utils/user-location";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async ({ context }) => {
@@ -20,17 +18,10 @@ export const Route = createFileRoute("/dashboard")({
         to: "/sign-in",
       });
     }
-    const isLocationFormSubmitted = await getuserLocationStatus();
 
-    if (!isLocationFormSubmitted) {
-      throw redirect({
-        to: "/$authType/location",
-        params: { authType: "sign-in" },
-      });
-    }
   },
-  loader: async () => {
-    const { data } = await authClient.getSession();
+  loader: async ({ context }) => {
+    const data = context.auth;
     const username = data?.user?.name;
     const email = data?.user?.email;
     const image = data?.user?.image

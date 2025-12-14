@@ -1,14 +1,12 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import BottomNav from "../../components/dashboard/bottom-navigation";
 import { AppSidebar } from "../../components/dashboard/app-sidebar";
-// import { DashboardHeader } from '../../components/dashboard/dashboard-header'
 import {
   SidebarProvider,
   SidebarInset,
   SidebarTrigger,
 } from "@repo/ui/components/sidebar";
 import { MobileTopbar } from "../../components/dashboard/mobile-topbar";
-import { authClient } from "../../lib/auth/auth-client";
 
 import { getuserLocationStatus } from "../../utils/user-location";
 
@@ -29,8 +27,8 @@ export const Route = createFileRoute("/dashboard")({
       });
     }
   },
-  loader: async () => {
-    const { data } = await authClient.getSession();
+  loader: async ({ context }) => {
+    const data = context.auth;
     const username = data?.user?.name;
     const email = data?.user?.email;
     const image = data?.user?.image

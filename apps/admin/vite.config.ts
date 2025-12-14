@@ -6,10 +6,10 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   server: {
-    port: 5000,
+    port: 5001,
   },
   preview: {
-    port: 5000
+    port: 5001
   },
   plugins: [
     tanstackRouter({

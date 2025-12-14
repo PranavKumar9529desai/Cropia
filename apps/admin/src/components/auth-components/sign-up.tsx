@@ -1,54 +1,36 @@
-import { Link, useNavigate } from "@tanstack/react-router";
-import { toast } from "@repo/ui/components/sonner";
+import { Link } from "@tanstack/react-router";
 import {
-  SignUpForm,
-  type SignUpFormValues,
-} from "@repo/ui/components/auth";
-import { authClient } from "../../lib/auth/auth-client";
-import { GoogleButton } from "./google-button";
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter
+} from "@repo/ui/components/card";
+import { Button } from "@repo/ui/components/button";
 
 export const SignUp = () => {
-  const navigate = useNavigate();
-
-  const handleSubmit = async (values: SignUpFormValues) => {
-    const toastId = toast.loading("Creating Account...");
-    try {
-      const { error } = await authClient.signUp.email({
-        email: values.email,
-        name: values.username,
-        password: values.password,
-      });
-
-      if (error) {
-        toast.error(error.message || "Something Went Wrong", {
-          id: toastId,
-        });
-        return;
-      }
-
-      toast.success("Account Created Successfully..!", { id: toastId });
-
-      // Redirect to location page after successful sign-up
-      // Redirect to location page after successful sign-up
-      navigate({
-        to: '/check-email',
-        search: { email: values.email }
-      });
-
-    } catch {
-      toast.error("Connection Failed..!", { id: toastId });
-    }
-  };
-
   return (
-    <SignUpForm
-      onSubmit={handleSubmit}
-      signInLink={
-        <Link to="/sign-in" className="ml-1">
-          Sign In
+    <Card className="w-full max-w-sm border-none shadow-none">
+      <CardHeader className="text-3xl font-bold text-primary space-y-2">
+        <CardTitle>Invitation Required</CardTitle>
+        <CardDescription>
+          Admin accounts can only be created via an invitation link.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="text-muted-foreground">
+        <p>
+          Please check your email for an invitation from your organization.
+          If you believe this is an error, contact your administrator.
+        </p>
+      </CardContent>
+      <CardFooter>
+        <Link to="/sign-in" className="w-full">
+          <Button className="w-full">
+            Go to Sign In
+          </Button>
         </Link>
-      }
-      googleButton={<GoogleButton title="Continue With Google" />}
-    />
+      </CardFooter>
+    </Card>
   );
 };
