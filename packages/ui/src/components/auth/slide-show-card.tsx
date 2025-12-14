@@ -6,7 +6,6 @@ import {
     CarouselItem,
     type CarouselApi,
 } from "@repo/ui/components/carousel"
-import { cn } from "@repo/ui/lib/utils"
 
 // Define the shape of a single slide
 export interface Slide {
@@ -22,8 +21,8 @@ interface SlideShowCardProps {
 
 export function SlideShowCard({ slides }: SlideShowCardProps) {
     const [api, setApi] = React.useState<CarouselApi>()
-    const [current, setCurrent] = React.useState(0)
-    const [count, setCount] = React.useState(0)
+    const [, setCurrent] = React.useState(0)
+    const [, setCount] = React.useState(0)
     // Autoplay configuration
     const plugin = React.useRef(
         Autoplay({ delay: 5000, stopOnInteraction: true })
