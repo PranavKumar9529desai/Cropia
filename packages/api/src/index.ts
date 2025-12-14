@@ -5,7 +5,7 @@ import { sessionMiddleware } from "./middleware/middleware";
 import WeatherController from "./controllers/weather.controller";
 import LocationController from "./controllers/location.controller";
 import AiController from "./controllers/agent.controller";
-
+import InvitationController from "./controllers/invitation.controller";
 
 console.log(process.env.FRONTEND_URL_FARMER_APP)
 const app = new Hono()
@@ -34,7 +34,8 @@ const app = new Hono()
   .use("/api/ai/*", sessionMiddleware)
   .route("/api/weather", WeatherController)
   .route("/api/locations", LocationController)
-  .route("/api/ai", AiController);
+  .route("/api/ai", AiController)
+  .route("/api/invitation", InvitationController);
 
 export type AppType = typeof app;
 

@@ -33,6 +33,7 @@ export const auth = betterAuth({
     organization({
       // FIXED: 'data' IS the invitation object. It does not contain a nested 'invitation' property.
       async sendInvitationEmail(data) {
+        // use admin_ulr and invite is for the admin
         const inviteLink = `${process.env.FRONTEND_URL_ADMIN_APP || "http://localhost:5001"}/accept-invitation/${data.id}`;
 
         await transporter.sendMail({

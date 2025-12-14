@@ -19,7 +19,7 @@ import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
-import { Route as AuthAcceptInviteRouteImport } from './routes/_auth/accept-invite'
+import { Route as AuthAcceptInvitationIdRouteImport } from './routes/_auth/accept-invitation.$id'
 
 const SkeltonRoute = SkeltonRouteImport.update({
   id: '/skelton',
@@ -70,9 +70,9 @@ const AuthCheckEmailRoute = AuthCheckEmailRouteImport.update({
   path: '/check-email',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const AuthAcceptInviteRoute = AuthAcceptInviteRouteImport.update({
-  id: '/accept-invite',
-  path: '/accept-invite',
+const AuthAcceptInvitationIdRoute = AuthAcceptInvitationIdRouteImport.update({
+  id: '/accept-invitation/$id',
+  path: '/accept-invitation/$id',
   getParentRoute: () => AuthRouteRoute,
 } as any)
 
@@ -80,25 +80,25 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRoute
   '/skelton': typeof SkeltonRoute
-  '/accept-invite': typeof AuthAcceptInviteRoute
   '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRoute
   '/skelton': typeof SkeltonRoute
-  '/accept-invite': typeof AuthAcceptInviteRoute
   '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,13 +106,13 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRoute
   '/skelton': typeof SkeltonRoute
-  '/_auth/accept-invite': typeof AuthAcceptInviteRoute
   '/_auth/check-email': typeof AuthCheckEmailRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
+  '/_auth/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -120,38 +120,38 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/skelton'
-    | '/accept-invite'
     | '/check-email'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/verify-email'
+    | '/accept-invitation/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/dashboard'
     | '/skelton'
-    | '/accept-invite'
     | '/check-email'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/verify-email'
+    | '/accept-invitation/$id'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/dashboard'
     | '/skelton'
-    | '/_auth/accept-invite'
     | '/_auth/check-email'
     | '/_auth/forgot-password'
     | '/_auth/reset-password'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
     | '/_auth/verify-email'
+    | '/_auth/accept-invitation/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -233,34 +233,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCheckEmailRouteImport
       parentRoute: typeof AuthRouteRoute
     }
-    '/_auth/accept-invite': {
-      id: '/_auth/accept-invite'
-      path: '/accept-invite'
-      fullPath: '/accept-invite'
-      preLoaderRoute: typeof AuthAcceptInviteRouteImport
+    '/_auth/accept-invitation/$id': {
+      id: '/_auth/accept-invitation/$id'
+      path: '/accept-invitation/$id'
+      fullPath: '/accept-invitation/$id'
+      preLoaderRoute: typeof AuthAcceptInvitationIdRouteImport
       parentRoute: typeof AuthRouteRoute
     }
   }
 }
 
 interface AuthRouteRouteChildren {
-  AuthAcceptInviteRoute: typeof AuthAcceptInviteRoute
   AuthCheckEmailRoute: typeof AuthCheckEmailRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthSignInRoute: typeof AuthSignInRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
+  AuthAcceptInvitationIdRoute: typeof AuthAcceptInvitationIdRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthAcceptInviteRoute: AuthAcceptInviteRoute,
   AuthCheckEmailRoute: AuthCheckEmailRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,
+  AuthAcceptInvitationIdRoute: AuthAcceptInvitationIdRoute,
 }
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(

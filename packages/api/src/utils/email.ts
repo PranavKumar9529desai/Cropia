@@ -1,4 +1,9 @@
 import nodemailer from "nodemailer";
+
+if (!process.env.GMAIL_USER || !process.env.GMAIL_PASSWORD) {
+    console.warn("GMAIL_USER or GMAIL_PASSWORD is not set. Email sending will fail.");
+}
+
 export const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {

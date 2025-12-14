@@ -4,23 +4,33 @@ import { SignUpForm, type SignUpFormValues } from '@repo/ui/components/auth'
 import { toast } from '@repo/ui/components/sonner'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@repo/ui/components/card'
 
-export const Route = createFileRoute('/_auth/accept-invite')({
-    validateSearch: (search: Record<string, unknown>) => ({
-        id: search.id as string,
-    }),
-    loader: async ({ search }) => {
-        if (!search.id) {
+export const Route = createFileRoute('/_auth/accept-invitation/$id')({
+    loader: async ({ params }) => {
+        if (!params.id) {
             throw new Error("Missing invitation ID")
         }
-        const { data, error } = await authClient.organization.getInvitation({
-            query: {
-                id: search.id
-            }
-        })
-        if (error || !data) {
-            throw new Error(error?.message || "Invalid or expired invitation")
+
+        // Fetch from our custom public endpoint
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+        const res = await fetch(`${backendUrl}/api/invitation/${params.id}`);
+
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            // If the invite is invalid, we really should stop the user here.
+            throw new Error(err.error || "Invalid or expired invitation");
         }
-        return { invitation: data }
+
+        const data = await res.json();
+
+        return {
+            invitation: {
+                id: params.id,
+                email: data.email,
+                organization: {
+                    name: data.organizationName
+                }
+            }
+        }
     },
     errorComponent: ({ error }) => {
         return (
@@ -49,7 +59,7 @@ export const Route = createFileRoute('/_auth/accept-invite')({
 
 function AcceptInvitePage() {
     const { invitation } = Route.useLoaderData()
-    const { id } = Route.useSearch()
+    const { id } = Route.useParams()
     const navigate = useNavigate()
 
     const handleSignUp = async (values: SignUpFormValues) => {
@@ -97,7 +107,7 @@ function AcceptInvitePage() {
             <div className="mb-4 text-center">
                 <h1 className="text-2xl font-bold">You've been invited!</h1>
                 <p className="text-muted-foreground">
-                    Join <strong>{invitation.organization?.name}</strong> on Cropia.
+                    Join <strong>{invitation.organization.name}</strong> on Cropia.
                 </p>
             </div>
 
