@@ -17,13 +17,20 @@ import {
   FormMessage,
 } from "@repo/ui/components/form";
 import { Input } from "@repo/ui/components/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/ui/components/select";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { toast } from "@repo/ui/components/sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { MapPin } from "lucide-react"; // Assuming you have lucide-react, standard with shadcn
-import { postuserlocation } from "../../utils/user-location";
+import { MapPin } from "lucide-react";
+import { getStates, getDistricts, getTalukas, getVillages, postuserlocation } from "../../utils/user-location";
 import { authClient } from "../../lib/auth/auth-client";
 
 // 1. Route Param Validation
@@ -37,6 +44,7 @@ const createLocationSchema = z.object({
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   district: z.string().min(1, "District is required"),
+  taluka: z.string().optional(), // Added Taluka
   pincode: z.string().min(1, "Pincode is required"),
   country: z.string(),
 });
@@ -51,7 +59,7 @@ export const Route = createFileRoute("/_auth/$authType/location")({
     const isLoggedIn = await authClient.getSession();
     if (!result.success || !isLoggedIn.data) {
       throw redirect({
-        to: "/sign-in", // Ensure this path matches your router structure
+        to: "/sign-in",
       });
     }
   },
@@ -59,9 +67,18 @@ export const Route = createFileRoute("/_auth/$authType/location")({
 });
 
 export function RouteComponent() {
-  // const router = useRouter()
   const { authType } = Route.useParams();
   const { auth } = Route.useRouteContext();
+
+  const [states, setStates] = React.useState<any[]>([]);
+  const [districts, setDistricts] = React.useState<any[]>([]);
+  const [talukas, setTalukas] = React.useState<any[]>([]);
+  const [villages, setVillages] = React.useState<any[]>([]);
+
+  const [isLoadingStates, setIsLoadingStates] = React.useState(false);
+  const [isLoadingDistricts, setIsLoadingDistricts] = React.useState(false);
+  const [isLoadingTalukas, setIsLoadingTalukas] = React.useState(false);
+  const [isLoadingVillages, setIsLoadingVillages] = React.useState(false);
 
   // 2. Location Schema
   const form = useForm<CreateLocationInputType>({
@@ -75,107 +92,132 @@ export function RouteComponent() {
       city: "",
       district: "",
       state: "",
+      taluka: "",
       pincode: "",
     },
   });
 
-  // 3. Geolocation Helper
+  const selectedState = form.watch("state");
+  const selectedDistrict = form.watch("district");
+  const selectedTaluka = form.watch("taluka");
 
+  // Fetch States on Mount
+  React.useEffect(() => {
+    const fetchStatesData = async () => {
+      setIsLoadingStates(true);
+      try {
+        const statesData = await getStates();
+        setStates(statesData);
+      } catch (error) {
+        console.error("Error fetching states:", error);
+        toast.error("Failed to load states");
+      } finally {
+        setIsLoadingStates(false);
+      }
+    };
+    fetchStatesData();
+  }, []);
+
+  // Fetch Districts when State changes
+  React.useEffect(() => {
+    if (!selectedState) {
+      setDistricts([]);
+      return;
+    }
+    const fetchDistrictsData = async () => {
+      const stateObj = states.find((s) => s.name === selectedState);
+      if (!stateObj) return;
+
+      setIsLoadingDistricts(true);
+      try {
+        const districtsData = await getDistricts(stateObj.name);
+        setDistricts(districtsData);
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to load districts");
+      } finally {
+        setIsLoadingDistricts(false);
+      }
+    };
+    fetchDistrictsData();
+  }, [selectedState, states]);
+
+  // Fetch Talukas when District changes
+  React.useEffect(() => {
+    if (!selectedDistrict) {
+      setTalukas([]);
+      return;
+    }
+    const fetchTalukasData = async () => {
+      const districtObj = districts.find((d) => d.name === selectedDistrict);
+      if (!districtObj) return;
+
+      setIsLoadingTalukas(true);
+      try {
+        const talukasData = await getTalukas(districtObj.name);
+        setTalukas(talukasData);
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to load talukas");
+      } finally {
+        setIsLoadingTalukas(false);
+      }
+    };
+    fetchTalukasData();
+  }, [selectedDistrict, districts]);
+
+  // Fetch Villages when Taluka changes
+  React.useEffect(() => {
+    if (!selectedTaluka || !selectedDistrict || !selectedState) {
+      setVillages([]);
+      return;
+    }
+    const fetchVillagesData = async () => {
+      setIsLoadingVillages(true);
+      try {
+        const villagesData = await getVillages(selectedState, selectedDistrict, selectedTaluka);
+        setVillages(villagesData);
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to load villages");
+      } finally {
+        setIsLoadingVillages(false);
+      }
+    };
+    fetchVillagesData();
+  }, [selectedTaluka, selectedDistrict, selectedState]);
+
+
+  // 3. Geolocation Helper
   const handleDetectLocation = (e: React.MouseEvent) => {
     e.preventDefault();
 
     if (!navigator.geolocation) {
-      toast.error("Geolocation is not supported by your browser", {
-        id: loadingToast,
-      });
+      toast.error("Geolocation is not supported by your browser");
       return;
     }
 
-    toast.info("Detecting location (High Accuracy)...", { id: loadingToast });
+    toast.info("Detecting location (High Accuracy)...");
 
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const lat = position.coords.latitude;
         const long = position.coords.longitude;
 
-        // 1. Set Coordinates
         form.setValue("latitude", lat);
         form.setValue("longitude", long);
 
-        // 2. Call Reverse Geocoding API
-        const loadingToast = toast.loading("Fetching address details...");
-
-        try {
-          // Using OpenStreetMap Nominatim API (Free, no key required for low usage)
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}`,
-          );
-
-          if (!response.ok) throw new Error("Failed to fetch address");
-
-          const data = await response.json();
-          const addr = data.address;
-
-          if (addr) {
-            // Map API response to form fields
-            // Nominatim returns variable fields (city, town, village, hamlet, etc.)
-            const city =
-              addr.city || addr.town || addr.municipality || addr.village || "";
-            const village = addr.village || addr.hamlet || "";
-            const district = addr.state_district || addr.county || "";
-
-            form.setValue("city", city);
-            form.setValue("district", district);
-            form.setValue("state", addr.state || "");
-            form.setValue("pincode", addr.postcode || "");
-            form.setValue("country", addr.country || "India");
-            form.setValue("village", village);
-
-            // Construct a readable address string or use display_name
-            const street = addr.road || addr.pedestrian || "";
-            const area = addr.suburb || addr.neighbourhood || "";
-            const fullAddress = [street, area].filter(Boolean).join(", ");
-            form.setValue(
-              "address",
-              fullAddress || data.display_name.split(",")[0],
-            );
-
-            toast.success("Location and address detected!", {
-              id: loadingToast,
-            });
-          } else {
-            toast.warning("Location detected, but address not found.", {
-              id: loadingToast,
-            });
-          }
-        } catch (error) {
-          console.error("Geocoding error:", error);
-          toast.error(
-            "Could not fetch address details. Please enter manually.",
-            { id: loadingToast },
-          );
-        }
+        // Reverse decoding could still be useful for Pincode/Address but we want users to select strict hierarchy
+        toast.message("Location detected. Please select your Region details manually for accuracy.");
       },
       (error) => {
-        // More specific error handling
-        if (error.code === error.PERMISSION_DENIED) {
-          toast.error(
-            "Location permission denied. Please enable it in browser settings.",
-          );
-        } else if (error.code === error.TIMEOUT) {
-          toast.error("Location request timed out.");
-        } else {
-          toast.error(
-            "Unable to retrieve accurate location. Please fill manually.",
-          );
-        }
         console.error(error);
+        toast.error("Unable to retrieve accurate location.");
       },
-      // Added Options for High Accuracy
       {
-        enableHighAccuracy: true, // Forces GPS usage if available
-        timeout: 15000, // Wait up to 15s for satellite lock
-        maximumAge: 0, // Do not use cached position
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
       },
     );
   };
@@ -184,31 +226,26 @@ export function RouteComponent() {
     const toastId = toast.loading("Saving Location Details...");
 
     try {
-      // Get user ID from route context
       if (!auth?.user?.id) {
         toast.error("User not authenticated", { id: toastId });
         return;
       }
 
-      // Submit location data using Hono RPC client
       const response = await postuserlocation(values);
       if (!response.ok) {
-        const errorData = await response.json();
-        const errorMessage =
-          (errorData as Record<string, unknown>).error ||
-          (errorData as Record<string, unknown>).message ||
-          "Failed to save location";
-        toast.error(errorMessage as unknown as string, { id: toastId });
+        let errorMessage = "Failed to save location";
+        try {
+          const errorData = await response.json();
+          errorMessage = (errorData as any).error || errorMessage;
+        } catch (e) { }
+
+        toast.error(errorMessage, { id: toastId });
         return;
       }
 
       const data = await response.json();
-
       if (data.success) {
-        toast.success(data.message || "Location saved successfully!", {
-          id: toastId,
-        });
-        // Navigate to dashboard after success
+        toast.success("Location saved successfully!", { id: toastId });
         window.location.href = "/dashboard";
       }
     } catch (error) {
@@ -225,7 +262,7 @@ export function RouteComponent() {
             {authType === "sign-up" ? "Final Step" : "Location Required"}
           </CardTitle>
           <CardDescription>
-            We need your location to connect you with nearby services in Cropia.
+            We need your exact location to connect you with nearby services.
           </CardDescription>
         </CardHeader>
 
@@ -236,7 +273,7 @@ export function RouteComponent() {
           >
             <CardContent className="space-y-4 text-primary/90 p-4">
               {/* Geolocation Section */}
-              <div className="flex flex-col gap-2 bg-muted/50 rounded-lg ">
+              <div className="flex flex-col gap-2 bg-muted/50 rounded-lg p-2">
                 <div className="flex items-center justify-between">
                   <Button
                     variant="outline"
@@ -244,7 +281,7 @@ export function RouteComponent() {
                     onClick={handleDetectLocation}
                     className="gap-2 text-xs"
                   >
-                    <MapPin className="h-3 w-3" /> Detect My Location
+                    <MapPin className="h-3 w-3" /> Detect GPS Coords
                   </Button>
                 </div>
                 <div className="flex gap-2">
@@ -258,10 +295,9 @@ export function RouteComponent() {
                             placeholder="Lat"
                             {...field}
                             readOnly
-                            className="bg-background/50"
+                            className="bg-background/50 text-xs"
                           />
                         </FormControl>
-                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -275,60 +311,16 @@ export function RouteComponent() {
                             placeholder="Long"
                             {...field}
                             readOnly
-                            className="bg-background/50"
+                            className="bg-background/50 text-xs"
                           />
                         </FormControl>
-                        <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
               </div>
 
-              {/* Address Fields */}
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Street Address</FormLabel>
-                    <FormControl>
-                      <Input placeholder="House No, Street Area" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="city"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Village / City</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Village / City" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="district"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>District</FormLabel>
-                      <FormControl>
-                        <Input placeholder="District" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
+              {/* State and District */}
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -336,13 +328,147 @@ export function RouteComponent() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>State</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          form.setValue("district", "");
+                          form.setValue("taluka", "");
+                          form.setValue("village", "");
+                        }}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={isLoadingStates ? "Loading..." : "Select State"} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-[200px]">
+                          {states.map((state, i) => (
+                            <SelectItem key={`${state.code}_${i}`} value={state.name}>
+                              {state.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="district"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>District</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          form.setValue("taluka", "");
+                          form.setValue("village", "");
+                        }}
+                        defaultValue={field.value}
+                        disabled={!selectedState}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={isLoadingDistricts ? "Loading..." : "Select District"} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-[200px]">
+                          {districts.map((d, i) => (
+                            <SelectItem key={`${d.code}_${i}`} value={d.name}>
+                              {d.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Taluka and Village */}
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="taluka"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Taluka</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          form.setValue("village", "");
+                        }}
+                        defaultValue={field.value}
+                        disabled={!selectedDistrict}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={isLoadingTalukas ? "Loading..." : "Select Taluka"} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-[200px]">
+                          {talukas.map((t, i) => (
+                            <SelectItem key={`${t.code}_${i}`} value={t.name}>
+                              {t.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="village"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Village</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={!selectedTaluka}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={isLoadingVillages ? "Loading..." : "Select Village"} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-[200px]">
+                          {villages.map((v, i) => (
+                            <SelectItem key={`${v.code}_${i}`} value={v.name}>
+                              {v.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* City (Manual?) and Pincode */}
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City / Town</FormLabel>
                       <FormControl>
-                        <Input placeholder="State" {...field} />
+                        <Input placeholder="Nearest City" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="pincode"
@@ -357,6 +483,22 @@ export function RouteComponent() {
                   )}
                 />
               </div>
+
+              {/* Address Fields */}
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Address Detail</FormLabel>
+                    <FormControl>
+                      <Input placeholder="House No, Street Area" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
             </CardContent>
 
             <CardFooter className="w-full px-3 pt-2">

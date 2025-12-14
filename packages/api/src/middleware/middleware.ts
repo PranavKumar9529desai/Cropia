@@ -3,7 +3,6 @@ import { auth } from "../auth";
 
 export const sessionMiddleware = createMiddleware(async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
-  console.log("session is this", session);
 
   if (!session) {
     return c.json(
