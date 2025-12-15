@@ -96,14 +96,15 @@ model Member {
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   userId         String
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role           String       @default("member") // e.g., "owner", "admin", "viewer"
+  role           String       @default("admin") // e.g., "owner", "admin", "viewer"
 
   // --- JURISDICTION CONTROL ---
   // Stores the scope of this admin's power.
   // Structure: { state: "Maharashtra", district: "Kolhapur", taluka: "Hatkanangale" }
   // If a field is missing, they have no power at that level.
   // If a field is "*", they have full power.
-  jurisdiction Json?
+  // each admin must have it s juridiction
+  jurisdiction Jurisdiction?
 
   createdAt DateTime
 
@@ -112,17 +113,25 @@ model Member {
   @@map("member")
 }
 
+type Jurisdiction {
+  state    String // for state officer district and taluka should be "All"
+  district String // for distrcit officer taluka should be "All"
+  taluka   String // for taluka officer village should be "All"
+  village  String // for village officer all the fild should correclty named like { state : maharashtra, district : kolhapur, taluka : hatkanangale, village : wathar}
+}
+
 model Invitation {
-  id             String       @id @map("_id")
+  id             String        @id @map("_id")
   organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   email          String
   role           String?
-  status         String       @default("pending")
+  status         String        @default("pending")
   expiresAt      DateTime
-  createdAt      DateTime     @default(now())
+  createdAt      DateTime      @default(now())
   inviterId      String
-  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+  user           User          @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+  jurisdiction   Jurisdiction?
 
   @@index([organizationId])
   @@index([email])
