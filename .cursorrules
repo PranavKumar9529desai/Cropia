@@ -1,0 +1,29 @@
+# Project Cropia Context
+
+## Core Idea
+Cropia is a monorepo platform connecting farmers and administrators, likely for agricultural management.
+
+## Tech Stack
+- **Manager**: Bun + Turborepo
+- **Frontend**: React (Vite) + Tanstack Router
+- **Backend**: Hono (Type-safe RPC) + Prisma
+- **Auth**: BetterAuth
+- **UI**: Tailwind CSS + Shadcn UI (@repo/ui)
+
+## File Structure & Purpose
+- `apps/`
+  - `farmer/`: Farmer-facing web application (Vite).
+    - `src/lib/rpc.ts`: Hono RPC client for type-safe backend calls.
+    - `src/lib/auth/auth-client.ts`: BetterAuth client.
+  - `admin/`: Administrator dashboard (Vite).
+- `packages/`
+  - `api/`: Backend server logic (Hono).
+    - `src/auth.ts`: BetterAuth configuration.
+  - `db/`: Database schema (Prisma) and client.
+  - `ui/`: Shared design system component library.
+  - `*-config/`: Shared configurations (eslint, typescript).
+
+## Key Workflows
+- **Add Component**: Use `/add-component` or strictly follow `.agent/workflows/add-component.md` to add UI components to `packages/ui`.
+- **Database**: Schema changes go in `packages/db`. Run `bun db:generate` to sync.
+- **Auth/RPC**: Always use the typed RPC client and auth client for backend interaction.
