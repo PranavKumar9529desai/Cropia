@@ -1,12 +1,13 @@
 import { Hono } from "hono";
 import { auth } from "./auth";
 import { cors } from "hono/cors";
+import { UserSessionMiddleware } from "./middleware/user.middleware";
 import WeatherController from "./controllers/weather.controller";
 import LocationController from "./controllers/location.controller";
 import AiController from "./controllers/agent.controller";
 import InvitationController from "./controllers/invitation.controller";
-import { UserSessionMiddleware } from "./middleware/user.middleware";
 import { AdminSessionMiddleware } from "./middleware/admin.middleware";
+import AdminController from "./controllers/admin.controller";
 
 console.log(process.env.FRONTEND_URL_FARMER_APP)
 const app = new Hono()
@@ -38,7 +39,7 @@ const app = new Hono()
   .route("/api/locations", LocationController)
   .route("/api/ai", AiController)
   .route("/api/invitation", InvitationController)
-  .route("/api/admin", InvitationController)
+  .route("/api/admin", AdminController)
 
 export type AppType = typeof app;
 

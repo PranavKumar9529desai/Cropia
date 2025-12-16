@@ -17,14 +17,13 @@ export const AdminSessionMiddleware = createMiddleware(async (c, next) => {
   c.set("user", session.user);
   c.set("session", session.session);
   c.set("userId", session.user.id);
-  c.set("orgId", session.session.activeOrganizationId)
-  console.log("session from the admin middlware", session);
+
   const member = await prisma.member.findFirst({
     where: {
       userId: session.user.id,
     }
   });
-  if (!member || member.role !== "admin") {
+  if (!member || member.role !== "admin" || !member.jurisdiction) {
     return c.json(
       {
         message: "Unauthorized",
@@ -32,6 +31,9 @@ export const AdminSessionMiddleware = createMiddleware(async (c, next) => {
       401,
     );
   }
+  const jurisdiction = member.jurisdiction
+  c.set("orgId", session.session.activeOrganizationId)
+  c.set("jurisdiction", jurisdiction)
 
   await next();
 });
