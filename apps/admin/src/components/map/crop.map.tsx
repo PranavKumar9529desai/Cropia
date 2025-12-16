@@ -96,7 +96,7 @@ export default function CropMap({ data }: CropMapProps) {
                     zoom: 9
                 }}
                 // The "Fuel"
-                mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`}
+                mapStyle={`https://api.maptiler.com/maps/hybrid/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`}
                 interactiveLayerIds={['clusters', 'unclustered-point']}
                 onClick={onClick}
             >

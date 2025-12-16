@@ -24,6 +24,7 @@ interface GatekeeperAgentResponse {
 }
 
 // Initialize Gemini Client
+console.log("Api Key is", process.env.GOOGLE_GENERATIVE_AI_API_KEY)
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY || "");
 
 export const analyzeCropImage = async (imageBase64: string) => {
@@ -36,7 +37,7 @@ export const analyzeCropImage = async (imageBase64: string) => {
 
 
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
+            model: "gemini-2.5-flash-lite",
             generationConfig: {
                 responseMimeType: "application/json",
                 responseSchema: {

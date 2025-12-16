@@ -33,13 +33,14 @@ const MapController = new Hono<{
 
         // 2. Fetch Scans
         const scans = await prisma.scan.findMany({
-            where: where,
+            // where: where,
             orderBy: { createdAt: 'desc' },
             take: 1000 // Limit for performance, maybe paginate later
         });
-
+        console.log("scans", scans)
         // 3. Format for MapLibre
         const geoJson = transformToGeoJSON(scans);
+        console.log("geojson is ", geoJson)
 
         return c.json(geoJson);
     })

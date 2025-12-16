@@ -1,4 +1,4 @@
-import { Map, BellRing, Scan, Icon, type LucideIcon } from "lucide-react";
+import { Map, BellRing, Scan, type LucideIcon } from "lucide-react";
 import { cn } from "@repo/ui/lib";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import {

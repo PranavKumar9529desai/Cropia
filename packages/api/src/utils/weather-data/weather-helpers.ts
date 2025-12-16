@@ -49,6 +49,7 @@ export const calculateWaterBalance = (
 
   const netBalance = totalRain - totalEvaporation;
   const isDeficit = netBalance < 0;
+  console.log("isDeficit", isDeficit)
 
   let advice = "";
   let status: "CRITICAL" | "DEFICIT" | "SURPLUS" = "SURPLUS";
