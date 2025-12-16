@@ -1,7 +1,7 @@
 import { Link, useLocation } from '@tanstack/react-router';
 import { BottomNavigation } from '@repo/ui/components/bottom-navigation';
 import type { BottomNavItem } from '@repo/ui/components/bottom-navigation';
-import { Map, BellRing, Scan, type LucideIcon } from "lucide-react";
+import { Map, BellRing, Scan } from "lucide-react";
 
 
 export default function BottomNav() {

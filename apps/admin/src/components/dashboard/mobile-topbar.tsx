@@ -10,22 +10,36 @@ const getTitle = (pathname: string) => {
     return 'Cropia'
 }
 
-export function MobileTopbar() {
+export function MobileTopbar({ isAdmin, jurisdiction }: { isAdmin: boolean, jurisdiction?: string }) {
     const { pathname } = useLocation();
+    console.log(isAdmin, jurisdiction)
     const title = getTitle(pathname);
 
     return (
         <Topbar
             className="border-b bg-background/80 backdrop-blur-md"
             leftContent={
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap gap-y-[2px] gap-x-[2px]">
                     {(title === 'Cropia' || title === 'Home') ? (
-                        <>
-                            <img src="/favicon/favicon.svg" alt="Logo" className="w-8 h-8" />
-                            <span className="font-brand font-bold text-2xl tracking-tight">Cropia</span>
-                        </>
+                        <div className="flex items-center gap-2">
+                            <img src="/favicon/favicon.svg" alt="Logo" className="size-8" />
+                            <div className="flex flex-col">
+                                <span className="font-brand font-bold text-lg leading-none tracking-tight">Cropia</span>
+                                {isAdmin && (
+                                    <div className="flex items-center gap-1.5 mt-[2px]">
+                                        <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Admin</span>
+                                        {jurisdiction && (
+                                            <>
+                                                <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground" />
+                                                <span className="text-[10px] font-medium text-primary ">{jurisdiction}</span>
+                                            </>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     ) : (
-                        <span className="font-brand font-bold text-2xl tracking-tight text-primary">{title}</span>
+                        <span className="font-brand font-bold text-2xl tracking-tight text-primary text-left">{title}</span>
                     )}
                 </div>
             }
