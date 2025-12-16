@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import prisma, { Jurisdiction } from "@repo/db";
-import { auth } from "../auth";
+import { auth } from "../../auth";
 
 const AdminController = new Hono<{
     Variables: {

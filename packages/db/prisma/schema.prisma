@@ -170,6 +170,12 @@ model Location {
   @@index([state, district, taluka])
 }
 
+// Define the shape MongoDB expects for geospatial data
+type ScanLocation {
+  type        String  @default("Point")
+  coordinates Float[] // IMPORTANT: MongoDB expects [Longitude, Latitude] order!
+}
+
 model Scan {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
@@ -196,10 +202,10 @@ model Scan {
   pincode   String?
   latitude  Float?
   longitude Float?
-
+  location  ScanLocation?
   // 4. RELATIONS
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   organizationId String?       @map("organizationId")
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -214,5 +220,6 @@ model Scan {
   @@index([district, createdAt])
   // "Show me all scans in Hatkanangale"
   @@index([taluka, createdAt])
+  @@index([location], map: "scan_geo_index") // The speed booster
   @@map("scan")
 }
