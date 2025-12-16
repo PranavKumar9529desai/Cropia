@@ -13,6 +13,9 @@ import { Route as SkeltonRouteImport } from './routes/skelton'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardFarmerAlertsRouteImport } from './routes/dashboard/farmer-alerts'
+import { Route as DashboardCropMapRouteImport } from './routes/dashboard/crop-map'
+import { Route as DashboardAreaScanRouteImport } from './routes/dashboard/area-scan'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
@@ -39,6 +42,21 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardFarmerAlertsRoute = DashboardFarmerAlertsRouteImport.update({
+  id: '/farmer-alerts',
+  path: '/farmer-alerts',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardCropMapRoute = DashboardCropMapRouteImport.update({
+  id: '/crop-map',
+  path: '/crop-map',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAreaScanRoute = DashboardAreaScanRouteImport.update({
+  id: '/area-scan',
+  path: '/area-scan',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -78,7 +96,7 @@ const AuthAcceptInvitationIdRoute = AuthAcceptInvitationIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
   '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
@@ -86,11 +104,14 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/dashboard/area-scan': typeof DashboardAreaScanRoute
+  '/dashboard/crop-map': typeof DashboardCropMapRoute
+  '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
   '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
   '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
@@ -98,13 +119,16 @@ export interface FileRoutesByTo {
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/dashboard/area-scan': typeof DashboardAreaScanRoute
+  '/dashboard/crop-map': typeof DashboardCropMapRoute
+  '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
   '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
-  '/dashboard': typeof DashboardRouteRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
   '/_auth/check-email': typeof AuthCheckEmailRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -112,6 +136,9 @@ export interface FileRoutesById {
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
+  '/dashboard/area-scan': typeof DashboardAreaScanRoute
+  '/dashboard/crop-map': typeof DashboardCropMapRoute
+  '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
   '/_auth/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
 }
 export interface FileRouteTypes {
@@ -126,6 +153,9 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/verify-email'
+    | '/dashboard/area-scan'
+    | '/dashboard/crop-map'
+    | '/dashboard/farmer-alerts'
     | '/accept-invitation/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -138,6 +168,9 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/verify-email'
+    | '/dashboard/area-scan'
+    | '/dashboard/crop-map'
+    | '/dashboard/farmer-alerts'
     | '/accept-invitation/$id'
   id:
     | '__root__'
@@ -151,13 +184,16 @@ export interface FileRouteTypes {
     | '/_auth/sign-in'
     | '/_auth/sign-up'
     | '/_auth/verify-email'
+    | '/dashboard/area-scan'
+    | '/dashboard/crop-map'
+    | '/dashboard/farmer-alerts'
     | '/_auth/accept-invitation/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  DashboardRouteRoute: typeof DashboardRouteRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   SkeltonRoute: typeof SkeltonRoute
 }
 
@@ -190,6 +226,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/farmer-alerts': {
+      id: '/dashboard/farmer-alerts'
+      path: '/farmer-alerts'
+      fullPath: '/dashboard/farmer-alerts'
+      preLoaderRoute: typeof DashboardFarmerAlertsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/crop-map': {
+      id: '/dashboard/crop-map'
+      path: '/crop-map'
+      fullPath: '/dashboard/crop-map'
+      preLoaderRoute: typeof DashboardCropMapRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/area-scan': {
+      id: '/dashboard/area-scan'
+      path: '/area-scan'
+      fullPath: '/dashboard/area-scan'
+      preLoaderRoute: typeof DashboardAreaScanRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/_auth/verify-email': {
       id: '/_auth/verify-email'
@@ -267,10 +324,26 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface DashboardRouteRouteChildren {
+  DashboardAreaScanRoute: typeof DashboardAreaScanRoute
+  DashboardCropMapRoute: typeof DashboardCropMapRoute
+  DashboardFarmerAlertsRoute: typeof DashboardFarmerAlertsRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardAreaScanRoute: DashboardAreaScanRoute,
+  DashboardCropMapRoute: DashboardCropMapRoute,
+  DashboardFarmerAlertsRoute: DashboardFarmerAlertsRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  DashboardRouteRoute: DashboardRouteRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
   SkeltonRoute: SkeltonRoute,
 }
 export const routeTree = rootRouteImport

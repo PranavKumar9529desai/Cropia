@@ -1,4 +1,4 @@
-import { Home, ScanLine, MessageSquare } from "lucide-react";
+import { Map, BellRing, Scan, Icon, type LucideIcon } from "lucide-react";
 import { cn } from "@repo/ui/lib";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import {
@@ -13,32 +13,33 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@repo/ui/components/sidebar";
-import { authClient } from "../../lib/auth/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
 import { ProfileComponent } from "./profile";
 
 
 interface NavItem {
   label: string;
-  icon: typeof Home;
+  icon: LucideIcon;
   path: string;
 }
 
 const navItems: NavItem[] = [
   {
-    label: "Home",
-    icon: Home,
-    path: "/dashboard/home",
+    label: "Area Scan",
+    icon: Scan,
+    path: "/dashboard/area-scan",
   },
   {
-    label: "Scan",
-    icon: ScanLine,
-    path: "/dashboard/scan",
+    label: "Crop Map",
+    icon: Map,
+    path: "/dashboard/crop-map",
   },
   {
-    label: "Assistant",
-    icon: MessageSquare,
-    path: "/dashboard/assistant",
+    label: "Farmer Alerts",
+
+    icon: BellRing,
+    path: "/dashboard/farmer-alerts",
   },
 ];
 
@@ -72,7 +73,7 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
             className="size-10 shrink-0"
           />
           <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand">
-            <span className="text-lg font-bold text-foreground">Cropia</span>
+            <span className="text-lg font-bold text-foreground">Admin Cropia</span>
             <span className="text-xs text-muted-foreground">Smart Farming</span>
           </div>
         </div>
