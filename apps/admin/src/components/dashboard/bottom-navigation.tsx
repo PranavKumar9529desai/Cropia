@@ -1,27 +1,29 @@
-import { Home, ScanLine, MessageSquare } from 'lucide-react';
 import { Link, useLocation } from '@tanstack/react-router';
 import { BottomNavigation } from '@repo/ui/components/bottom-navigation';
 import type { BottomNavItem } from '@repo/ui/components/bottom-navigation';
+import { Map, BellRing, Scan } from "lucide-react";
+
 
 export default function BottomNav() {
     const { pathname } = useLocation();
 
     const navItems: BottomNavItem[] = [
         {
-            label: 'Home',
-            icon: Home,
-            path: '/dashboard/home',
+            label: "Area Scan",
+            icon: Scan,
+            path: "/dashboard/area-scan",
         },
         {
-            label: 'Scan',
-            icon: ScanLine,
-            path: '/dashboard/scan',
+            label: "Crop Map",
+            icon: Map,
             isFloating: true,
+            path: "/dashboard/crop-map",
         },
         {
-            label: 'Assistant',
-            icon: MessageSquare,
-            path: '/dashboard/assistant',
+            label: "Farmer Alerts",
+
+            icon: BellRing,
+            path: "/dashboard/farmer-alerts",
         },
     ];
 

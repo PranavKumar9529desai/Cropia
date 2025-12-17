@@ -2,7 +2,8 @@ import { Hono } from "hono";
 import prisma from "@repo/db";
 
 const app = new Hono();
-
+// public Controller 
+// so no Variables passed through the controller
 app.get("/:id", async (c) => {
     const id = c.req.param("id");
 

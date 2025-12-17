@@ -1,11 +1,13 @@
 import { Hono } from "hono";
 import { auth } from "./auth";
 import { cors } from "hono/cors";
-import { sessionMiddleware } from "./middleware/middleware";
-import WeatherController from "./controllers/weather.controller";
-import LocationController from "./controllers/location.controller";
-import AiController from "./controllers/agent.controller";
-import InvitationController from "./controllers/invitation.controller";
+import { UserSessionMiddleware } from "./middleware/user.middleware";
+import WeatherController from "./controllers/user.controllers/weather.controller";
+import LocationController from "./controllers/user.controllers/location.controller";
+import AiController from "./controllers/user.controllers/agent.controller";
+import InvitationController from "./controllers/user.controllers/invitation.controller";
+import { AdminSessionMiddleware } from "./middleware/admin.middleware";
+import MapController from "./controllers/admin.controller/map.controller";
 
 console.log(process.env.FRONTEND_URL_FARMER_APP)
 const app = new Hono()
@@ -29,13 +31,15 @@ const app = new Hono()
     return auth.handler(c.req.raw);
   })
 
-  .use("/api/locations/*", sessionMiddleware)
-  .use("/api/weather/*", sessionMiddleware)
-  .use("/api/ai/*", sessionMiddleware)
+  .use("/api/locations/*", UserSessionMiddleware)
+  .use("/api/weather/*", UserSessionMiddleware)
+  .use("/api/ai/*", UserSessionMiddleware)
+  .use("/api/admin/*", AdminSessionMiddleware)
   .route("/api/weather", WeatherController)
   .route("/api/locations", LocationController)
   .route("/api/ai", AiController)
-  .route("/api/invitation", InvitationController);
+  .route("/api/invitation", InvitationController)
+  .route("/api/admin/map", MapController)
 
 export type AppType = typeof app;
 

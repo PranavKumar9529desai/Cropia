@@ -1,4 +1,4 @@
-import { Home, ScanLine, MessageSquare } from "lucide-react";
+import { Map, BellRing, Scan, type LucideIcon } from "lucide-react";
 import { cn } from "@repo/ui/lib";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import {
@@ -13,36 +13,38 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@repo/ui/components/sidebar";
-import { authClient } from "../../lib/auth/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
 import { ProfileComponent } from "./profile";
 
 
 interface NavItem {
   label: string;
-  icon: typeof Home;
+  icon: LucideIcon;
   path: string;
 }
 
 const navItems: NavItem[] = [
   {
-    label: "Home",
-    icon: Home,
-    path: "/dashboard/home",
+    label: "Area Scan",
+    icon: Scan,
+    path: "/dashboard/area-scan",
   },
   {
-    label: "Scan",
-    icon: ScanLine,
-    path: "/dashboard/scan",
+    label: "Crop Map",
+    icon: Map,
+    path: "/dashboard/crop-map",
   },
   {
-    label: "Assistant",
-    icon: MessageSquare,
-    path: "/dashboard/assistant",
+    label: "Farmer Alerts",
+
+    icon: BellRing,
+    path: "/dashboard/farmer-alerts",
   },
 ];
 
 interface AppSidebarProps {
+  jurisdiction?: string;
   userInfo: {
     name: string;
     email: string;
@@ -50,7 +52,7 @@ interface AppSidebarProps {
   };
 }
 
-export function AppSidebar({ userInfo }: AppSidebarProps) {
+export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
   const { pathname } = useLocation();
   const router = useRouter();
 
@@ -73,7 +75,15 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
           />
           <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand">
             <span className="text-lg font-bold text-foreground">Cropia</span>
-            <span className="text-xs text-muted-foreground">Smart Farming</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Admin</span>
+              {jurisdiction && (
+                <>
+                  <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground" />
+                  <span className="text-[10px] font-medium text-primary">{jurisdiction}</span>
+                </>
+              )}
+            </div>
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-export const INDIA_LOCATION_API_BASE = "https://india-location-hub.in/api/locations";
+export const INDIA_LOCATION_API_BASE = process.env.INDIA_LOCATION_API_BASE
 
 export type State = {
     name: string;

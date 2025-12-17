@@ -12,6 +12,7 @@ import { getuserLocationStatus } from "../../utils/user-location";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async ({ context }) => {
+    console.log("in the farmer apps", context)
     const isLogged = context.auth;
     if (!isLogged) {
       throw redirect({

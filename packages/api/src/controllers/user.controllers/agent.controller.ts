@@ -1,15 +1,15 @@
 import { prisma } from "@repo/db";
-import type { auth } from "../auth";
+import type { auth } from "../../auth";
 import { Hono } from "hono";
 import { streamText, convertToModelMessages } from "ai";
 import { google } from "@ai-sdk/google";
-import { analyzeCropImage } from "../utils/agents/gatekeeper.agent";
-import { uploadImage } from "../utils/upload-image";
+import { analyzeCropImage } from "../../utils/agents/gatekeeper.agent";
+import { uploadImage } from "../../utils/upload-image";
 import {
   getCropContext,
-} from "../utils/agents/assistant-agent/context";
-import { generateFarmerPrompt } from "../utils/agents/assistant-agent/prompt";
-import { FarmerContext } from "../utils/agents/assistant-agent/types";
+} from "../../utils/agents/assistant-agent/context";
+import { generateFarmerPrompt } from "../../utils/agents/assistant-agent/prompt";
+import { FarmerContext } from "../../utils/agents/assistant-agent/types";
 
 
 const AiController = new Hono<{
@@ -98,7 +98,7 @@ const AiController = new Hono<{
       return c.json({ error: "User Context Not Found" }, 404);
     }
 
-    const systemPrompt = generateFarmerPrompt(chatContext.data as FarmerContext);
+    const systemPrompt = generateFarmerPrompt(chatContext.data as unknown as FarmerContext);
 
     // AI SDK v5: streamText returns the result object immediately`
     const result = await streamText({

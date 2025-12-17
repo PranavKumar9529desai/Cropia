@@ -1,4 +1,4 @@
-import { OpenMeteoResponse } from "../weather-helpers";
+import { OpenMeteoResponse } from "./weather-helpers";
 
 export const getWeatherData = async (lat: number, lon: number) => {
   // 1. Construct Open-Meteo URL
