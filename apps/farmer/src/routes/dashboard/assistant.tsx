@@ -46,7 +46,6 @@ function RouteComponent() {
     onError: (err) => console.error("Chat error:", err),
   });
 
-  console.log("text from agent", messages);
   const isLoading = status === "streaming" || status === "submitted";
 
   const handleSubmit = (e: React.FormEvent) => {

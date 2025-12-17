@@ -90,6 +90,7 @@ export default function CropMap({ data }: CropMapProps) {
         <div className="h-[600px] w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative">
             <Map
                 ref={mapRef}
+                //  TODO: default should be juridiction center
                 initialViewState={{
                     longitude: 74.2433, // Default: Kolhapur (Change to user's location)
                     latitude: 16.7050,

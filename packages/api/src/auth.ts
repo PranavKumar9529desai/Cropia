@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma from "@repo/db";
+import prisma, { User, Session as PrismaSession } from "@repo/db";
 import { openAPI, organization } from "better-auth/plugins";
 import { transporter } from "./utils/email";
 
@@ -34,6 +34,7 @@ export const auth = betterAuth({
       // FIXED: 'data' IS the invitation object. It does not contain a nested 'invitation' property.
       async sendInvitationEmail(data) {
         // use admin_ulr and invite is for the admin
+
         const inviteLink = `${process.env.FRONTEND_URL_ADMIN_APP || "http://localhost:5001"}/accept-invitation/${data.id}`;
 
         await transporter.sendMail({
@@ -69,7 +70,7 @@ export const auth = betterAuth({
   },
   emailVerification: {
     enabled: true, // 1. Explicitly set to true
-    sendOnSignUp: true,
+    sendOnSignUp: true, // 2. Send email on sign up
     autoSignInAfterVerification: true,
     // 2. FIXED NAME: Changed from 'sendEmailVerification' to 'sendVerificationEmail'
     async sendVerificationEmail({ user, url, token }) {
@@ -87,4 +88,95 @@ export const auth = betterAuth({
       });
     },
   },
+  databaseHooks: {
+    member: {
+      create: {
+        before: async (member: any) => {
+          // 1. We need the user's email to find the invitation
+          const user = await prisma.user.findUnique({
+            where: { id: member.userId },
+            select: { email: true }
+          });
+
+          if (!user) return member;
+
+          // 2. Find the pending invitation
+          const invitation = await prisma.invitation.findFirst({
+            where: {
+              email: user.email,
+              organizationId: member.organizationId,
+            },
+            select: {
+              jurisdiction: true
+            }
+          });
+
+          // 3. If invitation has jurisdiction, attached it to the new member
+          if (invitation && invitation.jurisdiction) {
+            return {
+              ...member,
+              jurisdiction: invitation.jurisdiction
+            }
+          }
+
+          return member;
+        }
+      }
+    },
+    session: {
+      create: {
+        after: async (session) => {
+          // This runs after session creation if needed, but we need read/get
+        }
+      }
+    }
+  },
+  callbacks: {
+    async session(session: { session: PrismaSession; user: User }, request: any) {
+      console.log("---------- SESSION CALLBACK START ----------");
+      console.log("Original Session activeOrgId:", session.session.activeOrganizationId);
+      console.log("User ID:", session.user.id);
+
+      let member;
+
+      if (session.session.activeOrganizationId) {
+        console.log("Searching by Org + User");
+        member = await prisma.member.findFirst({
+          where: {
+            organizationId: session.session.activeOrganizationId,
+            userId: session.user.id
+          },
+          select: {
+            jurisdiction: true
+          }
+        });
+      } else {
+        console.log("Searching by User Only (Fallback)");
+        // Fallback: If no active org, try to find *any* membership (matching AdminSessionMiddleware behavior)
+        member = await prisma.member.findFirst({
+          where: {
+            userId: session.user.id
+          },
+          select: {
+            jurisdiction: true
+          }
+        });
+      }
+
+      console.log("Found Member:", member);
+
+      const newSession = {
+        ...session,
+        session: {
+          ...session.session,
+          jurisdiction: member?.jurisdiction || null
+        }
+      };
+
+      console.log("Returning Session with Jurisdiction:", newSession.session.jurisdiction);
+      console.log("---------- SESSION CALLBACK END ----------");
+
+      return newSession;
+    }
+  }
 });

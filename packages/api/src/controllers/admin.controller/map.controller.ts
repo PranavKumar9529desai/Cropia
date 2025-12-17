@@ -40,7 +40,6 @@ const MapController = new Hono<{
         console.log("scans", scans)
         // 3. Format for MapLibre
         const geoJson = transformToGeoJSON(scans);
-        console.log("geojson is ", geoJson)
 
         return c.json(geoJson);
     })

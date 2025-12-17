@@ -12,6 +12,7 @@ import { MobileTopbar } from "../../components/dashboard/mobile-topbar";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async ({ context }) => {
+    console.log("context is this", context)
     const isLogged = context.auth;
     if (!isLogged) {
       throw redirect({
