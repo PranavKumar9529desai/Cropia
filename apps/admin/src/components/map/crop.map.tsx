@@ -58,9 +58,14 @@ const unclusteredPointLayer: LayerProps = {
 
 interface CropMapProps {
     data: any; // This will be your GeoJSON from the API
+    defaultView?: {
+        longitude: number;
+        latitude: number;
+        zoom: number;
+    }
 }
 
-export default function CropMap({ data }: CropMapProps) {
+export default function CropMap({ data, defaultView }: CropMapProps) {
     const mapRef = useRef<MapRef>(null);
 
     const onClick = (event: any) => {
@@ -91,7 +96,7 @@ export default function CropMap({ data }: CropMapProps) {
             <Map
                 ref={mapRef}
                 //  TODO: default should be juridiction center
-                initialViewState={{
+                initialViewState={defaultView || {
                     longitude: 74.2433, // Default: Kolhapur (Change to user's location)
                     latitude: 16.7050,
                     zoom: 9

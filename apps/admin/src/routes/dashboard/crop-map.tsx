@@ -7,9 +7,37 @@ export const Route = createFileRoute('/dashboard/crop-map')({
   component: RouteComponent,
 });
 
+
+// Helper to calculate view state from GeoJSON data
+function calculateViewState(data: any) {
+  if (!data || !data.features || data.features.length === 0) {
+    return null;
+  }
+
+  let minLng = 180;
+  let maxLng = -180;
+  let minLat = 90;
+  let maxLat = -90;
+
+  data.features.forEach((feature: any) => {
+    const [lng, lat] = feature.geometry.coordinates;
+    if (lng < minLng) minLng = lng;
+    if (lng > maxLng) maxLng = lng;
+    if (lat < minLat) minLat = lat;
+    if (lat > maxLat) maxLat = lat;
+  });
+
+  return {
+    longitude: (minLng + maxLng) / 2,
+    latitude: (minLat + maxLat) / 2,
+    zoom: 9 // Default zoom for now, user can zoom in/out
+  };
+}
+
 function RouteComponent() {
   const [data, setData] = useState<any>(null); // GeoJSON format
   const [loading, setLoading] = useState(true);
+  const [defaultView, setDefaultView] = useState<{ longitude: number; latitude: number; zoom: number } | undefined>(undefined);
 
   useEffect(() => {
     async function fetchData() {
@@ -18,6 +46,10 @@ function RouteComponent() {
         if (res.ok) {
           const json = await res.json();
           setData(json);
+          const view = calculateViewState(json);
+          if (view) {
+            setDefaultView(view);
+          }
         }
       } catch (error) {
         console.error("Failed to fetch map data", error);
@@ -43,7 +75,10 @@ function RouteComponent() {
 
       {/* Map Container */}
       <div className="rounded-xl border bg-card text-card-foreground shadow">
-        <CropMap data={data || { type: "FeatureCollection", features: [] }} />
+        <CropMap
+          data={data || { type: "FeatureCollection", features: [] }}
+          defaultView={defaultView}
+        />
       </div>
     </div>
   );

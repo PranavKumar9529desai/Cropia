@@ -1,4 +1,6 @@
 import { createAuthClient } from "better-auth/react";
+import { inferAdditionalFields, organizationClient } from "better-auth/client/plugins";
+import type { auth } from "@repo/api/auth.ts";
 
 // type ErrorTypes = Partial<
 //   Record<
@@ -24,13 +26,11 @@ import { createAuthClient } from "better-auth/react";
 //   return "";
 // };
 
-import { organizationClient } from "better-auth/client/plugins";
-
 export const authClient = createAuthClient({
   baseURL: import.meta.env.VITE_BACKEND_URL ?? "http://localhost:4000",
 
   plugins: [
     organizationClient(),
-
+    inferAdditionalFields<typeof auth>()
   ],
 });

@@ -4,7 +4,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./index.ts": "./src/index.ts",
-    "./auth.ts": "./src/index.ts"
+    "./auth.ts": "./src/auth.ts"
   },
   "types": "./dist/index.d.ts",
   "scripts": {
