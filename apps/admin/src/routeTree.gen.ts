@@ -8,306 +8,306 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as SkeltonRouteImport } from "./routes/skelton";
-import { Route as DashboardRouteRouteImport } from "./routes/dashboard/route";
-import { Route as AuthRouteRouteImport } from "./routes/_auth/route";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as DashboardFarmerAlertsRouteImport } from "./routes/dashboard/farmer-alerts";
-import { Route as DashboardCropMapRouteImport } from "./routes/dashboard/crop-map";
-import { Route as DashboardAreaScanRouteImport } from "./routes/dashboard/area-scan";
-import { Route as AuthVerifyEmailRouteImport } from "./routes/_auth/verify-email";
-import { Route as AuthSignUpRouteImport } from "./routes/_auth/sign-up";
-import { Route as AuthSignInRouteImport } from "./routes/_auth/sign-in";
-import { Route as AuthResetPasswordRouteImport } from "./routes/_auth/reset-password";
-import { Route as AuthForgotPasswordRouteImport } from "./routes/_auth/forgot-password";
-import { Route as AuthCheckEmailRouteImport } from "./routes/_auth/check-email";
-import { Route as AuthAcceptInvitationIdRouteImport } from "./routes/_auth/accept-invitation.$id";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SkeltonRouteImport } from './routes/skelton'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
+import { Route as AuthRouteRouteImport } from './routes/_auth/route'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardFarmerAlertsRouteImport } from './routes/dashboard/farmer-alerts'
+import { Route as DashboardCropMapRouteImport } from './routes/dashboard/crop-map'
+import { Route as DashboardAreaScanRouteImport } from './routes/dashboard/area-scan'
+import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
+import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
+import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
+import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
+import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
+import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
+import { Route as AuthAcceptInvitationIdRouteImport } from './routes/_auth/accept-invitation.$id'
 
 const SkeltonRoute = SkeltonRouteImport.update({
-  id: "/skelton",
-  path: "/skelton",
+  id: '/skelton',
+  path: '/skelton',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
-  id: "/dashboard",
-  path: "/dashboard",
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
-  id: "/_auth",
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DashboardFarmerAlertsRoute = DashboardFarmerAlertsRouteImport.update({
-  id: "/farmer-alerts",
-  path: "/farmer-alerts",
+  id: '/farmer-alerts',
+  path: '/farmer-alerts',
   getParentRoute: () => DashboardRouteRoute,
-} as any);
+} as any)
 const DashboardCropMapRoute = DashboardCropMapRouteImport.update({
-  id: "/crop-map",
-  path: "/crop-map",
+  id: '/crop-map',
+  path: '/crop-map',
   getParentRoute: () => DashboardRouteRoute,
-} as any);
+} as any)
 const DashboardAreaScanRoute = DashboardAreaScanRouteImport.update({
-  id: "/area-scan",
-  path: "/area-scan",
+  id: '/area-scan',
+  path: '/area-scan',
   getParentRoute: () => DashboardRouteRoute,
-} as any);
+} as any)
 const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
-  id: "/verify-email",
-  path: "/verify-email",
+  id: '/verify-email',
+  path: '/verify-email',
   getParentRoute: () => AuthRouteRoute,
-} as any);
+} as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
-  id: "/sign-up",
-  path: "/sign-up",
+  id: '/sign-up',
+  path: '/sign-up',
   getParentRoute: () => AuthRouteRoute,
-} as any);
+} as any)
 const AuthSignInRoute = AuthSignInRouteImport.update({
-  id: "/sign-in",
-  path: "/sign-in",
+  id: '/sign-in',
+  path: '/sign-in',
   getParentRoute: () => AuthRouteRoute,
-} as any);
+} as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
-  id: "/reset-password",
-  path: "/reset-password",
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => AuthRouteRoute,
-} as any);
+} as any)
 const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
-  id: "/forgot-password",
-  path: "/forgot-password",
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => AuthRouteRoute,
-} as any);
+} as any)
 const AuthCheckEmailRoute = AuthCheckEmailRouteImport.update({
-  id: "/check-email",
-  path: "/check-email",
+  id: '/check-email',
+  path: '/check-email',
   getParentRoute: () => AuthRouteRoute,
-} as any);
+} as any)
 const AuthAcceptInvitationIdRoute = AuthAcceptInvitationIdRouteImport.update({
-  id: "/accept-invitation/$id",
-  path: "/accept-invitation/$id",
+  id: '/accept-invitation/$id',
+  path: '/accept-invitation/$id',
   getParentRoute: () => AuthRouteRoute,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/dashboard": typeof DashboardRouteRouteWithChildren;
-  "/skelton": typeof SkeltonRoute;
-  "/check-email": typeof AuthCheckEmailRoute;
-  "/forgot-password": typeof AuthForgotPasswordRoute;
-  "/reset-password": typeof AuthResetPasswordRoute;
-  "/sign-in": typeof AuthSignInRoute;
-  "/sign-up": typeof AuthSignUpRoute;
-  "/verify-email": typeof AuthVerifyEmailRoute;
-  "/dashboard/area-scan": typeof DashboardAreaScanRoute;
-  "/dashboard/crop-map": typeof DashboardCropMapRoute;
-  "/dashboard/farmer-alerts": typeof DashboardFarmerAlertsRoute;
-  "/accept-invitation/$id": typeof AuthAcceptInvitationIdRoute;
+  '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/skelton': typeof SkeltonRoute
+  '/check-email': typeof AuthCheckEmailRoute
+  '/forgot-password': typeof AuthForgotPasswordRoute
+  '/reset-password': typeof AuthResetPasswordRoute
+  '/sign-in': typeof AuthSignInRoute
+  '/sign-up': typeof AuthSignUpRoute
+  '/verify-email': typeof AuthVerifyEmailRoute
+  '/dashboard/area-scan': typeof DashboardAreaScanRoute
+  '/dashboard/crop-map': typeof DashboardCropMapRoute
+  '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
+  '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/dashboard": typeof DashboardRouteRouteWithChildren;
-  "/skelton": typeof SkeltonRoute;
-  "/check-email": typeof AuthCheckEmailRoute;
-  "/forgot-password": typeof AuthForgotPasswordRoute;
-  "/reset-password": typeof AuthResetPasswordRoute;
-  "/sign-in": typeof AuthSignInRoute;
-  "/sign-up": typeof AuthSignUpRoute;
-  "/verify-email": typeof AuthVerifyEmailRoute;
-  "/dashboard/area-scan": typeof DashboardAreaScanRoute;
-  "/dashboard/crop-map": typeof DashboardCropMapRoute;
-  "/dashboard/farmer-alerts": typeof DashboardFarmerAlertsRoute;
-  "/accept-invitation/$id": typeof AuthAcceptInvitationIdRoute;
+  '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/skelton': typeof SkeltonRoute
+  '/check-email': typeof AuthCheckEmailRoute
+  '/forgot-password': typeof AuthForgotPasswordRoute
+  '/reset-password': typeof AuthResetPasswordRoute
+  '/sign-in': typeof AuthSignInRoute
+  '/sign-up': typeof AuthSignUpRoute
+  '/verify-email': typeof AuthVerifyEmailRoute
+  '/dashboard/area-scan': typeof DashboardAreaScanRoute
+  '/dashboard/crop-map': typeof DashboardCropMapRoute
+  '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
+  '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
-  "/_auth": typeof AuthRouteRouteWithChildren;
-  "/dashboard": typeof DashboardRouteRouteWithChildren;
-  "/skelton": typeof SkeltonRoute;
-  "/_auth/check-email": typeof AuthCheckEmailRoute;
-  "/_auth/forgot-password": typeof AuthForgotPasswordRoute;
-  "/_auth/reset-password": typeof AuthResetPasswordRoute;
-  "/_auth/sign-in": typeof AuthSignInRoute;
-  "/_auth/sign-up": typeof AuthSignUpRoute;
-  "/_auth/verify-email": typeof AuthVerifyEmailRoute;
-  "/dashboard/area-scan": typeof DashboardAreaScanRoute;
-  "/dashboard/crop-map": typeof DashboardCropMapRoute;
-  "/dashboard/farmer-alerts": typeof DashboardFarmerAlertsRoute;
-  "/_auth/accept-invitation/$id": typeof AuthAcceptInvitationIdRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteRouteWithChildren
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/skelton': typeof SkeltonRoute
+  '/_auth/check-email': typeof AuthCheckEmailRoute
+  '/_auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/_auth/reset-password': typeof AuthResetPasswordRoute
+  '/_auth/sign-in': typeof AuthSignInRoute
+  '/_auth/sign-up': typeof AuthSignUpRoute
+  '/_auth/verify-email': typeof AuthVerifyEmailRoute
+  '/dashboard/area-scan': typeof DashboardAreaScanRoute
+  '/dashboard/crop-map': typeof DashboardCropMapRoute
+  '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
+  '/_auth/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/dashboard"
-    | "/skelton"
-    | "/check-email"
-    | "/forgot-password"
-    | "/reset-password"
-    | "/sign-in"
-    | "/sign-up"
-    | "/verify-email"
-    | "/dashboard/area-scan"
-    | "/dashboard/crop-map"
-    | "/dashboard/farmer-alerts"
-    | "/accept-invitation/$id";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/dashboard'
+    | '/skelton'
+    | '/check-email'
+    | '/forgot-password'
+    | '/reset-password'
+    | '/sign-in'
+    | '/sign-up'
+    | '/verify-email'
+    | '/dashboard/area-scan'
+    | '/dashboard/crop-map'
+    | '/dashboard/farmer-alerts'
+    | '/accept-invitation/$id'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/dashboard"
-    | "/skelton"
-    | "/check-email"
-    | "/forgot-password"
-    | "/reset-password"
-    | "/sign-in"
-    | "/sign-up"
-    | "/verify-email"
-    | "/dashboard/area-scan"
-    | "/dashboard/crop-map"
-    | "/dashboard/farmer-alerts"
-    | "/accept-invitation/$id";
+    | '/'
+    | '/dashboard'
+    | '/skelton'
+    | '/check-email'
+    | '/forgot-password'
+    | '/reset-password'
+    | '/sign-in'
+    | '/sign-up'
+    | '/verify-email'
+    | '/dashboard/area-scan'
+    | '/dashboard/crop-map'
+    | '/dashboard/farmer-alerts'
+    | '/accept-invitation/$id'
   id:
-    | "__root__"
-    | "/"
-    | "/_auth"
-    | "/dashboard"
-    | "/skelton"
-    | "/_auth/check-email"
-    | "/_auth/forgot-password"
-    | "/_auth/reset-password"
-    | "/_auth/sign-in"
-    | "/_auth/sign-up"
-    | "/_auth/verify-email"
-    | "/dashboard/area-scan"
-    | "/dashboard/crop-map"
-    | "/dashboard/farmer-alerts"
-    | "/_auth/accept-invitation/$id";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/dashboard'
+    | '/skelton'
+    | '/_auth/check-email'
+    | '/_auth/forgot-password'
+    | '/_auth/reset-password'
+    | '/_auth/sign-in'
+    | '/_auth/sign-up'
+    | '/_auth/verify-email'
+    | '/dashboard/area-scan'
+    | '/dashboard/crop-map'
+    | '/dashboard/farmer-alerts'
+    | '/_auth/accept-invitation/$id'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren;
-  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
-  SkeltonRoute: typeof SkeltonRoute;
+  IndexRoute: typeof IndexRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  SkeltonRoute: typeof SkeltonRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/skelton": {
-      id: "/skelton";
-      path: "/skelton";
-      fullPath: "/skelton";
-      preLoaderRoute: typeof SkeltonRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/dashboard": {
-      id: "/dashboard";
-      path: "/dashboard";
-      fullPath: "/dashboard";
-      preLoaderRoute: typeof DashboardRouteRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_auth": {
-      id: "/_auth";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof AuthRouteRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/dashboard/farmer-alerts": {
-      id: "/dashboard/farmer-alerts";
-      path: "/farmer-alerts";
-      fullPath: "/dashboard/farmer-alerts";
-      preLoaderRoute: typeof DashboardFarmerAlertsRouteImport;
-      parentRoute: typeof DashboardRouteRoute;
-    };
-    "/dashboard/crop-map": {
-      id: "/dashboard/crop-map";
-      path: "/crop-map";
-      fullPath: "/dashboard/crop-map";
-      preLoaderRoute: typeof DashboardCropMapRouteImport;
-      parentRoute: typeof DashboardRouteRoute;
-    };
-    "/dashboard/area-scan": {
-      id: "/dashboard/area-scan";
-      path: "/area-scan";
-      fullPath: "/dashboard/area-scan";
-      preLoaderRoute: typeof DashboardAreaScanRouteImport;
-      parentRoute: typeof DashboardRouteRoute;
-    };
-    "/_auth/verify-email": {
-      id: "/_auth/verify-email";
-      path: "/verify-email";
-      fullPath: "/verify-email";
-      preLoaderRoute: typeof AuthVerifyEmailRouteImport;
-      parentRoute: typeof AuthRouteRoute;
-    };
-    "/_auth/sign-up": {
-      id: "/_auth/sign-up";
-      path: "/sign-up";
-      fullPath: "/sign-up";
-      preLoaderRoute: typeof AuthSignUpRouteImport;
-      parentRoute: typeof AuthRouteRoute;
-    };
-    "/_auth/sign-in": {
-      id: "/_auth/sign-in";
-      path: "/sign-in";
-      fullPath: "/sign-in";
-      preLoaderRoute: typeof AuthSignInRouteImport;
-      parentRoute: typeof AuthRouteRoute;
-    };
-    "/_auth/reset-password": {
-      id: "/_auth/reset-password";
-      path: "/reset-password";
-      fullPath: "/reset-password";
-      preLoaderRoute: typeof AuthResetPasswordRouteImport;
-      parentRoute: typeof AuthRouteRoute;
-    };
-    "/_auth/forgot-password": {
-      id: "/_auth/forgot-password";
-      path: "/forgot-password";
-      fullPath: "/forgot-password";
-      preLoaderRoute: typeof AuthForgotPasswordRouteImport;
-      parentRoute: typeof AuthRouteRoute;
-    };
-    "/_auth/check-email": {
-      id: "/_auth/check-email";
-      path: "/check-email";
-      fullPath: "/check-email";
-      preLoaderRoute: typeof AuthCheckEmailRouteImport;
-      parentRoute: typeof AuthRouteRoute;
-    };
-    "/_auth/accept-invitation/$id": {
-      id: "/_auth/accept-invitation/$id";
-      path: "/accept-invitation/$id";
-      fullPath: "/accept-invitation/$id";
-      preLoaderRoute: typeof AuthAcceptInvitationIdRouteImport;
-      parentRoute: typeof AuthRouteRoute;
-    };
+    '/skelton': {
+      id: '/skelton'
+      path: '/skelton'
+      fullPath: '/skelton'
+      preLoaderRoute: typeof SkeltonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/farmer-alerts': {
+      id: '/dashboard/farmer-alerts'
+      path: '/farmer-alerts'
+      fullPath: '/dashboard/farmer-alerts'
+      preLoaderRoute: typeof DashboardFarmerAlertsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/crop-map': {
+      id: '/dashboard/crop-map'
+      path: '/crop-map'
+      fullPath: '/dashboard/crop-map'
+      preLoaderRoute: typeof DashboardCropMapRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/area-scan': {
+      id: '/dashboard/area-scan'
+      path: '/area-scan'
+      fullPath: '/dashboard/area-scan'
+      preLoaderRoute: typeof DashboardAreaScanRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/_auth/verify-email': {
+      id: '/_auth/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof AuthVerifyEmailRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/sign-up': {
+      id: '/_auth/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof AuthSignUpRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/sign-in': {
+      id: '/_auth/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof AuthSignInRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/reset-password': {
+      id: '/_auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/forgot-password': {
+      id: '/_auth/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/check-email': {
+      id: '/_auth/check-email'
+      path: '/check-email'
+      fullPath: '/check-email'
+      preLoaderRoute: typeof AuthCheckEmailRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/accept-invitation/$id': {
+      id: '/_auth/accept-invitation/$id'
+      path: '/accept-invitation/$id'
+      fullPath: '/accept-invitation/$id'
+      preLoaderRoute: typeof AuthAcceptInvitationIdRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
   }
 }
 
 interface AuthRouteRouteChildren {
-  AuthCheckEmailRoute: typeof AuthCheckEmailRoute;
-  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute;
-  AuthResetPasswordRoute: typeof AuthResetPasswordRoute;
-  AuthSignInRoute: typeof AuthSignInRoute;
-  AuthSignUpRoute: typeof AuthSignUpRoute;
-  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute;
-  AuthAcceptInvitationIdRoute: typeof AuthAcceptInvitationIdRoute;
+  AuthCheckEmailRoute: typeof AuthCheckEmailRoute
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
+  AuthSignInRoute: typeof AuthSignInRoute
+  AuthSignUpRoute: typeof AuthSignUpRoute
+  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
+  AuthAcceptInvitationIdRoute: typeof AuthAcceptInvitationIdRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
@@ -318,34 +318,34 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthSignUpRoute: AuthSignUpRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,
   AuthAcceptInvitationIdRoute: AuthAcceptInvitationIdRoute,
-};
+}
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
-);
+)
 
 interface DashboardRouteRouteChildren {
-  DashboardAreaScanRoute: typeof DashboardAreaScanRoute;
-  DashboardCropMapRoute: typeof DashboardCropMapRoute;
-  DashboardFarmerAlertsRoute: typeof DashboardFarmerAlertsRoute;
+  DashboardAreaScanRoute: typeof DashboardAreaScanRoute
+  DashboardCropMapRoute: typeof DashboardCropMapRoute
+  DashboardFarmerAlertsRoute: typeof DashboardFarmerAlertsRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardAreaScanRoute: DashboardAreaScanRoute,
   DashboardCropMapRoute: DashboardCropMapRoute,
   DashboardFarmerAlertsRoute: DashboardFarmerAlertsRoute,
-};
+}
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
   DashboardRouteRouteChildren,
-);
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   SkeltonRoute: SkeltonRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
