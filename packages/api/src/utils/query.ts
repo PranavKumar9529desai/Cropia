@@ -1,7 +1,7 @@
 import { auth } from "../auth";
 
 async function main() {
-    console.log("🚀 Starting setup script...");
+    console.log("🚀 Starting Cropia Setup Script...");
 
     const email = "fullstackwebdeveloper123@gmail.com";
     const password = "Intern@31";
@@ -35,12 +35,11 @@ async function main() {
             throw new Error(`Authentication failed: ${JSON.stringify(error)}`);
         }
 
+        // Better Auth uses cookies for session management
         const setCookie = res.headers.get("set-cookie");
         if (setCookie) {
             headers.set("cookie", setCookie);
-            console.log("✅ Authenticated successfully.");
-        } else {
-            console.warn("⚠️ No session cookie returned. Operations requiring auth might fail.");
+            console.log("✅ Authenticated and session cookie captured.");
         }
 
     } catch (e) {
@@ -52,6 +51,8 @@ async function main() {
     let orgId: string | null = null;
     try {
         console.log(`🏢 Creating organization: ${orgName}`);
+
+        // Passing headers is crucial for the API to know who is making the request
         const org = await auth.api.createOrganization({
             body: {
                 name: orgName,
@@ -65,56 +66,56 @@ async function main() {
             console.log(`✅ Organization created: ${org.id}`);
         }
     } catch (e: any) {
-        // If org already exists, find it
-        console.log("⚠️ Creation might have failed or org exists. Fetching existing orgs...");
+        console.log("⚠️ Creation failed or organization already exists. Searching...");
+
         const orgs = await auth.api.listOrganizations({ headers });
         const existing = orgs?.find(o => o.slug === orgSlug);
+
         if (existing) {
             orgId = existing.id;
             console.log(`✅ Found existing organization: ${existing.id}`);
         } else {
-            console.error("❌ Failed to create or find organization.", e?.message || e);
+            console.error("❌ Could not resolve Organization ID.");
+            return;
         }
     }
-
-    if (!orgId) return;
 
     // 3. Send Invitation with Jurisdiction
     try {
         console.log(`📩 Sending invitation to: ${inviteEmail}`);
 
-        // Using the BetterAuth API
-        // NOTE: We are passing 'jurisdiction' in the body.
-        // For this to work, we need to ensure BetterAuth passes extra fields to the DB adapter or plugin hook.
-        // Since we explicitly added 'jurisdiction' to the Invitation model in Schema, the Prisma Adapter *should* pick it up 
-        // IF we type-cast or if BetterAuth allows generic object passing.
-
         const invitation = await auth.api.createInvitation({
             body: {
                 email: inviteEmail,
-                role: "admin", // as member table is only consist of the admin and owner , as the farmers records are not in the oraganization
-                organizationId: orgId,
-                // @ts-expect-error
+                role: "admin",
+                organizationId: orgId as string,
+                // This object will be handled by our 'databaseHooks' in auth.ts
                 jurisdiction: {
                     state: "Maharashtra",
                     district: "Satara",
                     taluka: "Karad",
                     village: "All"
                 }
-            },
+            } as any, // Cast to any to allow custom fields in the API call
             headers
         });
 
         if (invitation) {
             console.log("✅ Invitation sent successfully!");
-            console.log("Metadata/Jurisdiction attached to invite:", (invitation as any).jurisdiction);
+            // Log the jurisdiction to confirm it was processed
+            console.log("📍 Assigned Jurisdiction:", (invitation as any).jurisdiction);
         } else {
-            console.error("❌ Failed to send invitation.");
+            console.error("❌ Invitation object was not returned.");
         }
 
-    } catch (e) {
-        console.error("❌ Invitation Error:", e);
+    } catch (e: any) {
+        // Detailed error logging to help debug Prisma/BetterAuth issues
+        console.error("❌ Invitation Error:", e?.message || e);
+        if (e?.body) console.error("Error Body:", e.body);
     }
 }
 
-main().catch(console.error);
+main().catch((err) => {
+    console.error("💥 Critical Script Failure:", err);
+    process.exit(1);
+});
