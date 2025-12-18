@@ -4,12 +4,12 @@
   "exports": {
     ".": "./src/index.ts",
     "./index.ts": "./src/index.ts",
-    "./auth.ts": "./src/auth.ts"
+    "./auth.ts": "./src/auth.ts",
+    "./utils/*": "./src/utils/*.ts"
   },
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "build": "tsc --emitDeclarationOnly",
     "start": "bun --env-file=.env.production src/index.ts",
     "preview": "bun --env-file=.env.production src/index.ts"
   },
