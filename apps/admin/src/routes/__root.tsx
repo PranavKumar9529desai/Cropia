@@ -24,15 +24,6 @@ function RootComponent() {
    * Better Auth recommends this for the UI. It will sync 
    * automatically if the session changes (e.g. Org switch).
    */
-  const { data: session, isPending } = authClient.useSession();
-
-  if (isPending) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p>Loading Cropia...</p>
-      </div>
-    );
-  }
 
   return (
     <>

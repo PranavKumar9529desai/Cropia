@@ -13,6 +13,7 @@ export const GoogleButton = ({ title }: { title: string }) => {
     const toastId = toast.loading("Wait Signing You in..!");
     try {
       const redirect_url = import.meta.env.VITE_BASE_URL + "/dashboard";
+      console.log("redriect_url", redirect_url)
       const { error } = await authClient.signIn.social({
         provider: "google",
         callbackURL: redirect_url ?? import.meta.env.VITE_BASE_URL + "/dashboard",

@@ -9,7 +9,7 @@ export const NavBar = ({ title, buttontext, handleClick }: { title: string, butt
       <Link className="flex items-center gap-3 group" to="/">
         <div className="relative overflow-hidden rounded-full">
           <img
-            src="/public/favicon/favicon.ico"
+            src="/favicon/favicon.ico"
             alt="Cropia Image"
             className="sm:w-10 sm:h-10 w-8 h-8 transition-transform duration-500 ease-out group-hover:rotate-12 group-hover:scale-110"
           />

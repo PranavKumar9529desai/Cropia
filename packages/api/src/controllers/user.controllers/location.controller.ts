@@ -2,8 +2,8 @@ import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { prisma } from '@repo/db';
-import type { auth } from "@repo/api/auth"
-import { fetchStates, fetchDistricts, fetchTalukas, fetchVillages } from '@repo/api/utils/location-helpers';
+import type { auth } from "../../auth"
+import { fetchStates, fetchDistricts, fetchTalukas, fetchVillages } from '../../utils/location-helpers';
 
 // Validation schema matching the frontend form
 const createLocationSchema = z.object({
