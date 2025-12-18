@@ -21,7 +21,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 function RootComponent() {
   /**
    * 2. UI LOGIC (Dynamic/Reactive)
-   * Better Auth recommends this for the UI. It will sync 
+   * Better Auth recommends this for the UI. It will sync
    * automatically if the session changes (e.g. Org switch).
    */
 

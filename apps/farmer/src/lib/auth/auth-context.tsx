@@ -1,53 +1,55 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { authClient } from "./auth-client";
 
-
-type userType = typeof authClient.$Infer.Session.user
+type userType = typeof authClient.$Infer.Session.user;
 
 export type AuthContextType = {
-  isAuthenticated: boolean,
-  isLoading: boolean,
-  user: userType | null,
-  refreshAuth: () => Promise<void>
-}
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user: userType | null;
+  refreshAuth: () => Promise<void>;
+};
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<userType | null>(null)
+  const [user, setUser] = useState<userType | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(true);
 
   const checkAuth = async () => {
     try {
       const { data } = await authClient.getSession();
-      setUser(data?.user || null)
+      setUser(data?.user || null);
     } catch {
-      setUser(null)
+      setUser(null);
+    } finally {
+      setisLoading(false);
     }
-    finally {
-      setisLoading(false)
-    }
-  }
+  };
 
   useEffect(() => {
-    checkAuth()
-  }, [])
+    checkAuth();
+  }, []);
 
   const refreshAuth = async () => {
-    await checkAuth()
-  }
+    await checkAuth();
+  };
 
-  const isAuthenticated = !!user
+  const isAuthenticated = !!user;
 
-  return <AuthContext.Provider value={{ isAuthenticated, isLoading, user, refreshAuth }} >
-    {children}
-  </AuthContext.Provider>
+  return (
+    <AuthContext.Provider
+      value={{ isAuthenticated, isLoading, user, refreshAuth }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
-  const context = useContext(AuthContext)
-  if (!context) throw new Error("useAuth must be used within AuthProvider")
-  return context
-}
-// hook to use it easily 
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  return context;
+};
+// hook to use it easily

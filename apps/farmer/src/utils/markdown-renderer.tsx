@@ -35,13 +35,7 @@ export const MarkdownComponents = {
     <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>
   ),
   // Links: Make them visible and open in new tab
-  a: ({
-    children,
-    href,
-  }: {
-    children: React.ReactNode;
-    href?: string;
-  }) => (
+  a: ({ children, href }: { children: React.ReactNode; href?: string }) => (
     <a
       href={href}
       target="_blank"

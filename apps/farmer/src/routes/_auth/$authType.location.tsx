@@ -30,7 +30,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { MapPin } from "lucide-react";
-import { getStates, getDistricts, getTalukas, getVillages, postuserlocation } from "../../utils/user-location";
+import {
+  getStates,
+  getDistricts,
+  getTalukas,
+  getVillages,
+  postuserlocation,
+} from "../../utils/user-location";
 import { authClient } from "../../lib/auth/auth-client";
 
 // 1. Route Param Validation
@@ -50,7 +56,6 @@ const createLocationSchema = z.object({
 });
 
 type CreateLocationInputType = z.infer<typeof createLocationSchema>;
-
 
 export const Route = createFileRoute("/_auth/$authType/location")({
   loader: async ({ params }) => {
@@ -174,7 +179,11 @@ export function RouteComponent() {
     const fetchVillagesData = async () => {
       setIsLoadingVillages(true);
       try {
-        const villagesData = await getVillages(selectedState, selectedDistrict, selectedTaluka);
+        const villagesData = await getVillages(
+          selectedState,
+          selectedDistrict,
+          selectedTaluka,
+        );
         setVillages(villagesData);
       } catch (error) {
         console.error(error);
@@ -185,7 +194,6 @@ export function RouteComponent() {
     };
     fetchVillagesData();
   }, [selectedTaluka, selectedDistrict, selectedState]);
-
 
   // 3. Geolocation Helper
   const handleDetectLocation = (e: React.MouseEvent) => {
@@ -207,7 +215,9 @@ export function RouteComponent() {
         form.setValue("longitude", long);
 
         // Reverse decoding could still be useful for Pincode/Address but we want users to select strict hierarchy
-        toast.message("Location detected. Please select your Region details manually for accuracy.");
+        toast.message(
+          "Location detected. Please select your Region details manually for accuracy.",
+        );
       },
       (error) => {
         console.error(error);
@@ -236,7 +246,7 @@ export function RouteComponent() {
         try {
           const errorData = await response.json();
           errorMessage = (errorData as any).error || errorMessage;
-        } catch (e) { }
+        } catch (e) {}
 
         toast.error(errorMessage, { id: toastId });
         return;
@@ -338,12 +348,19 @@ export function RouteComponent() {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={isLoadingStates ? "Loading..." : "Select State"} />
+                            <SelectValue
+                              placeholder={
+                                isLoadingStates ? "Loading..." : "Select State"
+                              }
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="max-h-[200px]">
                           {states.map((state, i) => (
-                            <SelectItem key={`${state.code}_${i}`} value={state.name}>
+                            <SelectItem
+                              key={`${state.code}_${i}`}
+                              value={state.name}
+                            >
                               {state.name}
                             </SelectItem>
                           ))}
@@ -371,7 +388,13 @@ export function RouteComponent() {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={isLoadingDistricts ? "Loading..." : "Select District"} />
+                            <SelectValue
+                              placeholder={
+                                isLoadingDistricts
+                                  ? "Loading..."
+                                  : "Select District"
+                              }
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="max-h-[200px]">
@@ -406,7 +429,13 @@ export function RouteComponent() {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={isLoadingTalukas ? "Loading..." : "Select Taluka"} />
+                            <SelectValue
+                              placeholder={
+                                isLoadingTalukas
+                                  ? "Loading..."
+                                  : "Select Taluka"
+                              }
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="max-h-[200px]">
@@ -435,7 +464,13 @@ export function RouteComponent() {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={isLoadingVillages ? "Loading..." : "Select Village"} />
+                            <SelectValue
+                              placeholder={
+                                isLoadingVillages
+                                  ? "Loading..."
+                                  : "Select Village"
+                              }
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="max-h-[200px]">
@@ -497,7 +532,6 @@ export function RouteComponent() {
                   </FormItem>
                 )}
               />
-
             </CardContent>
 
             <CardFooter className="w-full px-3 pt-2">

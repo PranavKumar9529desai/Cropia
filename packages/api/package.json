@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "bun run --watch src/index.ts",
     "build": "tsc --emitDeclarationOnly",
-    "start": "bun --env-file=.env.production src/index.ts"
+    "start": "bun --env-file=.env.production src/index.ts",
+    "preview": "bun --env-file=.env.production src/index.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.44",

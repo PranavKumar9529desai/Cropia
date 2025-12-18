@@ -12,7 +12,7 @@ import { getuserLocationStatus } from "../../utils/user-location";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async ({ context }) => {
-    console.log("in the farmer apps", context)
+    console.log("in the farmer apps", context);
     const isLogged = context.auth;
     if (!isLogged) {
       throw redirect({
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/dashboard")({
     const data = context.auth;
     const username = data?.user?.name;
     const email = data?.user?.email;
-    const image = data?.user?.image
+    const image = data?.user?.image;
     return { username, email, image };
   },
   component: RouteComponent,
@@ -40,12 +40,14 @@ export const Route = createFileRoute("/dashboard")({
 
 function RouteComponent() {
   const { username, email, image } = Route.useLoaderData();
-  console.log(username, email, image)
+  console.log(username, email, image);
   return (
     <SidebarProvider>
       {/* Sidebar - visible on md and larger screens */}
       <div className="hidden sm:flex gap-4">
-        <AppSidebar userInfo={{ name: username || "", email: email || "", avatar: image }} />
+        <AppSidebar
+          userInfo={{ name: username || "", email: email || "", avatar: image }}
+        />
         <div className="h-fit m-2">
           <SidebarTrigger />
         </div>

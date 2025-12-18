@@ -84,7 +84,13 @@ export const auth = betterAuth({
          * Runs after an admin accepts an invitation.
          * Since ctx.session can be unreliable during signup, we find the session row manually.
          */
-        afterAcceptInvitation: async ({ invitation, user }: { invitation: Invitation, user: User }) => {
+        afterAcceptInvitation: async ({
+          invitation,
+          user,
+        }: {
+          invitation: Invitation;
+          user: User;
+        }) => {
           console.log("🚀 CROPIA: Invite accepted for:", user.email);
 
           if (invitation && invitation.jurisdiction) {
@@ -103,7 +109,7 @@ export const auth = betterAuth({
               // 2. Find the user's latest session row and update it
               const latestSession = await prisma.session.findFirst({
                 where: { userId: user.id },
-                orderBy: { createdAt: "desc" }
+                orderBy: { createdAt: "desc" },
               });
 
               if (latestSession) {
@@ -111,8 +117,8 @@ export const auth = betterAuth({
                   where: { id: latestSession.id },
                   data: {
                     activeOrganizationId: invitation.organizationId,
-                    jurisdiction: invitation.jurisdiction as any
-                  }
+                    jurisdiction: invitation.jurisdiction as any,
+                  },
                 });
                 console.log("✅ Live Session row updated with Jurisdiction.");
               }
@@ -135,7 +141,7 @@ export const auth = betterAuth({
   ],
 
   /**
-   * Database Hooks: Ensures every new login/session is correctly scoped to the 
+   * Database Hooks: Ensures every new login/session is correctly scoped to the
    * Admin's organization and jurisdiction.
    */
   databaseHooks: {
@@ -148,7 +154,9 @@ export const auth = betterAuth({
           });
 
           if (member) {
-            console.log("🛠️ DB HOOK: Injecting Active Org into new session row.");
+            console.log(
+              "🛠️ DB HOOK: Injecting Active Org into new session row.",
+            );
             return {
               data: {
                 ...session,
@@ -164,8 +172,8 @@ export const auth = betterAuth({
   } as any,
 
   callbacks: {
-    async session({ session, user }: { session: PrismaSession, user: User }) {
-      // NOTE: To see these logs, perform a HARD REFRESH (Ctrl + F5) 
+    async session({ session, user }: { session: PrismaSession; user: User }) {
+      // NOTE: To see these logs, perform a HARD REFRESH (Ctrl + F5)
       // This bypasses the browser's cookie cache.
       console.log("📡 CALLBACK: Hydrating session response for", user.email);
 

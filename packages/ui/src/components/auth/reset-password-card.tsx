@@ -1,39 +1,54 @@
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 
-import { Button } from '@repo/ui/components/button'
-import { Input } from '@repo/ui/components/input'
-import { Label } from '@repo/ui/components/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui/components/card'
+import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
 
-const resetPasswordSchema = z.object({
-  password: z.string().min(5, "Password must be at least 5 characters"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-})
+const resetPasswordSchema = z
+  .object({
+    password: z.string().min(5, "Password must be at least 5 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
-type ResetPasswordValues = z.infer<typeof resetPasswordSchema>
+type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
 interface ResetPasswordCardProps {
-  onSubmit: (password: string) => void | Promise<void>
-  isLoading?: boolean
-  error?: string | null
+  onSubmit: (password: string) => void | Promise<void>;
+  isLoading?: boolean;
+  error?: string | null;
 }
 
-export function ResetPasswordCard({ onSubmit, isLoading = false, error }: ResetPasswordCardProps) {
-
-  const { register, handleSubmit, formState: { errors } } = useForm<ResetPasswordValues>({
+export function ResetPasswordCard({
+  onSubmit,
+  isLoading = false,
+  error,
+}: ResetPasswordCardProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
-  })
+  });
 
   const handleFormSubmit = (data: ResetPasswordValues) => {
     // Only pass the password up, the parent doesn't care about the confirmation field
-    onSubmit(data.password)
-  }
+    onSubmit(data.password);
+  };
 
   return (
     <Card className="w-full max-w-md mx-auto">
@@ -43,15 +58,12 @@ export function ResetPasswordCard({ onSubmit, isLoading = false, error }: ResetP
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-
           <div className="space-y-2">
             <Label htmlFor="password">New Password</Label>
-            <Input
-              id="password"
-              type="password"
-              {...register('password')}
-            />
-            {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
+            <Input id="password" type="password" {...register("password")} />
+            {errors.password && (
+              <p className="text-sm text-red-500">{errors.password.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -59,9 +71,13 @@ export function ResetPasswordCard({ onSubmit, isLoading = false, error }: ResetP
             <Input
               id="confirmPassword"
               type="password"
-              {...register('confirmPassword')}
+              {...register("confirmPassword")}
             />
-            {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>}
+            {errors.confirmPassword && (
+              <p className="text-sm text-red-500">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
           {error && (
@@ -77,5 +93,5 @@ export function ResetPasswordCard({ onSubmit, isLoading = false, error }: ResetP
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

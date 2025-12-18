@@ -88,13 +88,13 @@ This will start:
 - `bun run lint`: Runs the linter to ensure code quality.
 - `bun run check-types`: Runs TypeScript type checking.
 
-
 ### Admin Features
-- 1) Maps UI
-- 2) Agent Run
-- 3) Alert Creator 
-- 4) Extra Feature : Crop Health Certificate, which can be approved by government in-order take any form of the Insurence.
 
+- 1. Maps UI
+- 2. Agent Run
+- 3. Alert Creator
+- 4. Extra Feature : Crop Health Certificate, which can be approved by government in-order take any form of the Insurence.
 
 ### Moral
-- Cropia is Multi-tenacy supported Web application made for the real life use case of the farmer in India. 
+
+- Cropia is Multi-tenacy supported Web application made for the real life use case of the farmer in India.

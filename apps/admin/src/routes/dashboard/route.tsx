@@ -12,14 +12,13 @@ import { getJurisdictionDisplay } from "@/lib/get-jurisdiction";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async ({ context }) => {
-    console.log("context is this", context)
+    console.log("context is this", context);
     const isLogged = context.auth;
     if (!isLogged) {
       throw redirect({
         to: "/sign-in",
       });
     }
-
   },
   loader: async ({ context }) => {
     const data = context.auth;

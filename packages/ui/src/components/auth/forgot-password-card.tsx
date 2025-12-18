@@ -1,27 +1,34 @@
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 
 // You can customize these imports based on your UI library (e.g., shadcn/ui)
 // If you don't use shadcn, replace these with standard HTML elements with Tailwind classes
-import { Button } from '@repo/ui/components/button'
-import { Input } from '@repo/ui/components/input'
-import { Label } from '@repo/ui/components/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@repo/ui/components/card'
+import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
-})
+});
 
-type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>
+type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
 
 interface ForgotPasswordCardProps {
-  onSubmit: (values: ForgotPasswordValues) => void | Promise<void>
-  isLoading?: boolean
-  error?: string | null
-  successMessage?: string | null
-  onBackToLogin?: () => void
+  onSubmit: (values: ForgotPasswordValues) => void | Promise<void>;
+  isLoading?: boolean;
+  error?: string | null;
+  successMessage?: string | null;
+  onBackToLogin?: () => void;
 }
 
 export function ForgotPasswordCard({
@@ -29,19 +36,23 @@ export function ForgotPasswordCard({
   isLoading = false,
   error,
   successMessage,
-  onBackToLogin
+  onBackToLogin,
 }: ForgotPasswordCardProps) {
-
-  const { register, handleSubmit, formState: { errors } } = useForm<ForgotPasswordValues>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
-  })
+  });
 
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Forgot Password</CardTitle>
         <CardDescription>
-          Enter your email address and we will send you a link to reset your password.
+          Enter your email address and we will send you a link to reset your
+          password.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -57,9 +68,11 @@ export function ForgotPasswordCard({
                 id="email"
                 type="email"
                 placeholder="m@gmail.com"
-                {...register('email')}
+                {...register("email")}
               />
-              {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
 
             {error && (
@@ -76,10 +89,14 @@ export function ForgotPasswordCard({
         )}
       </CardContent>
       <CardFooter className="flex justify-center">
-        <Button variant="link" onClick={onBackToLogin} className="text-sm text-muted-foreground">
+        <Button
+          variant="link"
+          onClick={onBackToLogin}
+          className="text-sm text-muted-foreground"
+        >
           Back to Login
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

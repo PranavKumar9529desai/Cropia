@@ -15,7 +15,10 @@ export const getuserLocationStatus = async (): Promise<boolean> => {
     // If success: false (404), location doesn't exist
     const hasLocation = result.success === true;
 
-    console.log("User location status:", hasLocation ? "Submitted" : "Not submitted");
+    console.log(
+      "User location status:",
+      hasLocation ? "Submitted" : "Not submitted",
+    );
 
     return hasLocation;
   } catch (error) {
@@ -81,9 +84,11 @@ export const getDistricts = async (stateName: string) => {
 };
 
 export const getTalukas = async (districtName: string) => {
-  const response = await apiClient.api.locations.talukas[":district_name"].$get({
-    param: { district_name: districtName },
-  });
+  const response = await apiClient.api.locations.talukas[":district_name"].$get(
+    {
+      param: { district_name: districtName },
+    },
+  );
   const result = await response.json();
   if (!result.success) {
     throw (result as any).error || "Failed to fetch talukas";
@@ -91,7 +96,11 @@ export const getTalukas = async (districtName: string) => {
   return result.data.talukas;
 };
 
-export const getVillages = async (state: string, district: string, taluka: string) => {
+export const getVillages = async (
+  state: string,
+  district: string,
+  taluka: string,
+) => {
   const response = await apiClient.api.locations.villages.$get({
     query: {
       state,

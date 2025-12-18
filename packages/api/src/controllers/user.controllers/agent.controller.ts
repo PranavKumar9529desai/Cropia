@@ -5,12 +5,9 @@ import { streamText, convertToModelMessages } from "ai";
 import { google } from "@ai-sdk/google";
 import { analyzeCropImage } from "../../utils/agents/gatekeeper.agent";
 import { uploadImage } from "../../utils/upload-image";
-import {
-  getCropContext,
-} from "../../utils/agents/assistant-agent/context";
+import { getCropContext } from "../../utils/agents/assistant-agent/context";
 import { generateFarmerPrompt } from "../../utils/agents/assistant-agent/prompt";
 import { FarmerContext } from "../../utils/agents/assistant-agent/types";
-
 
 const AiController = new Hono<{
   Variables: {
@@ -98,12 +95,14 @@ const AiController = new Hono<{
       return c.json({ error: "User Context Not Found" }, 404);
     }
 
-    const systemPrompt = generateFarmerPrompt(chatContext.data as unknown as FarmerContext);
+    const systemPrompt = generateFarmerPrompt(
+      chatContext.data as unknown as FarmerContext,
+    );
 
     // AI SDK v5: streamText returns the result object immediately`
     const result = await streamText({
       // maxium rate limit model
-      model: google('gemini-2.5-flash-lite'),
+      model: google("gemini-2.5-flash-lite"),
       system: systemPrompt,
       messages: convertToModelMessages(messages), // Convert UI messages to Core messages
     });

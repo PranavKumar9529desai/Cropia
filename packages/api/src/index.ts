@@ -9,15 +9,25 @@ import InvitationController from "./controllers/user.controllers/invitation.cont
 import { AdminSessionMiddleware } from "./middleware/admin.middleware";
 import MapController from "./controllers/admin.controller/map.controller";
 
-console.log("FRONTEND_URL_FARMER_APP index.ts", process.env.FRONTEND_URL_FARMER_APP)
-console.log("FRONTEND_URL_ADMIN_APP index.ts", process.env.FRONTEND_URL_ADMIN_APP)
+console.log(
+  "FRONTEND_URL_FARMER_APP index.ts",
+  process.env.FRONTEND_URL_FARMER_APP,
+);
+console.log(
+  "FRONTEND_URL_ADMIN_APP index.ts",
+  process.env.FRONTEND_URL_ADMIN_APP,
+);
 const app = new Hono()
   .use(
     "/*",
     cors({
       origin: [
-        ...(process.env.FRONTEND_URL_FARMER_APP ? [process.env.FRONTEND_URL_FARMER_APP] : []),
-        ...(process.env.FRONTEND_URL_ADMIN_APP ? [process.env.FRONTEND_URL_ADMIN_APP] : []),
+        ...(process.env.FRONTEND_URL_FARMER_APP
+          ? [process.env.FRONTEND_URL_FARMER_APP]
+          : []),
+        ...(process.env.FRONTEND_URL_ADMIN_APP
+          ? [process.env.FRONTEND_URL_ADMIN_APP]
+          : []),
       ].filter(Boolean),
       // filter removes any undefined url in the arrays
 
@@ -39,7 +49,7 @@ const app = new Hono()
   .route("/api/locations", LocationController)
   .route("/api/ai", AiController)
   .route("/api/invitation", InvitationController)
-  .route("/api/admin/map", MapController)
+  .route("/api/admin/map", MapController);
 
 export type AppType = typeof app;
 

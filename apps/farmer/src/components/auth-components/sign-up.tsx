@@ -1,9 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "@repo/ui/components/sonner";
-import {
-  SignUpForm,
-  type SignUpFormValues,
-} from "@repo/ui/components/auth";
+import { SignUpForm, type SignUpFormValues } from "@repo/ui/components/auth";
 import { authClient } from "../../lib/auth/auth-client";
 import { GoogleButton } from "./google-button";
 
@@ -31,10 +28,9 @@ export const SignUp = () => {
       // Redirect to location page after successful sign-up
       // Redirect to location page after successful sign-up
       navigate({
-        to: '/check-email',
-        search: { email: values.email }
+        to: "/check-email",
+        search: { email: values.email },
       });
-
     } catch {
       toast.error("Connection Failed..!", { id: toastId });
     }

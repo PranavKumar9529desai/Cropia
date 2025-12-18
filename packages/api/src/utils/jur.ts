@@ -16,8 +16,7 @@ import prisma from "@repo/db";
 
 // console.log("user")
 
-
-// const sesssionUpdate = await prisma.session.update({ 
+// const sesssionUpdate = await prisma.session.update({
 //     where : {
 //         userId : ""
 //     }

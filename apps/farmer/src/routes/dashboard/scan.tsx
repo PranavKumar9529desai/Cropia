@@ -101,7 +101,6 @@ function ScanPage() {
         {mode === "selection" && (
           <div className="grid grid-cols-1 gap-4 w-full">
             <div className="-mt-20">
-
               <PageHeader
                 title="Scan Crop"
                 subtitle="Analyze your crop health instantly"
@@ -216,7 +215,7 @@ function ScanPage() {
         )}
       </div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md w-[90%] rounded-lg overflow-hidden p-0 gap-0">
           {image && (
             <div className="relative w-full h-48 bg-muted">
@@ -232,8 +231,9 @@ function ScanPage() {
           <div className="p-6 pt-4 flex flex-col gap-4">
             <DialogHeader>
               <DialogTitle
-                className={`text-xl ${analysisResult?.isValid ? "text-green-600" : "text-red-600"
-                  }`}
+                className={`text-xl ${
+                  analysisResult?.isValid ? "text-green-600" : "text-red-600"
+                }`}
               >
                 {analysisResult?.isValid
                   ? "Analysis Successful"

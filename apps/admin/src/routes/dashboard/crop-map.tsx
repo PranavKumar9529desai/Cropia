@@ -1,12 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
-import CropMap from '../../components/map/crop.map';
-import { apiClient } from '../../lib/rpc';
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import CropMap from "../../components/map/crop.map";
+import { apiClient } from "../../lib/rpc";
 
-export const Route = createFileRoute('/dashboard/crop-map')({
+export const Route = createFileRoute("/dashboard/crop-map")({
   component: RouteComponent,
 });
-
 
 // Helper to calculate view state from GeoJSON data
 function calculateViewState(data: any) {
@@ -30,14 +29,16 @@ function calculateViewState(data: any) {
   return {
     longitude: (minLng + maxLng) / 2,
     latitude: (minLat + maxLat) / 2,
-    zoom: 9 // Default zoom for now, user can zoom in/out
+    zoom: 9, // Default zoom for now, user can zoom in/out
   };
 }
 
 function RouteComponent() {
   const [data, setData] = useState<any>(null); // GeoJSON format
   const [loading, setLoading] = useState(true);
-  const [defaultView, setDefaultView] = useState<{ longitude: number; latitude: number; zoom: number } | undefined>(undefined);
+  const [defaultView, setDefaultView] = useState<
+    { longitude: number; latitude: number; zoom: number } | undefined
+  >(undefined);
 
   useEffect(() => {
     async function fetchData() {

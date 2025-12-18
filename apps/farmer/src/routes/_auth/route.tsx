@@ -1,4 +1,9 @@
-import { createFileRoute, Outlet, redirect, useRouter } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useRouter,
+} from "@tanstack/react-router";
 import { NavBar } from "../../components/navbar/auth-navbar";
 import { getuserLocationStatus } from "../../utils/user-location";
 import { authClient } from "../../lib/auth/auth-client";
@@ -46,14 +51,18 @@ function RouteComponent() {
     <div className="w-full flex">
       <div className="md:w-2/5  w-full h-screen relative">
         <div className="absolute top-0 w-full">
-          <NavBar title="Cropia" buttontext="Back" handleClick={() => router.history.back()} />
+          <NavBar
+            title="Cropia"
+            buttontext="Back"
+            handleClick={() => router.history.back()}
+          />
         </div>
         <div className="w-full justify-center flex items-center h-full  bg-background ">
           <Outlet />
         </div>
       </div>
       <div className="md:flex hidden w-3/5 h-screen bg-background">
-        < SlideShow />
+        <SlideShow />
       </div>
     </div>
   );

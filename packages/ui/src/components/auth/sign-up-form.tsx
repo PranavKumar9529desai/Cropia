@@ -100,7 +100,9 @@ export const SignUpForm = ({
                       placeholder="Enter your email"
                       {...field}
                       disabled={emailReadOnly}
-                      className={emailReadOnly ? "opacity-50 cursor-not-allowed" : ""}
+                      className={
+                        emailReadOnly ? "opacity-50 cursor-not-allowed" : ""
+                      }
                     />
                   </FormControl>
                   <FormMessage />
