@@ -2,15 +2,16 @@
   "name": "@repo/api",
   "version": "0.0.0",
   "exports": {
-    "." : "./src/index.ts",
+    ".": "./src/index.ts",
     "./index.ts": "./src/index.ts",
-    "./auth.ts": "./src/index.ts"
+    "./auth.ts": "./src/auth.ts"
   },
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
     "build": "tsc --emitDeclarationOnly",
-    "start": "bun src/index.ts"
+    "start": "bun --env-file=.env.production src/index.ts",
+    "preview": "bun --env-file=.env.production src/index.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.44",

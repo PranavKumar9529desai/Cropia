@@ -49,11 +49,11 @@ export const generateFarmerPrompt = (ctx: FarmerContext) => {
   const scanContext =
     ctx.scan_details.length > 0
       ? ctx.scan_details
-        .map((scan) => {
-          const dateStr = new Date(scan.createdAt).toLocaleDateString();
-          return `- [${dateStr}] ${scan.crop}: ${scan.visualIssue || "No visual issue detected"} (Image: ${scan.imageUrl})`;
-        })
-        .join("\n")
+          .map((scan) => {
+            const dateStr = new Date(scan.createdAt).toLocaleDateString();
+            return `- [${dateStr}] ${scan.crop}: ${scan.visualIssue || "No visual issue detected"} (Image: ${scan.imageUrl})`;
+          })
+          .join("\n")
       : "No recent crop issues detected.";
 
   // 4. Construct the Final Prompt
@@ -82,9 +82,10 @@ The system has pre-calculated the safety logic for you:
 ### EXAMPLE RESPONSE
 **User:** "Is it a good time to apply fungicide?"
 **You:** "**${isWindUnsafe ? "No, do not spray." : "Yes, conditions are favorable."}**
-${isWindUnsafe
-      ? `The wind speed is currently **${current.wind_speed_10m} km/h**, which is too high. Waiting for it to drop below 15 km/h prevents chemical waste.`
-      : "The wind is calm and no rain is expected for the next 6 hours."
-    }
+${
+  isWindUnsafe
+    ? `The wind speed is currently **${current.wind_speed_10m} km/h**, which is too high. Waiting for it to drop below 15 km/h prevents chemical waste.`
+    : "The wind is calm and no rain is expected for the next 6 hours."
+}
 `;
 };

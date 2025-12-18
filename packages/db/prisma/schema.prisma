@@ -27,16 +27,17 @@ model User {
 }
 
 model Session {
-  id                   String   @id @map("_id")
+  id                   String        @id @map("_id")
   expiresAt            DateTime
   token                String
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
   ipAddress            String?
   userAgent            String?
   userId               String
   activeOrganizationId String?
-  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jurisdiction         Jurisdiction?
+  user                 User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
   @@index([userId])

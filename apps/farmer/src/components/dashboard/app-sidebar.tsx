@@ -17,7 +17,6 @@ import { authClient } from "../../lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
 import { ProfileComponent } from "./profile";
 
-
 interface NavItem {
   label: string;
   icon: typeof Home;
@@ -76,7 +75,6 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
             <span className="text-xs text-muted-foreground">Smart Farming</span>
           </div>
         </div>
-
       </SidebarHeader>
 
       <SidebarContent className="pt-2">
@@ -95,7 +93,9 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
                       tooltip={item.label}
                       className={cn(
                         "duration-300 transition-colors hover:!bg-accent hover:!text-accent-foreground",
-                        isActive ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground"
+                        isActive
+                          ? "bg-accent text-accent-foreground font-medium"
+                          : "text-muted-foreground",
                       )}
                     >
                       <Link to={item.path}>
@@ -114,14 +114,10 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
       <SidebarFooter className="*ring-none">
         <SidebarSeparator className="" />
         <SidebarMenuItem className="ring-none">
-          <SidebarMenuButton asChild
-            tooltip={"profile"}
-          >
-
+          <SidebarMenuButton asChild tooltip={"profile"}>
             <ProfileComponent handleLogout={handleLogout} userInfo={userInfo} />
           </SidebarMenuButton>
         </SidebarMenuItem>
-
       </SidebarFooter>
     </Sidebar>
   );

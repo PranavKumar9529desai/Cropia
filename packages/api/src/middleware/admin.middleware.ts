@@ -17,13 +17,13 @@ export const AdminSessionMiddleware = createMiddleware(async (c, next) => {
   c.set("user", session.user);
   c.set("session", session.session);
   c.set("userId", session.user.id);
-  console.log("Admin Middleware is called", session)
+  console.log("Admin Middleware is called", session);
   const member = await prisma.member.findFirst({
     where: {
       userId: session.user.id,
-    }
+    },
   });
-  console.log("Member is", member)
+  console.log("Member is", member);
   if (!member || member.role !== "admin" || !member.jurisdiction) {
     return c.json(
       {
@@ -32,9 +32,9 @@ export const AdminSessionMiddleware = createMiddleware(async (c, next) => {
       401,
     );
   }
-  const jurisdiction = member.jurisdiction
-  c.set("orgId", session.session.activeOrganizationId)
-  c.set("jurisdiction", jurisdiction)
+  const jurisdiction = member.jurisdiction;
+  c.set("orgId", session.session.activeOrganizationId);
+  c.set("jurisdiction", jurisdiction);
 
   await next();
 });

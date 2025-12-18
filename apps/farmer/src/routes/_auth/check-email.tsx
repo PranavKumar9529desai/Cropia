@@ -22,7 +22,7 @@ function CheckEmailPage() {
     try {
       const { error } = await authClient.sendVerificationEmail({
         email,
-        callbackURL: "/verify-email" // Where to go AFTER they click the link in email
+        callbackURL: "/verify-email", // Where to go AFTER they click the link in email
       });
 
       if (error) {

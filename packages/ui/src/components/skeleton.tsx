@@ -1,4 +1,4 @@
-import { cn } from "@repo/ui/lib/utils"
+import { cn } from "@repo/ui/lib/utils";
 
 function Skeleton({
   className,
@@ -11,7 +11,7 @@ function Skeleton({
     >
       <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/25 to-transparent" />
     </div>
-  )
+  );
 }
 
-export { Skeleton }
+export { Skeleton };

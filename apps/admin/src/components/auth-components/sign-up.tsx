@@ -5,7 +5,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter
+  CardFooter,
 } from "@repo/ui/components/card";
 import { Button } from "@repo/ui/components/button";
 
@@ -20,15 +20,13 @@ export const SignUp = () => {
       </CardHeader>
       <CardContent className="text-muted-foreground">
         <p>
-          Please check your email for an invitation from your organization.
-          If you believe this is an error, contact your administrator.
+          Please check your email for an invitation from your organization. If
+          you believe this is an error, contact your administrator.
         </p>
       </CardContent>
       <CardFooter>
         <Link to="/sign-in" className="w-full">
-          <Button className="w-full">
-            Go to Sign In
-          </Button>
+          <Button className="w-full">Go to Sign In</Button>
         </Link>
       </CardFooter>
     </Card>

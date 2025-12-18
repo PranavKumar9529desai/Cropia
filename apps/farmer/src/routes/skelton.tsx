@@ -1,9 +1,9 @@
-import { Skeleton } from '@repo/ui/components/skeleton'
-import { createFileRoute } from '@tanstack/react-router'
+import { Skeleton } from "@repo/ui/components/skeleton";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/skelton')({
+export const Route = createFileRoute("/skelton")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   return (
@@ -13,5 +13,5 @@ function RouteComponent() {
         <Skeleton className="h-4 w-[150px] bg-muted" />
       </div>
     </div>
-  )
+  );
 }

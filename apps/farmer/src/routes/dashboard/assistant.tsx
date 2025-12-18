@@ -63,7 +63,10 @@ function RouteComponent() {
           <div className="space-y-6">
             {messages.length === 0 && (
               <>
-                <PageHeader title="Cropia Assistant" subtitle="How can I help you with your crops today?" />
+                <PageHeader
+                  title="Cropia Assistant"
+                  subtitle="How can I help you with your crops today?"
+                />
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl px-4 mx-auto">
                   {SUGGESTED_PROMPTS.map((item) => (
                     <button
@@ -83,14 +86,16 @@ function RouteComponent() {
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"
-                  }`}
+                className={`flex ${
+                  m.role === "user" ? "justify-end" : "justify-start"
+                }`}
               >
                 <div
-                  className={`rounded-lg px-3 py-2 max-w-[85%] ${m.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted"
-                    }`}
+                  className={`rounded-lg px-3 py-2 max-w-[85%] ${
+                    m.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted"
+                  }`}
                 >
                   {m.parts ? (
                     m.parts.map((part, index) => {

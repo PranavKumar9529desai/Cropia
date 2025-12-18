@@ -17,7 +17,6 @@ import { authClient } from "@/lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
 import { ProfileComponent } from "./profile";
 
-
 interface NavItem {
   label: string;
   icon: LucideIcon;
@@ -76,17 +75,20 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
           <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand">
             <span className="text-lg font-bold text-foreground">Cropia</span>
             <div className="flex items-center gap-1.5">
-              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Admin</span>
+              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">
+                Admin
+              </span>
               {jurisdiction && (
                 <>
                   <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground" />
-                  <span className="text-[10px] font-medium text-primary">{jurisdiction}</span>
+                  <span className="text-[10px] font-medium text-primary">
+                    {jurisdiction}
+                  </span>
                 </>
               )}
             </div>
           </div>
         </div>
-
       </SidebarHeader>
 
       <SidebarContent className="pt-2">
@@ -105,7 +107,9 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
                       tooltip={item.label}
                       className={cn(
                         "duration-300 transition-colors hover:!bg-accent hover:!text-accent-foreground",
-                        isActive ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground"
+                        isActive
+                          ? "bg-accent text-accent-foreground font-medium"
+                          : "text-muted-foreground",
                       )}
                     >
                       <Link to={item.path}>
@@ -124,14 +128,10 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
       <SidebarFooter className="*ring-none">
         <SidebarSeparator className="bg-primary" />
         <SidebarMenuItem className="ring-none">
-          <SidebarMenuButton asChild
-            tooltip={"profile"}
-          >
-
+          <SidebarMenuButton asChild tooltip={"profile"}>
             <ProfileComponent handleLogout={handleLogout} userInfo={userInfo} />
           </SidebarMenuButton>
         </SidebarMenuItem>
-
       </SidebarFooter>
     </Sidebar>
   );

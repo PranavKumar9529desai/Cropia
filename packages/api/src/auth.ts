@@ -1,18 +1,17 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma, { User, Session as PrismaSession } from "@repo/db";
+import prisma, { User, Session as PrismaSession, Invitation } from "@repo/db";
 import { openAPI, organization } from "better-auth/plugins";
 import { transporter } from "./utils/email";
 
-// Define sender once
 const SENDER_EMAIL = `"Cropia Team" <${process.env.GMAIL_USER}>`;
 const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5000";
-
+console.log("FRONTEND_URL", frontendUrl);
+console.log("FRONTEND_URL_FARMER_APP", process.env.FRONTEND_URL_FARMER_APP);
+console.log("FRONTEND_URL_ADMIN_APP", process.env.FRONTEND_URL_ADMIN_APP);
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:4000",
   trustedOrigins: [
-    // later we should single source of truth  
-    // ths is only for the development
     process.env.FRONTEND_URL_FARMER_APP || "http://localhost:5000",
     process.env.FRONTEND_URL_ADMIN_APP || "http://localhost:5001",
   ].filter(Boolean) as string[],
@@ -28,155 +27,175 @@ export const auth = betterAuth({
     },
   },
 
+  emailAndPassword: {
+    enabled: true,
+    async sendResetPassword({ user, url, token }) {
+      const resetLink = `${frontendUrl}/reset-password?token=${token || url.split("=")[1]}`;
+      await transporter.sendMail({
+        from: SENDER_EMAIL,
+        to: user.email,
+        subject: "Reset your Cropia password",
+        html: `<p>Click the link below to reset your password:</p><a href="${resetLink}">Reset Password</a>`,
+      });
+    },
+  },
+
+  emailVerification: {
+    autoSignInAfterVerification: true,
+    async sendVerificationEmail({ user, url, token }) {
+      const verifyLink = `${frontendUrl}/verify-email?token=${token || url.split("=")[1]}`;
+      await transporter.sendMail({
+        from: SENDER_EMAIL,
+        to: user.email,
+        subject: "Verify your email for Cropia",
+        html: `<a href="${verifyLink}">Verify Email</a>`,
+      });
+    },
+  },
+
+  session: {
+    additionalFields: {
+      jurisdiction: {
+        type: "json",
+        required: false,
+      },
+    },
+  },
+
   plugins: [
     openAPI(),
     organization({
-      // FIXED: 'data' IS the invitation object. It does not contain a nested 'invitation' property.
+      // v1.4.0: Automatically activates the first organization for the user
+      autoSetOrganization: true,
+      schema: {
+        invitation: {
+          additionalFields: {
+            jurisdiction: { type: "json", required: false, input: true },
+          },
+        },
+        member: {
+          additionalFields: {
+            jurisdiction: { type: "json", required: false, input: true },
+          },
+        },
+      },
+      organizationHooks: {
+        /**
+         * Runs after an admin accepts an invitation.
+         * Since ctx.session can be unreliable during signup, we find the session row manually.
+         */
+        afterAcceptInvitation: async ({
+          invitation,
+          user,
+        }: {
+          invitation: Invitation;
+          user: User;
+        }) => {
+          console.log("🚀 CROPIA: Invite accepted for:", user.email);
+
+          if (invitation && invitation.jurisdiction) {
+            try {
+              // 1. Permanently update the Member record
+              await prisma.member.updateMany({
+                where: {
+                  userId: user.id,
+                  organizationId: invitation.organizationId,
+                },
+                data: {
+                  jurisdiction: invitation.jurisdiction,
+                },
+              });
+
+              // 2. Find the user's latest session row and update it
+              const latestSession = await prisma.session.findFirst({
+                where: { userId: user.id },
+                orderBy: { createdAt: "desc" },
+              });
+
+              if (latestSession) {
+                await prisma.session.update({
+                  where: { id: latestSession.id },
+                  data: {
+                    activeOrganizationId: invitation.organizationId,
+                    jurisdiction: invitation.jurisdiction as any,
+                  },
+                });
+                console.log("✅ Live Session row updated with Jurisdiction.");
+              }
+            } catch (e) {
+              console.error("❌ Sync Error in afterAcceptInvitation:", e);
+            }
+          }
+        },
+      } as any,
       async sendInvitationEmail(data) {
-        // use admin_ulr and invite is for the admin
-
         const inviteLink = `${process.env.FRONTEND_URL_ADMIN_APP || "http://localhost:5001"}/accept-invitation/${data.id}`;
-
         await transporter.sendMail({
           from: SENDER_EMAIL,
           to: data.email,
-          subject: "You've been invited to join a Cropia Organization",
-          html: `
-            <h1>Welcome to the team!</h1>
-            <p>You have been invited to join the organization <b>${data.organization.name}</b>.</p>
-            <p>Click the link below to accept the invitation:</p>
-            <a href="${inviteLink}">Accept Invitation</a>
-          `,
+          subject: "Join the Cropia Team",
+          html: `<h1>Welcome!</h1><p>Join <b>${data.organization.name}</b>.</p><a href="${inviteLink}">Accept Invitation</a>`,
         });
       },
     }),
   ],
 
-  emailAndPassword: {
-    enabled: true,
-    // FIXED: The first argument is the 'user' object directly. It is NOT wrapped in another 'user' property.
-    async sendResetPassword({ user, url, token }) {
-      const resetLink = `${frontendUrl}/reset-password?token=${token || url.split("=")[1]}`;
-      await transporter.sendMail({
-        from: SENDER_EMAIL,
-        to: user.email, // <--- Fixed: was user.user.email
-        subject: "Reset your Cropia password",
-        html: `
-          <p>Click the link below to reset your password:</p>
-          <a href="${resetLink}">Reset Password</a>
-        `,
-      });
-    },
-  },
-  emailVerification: {
-    enabled: true, // 1. Explicitly set to true
-    sendOnSignUp: true, // 2. Send email on sign up
-    autoSignInAfterVerification: true,
-    // 2. FIXED NAME: Changed from 'sendEmailVerification' to 'sendVerificationEmail'
-    async sendVerificationEmail({ user, url, token }) {
-      const verifyLink = `${frontendUrl}/verify-email?token=${token || url.split("=")[1]}`;
-
-      await transporter.sendMail({
-        from: SENDER_EMAIL,
-        to: user.email,
-        subject: "Verify your email for Cropia",
-        html: `
-          <h1>Welcome, ${user.name}!</h1>
-          <p>Please verify your email address to activate your account.</p>
-          <a href="${verifyLink}">Verify Email</a>
-        `,
-      });
-    },
-  },
+  /**
+   * Database Hooks: Ensures every new login/session is correctly scoped to the
+   * Admin's organization and jurisdiction.
+   */
   databaseHooks: {
-    member: {
-      create: {
-        before: async (member: any) => {
-          // 1. We need the user's email to find the invitation
-          const user = await prisma.user.findUnique({
-            where: { id: member.userId },
-            select: { email: true }
-          });
-
-          if (!user) return member;
-
-          // 2. Find the pending invitation
-          const invitation = await prisma.invitation.findFirst({
-            where: {
-              email: user.email,
-              organizationId: member.organizationId,
-            },
-            select: {
-              jurisdiction: true
-            }
-          });
-
-          // 3. If invitation has jurisdiction, attached it to the new member
-          if (invitation && invitation.jurisdiction) {
-            return {
-              ...member,
-              jurisdiction: invitation.jurisdiction
-            }
-          }
-
-          return member;
-        }
-      }
-    },
     session: {
       create: {
-        after: async (session) => {
-          // This runs after session creation if needed, but we need read/get
-        }
-      }
-    }
-  },
+        before: async (session: PrismaSession) => {
+          const member = await prisma.member.findFirst({
+            where: { userId: session.userId },
+            select: { organizationId: true, jurisdiction: true },
+          });
+
+          if (member) {
+            console.log(
+              "🛠️ DB HOOK: Injecting Active Org into new session row.",
+            );
+            return {
+              data: {
+                ...session,
+                activeOrganizationId: member.organizationId,
+                jurisdiction: member.jurisdiction || null,
+              },
+            };
+          }
+          return { data: session };
+        },
+      },
+    },
+  } as any,
+
   callbacks: {
-    async session(session: { session: PrismaSession; user: User }, request: any) {
-      console.log("---------- SESSION CALLBACK START ----------");
-      console.log("Original Session activeOrgId:", session.session.activeOrganizationId);
-      console.log("User ID:", session.user.id);
+    async session({ session, user }: { session: PrismaSession; user: User }) {
+      // NOTE: To see these logs, perform a HARD REFRESH (Ctrl + F5)
+      // This bypasses the browser's cookie cache.
+      console.log("📡 CALLBACK: Hydrating session response for", user.email);
 
-      let member;
+      const activeOrgId = session.activeOrganizationId;
 
-      if (session.session.activeOrganizationId) {
-        console.log("Searching by Org + User");
-        member = await prisma.member.findFirst({
-          where: {
-            organizationId: session.session.activeOrganizationId,
-            userId: session.user.id
-          },
-          select: {
-            jurisdiction: true
-          }
-        });
-      } else {
-        console.log("Searching by User Only (Fallback)");
-        // Fallback: If no active org, try to find *any* membership (matching AdminSessionMiddleware behavior)
-        member = await prisma.member.findFirst({
-          where: {
-            userId: session.user.id
-          },
-          select: {
-            jurisdiction: true
-          }
-        });
-      }
+      // Ensure the response object matches the database source of truth
+      const member = await prisma.member.findFirst({
+        where: {
+          userId: user.id,
+          organizationId: activeOrgId || undefined,
+        },
+        select: { jurisdiction: true, organizationId: true },
+      });
 
-      console.log("Found Member:", member);
-
-      const newSession = {
-        ...session,
+      return {
         session: {
-          ...session.session,
-          jurisdiction: member?.jurisdiction || null
-        }
+          ...session,
+          activeOrganizationId: activeOrgId || member?.organizationId || null,
+          jurisdiction: session.jurisdiction || member?.jurisdiction || null,
+        },
+        user,
       };
-
-      console.log("Returning Session with Jurisdiction:", newSession.session.jurisdiction);
-      console.log("---------- SESSION CALLBACK END ----------");
-
-      return newSession;
-    }
-  }
+    },
+  },
 });
