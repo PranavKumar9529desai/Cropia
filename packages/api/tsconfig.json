@@ -3,15 +3,19 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@repo/api/*": [
-        "./src/*"
+      "@/utils/*": [
+        "src/utils/*"
+      ],
+      "@/auth": [
+        "src/auth.ts"
       ]
     },
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "rootDir": "."
   },
-  "include": [
-    "src"
+  "exclude": [
+    "dist"
   ]
 }

@@ -14,7 +14,6 @@ console.log(
   process.env.FRONTEND_URL_FARMER_APP,
 );
 console.log(
-  "FRONTEND_URL_ADMIN_APP index.ts",
   process.env.FRONTEND_URL_ADMIN_APP,
 );
 const app = new Hono()
@@ -53,7 +52,4 @@ const app = new Hono()
 
 export type AppType = typeof app;
 
-export default {
-  port: process.env.BACKEND_PORT,
-  fetch: app.fetch,
-};
+export { app };

@@ -7,9 +7,9 @@ Cropia is a modern web application built with a robust monorepo architecture usi
 - **Monorepo**: [Turborepo](https://turbo.build/repo)
 - **Package Manager**: [Bun](https://bun.sh/)
 - **Frontend**: [React](https://react.dev/), [Vite](https://vitejs.dev/), [TanStack Router](https://tanstack.com/router/latest) (`apps/web`)
-- **Backend**: [Hono](https://hono.dev/) (`apps/api`)
+- **Backend**: [Hono](https://hono.dev/) (`packages/api`)
 - **Auth**: [BetterAuth](https://better-auth.com/)
-  - Handler: `apps/api/src/auth.ts`
+  - Handler: `repo/api/src/auth.ts`
   - Client: `apps/web/src/lib/auth/auth-client.ts`
 - **Database**: MongoDB (via [Prisma](https://www.prisma.io/) in `packages/db`)
 - **Type-Safety**: End-to-end type safety with Hono RPC (`apps/web/src/lib/rpc.ts`)
@@ -17,8 +17,9 @@ Cropia is a modern web application built with a robust monorepo architecture usi
 
 ## Project Structure
 
-- `apps/web`: The main frontend application built with Vite and TanStack Router.
-- `apps/api`: The backend API server built with Hono.
+- `apps/farmer`: The main frontend application built with Vite and TanStack Router.
+-  `apps/admin`: The main frontend application built with Vite and TanStack Router.
+- `packages/api`: The backend API server built with Hono.
 - `packages/ui`: A shared UI component library using Shadcn UI and Tailwind CSS.
 - `packages/db`: Database schema and Prisma client configuration.
 - `packages/tsconfig`: Shared TypeScript configurations used throughout the monorepo.

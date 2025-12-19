@@ -4,14 +4,14 @@
   "exports": {
     ".": "./src/index.ts",
     "./index.ts": "./src/index.ts",
-    "./auth.ts": "./src/auth.ts"
+    "./auth.ts": "./src/auth.ts",
+    "./utils/*": "./src/utils/*.ts"
   },
   "types": "./dist/index.d.ts",
   "scripts": {
-    "dev": "bun run --watch src/index.ts",
-    "build": "tsc --emitDeclarationOnly",
-    "start": "bun --env-file=.env.production src/index.ts",
-    "preview": "bun --env-file=.env.production src/index.ts"
+    "build": "tsc",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.44",
@@ -26,7 +26,9 @@
     "nodemailer": "^7.0.11"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/nodemailer": "^7.0.4"
+    "@types/nodemailer": "^7.0.4",
+    "eslint": "^9.39.1"
   }
 }

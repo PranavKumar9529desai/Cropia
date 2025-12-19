@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma, { User, Session as PrismaSession, Invitation } from "@repo/db";
 import { openAPI, organization } from "better-auth/plugins";
-import { transporter } from "./utils/email";
+import { transporter } from "@repo/api/utils/email";
 
 const SENDER_EMAIL = `"Cropia Team" <${process.env.GMAIL_USER}>`;
 const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5000";
