@@ -26,8 +26,14 @@ import { createAuthClient } from "better-auth/react";
 
 import { organizationClient } from "better-auth/client/plugins";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+if (!backendUrl && import.meta.env.PROD) {
+  throw new Error("Missing VITE_BACKEND_URL in production environment");
+}
+
 export const authClient = createAuthClient({
-  baseURL: import.meta.env.VITE_BACKEND_URL ?? "http://localhost:4000",
+  baseURL: backendUrl ?? "http://localhost:4000",
 
   plugins: [organizationClient()],
 });

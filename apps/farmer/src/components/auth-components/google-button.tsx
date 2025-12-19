@@ -12,12 +12,14 @@ export const GoogleButton = ({ title }: { title: string }) => {
     setIsLoading(true);
     const toastId = toast.loading("Wait Signing You in..!");
     try {
-      const redirect_url = import.meta.env.VITE_FRONTEND_URL + "/dashboard";
-      console.log("redriect_url", redirect_url);
+      const frontendUrl =
+        import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+      const redirect_url = frontendUrl + "/dashboard";
+
+      console.log("redirect_url", redirect_url);
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL:
-          redirect_url ?? import.meta.env.VITE_FRONTEND_URL + "/dashboard",
+        callbackURL: redirect_url,
       });
       if (error) {
         toast.error("Failed to SignIn..!", { id: toastId });
