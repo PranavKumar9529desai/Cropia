@@ -2,7 +2,7 @@ import { app } from "@repo/api";
 import { handle } from "hono/vercel";
 
 export const config = {
-    runtime: 'edge'
+    runtime: 'nodejs'
 };
 
 const port = process.env.BACKEND_PORT || 4000;
