@@ -5,7 +5,7 @@ export const config = {
     runtime: 'edge'
 };
 
-const port = process.env.BACKEND_PORT || 3000;
+const port = process.env.BACKEND_PORT || 4000;
 
 // For Vercel Serverless
 export const GET = handle(app);
