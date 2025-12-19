@@ -15,4 +15,7 @@
     "outDir": "./dist",
     "rootDir": "."
   },
+  "exclude": [
+    "dist"
+  ]
 }

@@ -1,10 +1,13 @@
 {
     "name": "api-server",
     "version": "0.0.0",
+    "version": "0.0.0",
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "bun run --watch src/index.ts",
         "start": "bun src/index.ts",
+        "lint": "eslint .",
         "type-check": "tsc --noEmit"
     },
     "dependencies": {
@@ -12,7 +15,9 @@
         "hono": "^4.0.0"
     },
     "devDependencies": {
+        "@repo/eslint-config": "workspace:*",
         "@repo/typescript-config": "workspace:*",
-        "@types/bun": "latest"
+        "@types/bun": "latest",
+        "eslint": "^9.39.1"
     }
 }
