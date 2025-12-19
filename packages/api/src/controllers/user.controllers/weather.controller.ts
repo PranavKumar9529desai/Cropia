@@ -1,13 +1,13 @@
 import { Hono } from "hono";
-import { auth } from "@repo/api/auth.ts";
+import { auth } from "../../auth";
 import { prisma } from "@repo/db";
 import {
   calculateWaterBalance,
   analyzeSprayConditions,
   analyzeRootHealth,
   type OpenMeteoResponse,
-} from "@repo/api/utils/weather-data/weather-helpers";
-import { getWeatherData } from "@repo/api/utils/weather-data/get-weather-data";
+} from "../../utils/weather-data/weather-helpers";
+import { getWeatherData } from "../../utils/weather-data/get-weather-data";
 
 const WeatherController = new Hono<{
   Variables: {
