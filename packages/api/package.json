@@ -9,9 +9,7 @@
   },
   "types": "./dist/index.d.ts",
   "scripts": {
-    "dev": "bun run --watch src/index.ts",
-    "start": "bun --env-file=.env.production src/index.ts",
-    "preview": "bun --env-file=.env.production src/index.ts"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@ai-sdk/google": "^2.0.44",

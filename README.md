@@ -17,7 +17,8 @@ Cropia is a modern web application built with a robust monorepo architecture usi
 
 ## Project Structure
 
-- `apps/web`: The main frontend application built with Vite and TanStack Router.
+- `apps/farmer`: The main frontend application built with Vite and TanStack Router.
+-  `apps/admin`: The main frontend application built with Vite and TanStack Router.
 - `packages/api`: The backend API server built with Hono.
 - `packages/ui`: A shared UI component library using Shadcn UI and Tailwind CSS.
 - `packages/db`: Database schema and Prisma client configuration.
