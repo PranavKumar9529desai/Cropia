@@ -61,6 +61,17 @@ export const auth = betterAuth({
     },
   },
 
+  advanced: {
+    cookies: {
+      session_token: {
+        attributes: {
+          sameSite: "None",
+          secure: true,
+        },
+      },
+    },
+  },
+
   plugins: [
     openAPI(),
     organization({
