@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma, { User, Session as PrismaSession, Invitation } from "@repo/db";
 import { openAPI, organization } from "better-auth/plugins";
-import { transporter } from "@repo/api/utils/email";
+import { transporter } from "./utils/email";
 
 const SENDER_EMAIL = `"Cropia Team" <${process.env.GMAIL_USER}>`;
 // as the admin is invite only, we use the farmer app url for both admin and farmer
