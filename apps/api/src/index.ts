@@ -6,5 +6,5 @@ console.log(`Starting server on port ${port}`);
 
 export default {
     port,
-    fetch: app.fetch,
+    fetch: app.fetch as any,
 };

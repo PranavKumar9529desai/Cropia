@@ -4,7 +4,19 @@
   "globalEnv": [
     "DATABASE_URL",
     "BACKEND_PORT",
-    "NODE_ENV"
+    "NODE_ENV",
+    "FRONTEND_URL_FARMER_APP",
+    "FRONTEND_URL_ADMIN_APP",
+    "BETTER_AUTH_SECRET",
+    "BACKEND_URL",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GMAIL_USER",
+    "GMAIL_PASSWORD",
+    "CLOUDINARY_CLOUD_NAME",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_API_SECRET",
+    "INDIA_LOCATION_API_BASE"
   ],
   "tasks": {
     "db:generate": {
