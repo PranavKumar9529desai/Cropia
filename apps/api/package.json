@@ -1,12 +1,12 @@
 {
     "name": "api-server",
     "version": "0.0.0",
-    "version": "0.0.0",
     "private": true,
     "type": "module",
     "scripts": {
         "dev": "bun run --watch src/index.ts",
         "start": "bun src/index.ts",
+        "build": "tsc --noEmit",
         "lint": "eslint .",
         "type-check": "tsc --noEmit"
     },
