@@ -1,0 +1,12 @@
+{
+    "extends": "@repo/typescript-config/base.json",
+    "compilerOptions": {
+        "moduleResolution": "bundler",
+        "module": "esnext",
+        "outDir": "dist",
+        "rootDir": "src"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
