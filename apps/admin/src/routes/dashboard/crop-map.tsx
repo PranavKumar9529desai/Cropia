@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import CropMap from "../../components/map/crop.map";
 import { apiClient } from "../../lib/rpc";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "@repo/ui/components/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@repo/ui/components/dialog";
+import { Button } from "@repo/ui/components/button";
 import { Calendar, MapPin, Search } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/crop-map")({
@@ -101,91 +102,119 @@ function RouteComponent() {
         />
       </div>
 
-      {/* Scan Detail Drawer */}
-      <Sheet open={!!selectedScan} onOpenChange={() => setSelectedScan(null)}>
-        <SheetContent className="sm:max-w-md overflow-y-auto">
-          <SheetHeader className="pb-4">
-            <SheetTitle className="text-xl font-bold">Scan Details</SheetTitle>
-            <SheetDescription>
-              Detailed information about the selected crop scan.
-            </SheetDescription>
-          </SheetHeader>
-
-          {selectedScan && (
-            <div className="space-y-6">
-              {/* Optimized Image */}
-              <div className="relative aspect-video rounded-lg overflow-hidden border bg-muted">
-                <img
-                  src={getOptimizedUrl(selectedScan.thumbnail)}
-                  alt={selectedScan.crop}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-2 right-2">
-                  <span
-                    className={`px-2.5 py-0.5 rounded-full text-xs font-semibold shadow-sm ${selectedScan.status === "healthy"
-                        ? "bg-green-100 text-green-800 border border-green-200"
-                        : selectedScan.status === "warning"
-                          ? "bg-yellow-100 text-yellow-800 border border-yellow-200"
-                          : "bg-red-100 text-red-800 border border-red-200"
-                      }`}
-                  >
-                    {selectedScan.status.toUpperCase()}
-                  </span>
-                </div>
-              </div>
-
-              {/* Data Grid */}
-              <div className="grid grid-cols-1 gap-4">
-                <div className="p-4 rounded-lg bg-secondary/30 border space-y-1">
-                  <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Crop Type
-                  </div>
-                  <div className="text-lg font-bold text-primary">
-                    {selectedScan.crop}
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-lg bg-secondary/30 border space-y-1">
-                  <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    AI Diagnosis
-                  </div>
-                  <div className="text-lg font-bold text-primary">
-                    {selectedScan.disease}
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-lg bg-secondary/30 border space-y-1">
-                  <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Visual Observation
-                  </div>
-                  <div className="text-sm text-foreground">
-                    {selectedScan.visualIssue}
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 p-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4 text-primary" />
-                  <span>{selectedScan.locationText}</span>
-                </div>
-
-                <div className="flex items-center gap-3 p-2 text-sm text-muted-foreground">
-                  <Calendar className="h-4 w-4 text-primary" />
-                  <span>{new Date(selectedScan.date).toLocaleString()}</span>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="pt-4 flex flex-col gap-2">
-                {/* We can add a "View Full Report" button here later */}
-                <button className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors">
-                  <Search className="h-4 w-4" />
-                  Analyze Further
-                </button>
+      {/* Scan Detail Dialog */}
+      <Dialog open={!!selectedScan} onOpenChange={() => setSelectedScan(null)}>
+        <DialogContent className="sm:max-w-md w-[90%] rounded-lg overflow-hidden p-0 gap-0">
+          {selectedScan?.thumbnail && (
+            <div className="relative w-full h-48 bg-muted">
+              <img
+                src={getOptimizedUrl(selectedScan.thumbnail)}
+                alt={selectedScan.crop}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute top-4 left-4">
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md ${selectedScan.status === "healthy"
+                    ? "bg-green-500/80 text-white"
+                    : selectedScan.status === "warning"
+                      ? "bg-yellow-500/80 text-white"
+                      : "bg-red-500/80 text-white"
+                    }`}
+                >
+                  {selectedScan.status.toUpperCase()}
+                </span>
               </div>
             </div>
           )}
-        </SheetContent>
-      </Sheet>
+
+          <div className="p-6 pt-4 flex flex-col gap-4">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-bold flex items-center justify-between">
+                <span>Scan Details</span>
+                <span className="text-sm font-normal text-muted-foreground">
+                  {new Date(selectedScan?.date).toLocaleDateString()}
+                </span>
+              </DialogTitle>
+              <DialogDescription>
+                Detailed information about the selected crop scan.
+              </DialogDescription>
+            </DialogHeader>
+
+            {selectedScan && (
+              <div className="space-y-4">
+                {/* Status-specific highlight */}
+                <div
+                  className={`p-4 rounded-lg border ${selectedScan.status === "healthy"
+                    ? "bg-green-50 border-green-200"
+                    : selectedScan.status === "warning"
+                      ? "bg-yellow-50 border-yellow-200"
+                      : "bg-red-50 border-red-200"
+                    }`}
+                >
+                  <h4
+                    className={`font-semibold mb-1 flex items-center gap-2 ${selectedScan.status === "healthy"
+                      ? "text-green-800"
+                      : selectedScan.status === "warning"
+                        ? "text-yellow-800"
+                        : "text-red-800"
+                      }`}
+                  >
+                    {selectedScan.crop}
+                  </h4>
+                  <p
+                    className={`text-sm ${selectedScan.status === "healthy"
+                      ? "text-green-700"
+                      : selectedScan.status === "warning"
+                        ? "text-yellow-700"
+                        : "text-red-700"
+                      }`}
+                  >
+                    {selectedScan.disease}
+                  </p>
+                </div>
+
+                {/* Additional Info */}
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="bg-muted/30 p-3 rounded-lg border">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">
+                      Visual Observation
+                    </p>
+                    <p className="text-sm text-foreground">
+                      {selectedScan.visualIssue}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 px-1 text-sm text-muted-foreground line-clamp-1">
+                    <MapPin className="h-4 w-4 shrink-0 text-primary" />
+                    <span>{selectedScan.locationText}</span>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-col gap-2 pt-2">
+                  {/* <Button
+                    className="w-full"
+                    onClick={() => {
+                      // Logic for analysis can go here
+                    }}
+                  >
+                    <Search className="h-4 w-4 mr-2" />
+                    Analyze Further
+                  </Button> */}
+                  <Button
+                    variant="ghost"
+                    className="w-full bg-primary text-white"
+                    onClick={() => setSelectedScan(null)}
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

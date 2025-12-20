@@ -112,8 +112,7 @@ const AiController = new Hono<{
 
     // AI SDK v5: streamText returns the result object immediately`
     const result = await streamText({
-      // maxium rate limit model
-      model: google("gemini-2.5-flash-lite"),
+      model: google("gemini-2.0-flash-lite"),
       system: systemPrompt,
       messages: convertToModelMessages(messages), // Convert UI messages to Core messages
     });

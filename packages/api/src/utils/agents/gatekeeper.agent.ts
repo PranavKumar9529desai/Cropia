@@ -41,7 +41,7 @@ export const analyzeCropImage = async (imageBase64: string): Promise<ImageAnalys
 
     console.log("[Gatekeeper V2] Analyzing image...");
     const { object } = await generateObject({
-      model: google("gemini-2.0-flash-exp"),
+      model: google("gemini-2.5-flash-lite"),
       schema: AnalysisSchema,
       messages: [
         {
