@@ -24,7 +24,7 @@ export function CheckEmailCard({
   resendText,
 }: CheckEmailCardProps) {
   return (
-    <Card className="w-full max-w-md mx-auto text-center">
+    <Card className="w-full max-w-sm mx-auto text-center bg-transparent sm:!bg-card border-none">
       <CardHeader>
         <div className="flex justify-center mb-4">
           <div className="rounded-full bg-primary/10 p-4">
@@ -41,16 +41,7 @@ export function CheckEmailCard({
           </span>
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground">
-          Click the link in the email to verify your account and continue
-          setting up your profile.
-        </p>
-        <p className="text-xs text-muted-foreground">
-          Didn&apos;t receive the email? Check your spam folder or try
-          resending.
-        </p>
-      </CardContent>
+
       <CardFooter className="flex flex-col gap-4">
         <Button
           variant="default"

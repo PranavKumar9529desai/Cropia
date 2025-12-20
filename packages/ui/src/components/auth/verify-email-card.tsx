@@ -25,7 +25,7 @@ export function VerifyEmailCard({
   onContinue,
 }: VerifyEmailCardProps) {
   return (
-    <Card className="w-full max-w-md mx-auto text-center">
+    <Card className="w-full max-w-md mx-auto text-center bg-transparent sm:!bg-card border-none sm:border-card">
       <CardHeader>
         <CardTitle>Email Verification</CardTitle>
         <CardDescription>
@@ -36,7 +36,7 @@ export function VerifyEmailCard({
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex flex-col items-center justify-center py-6 space-y-4">
+      <CardContent className="flex flex-col items-center justify-center py-4 space-y-8">
         {status === "loading" && (
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
         )}

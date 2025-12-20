@@ -16,12 +16,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardFarmerAlertsRouteImport } from './routes/dashboard/farmer-alerts'
 import { Route as DashboardCropMapRouteImport } from './routes/dashboard/crop-map'
 import { Route as DashboardAreaScanRouteImport } from './routes/dashboard/area-scan'
-import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
-import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
 import { Route as AuthAcceptInvitationIdRouteImport } from './routes/_auth/accept-invitation.$id'
 
 const SkeltonRoute = SkeltonRouteImport.update({
@@ -58,11 +56,6 @@ const DashboardAreaScanRoute = DashboardAreaScanRouteImport.update({
   path: '/area-scan',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
-  id: '/verify-email',
-  path: '/verify-email',
-  getParentRoute: () => AuthRouteRoute,
-} as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
@@ -83,11 +76,6 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const AuthCheckEmailRoute = AuthCheckEmailRouteImport.update({
-  id: '/check-email',
-  path: '/check-email',
-  getParentRoute: () => AuthRouteRoute,
-} as any)
 const AuthAcceptInvitationIdRoute = AuthAcceptInvitationIdRouteImport.update({
   id: '/accept-invitation/$id',
   path: '/accept-invitation/$id',
@@ -98,12 +86,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
-  '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
-  '/verify-email': typeof AuthVerifyEmailRoute
   '/dashboard/area-scan': typeof DashboardAreaScanRoute
   '/dashboard/crop-map': typeof DashboardCropMapRoute
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
@@ -113,12 +99,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
-  '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
-  '/verify-email': typeof AuthVerifyEmailRoute
   '/dashboard/area-scan': typeof DashboardAreaScanRoute
   '/dashboard/crop-map': typeof DashboardCropMapRoute
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
@@ -130,12 +114,10 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
-  '/_auth/check-email': typeof AuthCheckEmailRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
-  '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/dashboard/area-scan': typeof DashboardAreaScanRoute
   '/dashboard/crop-map': typeof DashboardCropMapRoute
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
@@ -147,12 +129,10 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/skelton'
-    | '/check-email'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
-    | '/verify-email'
     | '/dashboard/area-scan'
     | '/dashboard/crop-map'
     | '/dashboard/farmer-alerts'
@@ -162,12 +142,10 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/skelton'
-    | '/check-email'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
-    | '/verify-email'
     | '/dashboard/area-scan'
     | '/dashboard/crop-map'
     | '/dashboard/farmer-alerts'
@@ -178,12 +156,10 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/dashboard'
     | '/skelton'
-    | '/_auth/check-email'
     | '/_auth/forgot-password'
     | '/_auth/reset-password'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
-    | '/_auth/verify-email'
     | '/dashboard/area-scan'
     | '/dashboard/crop-map'
     | '/dashboard/farmer-alerts'
@@ -248,13 +224,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAreaScanRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/_auth/verify-email': {
-      id: '/_auth/verify-email'
-      path: '/verify-email'
-      fullPath: '/verify-email'
-      preLoaderRoute: typeof AuthVerifyEmailRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
     '/_auth/sign-up': {
       id: '/_auth/sign-up'
       path: '/sign-up'
@@ -283,13 +252,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRouteRoute
     }
-    '/_auth/check-email': {
-      id: '/_auth/check-email'
-      path: '/check-email'
-      fullPath: '/check-email'
-      preLoaderRoute: typeof AuthCheckEmailRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
     '/_auth/accept-invitation/$id': {
       id: '/_auth/accept-invitation/$id'
       path: '/accept-invitation/$id'
@@ -301,22 +263,18 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteRouteChildren {
-  AuthCheckEmailRoute: typeof AuthCheckEmailRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthSignInRoute: typeof AuthSignInRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
-  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
   AuthAcceptInvitationIdRoute: typeof AuthAcceptInvitationIdRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthCheckEmailRoute: AuthCheckEmailRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
-  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
   AuthAcceptInvitationIdRoute: AuthAcceptInvitationIdRoute,
 }
 
