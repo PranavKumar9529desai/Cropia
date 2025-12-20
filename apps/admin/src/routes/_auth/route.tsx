@@ -5,11 +5,13 @@ import {
   useRouter,
 } from "@tanstack/react-router";
 import { NavBar } from "../../components/navbar/auth-navbar";
-// import { authClient } from "../../lib/auth/auth-client";
+import { authClient } from "../../lib/auth/auth-client";
 import { SlideShow } from "@/components/auth-components/slide-show";
 export const Route = createFileRoute("/_auth")({
-  beforeLoad: async ({ context }) => {
-    if (context.auth) {
+  beforeLoad: async () => {
+    const response = await authClient.getSession();
+    const isLogged = response.data ? true : false;
+    if (isLogged) {
       throw redirect({
         to: "/dashboard",
         search: {

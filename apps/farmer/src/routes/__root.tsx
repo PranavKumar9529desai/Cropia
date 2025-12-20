@@ -7,6 +7,10 @@ export interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  beforeLoad: async () => {
+    const { data } = await authClient.getSession();
+    return { auth: data };
+  },
   component: () => (
     <>
       <div className="overflow-hidden w-screen h-screen">

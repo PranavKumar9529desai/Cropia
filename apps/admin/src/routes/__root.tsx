@@ -7,6 +7,14 @@ export interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  /**
+   * 1. ROUTE GUARD LOGIC (Static Check)
+   * We use getSession() here because hooks (useSession) aren't allowed.
+   */
+  beforeLoad: async () => {
+    const { data: session } = await authClient.getSession();
+    return { auth: session };
+  },
   component: RootComponent,
 });
 
