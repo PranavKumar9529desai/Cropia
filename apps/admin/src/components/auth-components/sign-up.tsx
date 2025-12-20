@@ -3,7 +3,6 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardDescription,
   CardContent,
   CardFooter,
 } from "@repo/ui/components/card";
@@ -11,17 +10,14 @@ import { Button } from "@repo/ui/components/button";
 
 export const SignUp = () => {
   return (
-    <Card className="w-full max-w-sm border-none shadow-none">
-      <CardHeader className="text-3xl font-bold text-primary space-y-2">
-        <CardTitle>Invitation Required</CardTitle>
-        <CardDescription>
-          Admin accounts can only be created via an invitation link.
-        </CardDescription>
+    <Card className="w-full max-w-sm border-none shadow-none bg-transparent sm:!bg-card sm:border-card">
+      <CardHeader>
+        <CardTitle className="text-2xl font-semibold">Invitation Required</CardTitle>
       </CardHeader>
-      <CardContent className="text-muted-foreground">
+      <CardContent className="text-muted-foreground text-sm">
         <p>
-          Please check your email for an invitation from your organization. If
-          you believe this is an error, contact your administrator.
+          Admin accounts are invite-only. Please check your email for an
+          invitation from your organization.
         </p>
       </CardContent>
       <CardFooter>
