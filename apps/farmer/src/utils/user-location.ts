@@ -114,3 +114,70 @@ export const getVillages = async (
   }
   return result.data.villages;
 };
+
+export const reverseGeocode = async (lat: number, lng: number) => {
+  const key = import.meta.env.VITE_MAPTILER_KEY;
+  if (!key) {
+    console.error("MapTiler key not found");
+    return null;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.maptiler.com/geocoding/${lng},${lat}.json?key=${key}&language=en`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch reverse geocoding data");
+    }
+
+    const data = await response.json();
+    const features = data.features;
+
+    if (!features || features.length === 0) {
+      return null;
+    }
+
+    // MapTiler hierarchy: region (State), subregion/county (District), locality (City/Town)
+    const result: any = {
+      state: "",
+      district: "",
+      city: "",
+      pincode: "",
+      address: features[0]?.place_name || "",
+    };
+
+    features.forEach((feature: any) => {
+      const type = feature.place_type[0];
+      if (type === "region") result.state = feature.text;
+      if (type === "subregion" || type === "county") result.district = feature.text;
+      if (type === "locality" || type === "place") result.city = feature.text;
+      if (type === "postal_code") result.pincode = feature.text;
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Reverse geocoding error:", error);
+    return null;
+  }
+};
+
+export const forwardGeocode = async (query: string) => {
+  const key = import.meta.env.VITE_MAPTILER_KEY;
+  if (!key) return null;
+
+  try {
+    const response = await fetch(
+      `https://api.maptiler.com/geocoding/${encodeURIComponent(query)}.json?key=${key}&language=en&limit=1`,
+    );
+    const data = await response.json();
+    if (data.features && data.features.length > 0) {
+      const [lng, lat] = data.features[0].center;
+      return { lat, lng };
+    }
+    return null;
+  } catch (error) {
+    console.error("Forward geocoding error:", error);
+    return null;
+  }
+};
