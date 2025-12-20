@@ -6,13 +6,11 @@ import {
 } from "@tanstack/react-router";
 import { NavBar } from "../../components/navbar/auth-navbar";
 import { getuserLocationStatus } from "../../utils/user-location";
-import { authClient } from "../../lib/auth/auth-client";
+// import { authClient } from "../../lib/auth/auth-client";
 import { SlideShow } from "@/components/auth-components/slide-show";
 export const Route = createFileRoute("/_auth")({
-  beforeLoad: async ({ location }) => {
-    const response = await authClient.getSession();
-    const isLogged = response.data ? true : false;
-    if (isLogged) {
+  beforeLoad: async ({ context, location }) => {
+    if (context.auth) {
       const isLocationFormSubmitted = await getuserLocationStatus();
       console.log("isLocationFormSubmitted", isLocationFormSubmitted);
 

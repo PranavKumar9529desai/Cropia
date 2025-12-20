@@ -6,11 +6,13 @@ import { Toaster } from "@repo/ui/components/sonner";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import { ThemeProvider } from "./components/theme-provider";
-// import { authClient } from "./lib/auth/auth-client";
+import { authClient } from "./lib/auth/auth-client";
 
 // Create a new router instance
 const router = createRouter({
   routeTree,
+  defaultPreload: "intent",
+  defaultViewTransition: true,
   context: {
     auth: null,
   },
@@ -23,7 +25,17 @@ declare module "@tanstack/react-router" {
 }
 
 export function App() {
-  return <RouterProvider router={router} />;
+  const session = authClient.useSession();
+
+  if (session.isPending) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  return <RouterProvider router={router} context={{ auth: session.data }} />;
 }
 
 createRoot(document.getElementById("root")!).render(
