@@ -246,7 +246,7 @@ export function RouteComponent() {
         try {
           const errorData = await response.json();
           errorMessage = (errorData as any).error || errorMessage;
-        } catch (e) {}
+        } catch (e) { }
 
         toast.error(errorMessage, { id: toastId });
         return;
@@ -266,8 +266,8 @@ export function RouteComponent() {
   return (
     <>
       <Card className="w-full max-w-md sm:max-w-lg border-none shadow-none bg-transparent px-4 sm:px-2">
-        <CardHeader className="text-3xl font-bold text-primary space-y-2">
-          <CardTitle>
+        <CardHeader className="text-3xl font-bold text-primary space-y-2 p-4">
+          <CardTitle className="">
             {authType === "sign-up" ? "Final Step" : "Location Required"}
           </CardTitle>
           <CardDescription>
@@ -282,13 +282,13 @@ export function RouteComponent() {
           >
             <CardContent className="space-y-4 text-primary/90 p-4">
               {/* Geolocation Section */}
-              <div className="flex flex-col gap-2 bg-muted/50 rounded-lg p-2">
+              <div className="flex flex-col gap-2 bg-muted/50 rounded-lg space-y-2">
                 <div className="flex items-center justify-between">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={handleDetectLocation}
-                    className="gap-2 text-xs"
+                    className="gap-2 text-xs text-primary"
                   >
                     <MapPin className="h-3 w-3" /> Detect GPS Coords
                   </Button>
@@ -304,7 +304,7 @@ export function RouteComponent() {
                             placeholder="Lat"
                             {...field}
                             readOnly
-                            className="bg-background/50 text-xs"
+                            className="bg-muted text-foreground text-xs"
                           />
                         </FormControl>
                       </FormItem>
@@ -320,7 +320,7 @@ export function RouteComponent() {
                             placeholder="Long"
                             {...field}
                             readOnly
-                            className="bg-background/50 text-xs"
+                            className="bg-muted text-foreground text-xs"
                           />
                         </FormControl>
                       </FormItem>
@@ -488,15 +488,16 @@ export function RouteComponent() {
               </div>
 
               {/* City (Manual?) and Pincode */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 ">
                 <FormField
                   control={form.control}
                   name="city"
+
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>City / Town</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nearest City" {...field} />
+                        <Input placeholder="Nearest City" {...field} className="bg-muted text-foreground" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -510,7 +511,7 @@ export function RouteComponent() {
                     <FormItem>
                       <FormLabel>Pincode</FormLabel>
                       <FormControl>
-                        <Input placeholder="Zip Code" {...field} />
+                        <Input placeholder="Zip Code" {...field} className="bg-muted text-foreground" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -526,7 +527,7 @@ export function RouteComponent() {
                   <FormItem>
                     <FormLabel>Address Detail</FormLabel>
                     <FormControl>
-                      <Input placeholder="House No, Street Area" {...field} />
+                      <Input placeholder="House No, Street Area" {...field} className="bg-muted text-foreground" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

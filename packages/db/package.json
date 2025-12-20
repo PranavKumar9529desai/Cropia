@@ -19,7 +19,9 @@
     "db:generate": "bunx --bun prisma generate",
     "db:push": "dotenv -e .env.local -- bunx --bun prisma db push",
     "db:push:prod": "dotenv -e .env.production -- bunx --bun prisma db push",
-    "db:studio": "dotenv -e .env.local -- bunx --bun prisma studio"
+    "db:studio": "dotenv -e .env.local -- bunx --bun prisma studio",
+    "db:local": "dotenv -e .env.local -- bun",
+    "db:production": "dotenv -e .env.production -- bun"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",

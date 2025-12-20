@@ -58,6 +58,7 @@ const unclusteredPointLayer: LayerProps = {
 
 interface CropMapProps {
   data: any; // This will be your GeoJSON from the API
+  onPointClick?: (properties: any) => void;
   defaultView?: {
     longitude: number;
     latitude: number;
@@ -65,7 +66,7 @@ interface CropMapProps {
   };
 }
 
-export default function CropMap({ data, defaultView }: CropMapProps) {
+export default function CropMap({ data, onPointClick, defaultView }: CropMapProps) {
   const mapRef = useRef<MapRef>(null);
 
   const onClick = (event: any) => {
@@ -85,9 +86,9 @@ export default function CropMap({ data, defaultView }: CropMapProps) {
           duration: 500,
         });
       });
-    } else {
-      // Logic: If clicked on a Single Dot -> Show Info (You can add a drawer/modal trigger here)
-      console.log("Clicked scan:", feature.properties);
+    } else if (onPointClick) {
+      // Logic: If clicked on a Single Dot -> Show Info
+      onPointClick(feature.properties);
     }
   };
 

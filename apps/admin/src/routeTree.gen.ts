@@ -20,6 +20,7 @@ import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
+import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
 import { Route as AuthAcceptInvitationIdRouteImport } from './routes/_auth/accept-invitation.$id'
 
 const SkeltonRoute = SkeltonRouteImport.update({
@@ -76,6 +77,11 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AuthCheckEmailRoute = AuthCheckEmailRouteImport.update({
+  id: '/check-email',
+  path: '/check-email',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 const AuthAcceptInvitationIdRoute = AuthAcceptInvitationIdRouteImport.update({
   id: '/accept-invitation/$id',
   path: '/accept-invitation/$id',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
+  '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
+  '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
+  '/_auth/check-email': typeof AuthCheckEmailRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/sign-in': typeof AuthSignInRoute
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/skelton'
+    | '/check-email'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/skelton'
+    | '/check-email'
     | '/forgot-password'
     | '/reset-password'
     | '/sign-in'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/dashboard'
     | '/skelton'
+    | '/_auth/check-email'
     | '/_auth/forgot-password'
     | '/_auth/reset-password'
     | '/_auth/sign-in'
@@ -252,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_auth/check-email': {
+      id: '/_auth/check-email'
+      path: '/check-email'
+      fullPath: '/check-email'
+      preLoaderRoute: typeof AuthCheckEmailRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
     '/_auth/accept-invitation/$id': {
       id: '/_auth/accept-invitation/$id'
       path: '/accept-invitation/$id'
@@ -263,6 +282,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteRouteChildren {
+  AuthCheckEmailRoute: typeof AuthCheckEmailRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthSignInRoute: typeof AuthSignInRoute
@@ -271,6 +291,7 @@ interface AuthRouteRouteChildren {
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthCheckEmailRoute: AuthCheckEmailRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthSignInRoute: AuthSignInRoute,
