@@ -37,6 +37,8 @@ interface ScanData {
   id: string;
   crop: string;
   visualIssue: string | null;
+  diagnosis: string | null;
+  visualSeverity: string | null;
   imageUrl: string;
   createdAt: Date;
   latitude: number | null;
@@ -81,8 +83,23 @@ export const transformToGeoJSON = (scans: ScanData[]): GeoJSONCollection => {
     type: "FeatureCollection",
     features: scans.map((scan) => {
       // Determine status for UI coloring (Red/Green/Yellow)
-      const isHealthy = scan.visualIssue?.toLowerCase().includes("healthy");
-      const status = isHealthy ? "healthy" : "critical";
+      // PRIORITY: Use the new visualSeverity field
+      // FALLBACK: Parse the visualIssue string
+      let status: "healthy" | "critical" | "warning" = "critical";
+
+      if (scan.visualSeverity) {
+        status = scan.visualSeverity as any;
+      } else {
+        const lowerIssue = scan.visualIssue?.toLowerCase() || "";
+        if (lowerIssue.includes("healthy") || lowerIssue.includes("no issue")) {
+          status = "healthy";
+        } else if (
+          lowerIssue.includes("spot") ||
+          lowerIssue.includes("yellow")
+        ) {
+          status = "warning";
+        }
+      }
 
       // Fallback: If map location object is missing, build it from lat/long
       const coordinates = scan.location?.coordinates || [
@@ -95,7 +112,8 @@ export const transformToGeoJSON = (scans: ScanData[]): GeoJSONCollection => {
         properties: {
           id: scan.id,
           crop: scan.crop,
-          disease: scan.visualIssue || "Unknown",
+          disease: scan.diagnosis || scan.visualIssue || "Unknown",
+          visualIssue: scan.visualIssue || "Unknown",
           status: status,
           thumbnail: scan.imageUrl,
           date: scan.createdAt.toISOString(),

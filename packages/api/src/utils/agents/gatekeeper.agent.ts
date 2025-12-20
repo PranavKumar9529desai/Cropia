@@ -6,6 +6,8 @@ interface ImageAnalysisResponse {
   metadata: {
     crop: string;
     visualIssue: string;
+    diagnosis: string;
+    visualSeverity: "healthy" | "warning" | "critical";
     description: string;
     confidence: number;
   };
@@ -18,6 +20,8 @@ interface GatekeeperAgentResponse {
   confidence: number;
   cropDetected: string;
   visualIssue: string;
+  diagnosis: string;
+  visualSeverity: "healthy" | "warning" | "critical";
   filenameSlug: string;
   description: string;
   rejectionReason: string;
@@ -69,7 +73,17 @@ export const analyzeCropImage = async (imageBase64: string) => {
             visualIssue: {
               type: SchemaType.STRING,
               description:
-                "Short visual observation (e.g., 'Yellowing leaves', 'Rust spots', 'Healthy'). NOT a medical diagnosis.",
+                "Short visual observation of the physical state (e.g., 'Yellowing leaves', 'Rust spots', 'No issues').",
+            },
+            diagnosis: {
+              type: SchemaType.STRING,
+              description:
+                "The scientific or common name of the detected disease/pest. Use 'Healthy' if no issue is found.",
+            },
+            visualSeverity: {
+              type: SchemaType.STRING,
+              description:
+                "Classify based on urgency: 'healthy' (no issues), 'warning' (minor spots, early stress), 'critical' (severe disease, pest outbreak, widespread damage).",
             },
 
             // Note: We ask for a SLUG, not a full filename.
@@ -89,6 +103,8 @@ export const analyzeCropImage = async (imageBase64: string) => {
             "confidence",
             "cropDetected",
             "visualIssue",
+            "diagnosis",
+            "visualSeverity",
             "filenameSlug",
             "description",
           ],
@@ -149,6 +165,8 @@ export const analyzeCropImage = async (imageBase64: string) => {
       metadata: {
         crop: analysis.cropDetected,
         visualIssue: analysis.visualIssue,
+        diagnosis: analysis.diagnosis,
+        visualSeverity: analysis.visualSeverity,
         description: analysis.description,
         confidence: analysis.confidence,
       },

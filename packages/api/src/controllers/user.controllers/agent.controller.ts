@@ -57,7 +57,8 @@ const AiController = new Hono<{
             crop: result.metadata.crop,
 
             visualIssue: result.metadata.visualIssue,
-            diagnosis: null, // Expert finding, initially null
+            diagnosis: result.metadata.diagnosis,
+            visualSeverity: result.metadata.visualSeverity,
             confidence: result.metadata.confidence,
 
             // Location Snapshot

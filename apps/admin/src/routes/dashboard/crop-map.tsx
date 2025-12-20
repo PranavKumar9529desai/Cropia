@@ -124,7 +124,9 @@ function RouteComponent() {
                   <span
                     className={`px-2.5 py-0.5 rounded-full text-xs font-semibold shadow-sm ${selectedScan.status === "healthy"
                         ? "bg-green-100 text-green-800 border border-green-200"
-                        : "bg-red-100 text-red-800 border border-red-200"
+                        : selectedScan.status === "warning"
+                          ? "bg-yellow-100 text-yellow-800 border border-yellow-200"
+                          : "bg-red-100 text-red-800 border border-red-200"
                       }`}
                   >
                     {selectedScan.status.toUpperCase()}
@@ -145,10 +147,19 @@ function RouteComponent() {
 
                 <div className="p-4 rounded-lg bg-secondary/30 border space-y-1">
                   <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Diagnosis / Issue
+                    AI Diagnosis
                   </div>
-                  <div className="text-lg font-bold text-foreground">
+                  <div className="text-lg font-bold text-primary">
                     {selectedScan.disease}
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-lg bg-secondary/30 border space-y-1">
+                  <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    Visual Observation
+                  </div>
+                  <div className="text-sm text-foreground">
+                    {selectedScan.visualIssue}
                   </div>
                 </div>
 

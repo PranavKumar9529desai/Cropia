@@ -49,9 +49,19 @@ const unclusteredPointLayer: LayerProps = {
   type: "circle",
   filter: ["!", ["has", "point_count"]],
   paint: {
-    "circle-color": "#11b4da",
-    "circle-radius": 6,
-    "circle-stroke-width": 1,
+    "circle-color": [
+      "match",
+      ["get", "status"],
+      "healthy",
+      "#22c55e", // Green
+      "warning",
+      "#eab308", // Yellow
+      "critical",
+      "#ef4444", // Red
+      "#11b4da", // Fallback Blue
+    ],
+    "circle-radius": 8,
+    "circle-stroke-width": 2,
     "circle-stroke-color": "#fff",
   },
 };
