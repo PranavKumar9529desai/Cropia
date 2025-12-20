@@ -13,9 +13,16 @@ import { Link } from "@tanstack/react-router";
 interface CheckEmailCardProps {
   email?: string;
   onResend?: () => void;
+  resendDisabled?: boolean;
+  resendText?: string;
 }
 
-export function CheckEmailCard({ email, onResend }: CheckEmailCardProps) {
+export function CheckEmailCard({
+  email,
+  onResend,
+  resendDisabled,
+  resendText,
+}: CheckEmailCardProps) {
   return (
     <Card className="w-full max-w-md mx-auto text-center">
       <CardHeader>
@@ -45,8 +52,13 @@ export function CheckEmailCard({ email, onResend }: CheckEmailCardProps) {
         </p>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
-        <Button variant="default" className="w-full" onClick={onResend}>
-          Resend Email
+        <Button
+          variant="default"
+          className="w-full"
+          onClick={onResend}
+          disabled={resendDisabled}
+        >
+          {resendText || "Resend Email"}
         </Button>
         <Link
           to="/sign-in"

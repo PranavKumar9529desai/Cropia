@@ -9,16 +9,16 @@ export const Route = createFileRoute("/")({
 function IndexComponent() {
   const session = authClient.useSession();
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-4">
+    <div className="flex flex-col items-center justify-center h-screen gap-4 *:max-w-xs *:w-full">
       {session.data ? (
         <>
           <Link to="/dashboard">
-            <Button className="max-w-xs w-full text-center">
+            <Button className="w-full text-center">
               Go to Dashboard
             </Button>
           </Link>
           <Button
-            className="max-w-xs w-full text-center"
+            className="w-full text-center"
             title="signOut"
             onClick={() => {
               authClient.signOut();
@@ -29,7 +29,7 @@ function IndexComponent() {
         </>
       ) : (
         <Link to="/sign-in">
-          <Button className="max-w-xs w-full text-center">Sign In</Button>
+          <Button className="w-full text-center ">Sign In</Button>
         </Link>
       )}
     </div>

@@ -40,6 +40,7 @@ export const auth = betterAuth({
   },
 
   emailVerification: {
+    sendOnSignUp: true,
     autoSignInAfterVerification: true,
     async sendVerificationEmail({ user, url, token }) {
       const verifyLink = `${frontendUrl}/verify-email?token=${token || url.split("=")[1]}`;
