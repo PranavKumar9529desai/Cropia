@@ -23,8 +23,8 @@ export default defineConfig({
       manifestFilename: "site.webmanifest",
 
       manifest: {
-        name: "Cropia Admin",
-        short_name: "Cropia Admin",
+        name: "Cropia",
+        short_name: "Cropia",
         icons: [
           {
             src: "/favicon/web-app-manifest-192x192.png",
