@@ -148,7 +148,7 @@ function RouteComponent() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-24 animate-in fade-in duration-500">
       {/* Header Section */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
             {location.city}, {location.state}
@@ -161,10 +161,10 @@ function RouteComponent() {
             })}
           </p>
         </div>
-        <div className="flex items-center gap-3 bg-card p-3 rounded-xl border shadow-sm self-start sm:self-auto">
+        <div className="flex items-center gap-3 bg-card p-3 rounded-xl border shadow-sm w-full sm:w-auto self-start sm:self-auto">
           <WeatherIcon
             className={cn(
-              "size-4 sm:size-8",
+              "size-8 sm:size-8",
               isRainy ? "text-blue-500" : "text-yellow-500",
             )}
           />
