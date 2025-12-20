@@ -60,7 +60,9 @@ export const SignIn = () => {
           Forgot Password ?
         </Link>
       }
-      googleButton={<GoogleButton title="Continue With Google" />}
+    // currently disabled for admin 
+    // TOOD: add flow where admin can signup usng goole accrount with same email as invitation email
+    // googleButton={<GoogleButton title="Continue With Google" />}
     />
   );
 };
