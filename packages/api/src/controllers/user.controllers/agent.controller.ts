@@ -23,6 +23,7 @@ const AiController = new Hono<{
 
     // 1. Ask Gemini: Is this a valid crop?
     const result = await analyzeCropImage(imageBase64);
+    console.log("results of the analyzeCropImage", result)
 
     // 2. SERVER-SIDE LOGIC (The benefit of using Hono)
     if (result.isValid && result.metadata && result.generatedFilename) {
@@ -35,17 +36,22 @@ const AiController = new Hono<{
         });
 
         // We use the generated filename and description from the AI
+        if (!result.metadata) {
+          console.error("No metadata found in analysis result");
+          return c.json({ error: "Failed to analyze image" }, 400);
+        }
+
         const ImageMetaData = {
           description: result.metadata.description,
           crop: result.metadata.crop,
-          diagnosis: result.metadata.visualIssue,
+          diagnosis: result.metadata.diagnosis,
           district: userLocation?.district as string,
           userId: c.get("userId"),
         };
 
         const uploadResult = await uploadImage(
           imageBase64,
-          result.generatedFilename,
+          result.generatedFilename!,
           ImageMetaData,
         );
 

@@ -126,8 +126,25 @@ export default function CropMap({ data, onPointClick, defaultView }: CropMapProp
           cluster={true}
           clusterMaxZoom={14} // Stop clustering when zoomed in close
           clusterRadius={50} // Radius of each cluster in pixels
+          clusterProperties={{
+            has_critical: ["any", ["==", ["get", "status"], "critical"]],
+            has_warning: ["any", ["==", ["get", "status"], "warning"]],
+          }}
         >
-          <Layer {...clusterLayer} />
+          <Layer
+            {...clusterLayer}
+            paint={{
+              ...clusterLayer.paint as any,
+              "circle-color": [
+                "case",
+                ["get", "has_critical"],
+                "#ef4444", // Red if any point is critical
+                ["get", "has_warning"],
+                "#eab308", // Yellow if any point is warning (and none critical)
+                "#22c55e", // Green if all are healthy
+              ],
+            }}
+          />
           <Layer {...clusterCountLayer} />
           <Layer {...unclusteredPointLayer} />
         </Source>
