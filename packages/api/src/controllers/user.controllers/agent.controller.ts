@@ -8,6 +8,7 @@ import { uploadImage } from "../../utils/upload-image";
 import { getCropContext } from "../../utils/agents/assistant-agent/context";
 import { generateFarmerPrompt } from "../../utils/agents/assistant-agent/prompt";
 import { FarmerContext } from "../../utils/agents/assistant-agent/types";
+import { createLocationObject } from "../../utils/scan.helpers";
 
 const AiController = new Hono<{
   Variables: {
@@ -68,6 +69,9 @@ const AiController = new Hono<{
             pincode: userLocation?.pincode,
             latitude: userLocation?.latitude,
             longitude: userLocation?.longitude,
+            ...((userLocation?.latitude && userLocation?.longitude)
+              ? createLocationObject(userLocation.latitude, userLocation.longitude)
+              : {}),
 
             userId: c.var.userId,
             // organizationId: c.var.session?.activeOrganizationId
