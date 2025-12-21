@@ -3,7 +3,7 @@ import {
   inferAdditionalFields,
   organizationClient,
 } from "better-auth/client/plugins";
-import type { auth } from "@repo/api/auth.ts";
+import type { auth } from "@repo/api/auth";
 
 // type ErrorTypes = Partial<
 //   Record<

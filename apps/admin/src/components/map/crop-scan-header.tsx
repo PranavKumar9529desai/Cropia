@@ -1,81 +1,44 @@
-// Header component for crop map statistics
-import {
-    Activity,
-    CheckCircle2,
-    AlertTriangle,
-    AlertCircle
-} from "lucide-react";
+import { MapPin } from "lucide-react";
+import { getJurisdictionDisplay, type Jurisdiction } from "@/lib/get-jurisdiction";
 
-interface CropScanData {
-    type: "FeatureCollection";
-    features: {
-        type: "Feature";
-        properties: {
-            id: string;
-            crop: string;
-            disease: string;
-            status: "healthy" | "warning" | "critical";
-            thumbnail: string;
-            date: string;
-            locationText?: string;
-        };
-        geometry: {
-            type: "Point";
-            coordinates: number[];
-        };
-    }[];
+interface CropScanHeaderProps {
+    jurisdiction?: Jurisdiction | Record<string, any> | null;
 }
 
-export const CropMapHeader = ({ data }: { data: CropScanData | null }) => {
-    if (!data) return null;
+export default function CropScanHeader({ jurisdiction }: CropScanHeaderProps) {
+    const displayLocation = getJurisdictionDisplay(jurisdiction) || "National Scope";
 
-    const stats = data.features.reduce(
-        (acc, feature) => {
-            acc.total++;
-            if (feature.properties.status === "healthy") acc.healthy++;
-            else if (feature.properties.status === "warning") acc.warning++;
-            else if (feature.properties.status === "critical") acc.critical++;
-            return acc;
-        },
-        { total: 0, healthy: 0, warning: 0, critical: 0 }
-    );
+    // Extract specific levels for a simple location string
+    const levels = [];
+    if (jurisdiction?.state && jurisdiction.state !== "All") levels.push(jurisdiction.state);
+    if (jurisdiction?.district && jurisdiction.district !== "All") levels.push(jurisdiction.district);
+    if (jurisdiction?.taluka && jurisdiction.taluka !== "All") levels.push(jurisdiction.taluka);
+    if (jurisdiction?.village && jurisdiction.village !== "All") levels.push(jurisdiction.village);
+
+    const locationPath = levels.join(" • ") || "Global territory";
 
     return (
-        <div className="flex  items-center gap-x-8 gap-y-2 py-2 border-b border-t border-slate-100/50">
-            <div className="flex items-center gap-2">
-                <Activity size={16} className="text-slate-400" />
-                <span className="text-sm font-medium text-slate-500">Total Scans:</span>
-                <span className="text-sm font-bold text-slate-900">{stats.total}</span>
-            </div>
+        <div className="flex flex-col gap-2 py-4 mb-4 border-b border-border/20">
+            <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                        <h1 className="text-xl font-bold tracking-tight text-foreground/90">
+                            Crop Scan Map
+                        </h1>
+                        <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
+                    </div>
+                    <p className="text-[11px] font-medium text-muted-foreground/60 uppercase tracking-widest">
+                        {locationPath}
+                    </p>
+                </div>
 
-            <div className="h-4 w-px bg-slate-200 hidden sm:block" />
-
-            <div className="flex items-center gap-2">
-                <CheckCircle2 size={16} className="text-emerald-500" />
-                <span className="text-sm font-medium text-slate-500">Healthy:</span>
-                <span className="text-sm font-bold text-slate-900">{stats.healthy}</span>
-                <span className="text-[10px] font-semibold text-slate-400">
-                    ({stats.total > 0 ? Math.round((stats.healthy / stats.total) * 100) : 0}%)
-                </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-                <AlertTriangle size={16} className="text-amber-500" />
-                <span className="text-sm font-medium text-slate-500">Warnings:</span>
-                <span className="text-sm font-bold text-slate-900">{stats.warning}</span>
-                <span className="text-[10px] font-semibold text-slate-400">
-                    ({stats.total > 0 ? Math.round((stats.warning / stats.total) * 100) : 0}%)
-                </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-                <AlertCircle size={16} className="text-rose-500" />
-                <span className="text-sm font-medium text-slate-500">Critical:</span>
-                <span className="text-sm font-bold text-slate-900">{stats.critical}</span>
-                <span className="text-[10px] font-semibold text-slate-400">
-                    ({stats.total > 0 ? Math.round((stats.critical / stats.total) * 100) : 0}%)
-                </span>
+                <div className="flex items-center gap-1.5 text-right">
+                    <MapPin className="h-3.5 w-3.5 text-primary/60" />
+                    <span className="text-sm font-semibold text-foreground/70">
+                        {displayLocation}
+                    </span>
+                </div>
             </div>
         </div>
     );
-};
+}

@@ -13,21 +13,21 @@
       "default": "./dist/index.js"
     },
     "./auth": {
+      "types": "./dist/auth.d.ts",
       "development": {
         "types": "./src/auth.ts",
         "import": "./src/auth.ts"
       },
-      "types": "./dist/auth.d.ts",
       "import": "./dist/auth.mjs",
       "require": "./dist/auth.js",
       "default": "./dist/auth.js"
     },
     "./utils/*": {
+      "types": "./dist/utils/*.d.ts",
       "development": {
         "types": "./src/utils/*.ts",
         "import": "./src/utils/*.ts"
       },
-      "types": "./dist/utils/*.d.ts",
       "import": "./dist/utils/*.js",
       "require": "./dist/utils/*.js",
       "default": "./dist/utils/*.js"
