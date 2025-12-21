@@ -134,7 +134,7 @@ export default function CropMap({ data, onPointClick, defaultView }: CropMapProp
           <Layer
             {...clusterLayer}
             paint={{
-              ...clusterLayer.paint as any,
+              ...clusterLayer.paint,
               "circle-color": [
                 "case",
                 ["get", "has_critical"],
