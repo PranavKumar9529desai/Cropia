@@ -43,7 +43,8 @@
     "build": {
       "dependsOn": [
         "^build",
-        "^db:generate"
+        "^db:generate",
+        "db:generate"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
@@ -60,10 +61,11 @@
         "^lint"
       ]
     },
-    "check-types": {
+    "type-check": {
       "dependsOn": [
-        "^check-types",
-        "^db:generate"
+        "^type-check",
+        "^db:generate",
+        "db:generate"
       ]
     },
     "dev": {

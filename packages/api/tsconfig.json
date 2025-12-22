@@ -3,6 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@repo/db": [
+        "../db/src/index.ts"
+      ],
       "@/utils/*": [
         "src/utils/*"
       ],

@@ -3,6 +3,18 @@
     "compilerOptions": {
         "module": "esnext",
         "moduleResolution": "bundler",
+        "baseUrl": ".",
+        "paths": {
+            "@repo/api": [
+                "../../packages/api/src/index.ts"
+            ],
+            "@repo/api/auth": [
+                "../../packages/api/src/auth.ts"
+            ],
+            "@repo/db": [
+                "../../packages/db/src/index.ts"
+            ]
+        },
         "noEmit": true
     },
     "include": [
