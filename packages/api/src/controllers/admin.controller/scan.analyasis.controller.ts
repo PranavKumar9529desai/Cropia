@@ -13,6 +13,7 @@ export const ScanAnalyasisController = new Hono<{
     };
 }>()
     .get("/", async (c) => {
+        console.log("scan analyasis is called")
         const jurisdiction = c.get("jurisdiction");
         const orgId = c.get("orgId");
 
@@ -27,7 +28,7 @@ export const ScanAnalyasisController = new Hono<{
                 createdAt: "desc"
             }
         });
-
+        console.log("analysis", analysis);
         return c.json(analysis);
     })
     .post("/run", async (c) => {
@@ -37,7 +38,7 @@ export const ScanAnalyasisController = new Hono<{
         try {
             // 1. Run the agent
             const result = await runScanAnalysis(jurisdiction);
-
+            console.log("result", result);
             // 2. Count current scans for record keeping
             const scanCount = await prisma.scan.count({
                 where: {

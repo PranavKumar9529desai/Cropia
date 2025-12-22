@@ -1,4 +1,4 @@
-import type { AppType } from "@repo/api/auth";
+import type { AppType } from "@repo/api";
 import { hc } from "hono/client";
 
 // to send the cookies with the request

@@ -2,7 +2,7 @@ import prisma, { Jurisdiction } from "@repo/db";
 import { AnalysisAgentContext } from "./types";
 
 export const ScanAnalyasisContext = async (jurisdiction: Jurisdiction): Promise<AnalysisAgentContext> => {
-    const where: any = {};
+    let where: any = {};
 
     if (jurisdiction.state !== "All") {
         where.state = jurisdiction.state;
@@ -16,9 +16,10 @@ export const ScanAnalyasisContext = async (jurisdiction: Jurisdiction): Promise<
     if (jurisdiction.village !== "All") {
         where.village = jurisdiction.village;
     }
-
+    console.log("where", where);
+    console.log("jurisdiction", jurisdiction)
     const scans = await prisma.scan.findMany({
-        where,
+        where: where,
         select: {
             id: true,
             createdAt: true,
@@ -36,7 +37,7 @@ export const ScanAnalyasisContext = async (jurisdiction: Jurisdiction): Promise<
         },
         take: 100, // Limit to 100 recent scans for context
     });
-
+    console.log("scan from the jurisdiction", scans);
     return {
         jurisdiction,
         scans,

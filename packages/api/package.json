@@ -3,39 +3,19 @@
   "version": "0.0.0",
   "exports": {
     ".": {
-      "development": {
-        "types": "./src/index.ts",
-        "import": "./src/index.ts"
-      },
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
     },
     "./auth": {
-      "types": "./dist/auth.d.ts",
-      "development": {
-        "types": "./src/auth.ts",
-        "import": "./src/auth.ts"
-      },
-      "import": "./dist/auth.mjs",
-      "require": "./dist/auth.js",
-      "default": "./dist/auth.js"
-    },
-    "./utils/*": {
-      "types": "./dist/utils/*.d.ts",
-      "development": {
-        "types": "./src/utils/*.ts",
-        "import": "./src/utils/*.ts"
-      },
-      "import": "./dist/utils/*.js",
-      "require": "./dist/utils/*.js",
-      "default": "./dist/utils/*.js"
+      "types": "./src/auth.ts",
+      "import": "./src/auth.ts",
+      "default": "./src/auth.ts"
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
