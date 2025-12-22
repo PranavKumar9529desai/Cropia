@@ -45,14 +45,14 @@ function RouteComponent() {
     try {
       // Run API and minimum timer in parallel
       // TEMPORARY: Commented out API call for loader testing
-      // const [res] = await Promise.all([
-      //   apiClient.api.admin.analysis.run.$post(),
-      //   new Promise(resolve => setTimeout(resolve, 10000)) // Guarantee 10s wait
-      // ]);
-      await new Promise(resolve => setTimeout(resolve, 15000));
+      const [res] = await Promise.all([
+        apiClient.api.admin.analysis.run.$post(),
+        new Promise(resolve => setTimeout(resolve, 10000)) // Guarantee 10s wait
+      ]);
+      // await new Promise(resolve => setTimeout(resolve, 15000));
 
-      // const data = await res.json();
-      const data = { success: true, analysis: initialAnalysis }; // Mock success
+      const data = await res.json();
+      // const data = { success: true, analysis: initialAnalysis }; // Mock success
 
       if (data.success) {
         setAnalysis(data.analysis);
