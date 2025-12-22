@@ -8,6 +8,7 @@ import AiController from "./controllers/user.controllers/agent.controller";
 import InvitationController from "./controllers/user.controllers/invitation.controller";
 import { AdminSessionMiddleware } from "./middleware/admin.middleware";
 import MapController from "./controllers/admin.controller/map.controller";
+import { ScanAnalyasisController } from "./controllers/admin.controller/scan.analyasis.controller";
 
 console.log(
   "FRONTEND_URL_FARMER_APP index.ts",
@@ -48,7 +49,8 @@ const app = new Hono()
   .route("/api/locations", LocationController)
   .route("/api/ai", AiController)
   .route("/api/invitation", InvitationController)
-  .route("/api/admin/map", MapController);
+  .route("/api/admin/map", MapController)
+  .route("/api/admin/analysis", ScanAnalyasisController);
 
 export type AppType = typeof app;
 

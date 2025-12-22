@@ -45,7 +45,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500 space-y-4">
       <CropScanHeader jurisdiction={jurisdiction} />
 
       {/* Map Container */}

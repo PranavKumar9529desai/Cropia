@@ -78,15 +78,16 @@ model Verification {
 }
 
 model Organization {
-  id          String       @id @map("_id")
-  name        String
-  slug        String
-  logo        String?
-  createdAt   DateTime
-  metadata    String?
-  members     Member[]
-  invitations Invitation[]
-  scans       Scan[]
+  id                String              @id @map("_id")
+  name              String
+  slug              String
+  logo              String?
+  createdAt         DateTime
+  metadata          String?
+  members           Member[]
+  invitations       Invitation[]
+  scans             Scan[]
+  agentScanAnalyses AgentScanAnalysis[]
 
   @@unique([slug])
   @@map("organization")
@@ -225,4 +226,49 @@ model Scan {
   @@index([taluka, createdAt])
   @@index([location], map: "scan_geo_index") // The speed booster
   @@map("scan")
+}
+
+type AnalysisStats {
+  // Data for the Donut Chart (e.g., { "Rust": 15, "Healthy": 40, "Leaf Spot": 5 })
+  // Using Json here allows for a flexible map of issue names to counts
+  diseaseDistribution Json
+
+  // Basic metrics for the summary card
+  totalScansAnalyzed Int
+  avgConfidence      Float
+}
+
+model AgentScanAnalysis {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // --- SCOPING ---
+  // Matches the Admin's jurisdiction to ensure they only see analysis for their area
+  state    String?
+  district String?
+  taluka   String?
+
+  // --- AI RESULTS ---
+  // Natural language headlines from Gemini (e.g., ["Rust cases up 40%", "New outbreak in Wathar"])
+  headlines String[]
+
+  // Structured JSON for charts (Donut, Bar, Temporal trends)
+  // Store things like: { "diseaseDist": { "rust": 15, "healthy": 40 }, "topVillages": [...] }
+  stats AnalysisStats?
+
+  // --- CACHING & "RUN AGAIN" LOGIC ---
+  // The total number of scans in this jurisdiction when the agent last ran
+  lastScanCount Int
+
+  // The ID or timestamp of the most recent scan processed
+  // Used to quickly check if: currentScan.createdAt > analysis.lastProcessedAt
+  lastProcessedAt DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([state, district, taluka])
+  @@map("agent_scan_analysis")
 }
