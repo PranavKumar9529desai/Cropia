@@ -50,7 +50,7 @@ export function LocationPicker({
     };
 
     return (
-        <div className="relative w-full h-[300px] rounded-lg overflow-hidden border border-input shadow-inner bg-muted/20 mt-2">
+        <div className="relative w-full h-[250px] sm:h-[300px] rounded-lg overflow-hidden border border-input shadow-inner bg-muted/20 mt-2">
             <Map
                 {...viewState}
                 ref={mapRef}

@@ -16,10 +16,10 @@ const createLocationSchema = z.object({
   longitude: z.number().min(-180).max(180),
   address: z.string().optional(),
   village: z.string().optional(),
-  city: z.string().min(1, "City is required"),
+  city: z.string().min(1, "City is required").optional(),
   state: z.string().min(1, "State is required"),
   district: z.string().min(1, "District is required"),
-  taluka: z.string().optional(),
+  taluka: z.string().min(1, "Taluka is required"),
   pincode: z.string().min(1, "Pincode is required"),
   country: z.string().default("India"),
 });

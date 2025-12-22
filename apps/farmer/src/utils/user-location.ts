@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { apiClient } from "../lib/rpc";
 
 /**
@@ -33,10 +34,9 @@ interface LocationValues {
   longitude: number;
   address?: string;
   village?: string;
-  city: string;
   district: string;
   state: string;
-  taluka?: string;
+  taluka: string;
   pincode: string;
   country: string;
 }
@@ -181,3 +181,19 @@ export const forwardGeocode = async (query: string) => {
     return null;
   }
 };
+
+export const createLocationSchema = z.object({
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+  address: z.string().optional(),
+  village: z.string().optional(),
+  // city: z.string().optional(),
+  state: z.string().min(1, "State is required"),
+  district: z.string().min(1, "District is required"),
+  taluka: z.string().min(1, "Taluka is required"), // Added Taluka as mandatory
+  pincode: z.string().min(1, "Pincode is required"),
+  country: z.string(),
+});
+
+export type CreateLocationInputType = z.infer<typeof createLocationSchema>;
+

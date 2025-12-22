@@ -158,9 +158,8 @@ model Location {
   taluka   String? // e.g. "Hatkanangale" (Sub-District/Tehsil)
   village  String? // e.g. "Wathar"
 
-  city    String? // Optional: User might enter a nearby city if village is missing
   pincode String
-  country String  @default("India")
+  country String @default("India")
 
   // Relation to User
   userId String @unique
