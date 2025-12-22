@@ -36,7 +36,7 @@ export const Route = createFileRoute("/dashboard/assistant")({
 
 function RouteComponent() {
   const [input, setInput] = useState("");
-  const baseURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+  const baseURL = import.meta.env.VITE_BACKEND_URL;
 
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
@@ -57,7 +57,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-5xl mx-auto p-4 md:p-6 min-w-3xl w-full">
+    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-5xl mx-auto p-2 md:p-6 min-w-3xl w-full">
       <Card className="flex-1 mb-4 overflow-hidden bg-background border-none">
         <ScrollArea className="h-full p-4">
           <div className="space-y-6">
@@ -86,16 +86,14 @@ function RouteComponent() {
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={`flex ${
-                  m.role === "user" ? "justify-end" : "justify-start"
-                }`}
+                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"
+                  }`}
               >
                 <div
-                  className={`rounded-lg px-3 py-2 max-w-[85%] ${
-                    m.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
-                  }`}
+                  className={`rounded-lg px-3 py-2 sm:max-w-[85%] max-w-[95%] ${m.role === "user"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted"
+                    }`}
                 >
                   {m.parts ? (
                     m.parts.map((part, index) => {

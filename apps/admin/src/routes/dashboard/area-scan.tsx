@@ -49,7 +49,7 @@ function RouteComponent() {
       //   apiClient.api.admin.analysis.run.$post(),
       //   new Promise(resolve => setTimeout(resolve, 10000)) // Guarantee 10s wait
       // ]);
-      await new Promise(resolve => setTimeout(resolve, 10000));
+      await new Promise(resolve => setTimeout(resolve, 15000));
 
       // const data = await res.json();
       const data = { success: true, analysis: initialAnalysis }; // Mock success
