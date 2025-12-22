@@ -70,7 +70,6 @@ const AiController = new Hono<{
             // Location Snapshot
             state: userLocation?.state,
             district: userLocation?.district,
-            city: userLocation?.city,
             taluka: userLocation?.taluka,
             village: userLocation?.village,
             pincode: userLocation?.pincode,

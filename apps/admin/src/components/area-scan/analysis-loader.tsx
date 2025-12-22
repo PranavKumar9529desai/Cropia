@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Brain, Scan, AlertTriangle, FileText, Loader2, CheckCircle2 } from "lucide-react";
+import { Brain, Scan, AlertTriangle, FileText, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@repo/ui/components/card";
 import { Progress } from "@repo/ui/components/progress";
 

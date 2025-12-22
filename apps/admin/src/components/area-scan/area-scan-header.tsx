@@ -3,7 +3,7 @@ import { getJurisdictionDisplay, type Jurisdiction } from "@/lib/get-jurisdictio
 import { Button } from "@repo/ui/components/button";
 
 interface AreaScanHeaderProps {
-    jurisdiction?: Jurisdiction | Record<string, any> | null;
+    jurisdiction?: Jurisdiction | Record<string, string> | null;
     onRunAnalysis: () => void;
     isAnalyzing: boolean;
 }

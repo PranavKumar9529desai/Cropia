@@ -201,7 +201,6 @@ model Scan {
   district  String?
   taluka    String? // <-- NEW: Allows "Taluka Level" dashboards
   village   String?
-  city      String?
   pincode   String?
   latitude  Float?
   longitude Float?

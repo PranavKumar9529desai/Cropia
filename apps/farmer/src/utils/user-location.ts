@@ -142,7 +142,6 @@ export const reverseGeocode = async (lat: number, lng: number) => {
     const result: any = {
       state: "",
       district: "",
-      city: "",
       pincode: "",
       address: features[0]?.place_name || "",
     };
@@ -187,7 +186,6 @@ export const createLocationSchema = z.object({
   longitude: z.number().min(-180).max(180),
   address: z.string().optional(),
   village: z.string().optional(),
-  // city: z.string().optional(),
   state: z.string().min(1, "State is required"),
   district: z.string().min(1, "District is required"),
   taluka: z.string().min(1, "Taluka is required"), // Added Taluka as mandatory

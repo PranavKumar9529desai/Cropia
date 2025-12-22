@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart, Cell } from "recharts"
 
 import {
@@ -14,7 +13,6 @@ import {
 import {
     ChartContainer,
     ChartTooltip,
-    ChartTooltipContent,
     type ChartConfig,
 } from "@repo/ui/components/chart"
 
