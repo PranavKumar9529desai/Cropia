@@ -4,6 +4,7 @@ import { apiClient } from "../../lib/rpc";
 import AreaScanHeader from "../../components/area-scan/area-scan-header";
 import AreaScanResults from "../../components/area-scan/area-scan-results";
 import { toast } from "sonner";
+import AnalysisLoader from "../../components/area-scan/analysis-loader";
 
 export const Route = createFileRoute("/dashboard/area-scan")({
   loader: async ({ context }) => {
@@ -28,20 +29,30 @@ export const Route = createFileRoute("/dashboard/area-scan")({
   component: RouteComponent,
 });
 
+
 function RouteComponent() {
   const { initialAnalysis, jurisdiction } = Route.useLoaderData();
   const [analysis, setAnalysis] = useState<any>(initialAnalysis);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   const handleRunAnalysis = async () => {
     setIsAnalyzing(true);
-    toast.info("AI Agent is starting analysis...", {
-      description: "This might take 10-15 seconds as it processes regional scan data."
-    });
+    setShowLoader(true);
+
+    const startTime = Date.now();
 
     try {
-      const res = await apiClient.api.admin.analysis.run.$post();
-      const data = await res.json();
+      // Run API and minimum timer in parallel
+      // TEMPORARY: Commented out API call for loader testing
+      // const [res] = await Promise.all([
+      //   apiClient.api.admin.analysis.run.$post(),
+      //   new Promise(resolve => setTimeout(resolve, 10000)) // Guarantee 10s wait
+      // ]);
+      await new Promise(resolve => setTimeout(resolve, 10000));
+
+      // const data = await res.json();
+      const data = { success: true, analysis: initialAnalysis }; // Mock success
 
       if (data.success) {
         setAnalysis(data.analysis);
@@ -60,6 +71,10 @@ function RouteComponent() {
       });
     } finally {
       setIsAnalyzing(false);
+      // Loader hides via its internal completion or we can force it off here
+      // But we want to keep it visible if it hasn't finished the animation visually
+      // The Promise.all ensures 10s passed, so animation should be at 100%
+      setShowLoader(false);
     }
   };
 
@@ -72,6 +87,9 @@ function RouteComponent() {
       />
 
       <div className="mt-8">
+        {showLoader && (
+          <AnalysisLoader jurisdiction={jurisdiction?.name || "Target Region"} />
+        )}
         <AreaScanResults analysis={analysis} />
       </div>
     </div>

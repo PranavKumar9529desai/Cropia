@@ -5,7 +5,6 @@ import {
     BarChart3,
     CheckCircle2,
     Info,
-    ArrowUpRight,
 
 } from "lucide-react";
 import { ScanResultChart } from "./chart-pie-donut-text";
@@ -46,10 +45,10 @@ export default function AreaScanResults({ analysis }: AreaScanResultsProps) {
     const healthyCount = stats.diseaseDistribution.find(d => d.name === "Healthy")?.count || 0;
     const issuesDetectedCount = stats.totalScansAnalyzed - healthyCount;
 
-    // Prepare chart data for high-level overview
+    // Prepare chart data with distinct colors
     const chartData = [
-        { status: "healthy", count: healthyCount, fill: "var(--color-healthy)" },
-        { status: "issues", count: issuesDetectedCount, fill: "var(--color-issues)" },
+        { status: "healthy", count: healthyCount, fill: "hsl(142 76% 36%)" }, // Green
+        { status: "issues", count: issuesDetectedCount, fill: "hsl(0 84% 60%)" },   // Red
     ];
 
     const chartConfig: ChartConfig = {
@@ -58,32 +57,57 @@ export default function AreaScanResults({ analysis }: AreaScanResultsProps) {
         },
         healthy: {
             label: "Healthy Scans",
-            color: "var(--chart-2)",
+            color: "hsl(142 76% 36%)",
         },
         issues: {
             label: "Issues Detected",
-            color: "var(--chart-1)",
+            color: "hsl(0 84% 60%)",
         }
+    };
+
+    const getHeadlineStyle = (text: string) => {
+        const lower = text.toLowerCase();
+        if (lower.includes("issue") || lower.includes("risk") || lower.includes("alert") || lower.includes("detected")) {
+            return {
+                icon: <Activity className="h-4 w-4 text-red-500" />,
+                containerClass: "bg-red-500/5 hover:bg-red-500/10 border-l-2 border-l-red-500",
+                textClass: "text-red-900 dark:text-red-200"
+            };
+        }
+        if (lower.includes("healthy") || lower.includes("growth") || lower.includes("good")) {
+            return {
+                icon: <CheckCircle2 className="h-4 w-4 text-green-500" />,
+                containerClass: "bg-green-500/5 hover:bg-green-500/10 border-l-2 border-l-green-500",
+                textClass: "text-green-900 dark:text-green-200"
+            };
+        }
+        return {
+            icon: <Info className="h-4 w-4 text-blue-500" />,
+            containerClass: "bg-muted/30 hover:bg-muted/50 border-l-2 border-l-blue-500",
+            textClass: "text-foreground/80"
+        };
     };
 
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Headlines Section */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {headlines.map((headline, index) => (
-                    <Card key={index} className="overflow-hidden border-none shadow-md bg-gradient-to-br from-card to-muted/30">
-                        <CardContent className="p-6">
-                            <div className="flex items-start gap-3">
-                                <div className="mt-1 h-5 w-5 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
-                                    <ArrowUpRight className="h-3 w-3 text-primary" />
+            {/* Headlines Section - Clean List Style */}
+            <div className="space-y-3">
+                <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider pl-1">Key Insights & Anomalies</h3>
+                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                    {headlines.map((headline, index) => {
+                        const style = getHeadlineStyle(headline);
+                        return (
+                            <div key={index} className={`flex items-start gap-3 p-3 rounded-r-md transition-colors ${style.containerClass}`}>
+                                <div className="mt-0.5 shrink-0">
+                                    {style.icon}
                                 </div>
-                                <p className="text-[15px] font-medium leading-relaxed text-foreground/80">
+                                <p className={`text-sm font-medium leading-relaxed ${style.textClass}`}>
                                     {headline}
                                 </p>
                             </div>
-                        </CardContent>
-                    </Card>
-                ))}
+                        )
+                    })}
+                </div>
             </div>
 
             <div className="grid gap-6 md:grid-cols-12">
@@ -114,7 +138,7 @@ export default function AreaScanResults({ analysis }: AreaScanResultsProps) {
                                                     style={{ backgroundColor: item.fill }}
                                                 />
                                                 <span className="font-medium text-foreground/80">
-                                                    {item.status}
+                                                    {item.status === 'healthy' ? 'Healthy Crops' : 'Issues Detected'}
                                                 </span>
                                             </div>
                                             <span className="text-muted-foreground font-mono">

@@ -23,7 +23,7 @@ ${scansSummary}
 ### INSTRUCTIONS
 1. **Trend Analysis:** Look for patterns. Is a specific disease spreading in a certain village? Are healthy scans increasing?
 2. **Geographical Hotspots:** Identify which villages or talukas are seeing the most critical issues.
-3. **Headlines:** Generate 3-5 punchy, informative headlines. Examples:
+3. **Headlines:** Generate 3 punchy, informative headlines. Examples:
     - "Rust cases up 40% in Wathar village over the last week."
     - "Healthy wheat harvest expected in Hatkanangale Taluka."
     - "Emerging pest outbreak detected in southern Kolhapur."

@@ -42,7 +42,33 @@ export function ScanResultChart({ chartData, chartConfig }: { chartData: { statu
                     <PieChart>
                         <ChartTooltip
                             cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
+                            content={({ active, payload }) => {
+                                if (active && payload && payload.length) {
+                                    const data = payload[0].payload;
+                                    return (
+                                        <div className="rounded-lg border bg-popover p-2 shadow-sm">
+                                            <div className="flex items-center gap-2">
+                                                <div
+                                                    className="h-2 w-2 rounded-full"
+                                                    style={{ backgroundColor: data.fill }}
+                                                />
+                                                <span className="text-sm font-medium text-popover-foreground">
+                                                    {data.status === 'healthy' ? 'Healthy' : 'Issues'}
+                                                </span>
+                                            </div>
+                                            <div className="mt-1 flex items-baseline gap-1 pl-4">
+                                                <span className="text-lg font-bold text-popover-foreground">
+                                                    {data.count}
+                                                </span>
+                                                <span className="text-xs text-muted-foreground">
+                                                    scans
+                                                </span>
+                                            </div>
+                                        </div>
+                                    );
+                                }
+                                return null;
+                            }}
                         />
                         <Pie
                             data={chartData}
