@@ -1,13 +1,13 @@
 import { AnalysisAgentContext } from "./types";
 
 export const generateAnalysisPrompt = (ctx: AnalysisAgentContext) => {
-    const { jurisdiction, scans } = ctx;
+  const { jurisdiction, scans } = ctx;
+  const scan_count = scans.length
+  const scansSummary = scans.length > 0
+    ? scans.map(s => `- [${s.createdAt}] ${s.crop} in ${s.village || s.taluka}: ${s.visualIssue || "Healthy"} (${s.visualSeverity || "none"})`).join("\n")
+    : "No scan data available for this jurisdiction.";
 
-    const scansSummary = scans.length > 0
-        ? scans.map(s => `- [${s.createdAt}] ${s.crop} in ${s.village || s.taluka}: ${s.visualIssue || "Healthy"} (${s.visualSeverity || "none"})`).join("\n")
-        : "No scan data available for this jurisdiction.";
-
-    return `
+  return `
 ### ROLE
 You are the Cropia Regional Analyst. Your goal is to analyze crop scan data for the following jurisdiction and provide high-level insights for government officials and agricultural experts.
 
@@ -17,7 +17,7 @@ You are the Cropia Regional Analyst. Your goal is to analyze crop scan data for 
 - **Taluka:** ${jurisdiction.taluka}
 - **Village:** ${jurisdiction.village}
 
-### 📊 RAW SCAN DATA (Recent 100 scans)
+### 📊 RAW SCAN DATA (Recent ${scan_count} scans)
 ${scansSummary}
 
 ### INSTRUCTIONS
