@@ -5,21 +5,22 @@ export const ScanAnalyasisContext = async (jurisdiction: Jurisdiction): Promise<
     let where: any = {};
 
     if (jurisdiction.state !== "All") {
-        where.state = jurisdiction.state;
+        where.state = { contains: jurisdiction.state, mode: "insensitive" };
     }
     if (jurisdiction.district !== "All") {
-        where.district = jurisdiction.district;
+        where.district = { contains: jurisdiction.district, mode: "insensitive" };
     }
     if (jurisdiction.taluka !== "All") {
-        where.taluka = jurisdiction.taluka;
+        where.taluka = { contains: jurisdiction.taluka, mode: "insensitive" };
     }
     if (jurisdiction.village !== "All") {
-        where.village = jurisdiction.village;
+        where.village = { contains: jurisdiction.village, mode: "insensitive" };
     }
-    console.log("where", where);
-    console.log("jurisdiction", jurisdiction)
+
+    console.log("Searching scans with where:", JSON.stringify(where, null, 2));
+
     const scans = await prisma.scan.findMany({
-        where: where,
+        where,
         select: {
             id: true,
             createdAt: true,
@@ -31,13 +32,23 @@ export const ScanAnalyasisContext = async (jurisdiction: Jurisdiction): Promise<
             village: true,
             taluka: true,
             district: true,
+            state: true,
         },
         orderBy: {
             createdAt: "desc",
         },
         take: 100, // Limit to 100 recent scans for context
     });
-    console.log("scan from the jurisdiction", scans);
+
+    console.log(`Found ${scans.length} scans for the jurisdiction.`);
+    if (scans.length > 0) {
+        console.log("Sample scan jurisdiction:", {
+            state: scans[0].state,
+            district: scans[0].district,
+            taluka: scans[0].taluka,
+        });
+    }
+
     return {
         jurisdiction,
         scans,
