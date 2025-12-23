@@ -40,7 +40,6 @@ function RouteComponent() {
     setIsAnalyzing(true);
     setShowLoader(true);
 
-    const startTime = Date.now();
 
     try {
       // Run API and minimum timer in parallel

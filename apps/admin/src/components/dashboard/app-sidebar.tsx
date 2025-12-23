@@ -40,6 +40,7 @@ const navItems: NavItem[] = [
     icon: BellRing,
     path: "/dashboard/farmer-alerts",
   },
+
 ];
 
 interface AppSidebarProps {

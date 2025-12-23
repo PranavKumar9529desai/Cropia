@@ -7,7 +7,7 @@ import {
   SidebarTrigger,
 } from "@repo/ui/components/sidebar";
 import { MobileTopbar } from "../../components/dashboard/mobile-topbar";
-
+import { useFCM } from "@/hooks/use-fcm";
 import { getuserLocationStatus } from "../../utils/user-location";
 
 export const Route = createFileRoute("/dashboard")({
@@ -39,6 +39,7 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function RouteComponent() {
+  useFCM();
   const { username, email, image } = Route.useLoaderData();
   console.log(username, email, image);
   return (

@@ -9,6 +9,8 @@ import InvitationController from "./controllers/user.controllers/invitation.cont
 import { AdminSessionMiddleware } from "./middleware/admin.middleware";
 import MapController from "./controllers/admin.controller/map.controller";
 import { ScanAnalyasisController } from "./controllers/admin.controller/scan.analyasis.controller";
+import NotificationController from "./controllers/user.controllers/notification.controller";
+import AdminNotificationController from "./controllers/admin.controller/notification.controller";
 
 console.log(
   "FRONTEND_URL_FARMER_APP index.ts",
@@ -44,13 +46,16 @@ const app = new Hono()
   .use("/api/locations/*", UserSessionMiddleware)
   .use("/api/weather/*", UserSessionMiddleware)
   .use("/api/ai/*", UserSessionMiddleware)
+  .use("/api/notifications/*", UserSessionMiddleware)
   .use("/api/admin/*", AdminSessionMiddleware)
   .route("/api/weather", WeatherController)
   .route("/api/locations", LocationController)
   .route("/api/ai", AiController)
   .route("/api/invitation", InvitationController)
+  .route("/api/notifications", NotificationController)
   .route("/api/admin/map", MapController)
-  .route("/api/admin/analysis", ScanAnalyasisController);
+  .route("/api/admin/analysis", ScanAnalyasisController)
+  .route("/api/admin/notifications", AdminNotificationController);
 
 export type AppType = typeof app;
 
