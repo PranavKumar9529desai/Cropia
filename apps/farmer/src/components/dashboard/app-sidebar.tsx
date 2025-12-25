@@ -1,4 +1,4 @@
-import { Home, ScanLine, MessageSquare, Bell } from "lucide-react";
+import { Home, ScanLine, MessageSquare, } from "lucide-react";
 import { cn } from "@repo/ui/lib";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import {
@@ -17,7 +17,6 @@ import { authClient } from "../../lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
 import { ProfileComponent } from "./profile";
 import { useNotifications } from "@/hooks/use-notifications";
-import { Badge } from "@repo/ui/components/badge";
 
 interface NavItem {
   label: string;
@@ -75,7 +74,9 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
           />
           <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand">
             <span className="text-lg font-bold text-foreground">Cropia</span>
-            <span className="text-xs text-muted-foreground">Smart Farming</span>
+            <div className="flex items-center gap-1.5">
+
+            </div>
           </div>
         </div>
       </SidebarHeader>
@@ -102,17 +103,8 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
                       )}
                     >
                       <Link to={item.path}>
-                        <div className="flex items-center justify-between w-full">
-                          <div className="flex items-center gap-2">
-                            <Icon strokeWidth={isActive ? 3 : 2} />
-                            <span>{item.label}</span>
-                          </div>
-                          {item.label === "Notifications" && unreadCount > 0 && (
-                            <Badge variant="default" className="h-5 min-w-5 px-1 flex items-center justify-center text-[10px] font-bold">
-                              {unreadCount}
-                            </Badge>
-                          )}
-                        </div>
+                        <Icon strokeWidth={isActive ? 3 : 2} />
+                        <span>{item.label}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -124,7 +116,7 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
       </SidebarContent>
 
       <SidebarFooter className="*ring-none">
-        <SidebarSeparator className="" />
+        <SidebarSeparator className="bg-primary" />
         <SidebarMenuItem className="ring-none">
           <SidebarMenuButton asChild tooltip={"profile"}>
             <ProfileComponent handleLogout={handleLogout} userInfo={userInfo} />

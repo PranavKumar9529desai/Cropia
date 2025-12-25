@@ -286,15 +286,22 @@ model Device {
   @@map("device")
 }
 
+type NotificationSource {
+  name             String
+  organizationName String?
+  jurisdiction     String?
+}
+
 model Notification {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String              @id @default(auto()) @map("_id") @db.ObjectId
   userId    String
   title     String
   body      String
   imageUrl  String?
-  seen      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  from      NotificationSource?
+  seen      Boolean             @default(false)
+  createdAt DateTime            @default(now())
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, seen])
   @@index([userId, createdAt])

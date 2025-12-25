@@ -14,7 +14,6 @@ const getTitle = (pathname: string) => {
 
 export function MobileTopbar() {
   const { pathname } = useLocation();
-  const title = getTitle(pathname);
   const { unreadCount } = useNotifications();
 
   return (
@@ -22,18 +21,12 @@ export function MobileTopbar() {
       className="border-b bg-background/80 backdrop-blur-md"
       leftContent={
         <div className="flex items-center gap-2">
-          {title === "Cropia" || title === "Home" ? (
-            <>
-              <img src="/favicon/favicon.svg" alt="Logo" className="w-8 h-8" />
-              <span className="font-brand font-bold text-2xl tracking-tight">
-                Cropia
-              </span>
-            </>
-          ) : (
-            <span className="font-brand font-bold text-2xl tracking-tight text-primary">
-              {title}
-            </span>
-          )}
+
+          <img src="/favicon/favicon.svg" alt="Logo" className="w-8 h-8" />
+          <span className="font-brand font-bold text-2xl tracking-tight">
+            Cropia
+          </span>
+
         </div>
       }
       rightContent={

@@ -1,10 +1,19 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
-import { prisma } from "@repo/db";
+import { Jurisdiction, prisma } from "@repo/db";
 import { getFirebaseMessaging } from "../../lib/firebase";
+import type { auth } from "../../auth";
 
-const AdminNotificationController = new Hono()
+const AdminNotificationController = new Hono<{
+    Variables: {
+        user: typeof auth.$Infer.Session.user;
+        session: typeof auth.$Infer.Session.session;
+        userId: string;
+        orgId: string;
+        jurisdiction: Jurisdiction;
+    };
+}>()
     .post(
         "/send",
         zValidator(
@@ -23,6 +32,21 @@ const AdminNotificationController = new Hono()
             const { userId, topic, title, body, imageUrl } = payload;
             const data = payload.data as Record<string, string> | undefined;
             const messaging = getFirebaseMessaging();
+
+            const adminUser = c.get("user");
+            const jurisdiction = c.get("jurisdiction") as any;
+
+            // Fetch organization name if possible
+            const member = await prisma.member.findFirst({
+                where: { userId: adminUser.id },
+                include: { organization: { select: { name: true } } }
+            });
+
+            const from = {
+                name: adminUser.name || "Admin",
+                organizationName: member?.organization?.name || "Cropia",
+                jurisdiction: jurisdiction?.taluka || null,
+            };
 
             try {
                 if (userId) {
@@ -55,6 +79,7 @@ const AdminNotificationController = new Hono()
                             title,
                             body,
                             imageUrl,
+                            from,
                         }
                     });
 
@@ -92,19 +117,21 @@ const AdminNotificationController = new Hono()
                         data: data || {},
                     });
 
-                    // If topic is 'all', we might want to create notifications for all users
-                    // This could be expensive if there are many users. 
-                    // For now, let's assume we want to track this.
+                    // If topic is 'all', broadcast to appropriate users
                     if (topic === "all") {
-                        const users = await prisma.user.findMany({ select: { id: true } });
-                        // Create notifications in bulk if possible, or just a few for now
-                        // MongoDB prisma doesn't support createMany easily with relations but let's try
+                        // If admin has a jurisdiction (like a taluka), broadcast within that taluka
+                        const users = await prisma.user.findMany({
+                            where: jurisdiction?.taluka ? { location: { taluka: jurisdiction.taluka } } : {},
+                            select: { id: true }
+                        });
+
                         await prisma.notification.createMany({
                             data: users.map(user => ({
                                 userId: user.id,
                                 title,
                                 body,
                                 imageUrl,
+                                from,
                             }))
                         });
                     }
