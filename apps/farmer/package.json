@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:preview": "vite --mode preview",
     "build": "vite build --mode production ",
     "lint": "eslint .",
     "preview": "vite preview --mode production"
@@ -15,6 +16,7 @@
     "@repo/ui": "workspace:*",
     "@tanstack/react-router": "^1.139.3",
     "ai": "^5.0.108",
+    "date-fns": "^4.1.0",
     "firebase": "^12.7.0",
     "markdown-to-jsx": "^9.3.2",
     "react": "^19.2.0",

@@ -48,6 +48,16 @@ const AdminNotificationController = new Hono()
                         data: data || {},
                     });
 
+                    // Save notification to DB for the user
+                    await prisma.notification.create({
+                        data: {
+                            userId,
+                            title,
+                            body,
+                            imageUrl,
+                        }
+                    });
+
                     // Cleanup invalid tokens
                     if (response.failureCount > 0) {
                         const failedTokens: string[] = [];
@@ -81,6 +91,24 @@ const AdminNotificationController = new Hono()
                         },
                         data: data || {},
                     });
+
+                    // If topic is 'all', we might want to create notifications for all users
+                    // This could be expensive if there are many users. 
+                    // For now, let's assume we want to track this.
+                    if (topic === "all") {
+                        const users = await prisma.user.findMany({ select: { id: true } });
+                        // Create notifications in bulk if possible, or just a few for now
+                        // MongoDB prisma doesn't support createMany easily with relations but let's try
+                        await prisma.notification.createMany({
+                            data: users.map(user => ({
+                                userId: user.id,
+                                title,
+                                body,
+                                imageUrl,
+                            }))
+                        });
+                    }
+
                     return c.json({ success: true, message: "Sent to topic" });
                 } else {
                     return c.json({ error: "Either userId or topic is required" }, 400);

@@ -78,7 +78,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500">
+    <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500 slide-in-from-bottom-4">
       <AreaScanHeader
         jurisdiction={jurisdiction}
         onRunAnalysis={handleRunAnalysis}

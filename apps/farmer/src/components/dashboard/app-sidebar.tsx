@@ -1,4 +1,4 @@
-import { Home, ScanLine, MessageSquare } from "lucide-react";
+import { Home, ScanLine, MessageSquare, Bell } from "lucide-react";
 import { cn } from "@repo/ui/lib";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import {
@@ -16,6 +16,8 @@ import {
 import { authClient } from "../../lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
 import { ProfileComponent } from "./profile";
+import { useNotifications } from "@/hooks/use-notifications";
+import { Badge } from "@repo/ui/components/badge";
 
 interface NavItem {
   label: string;
@@ -52,6 +54,7 @@ interface AppSidebarProps {
 export function AppSidebar({ userInfo }: AppSidebarProps) {
   const { pathname } = useLocation();
   const router = useRouter();
+  const { unreadCount } = useNotifications();
 
   const handleLogout = async () => {
     // Add your logout logic here
@@ -99,8 +102,17 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
                       )}
                     >
                       <Link to={item.path}>
-                        <Icon strokeWidth={isActive ? 3 : 2} />
-                        <span>{item.label}</span>
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex items-center gap-2">
+                            <Icon strokeWidth={isActive ? 3 : 2} />
+                            <span>{item.label}</span>
+                          </div>
+                          {item.label === "Notifications" && unreadCount > 0 && (
+                            <Badge variant="default" className="h-5 min-w-5 px-1 flex items-center justify-center text-[10px] font-bold">
+                              {unreadCount}
+                            </Badge>
+                          )}
+                        </div>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

@@ -7,3 +7,5 @@ dist
 .history
 .vscode
 **/service-account.json
+apps/api/.env.preview
+apps/farmer/.env.preview

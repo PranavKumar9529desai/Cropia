@@ -9,13 +9,13 @@ datasource db {
 }
 
 model User {
-  id            String       @id @map("_id")
+  id            String         @id @map("_id")
   name          String
   email         String
-  emailVerified Boolean      @default(false)
+  emailVerified Boolean        @default(false)
   image         String?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   sessions      Session[]
   accounts      Account[]
   location      Location?
@@ -23,6 +23,7 @@ model User {
   invitation    Invitation[]
   scans         Scan[]
   devices       Device[]
+  notifications Notification[]
 
   @@unique([email])
   @@map("user")
@@ -283,4 +284,19 @@ model Device {
 
   @@index([userId])
   @@map("device")
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  title     String
+  body      String
+  imageUrl  String?
+  seen      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, seen])
+  @@index([userId, createdAt])
+  @@map("notification")
 }

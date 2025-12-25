@@ -1,18 +1,21 @@
-import { useLocation } from "@tanstack/react-router";
+import { useLocation, Link } from "@tanstack/react-router";
 import { Topbar } from "@repo/ui/components/topbar";
 import { Button } from "@repo/ui/components/button";
 import { Bell, Settings } from "lucide-react";
+import { useNotifications } from "@/hooks/use-notifications";
 
 const getTitle = (pathname: string) => {
   if (pathname.includes("/home")) return "Home";
   if (pathname.includes("/scan")) return "Scan";
   if (pathname.includes("/assistant")) return "Assistant";
+  if (pathname.includes("/dashboard/settings/notification")) return "Notifications";
   return "Cropia";
 };
 
 export function MobileTopbar() {
   const { pathname } = useLocation();
   const title = getTitle(pathname);
+  const { unreadCount } = useNotifications();
 
   return (
     <Topbar
@@ -35,9 +38,16 @@ export function MobileTopbar() {
       }
       rightContent={
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
-            <Bell className="h-5 w-5" />
-          </Button>
+          <Link to="/dashboard/settings/notification">
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full relative">
+              <Bell className="h-5 w-5" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white border-2 border-background">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </Button>
+          </Link>
           <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
             <Settings className="h-5 w-5" />
           </Button>
