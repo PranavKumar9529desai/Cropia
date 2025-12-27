@@ -9,7 +9,7 @@ export const SettingsDesktopLayout = ({ routes }: { routes: SettingsRoute[] }) =
     const location = useLocation()
 
     return (
-        <div className="h-screen overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+        <div className="h-screen ">
             <div>
                 <Separator className='my-2' />
             </div>
