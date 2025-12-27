@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useLocation } from "@tanstack/react-router";
 import BottomNav from "../../components/dashboard/bottom-navigation";
 import { AppSidebar } from "../../components/dashboard/app-sidebar";
 import {
@@ -41,6 +41,8 @@ export const Route = createFileRoute("/dashboard")({
 function RouteComponent() {
   useFCM();
   const { username, email, image } = Route.useLoaderData();
+  const isSettingRoute = useLocation().pathname.startsWith("/dashboard/settings");
+
   console.log(username, email, image);
   return (
     <SidebarProvider>
@@ -57,9 +59,13 @@ function RouteComponent() {
       {/* Main content area */}
       <SidebarInset className="h-svh overflow-hidden md:h-auto md:overflow-visible">
         {/* Mobile Topbar - visible only on mobile */}
-        <div className="md:hidden">
-          <MobileTopbar />
-        </div>
+        {
+          isSettingRoute ? null : <div className="md:hidden py-1">
+
+            <MobileTopbar />
+
+          </div>
+        }
         {/* <DashboardHeader /> */}
         <div className="flex flex-1 flex-col p-4 md:p-6 overflow-y-auto md:overflow-visible pb-24 md:pb-6 no-scrollbar">
           <Outlet />

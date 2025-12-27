@@ -9,7 +9,7 @@ import { toast } from "@repo/ui/components/sonner";
 
 import { Badge } from "@repo/ui/components/badge";
 
-export const Route = createFileRoute("/dashboard/_settings/settings/notification")({
+export const Route = createFileRoute("/dashboard/settings/notification")({
     component: NotificationsPage,
 });
 
