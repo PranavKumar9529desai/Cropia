@@ -11,6 +11,7 @@ import MapController from "./controllers/admin.controller/map.controller";
 import { ScanAnalyasisController } from "./controllers/admin.controller/scan.analyasis.controller";
 import NotificationController from "./controllers/user.controllers/notification.controller";
 import AdminNotificationController from "./controllers/admin.controller/notification.controller";
+import SettingsController from "./controllers/user.controllers/settings.controller";
 
 console.log(
   "FRONTEND_URL_FARMER_APP index.ts",
@@ -47,6 +48,8 @@ const app = new Hono()
   .use("/api/weather/*", UserSessionMiddleware)
   .use("/api/ai/*", UserSessionMiddleware)
   .use("/api/notifications/*", UserSessionMiddleware)
+  .use("/api/user/*", UserSessionMiddleware)
+  .use("/api/admin/*", AdminSessionMiddleware)
   .use("/api/admin/*", AdminSessionMiddleware)
   .route("/api/weather", WeatherController)
   .route("/api/locations", LocationController)
@@ -55,7 +58,8 @@ const app = new Hono()
   .route("/api/notifications", NotificationController)
   .route("/api/admin/map", MapController)
   .route("/api/admin/analysis", ScanAnalyasisController)
-  .route("/api/admin/notifications", AdminNotificationController);
+  .route("/api/admin/notifications", AdminNotificationController)
+  .route("/api/settings", SettingsController);
 
 export type AppType = typeof app;
 

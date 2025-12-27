@@ -91,10 +91,12 @@ export const ProfileComponent = ({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </DropdownMenuItem>
+          <Link to="/dashboard/settings">
+            <DropdownMenuItem>
+              <Settings className=" h-4 w-4" />
+              Settings
+            </DropdownMenuItem>
+          </Link>
           <Link to="/dashboard/settings/notification">
             <DropdownMenuItem className="flex items-center justify-between cursor-pointer">
               <div className="flex items-center">

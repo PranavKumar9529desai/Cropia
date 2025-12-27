@@ -1,4 +1,4 @@
-import { LocateIcon, ScanIcon, UserIcon, LucideIcon } from 'lucide-react'
+import { LocateIcon, ScanIcon, UserIcon, LucideIcon, Bell } from 'lucide-react'
 
 export type SettingsRoute = {
     title: string
@@ -9,17 +9,22 @@ export type SettingsRoute = {
 export const settingsRoutes: SettingsRoute[] = [
     {
         title: 'Account',
-        href: '/dashboard/settings/account',
+        href: '/settings/account',
         icon: UserIcon
     },
     {
         title: 'My Location',
-        href: '/dashboard/settings/location',
+        href: '/settings/location',
         icon: LocateIcon
     },
     {
+        title: 'Notifications',
+        href: '/settings/notification',
+        icon: Bell
+    },
+    {
         title: 'My Scan',
-        href: '/dashboard/settings/scan',
+        href: '/settings/scan',
         icon: ScanIcon
     }
 ]
