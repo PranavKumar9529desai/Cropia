@@ -16,13 +16,15 @@ const SettingsController = new Hono<{
         "/upload-image",
         zValidator("json", z.object({ image: z.string() })),
         async (c) => {
+            console.log("Image Uploader is called")
             const { image } = c.req.valid("json");
             const userId = c.get("userId");
-
+            console.log("user id is", userId)
             if (!userId) return c.json({ error: "Unauthorized" }, 401);
 
             try {
                 const result = await uploadProfileImage(image, userId);
+                console.log("url profile image", result.secure_url)
 
                 // Update user in DB
                 await prisma.user.update({

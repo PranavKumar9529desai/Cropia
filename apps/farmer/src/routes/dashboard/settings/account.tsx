@@ -5,7 +5,7 @@ import { apiClient } from '@/lib/rpc'
 import { Button } from '@repo/ui/components/button'
 import { Input } from '@repo/ui/components/input'
 import { Label } from '@repo/ui/components/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@repo/ui/components/card'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/avatar'
 import { toast } from '@repo/ui/components/sonner'
 import { Loader2, Camera, Save } from 'lucide-react'
@@ -122,26 +122,20 @@ function AccountSettings() {
   }
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-3xl mx-auto pb-10 animate-in fade-in duration-500">
+    <div className="w-full max-w-7xl space-y-8">
 
-      <div className="flex flex-col gap-1">
-        <h2 className="text-2xl font-bold tracking-tight">Account</h2>
-        <p className="text-muted-foreground">
-          Manage your profile information and security settings.
-        </p>
-      </div>
-
-      <div className="grid gap-6">
-        {/* Profile Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Profile Information</CardTitle>
-            <CardDescription>Update your photo and personal details.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-
-            <div className="flex flex-col items-center sm:flex-row gap-6">
-              <div className="relative group cursor-pointer" onClick={handleImageClick}>
+      {/* Profile Section */}
+      <div className="flex flex-col lg:flex-row gap-8 border-b pb-8">
+        <div className="lg:w-1/3 space-y-2">
+          <h3 className="text-lg font-medium">Profile Information</h3>
+          <p className="text-sm text-muted-foreground">
+            Update your photo and personal details.
+          </p>
+        </div>
+        <div className="lg:w-2/3">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col sm:flex-row gap-6 items-start">
+              <div className="relative group cursor-pointer shrink-0" onClick={handleImageClick}>
                 <Avatar className="w-24 h-24 sm:w-32 sm:h-32 border-4 border-background shadow-sm transition-opacity group-hover:opacity-80">
                   <AvatarImage src={session?.user?.image || ''} className="object-cover" />
                   <AvatarFallback className="text-2xl">{session?.user?.name?.charAt(0) || 'U'}</AvatarFallback>
@@ -159,43 +153,48 @@ function AccountSettings() {
                 />
               </div>
 
-              <div className="flex-1 w-full space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Your User Name"
-                  />
-                  <Button onClick={handleUpdateProfile} disabled={isUpdatingProfile} size="icon" variant="outline">
-                    {isUpdatingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                  </Button>
+              <div className="flex-1 w-full space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Your User Name"
+                    />
+                    <Button onClick={handleUpdateProfile} disabled={isUpdatingProfile} size="icon" variant="outline" className="shrink-0">
+                      {isUpdatingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Your name will be visible to other users in the platform.
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Your name will be visible to other users in the platform.
-                </p>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Address</Label>
+                  <Input id="email" value={session?.user?.email || ''} disabled className="bg-muted" />
+                  <p className="text-xs text-muted-foreground">
+                    Email addresses cannot be changed once registered.
+                  </p>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email Address</Label>
-              <Input id="email" value={session?.user?.email || ''} disabled className="bg-muted" />
-              <p className="text-xs text-muted-foreground">
-                Email addresses cannot be changed once registered.
-              </p>
-            </div>
-
-          </CardContent>
-        </Card>
-
-        {/* Security Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Security</CardTitle>
-            <CardDescription>Change your password to keep your account secure.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+      {/* Security Section */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="lg:w-1/3 space-y-2">
+          <h3 className="text-lg font-medium">Security</h3>
+          <p className="text-sm text-muted-foreground">
+            Change your password to keep your account secure.
+          </p>
+        </div>
+        <div className="lg:w-2/3">
+          <div className="space-y-4">
             <div className="grid gap-2">
               <Label htmlFor="current-password">Current Password</Label>
               <Input
@@ -228,19 +227,19 @@ function AccountSettings() {
                 />
               </div>
             </div>
-          </CardContent>
-          <CardFooter className="bg-muted/50 border-t px-6 py-4">
-            <Button onClick={handleChangePassword} disabled={isChangingPassword} className="ml-auto">
-              {isChangingPassword ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Updating...
-                </>
-              ) : (
-                'Change Password'
-              )}
-            </Button>
-          </CardFooter>
-        </Card>
+            <div className="flex justify-end pt-4">
+              <Button onClick={handleChangePassword} disabled={isChangingPassword}>
+                {isChangingPassword ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Updating...
+                  </>
+                ) : (
+                  'Change Password'
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -125,7 +125,7 @@ const LocationController = new Hono<{
           },
         },
       });
-      console.log("location is this", location);
+      // console.log("location is this", location);
       if (!location) {
         return c.json(
           {
