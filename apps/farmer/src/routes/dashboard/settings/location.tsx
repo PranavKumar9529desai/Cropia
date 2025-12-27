@@ -140,7 +140,7 @@ function LocationSettings() {
           </div>
 
           {/* Map Location Section */}
-          <div className="flex flex-col lg:flex-row gap-8  h-[calc(100vh-12rem)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] ">
+          <div className="flex flex-col lg:flex-row gap-8  ">
             <div className="lg:w-1/3 space-y-2">
               <h3 className="text-lg font-medium">Pin Exact Location</h3>
               <p className="text-sm text-muted-foreground">

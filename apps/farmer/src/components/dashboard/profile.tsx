@@ -91,7 +91,7 @@ export const ProfileComponent = ({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link to="/dashboard/settings">
+          <Link to="/dashboard/settings/account">
             <DropdownMenuItem>
               <Settings className=" h-4 w-4" />
               Settings

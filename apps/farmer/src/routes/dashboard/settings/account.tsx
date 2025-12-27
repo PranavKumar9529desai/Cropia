@@ -122,10 +122,10 @@ function AccountSettings() {
   }
 
   return (
-    <div className="w-full max-w-7xl space-y-8">
+    <div className="w-full max-w-7xl space-y-8 h-[calc(100vh-12rem)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
 
       {/* Profile Section */}
-      <div className="flex flex-col lg:flex-row gap-8 border-b pb-8">
+      <div className="flex flex-col lg:flex-row gap-8 border-b pb-8 ">
         <div className="lg:w-1/3 space-y-2">
           <h3 className="text-lg font-medium">Profile Information</h3>
           <p className="text-sm text-muted-foreground">
