@@ -57,8 +57,8 @@ function RouteComponent() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-5xl mx-auto p-2 md:p-6 min-w-3xl w-full">
-      <Card className="flex-1 mb-4 overflow-hidden bg-background border-none">
+    <div className="container flex flex-col h-[calc(100vh-4rem)] max-w-7xl mx-auto p-2 md:p-6 min-w-3xl w-full">
+      <Card className="flex-1 mb-4 overflow-hidden bg-background border-none shadow-none">
         <ScrollArea className="h-full p-4">
           <div className="space-y-6">
             {messages.length === 0 && (
@@ -86,16 +86,14 @@ function RouteComponent() {
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={`flex ${
-                  m.role === "user" ? "justify-end" : "justify-start"
-                }`}
+                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"
+                  }`}
               >
                 <div
-                  className={`rounded-lg px-3 py-2 sm:max-w-[85%] max-w-[95%] ${
-                    m.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
-                  }`}
+                  className={`rounded-lg px-3 py-2 sm:max-w-[85%] max-w-[95%] ${m.role === "user"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted"
+                    }`}
                 >
                   {m.parts ? (
                     m.parts.map((part, index) => {

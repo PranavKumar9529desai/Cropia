@@ -71,7 +71,7 @@ function RouteComponent() {
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-white/10 rounded-full blur-3xl opacity-40 pointer-events-none" />
         <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-80 h-80 bg-black/10 rounded-full blur-3xl opacity-30 pointer-events-none" />
 
-        <div className="relative p-6 sm:p-10 text-primary-foreground bg-sidebar">
+        <div className="relative p-6 sm:p-10 text-primary-foreground  shadow-none">
           <div className="flex items-center gap-2.5 opacity-90 mb-4">
             <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-md">
               <GreetingIcon className="w-5 h-5 text-primary" />
@@ -96,16 +96,16 @@ function RouteComponent() {
       </div>
 
       <div className="grid gap-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between ml-6 sm:ml-10">
           <h2 className="text-xl font-bold tracking-tight">Quick Actions</h2>
         </div>
 
         {/* Quick Actions Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 px-8">
           {quickActions.map((action) => (
             <Link key={action.title} to={action.href} className="group">
               <Card className={cn(
-                "bg-transparent border-none h-full transition-all duration-300 hover:-translate-y-1 overflow-hidden relative",
+                "bg-transparent border-border h-full transition-all duration-300 hover:-translate-y-1 overflow-hidden relative shadow-none",
 
                 ""
               )}>
