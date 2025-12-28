@@ -6,6 +6,7 @@ import { LocateIcon, ScanIcon, UserIcon, LucideIcon, Bell } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/settings")({
   component: RouteComponent,
+
 });
 
 export type SettingsRoute = {

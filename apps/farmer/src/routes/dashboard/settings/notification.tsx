@@ -8,9 +8,16 @@ import { formatDistanceToNow, isToday, isYesterday } from "date-fns";
 import { toast } from "@repo/ui/components/sonner";
 
 import { Badge } from "@repo/ui/components/badge";
+import { SettingsLoader } from "@/components/settings/loader";
 
 export const Route = createFileRoute("/dashboard/settings/notification")({
   component: NotificationsPage,
+  pendingMs: 0,
+  pendingComponent: SettingsLoader,
+  loader: async () => {
+    // Loader enables pendingComponent to show during navigation
+    return null;
+  },
 });
 
 type Notification = {

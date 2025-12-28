@@ -14,9 +14,22 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@repo/ui/components/dialog";
+import { SettingsLoader } from "@/components/settings/loader";
+
+interface Scan {
+  id: string;
+  imageUrl: string;
+  crop: string;
+  visualSeverity: string | null;
+  diagnosis: string;
+  confidence: number;
+  createdAt: string;
+}
 
 export const Route = createFileRoute("/dashboard/settings/scan")({
   component: ScanHistorySettings,
+  pendingMs: 0,
+  pendingComponent: SettingsLoader,
   loader: async () => {
     try {
       // @ts-ignore
@@ -37,7 +50,7 @@ function ScanHistorySettings() {
   // @ts-ignore
   const { scans: initialScans } = Route.useLoaderData();
   const router = useRouter();
-  const [scans, setScans] = useState(initialScans);
+  const [scans, setScans] = useState<Scan[]>(initialScans);
   const isMobile = useIsMobile();
   const [visibleCount, setVisibleCount] = useState(3);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
@@ -62,7 +75,7 @@ function ScanHistorySettings() {
 
       if (data.success) {
         toast.success("Scan deleted successfully");
-        setScans((prev: any[]) => prev.filter((s) => s.id !== scanToDelete));
+        setScans((prev) => prev.filter((s) => s.id !== scanToDelete));
         router.invalidate(); // Refresh loader data if needed, though we updated local state
       } else {
         toast.error(data.error || "Failed to delete scan");
@@ -101,7 +114,7 @@ function ScanHistorySettings() {
               </div>
             ) : (
               <div className="grid gap-4 ">
-                {displayedScans.map((scan: any) => (
+                {displayedScans.map((scan) => (
                   <div
                     key={scan.id}
                     className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl border bg-card hover:bg-accent/5 transition-colors"
@@ -115,13 +128,12 @@ function ScanHistorySettings() {
                         loading="lazy"
                       />
                       <div
-                        className={`absolute bottom-0 left-0 right-0 h-1 ${
-                          scan.visualSeverity === "healthy"
-                            ? "bg-green-500"
-                            : scan.visualSeverity === "warning"
-                              ? "bg-yellow-500"
-                              : "bg-red-500"
-                        }`}
+                        className={`absolute bottom-0 left-0 right-0 h-1 ${scan.visualSeverity === "healthy"
+                          ? "bg-green-500"
+                          : scan.visualSeverity === "warning"
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
+                          }`}
                       />
                     </div>
 
@@ -129,13 +141,12 @@ function ScanHistorySettings() {
                       <div className="flex items-center gap-2">
                         <h4 className="font-semibold truncate">{scan.crop}</h4>
                         <span
-                          className={`text-xs px-2 py-0.5 rounded-full capitalize ${
-                            scan.visualSeverity === "healthy"
-                              ? "bg-green-100 text-green-700"
-                              : scan.visualSeverity === "warning"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : "bg-red-100 text-red-700"
-                          }`}
+                          className={`text-xs px-2 py-0.5 rounded-full capitalize ${scan.visualSeverity === "healthy"
+                            ? "bg-green-100 text-green-700"
+                            : scan.visualSeverity === "warning"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-red-100 text-red-700"
+                            }`}
                         >
                           {scan.visualSeverity || "Unknown"}
                         </span>
@@ -232,3 +243,4 @@ function ScanHistorySettings() {
     </div>
   );
 }
+

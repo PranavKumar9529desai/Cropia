@@ -15,9 +15,12 @@ import {
 } from "@/utils/user-location";
 import { Step1AdminDetails } from "@/components/location/step-1-location-details";
 import { Step2MapDetails } from "@/components/location/step-2-map-details";
+import { SettingsLoader } from "@/components/settings/loader";
 
 export const Route = createFileRoute("/dashboard/settings/location")({
   component: LocationSettings,
+  pendingMs: 0,
+  pendingComponent: SettingsLoader,
   loader: async () => {
     try {
       const data = await getuserlocation();

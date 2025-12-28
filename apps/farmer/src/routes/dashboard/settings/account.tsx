@@ -13,13 +13,20 @@ import {
 } from "@repo/ui/components/avatar";
 import { toast } from "@repo/ui/components/sonner";
 import { Loader2, Camera, Save } from "lucide-react";
+import { SettingsLoader } from "@/components/settings/loader";
 
 export const Route = createFileRoute("/dashboard/settings/account")({
   component: AccountSettings,
+  pendingMs: 0,
+  pendingComponent: SettingsLoader,
+  loader: async () => {
+    const result = await authClient.getSession();
+    return result;
+  },
 });
 
 function AccountSettings() {
-  const { data: session } = authClient.useSession();
+  const { data: session } = Route.useLoaderData();
   const [isUploading, setIsUploading] = useState(false);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
