@@ -16,9 +16,14 @@ export const SettingsMobileLayout = ({ routes }: { routes: SettingsRoute[] }) =>
     return (
         <div className="flex flex-col h-full md:hidden">
             {!isRoot && (
-                <div className="flex items-center justify-between px-4 py-3 border-b bg-background sticky top-0 z-10">
-                    <div className="font-bold text-lg">
-                        {currentRoute?.title || "Settings"}
+                <div className="flex items-center justify-between px-2 py-3 border-b bg-background sticky top-0 z-10">
+                    <div className="flex items-center gap-3">
+                        {currentRoute?.icon && (
+                            <currentRoute.icon className="w-5 h-5 text-muted-foreground" />
+                        )}
+                        <h1 className="font-bold text-lg">
+                            {currentRoute?.title || "Settings"}
+                        </h1>
                     </div>
                     <Button
                         variant="ghost"

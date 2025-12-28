@@ -163,7 +163,7 @@ function AccountSettings() {
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Your User Name"
                     />
-                    <Button onClick={handleUpdateProfile} disabled={isUpdatingProfile} size="icon" variant="outline" className="shrink-0">
+                    <Button onClick={handleUpdateProfile} disabled={isUpdatingProfile} size="icon" className="shrink-0">
                       {isUpdatingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                     </Button>
                   </div>

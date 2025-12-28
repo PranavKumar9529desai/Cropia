@@ -42,7 +42,9 @@ export function MobileTopbar() {
             </Button>
           </Link>
           <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full">
-            <Settings className="h-5 w-5" />
+            <Link to="/dashboard/settings">
+              <Settings className="h-5 w-5" />
+            </Link>
           </Button>
         </div>
       }

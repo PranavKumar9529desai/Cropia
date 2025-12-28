@@ -1,5 +1,6 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
+import { useIsMobile } from '@repo/ui/hooks/use-mobile'
 import { apiClient } from '@/lib/rpc'
 import { format } from 'date-fns'
 import { Loader2, Trash2, Calendar, Clock, AlertTriangle } from 'lucide-react'
@@ -37,8 +38,16 @@ function ScanHistorySettings() {
   const { scans: initialScans } = Route.useLoaderData()
   const router = useRouter()
   const [scans, setScans] = useState(initialScans)
+  const isMobile = useIsMobile()
+  const [visibleCount, setVisibleCount] = useState(3)
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
   const [scanToDelete, setScanToDelete] = useState<string | null>(null)
+
+  const displayedScans = isMobile ? scans : scans.slice(0, visibleCount)
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 3)
+  }
 
   const handleDelete = async () => {
     if (!scanToDelete) return
@@ -67,7 +76,7 @@ function ScanHistorySettings() {
   }
 
   return (
-    <div className="w-full max-w-7xl space-y-8  pb-10">
+    <div className="w-full max-w-7xl space-y-8  pb-10 h-[calc(100vh-12rem)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
 
       {/* Scan History Section */}
       <div className="flex flex-col lg:flex-row gap-8">
@@ -91,8 +100,8 @@ function ScanHistorySettings() {
                 </p>
               </div>
             ) : (
-              <div className="grid gap-4 h-[calc(100vh-12rem)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-                {scans.map((scan: any) => (
+              <div className="grid gap-4 ">
+                {displayedScans.map((scan: any) => (
                   <div
                     key={scan.id}
                     className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl border bg-card hover:bg-accent/5 transition-colors"
@@ -162,6 +171,17 @@ function ScanHistorySettings() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+
+            {!isMobile && scans.length > visibleCount && (
+              <div className="flex justify-center pt-4">
+                <span
+                  onClick={handleLoadMore}
+                  className="font-semibold text-sm text-primary hover:text-primary cursor-pointer transition-colors"
+                >
+                  Load More
+                </span>
               </div>
             )}
           </div>
