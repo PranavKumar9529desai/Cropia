@@ -40,3 +40,19 @@ export const uploadImage = async (
 
   return result;
 };
+
+export const uploadProfileImage = async (
+  imageBase64: string,
+  userId: string,
+) => {
+  const result = await cloudinary.uploader.upload(imageBase64, {
+    folder: "user-profiles",
+    public_id: `profile_${userId}`,
+    tags: ["user_profile"],
+    context: {
+      uploader_id: userId,
+    },
+  });
+  console.log("result from uploadImage", result);
+  return result;
+};

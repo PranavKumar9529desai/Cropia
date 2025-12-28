@@ -3,24 +3,27 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider  = "mongodb"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model User {
-  id            String       @id @map("_id")
+  id            String         @id @map("_id")
   name          String
   email         String
-  emailVerified Boolean      @default(false)
+  emailVerified Boolean        @default(false)
   image         String?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   sessions      Session[]
   accounts      Account[]
   location      Location?
   member        Member[]
   invitation    Invitation[]
   scans         Scan[]
+  devices       Device[]
+  notifications Notification[]
 
   @@unique([email])
   @@map("user")
@@ -77,15 +80,16 @@ model Verification {
 }
 
 model Organization {
-  id          String       @id @map("_id")
-  name        String
-  slug        String
-  logo        String?
-  createdAt   DateTime
-  metadata    String?
-  members     Member[]
-  invitations Invitation[]
-  scans       Scan[]
+  id                String              @id @map("_id")
+  name              String
+  slug              String
+  logo              String?
+  createdAt         DateTime
+  metadata          String?
+  members           Member[]
+  invitations       Invitation[]
+  scans             Scan[]
+  agentScanAnalyses AgentScanAnalysis[]
 
   @@unique([slug])
   @@map("organization")
@@ -156,9 +160,8 @@ model Location {
   taluka   String? // e.g. "Hatkanangale" (Sub-District/Tehsil)
   village  String? // e.g. "Wathar"
 
-  city    String? // Optional: User might enter a nearby city if village is missing
   pincode String
-  country String  @default("India")
+  country String @default("India")
 
   // Relation to User
   userId String @unique
@@ -187,10 +190,11 @@ model Scan {
   publicId String
 
   // 2. AI METADATA 
-  crop        String
-  visualIssue String?
-  diagnosis   String?
-  confidence  Float?
+  crop           String
+  visualIssue    String?
+  diagnosis      String?
+  visualSeverity String? // e.g., "healthy", "warning", "critical"
+  confidence     Float?
 
   // 3. LOCATION SNAPSHOT 
   // Copied from User.location at upload time.
@@ -199,7 +203,6 @@ model Scan {
   district  String?
   taluka    String? // <-- NEW: Allows "Taluka Level" dashboards
   village   String?
-  city      String?
   pincode   String?
   latitude  Float?
   longitude Float?
@@ -223,4 +226,84 @@ model Scan {
   @@index([taluka, createdAt])
   @@index([location], map: "scan_geo_index") // The speed booster
   @@map("scan")
+}
+
+type AnalysisStats {
+  // Data for the Donut Chart (e.g., { "Rust": 15, "Healthy": 40, "Leaf Spot": 5 })
+  // Using Json here allows for a flexible map of issue names to counts
+  diseaseDistribution Json
+
+  // Basic metrics for the summary card
+  totalScansAnalyzed Int
+  avgConfidence      Float
+}
+
+model AgentScanAnalysis {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // --- SCOPING ---
+  // Matches the Admin's jurisdiction to ensure they only see analysis for their area
+  state    String?
+  district String?
+  taluka   String?
+
+  // --- AI RESULTS ---
+  // Natural language headlines from Gemini (e.g., ["Rust cases up 40%", "New outbreak in Wathar"])
+  headlines String[]
+
+  // Structured JSON for charts (Donut, Bar, Temporal trends)
+  // Store things like: { "diseaseDist": { "rust": 15, "healthy": 40 }, "topVillages": [...] }
+  stats AnalysisStats?
+
+  // --- CACHING & "RUN AGAIN" LOGIC ---
+  // The total number of scans in this jurisdiction when the agent last ran
+  lastScanCount Int
+
+  // The ID or timestamp of the most recent scan processed
+  // Used to quickly check if: currentScan.createdAt > analysis.lastProcessedAt
+  lastProcessedAt DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([state, district, taluka])
+  @@map("agent_scan_analysis")
+}
+
+model Device {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String   @unique
+  platform  String? // android, ios, web
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("device")
+}
+
+type NotificationSource {
+  name             String
+  organizationName String?
+  jurisdiction     String?
+}
+
+model Notification {
+  id        String              @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  title     String
+  body      String
+  imageUrl  String?
+  from      NotificationSource?
+  seen      Boolean             @default(false)
+  createdAt DateTime            @default(now())
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, seen])
+  @@index([userId, createdAt])
+  @@map("notification")
 }

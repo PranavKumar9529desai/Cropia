@@ -3,6 +3,17 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      // inorder to directly get acces to the ts files 
+      // instead of relying on the dist files 
+      "@repo/api": [
+        "../../packages/api/src/index.ts"
+      ],
+      "@repo/api/auth": [
+        "../../packages/api/src/auth.ts"
+      ],
+      "@repo/db": [
+        "../../packages/db/src/index.ts"
+      ],
       "@/*": [
         "./src/*"
       ]

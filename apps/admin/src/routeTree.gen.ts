@@ -16,7 +16,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardFarmerAlertsRouteImport } from './routes/dashboard/farmer-alerts'
 import { Route as DashboardCropMapRouteImport } from './routes/dashboard/crop-map'
 import { Route as DashboardAreaScanRouteImport } from './routes/dashboard/area-scan'
-import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
@@ -58,11 +57,6 @@ const DashboardAreaScanRoute = DashboardAreaScanRouteImport.update({
   path: '/area-scan',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
-  id: '/verify-email',
-  path: '/verify-email',
-  getParentRoute: () => AuthRouteRoute,
-} as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
@@ -103,7 +97,6 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
-  '/verify-email': typeof AuthVerifyEmailRoute
   '/dashboard/area-scan': typeof DashboardAreaScanRoute
   '/dashboard/crop-map': typeof DashboardCropMapRoute
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
@@ -118,7 +111,6 @@ export interface FileRoutesByTo {
   '/reset-password': typeof AuthResetPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
-  '/verify-email': typeof AuthVerifyEmailRoute
   '/dashboard/area-scan': typeof DashboardAreaScanRoute
   '/dashboard/crop-map': typeof DashboardCropMapRoute
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
@@ -135,7 +127,6 @@ export interface FileRoutesById {
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
-  '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/dashboard/area-scan': typeof DashboardAreaScanRoute
   '/dashboard/crop-map': typeof DashboardCropMapRoute
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
@@ -152,7 +143,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
-    | '/verify-email'
     | '/dashboard/area-scan'
     | '/dashboard/crop-map'
     | '/dashboard/farmer-alerts'
@@ -167,7 +157,6 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
-    | '/verify-email'
     | '/dashboard/area-scan'
     | '/dashboard/crop-map'
     | '/dashboard/farmer-alerts'
@@ -183,7 +172,6 @@ export interface FileRouteTypes {
     | '/_auth/reset-password'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
-    | '/_auth/verify-email'
     | '/dashboard/area-scan'
     | '/dashboard/crop-map'
     | '/dashboard/farmer-alerts'
@@ -248,13 +236,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAreaScanRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/_auth/verify-email': {
-      id: '/_auth/verify-email'
-      path: '/verify-email'
-      fullPath: '/verify-email'
-      preLoaderRoute: typeof AuthVerifyEmailRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
     '/_auth/sign-up': {
       id: '/_auth/sign-up'
       path: '/sign-up'
@@ -306,7 +287,6 @@ interface AuthRouteRouteChildren {
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   AuthSignInRoute: typeof AuthSignInRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
-  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
   AuthAcceptInvitationIdRoute: typeof AuthAcceptInvitationIdRoute
 }
 
@@ -316,7 +296,6 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
-  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
   AuthAcceptInvitationIdRoute: AuthAcceptInvitationIdRoute,
 }
 

@@ -1,11 +1,12 @@
 // packages/database/src/client.ts
 import { PrismaClient } from "@prisma/client";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
 // 1. Create the base client
 const basePrisma = new PrismaClient();
 
 // 2. Define the extension to fix Better Auth stringification for MongoDB
-export const prisma = basePrisma.$extends({
+export const prisma = basePrisma.$extends(withAccelerate()).$extends({
   query: {
     invitation: {
       async create({ args, query }) {

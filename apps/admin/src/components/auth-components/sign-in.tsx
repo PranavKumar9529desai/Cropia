@@ -2,7 +2,6 @@ import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { toast } from "@repo/ui/components/sonner";
 import { SignInForm, type SignInFormValues } from "@repo/ui/components/auth";
 import { authClient } from "../../lib/auth/auth-client";
-import { GoogleButton } from "./google-button";
 
 export const SignIn = () => {
   const router = useRouter();
@@ -60,7 +59,9 @@ export const SignIn = () => {
           Forgot Password ?
         </Link>
       }
-      googleButton={<GoogleButton title="Continue With Google" />}
+      // currently disabled for admin
+      // TOOD: add flow where admin can signup usng goole accrount with same email as invitation email
+      // googleButton={<GoogleButton title="Continue With Google" />}
     />
   );
 };

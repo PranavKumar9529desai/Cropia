@@ -1,18 +1,16 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import BottomNav from "../../components/dashboard/bottom-navigation";
-import { AppSidebar } from "../../components/dashboard/app-sidebar";
-// import { DashboardHeader } from '../../components/dashboard/dashboard-header'
+import BottomNav from "@/components/dashboard/bottom-navigation";
+import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import {
   SidebarProvider,
   SidebarInset,
   SidebarTrigger,
 } from "@repo/ui/components/sidebar";
-import { MobileTopbar } from "../../components/dashboard/mobile-topbar";
+import { MobileTopbar } from "@/components/dashboard/mobile-topbar";
 import { getJurisdictionDisplay } from "@/lib/get-jurisdiction";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async ({ context }) => {
-    console.log("context is this", context);
     const isLogged = context.auth;
     if (!isLogged) {
       throw redirect({
@@ -36,6 +34,7 @@ function RouteComponent() {
   console.log(username, email, image, jurisdiction);
   const jurisdictionDisplay = getJurisdictionDisplay(jurisdiction);
 
+
   return (
     <SidebarProvider>
       {/* Sidebar - visible on md and larger screens */}
@@ -47,6 +46,7 @@ function RouteComponent() {
         <div className="h-fit m-2">
           <SidebarTrigger />
         </div>
+
       </div>
 
       {/* Main content area */}

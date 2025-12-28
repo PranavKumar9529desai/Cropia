@@ -10,7 +10,7 @@ export const getCropContext = async (userId: string) => {
     return { msg: "No location data is their", data: null };
   }
 
-  const { latitude: lat, longitude: lon, city, state, village } = location_data;
+  const { latitude: lat, longitude: lon, state, village } = location_data;
 
   const weather_data = await getWeatherData(lat, lon);
 
@@ -20,7 +20,7 @@ export const getCropContext = async (userId: string) => {
 
   const scan_details = await prisma.scan.findMany({ where: { userId } });
 
-  const location_details = { city, state, village };
+  const location_details = { state, village };
   const context = {
     location_details,
     weather_details: weather_data,

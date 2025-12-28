@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["src/index.ts", "src/auth.ts", "src/utils/**/*.ts"],
+  entry: ["src/index.ts", "src/auth.ts"],
   format: ["cjs", "esm"],
   dts: true,
   clean: true,
@@ -9,5 +9,5 @@ export default defineConfig({
   minify: false,
   splitting: false,
   treeshake: true,
-  external: ["@repo/db", "better-auth", "hono"],
+  external: ["@repo/db", "better-auth", "hono", "zod", "cloudinary"],
 });

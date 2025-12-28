@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { apiClient } from "../lib/rpc";
 
 /**
@@ -15,10 +16,7 @@ export const getuserLocationStatus = async (): Promise<boolean> => {
     // If success: false (404), location doesn't exist
     const hasLocation = result.success === true;
 
-    console.log(
-      "User location status:",
-      hasLocation ? "Submitted" : "Not submitted",
-    );
+
 
     return hasLocation;
   } catch (error) {
@@ -33,10 +31,9 @@ interface LocationValues {
   longitude: number;
   address?: string;
   village?: string;
-  city: string;
   district: string;
   state: string;
-  taluka?: string;
+  taluka: string;
   pincode: string;
   country: string;
 }
@@ -114,3 +111,84 @@ export const getVillages = async (
   }
   return result.data.villages;
 };
+
+export const reverseGeocode = async (lat: number, lng: number) => {
+  const key = import.meta.env.VITE_MAPTILER_KEY;
+  if (!key) {
+    console.error("MapTiler key not found");
+    return null;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.maptiler.com/geocoding/${lng},${lat}.json?key=${key}&language=en`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch reverse geocoding data");
+    }
+
+    const data = await response.json();
+    const features = data.features;
+
+    if (!features || features.length === 0) {
+      return null;
+    }
+
+    // MapTiler hierarchy: region (State), subregion/county (District), locality (City/Town)
+    const result: any = {
+      state: "",
+      district: "",
+      pincode: "",
+      address: features[0]?.place_name || "",
+    };
+
+    features.forEach((feature: any) => {
+      const type = feature.place_type[0];
+      if (type === "region") result.state = feature.text;
+      if (type === "subregion" || type === "county")
+        result.district = feature.text;
+      if (type === "locality" || type === "place") result.city = feature.text;
+      if (type === "postal_code") result.pincode = feature.text;
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Reverse geocoding error:", error);
+    return null;
+  }
+};
+
+export const forwardGeocode = async (query: string) => {
+  const key = import.meta.env.VITE_MAPTILER_KEY;
+  if (!key) return null;
+
+  try {
+    const response = await fetch(
+      `https://api.maptiler.com/geocoding/${encodeURIComponent(query)}.json?key=${key}&language=en&limit=1`,
+    );
+    const data = await response.json();
+    if (data.features && data.features.length > 0) {
+      const [lng, lat] = data.features[0].center;
+      return { lat, lng };
+    }
+    return null;
+  } catch (error) {
+    console.error("Forward geocoding error:", error);
+    return null;
+  }
+};
+
+export const createLocationSchema = z.object({
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+  address: z.string().optional(),
+  village: z.string().optional(),
+  state: z.string().min(1, "State is required"),
+  district: z.string().min(1, "District is required"),
+  taluka: z.string().min(1, "Taluka is required"), // Added Taluka as mandatory
+  pincode: z.string().min(1, "Pincode is required"),
+  country: z.string(),
+});
+
+export type CreateLocationInputType = z.infer<typeof createLocationSchema>;

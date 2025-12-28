@@ -16,10 +16,9 @@ const createLocationSchema = z.object({
   longitude: z.number().min(-180).max(180),
   address: z.string().optional(),
   village: z.string().optional(),
-  city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   district: z.string().min(1, "District is required"),
-  taluka: z.string().optional(),
+  taluka: z.string().min(1, "Taluka is required"),
   pincode: z.string().min(1, "Pincode is required"),
   country: z.string().default("India"),
 });
@@ -112,7 +111,6 @@ const LocationController = new Hono<{
           longitude: true,
           address: true,
           village: true,
-          city: true,
           state: true,
           district: true,
           taluka: true,
@@ -127,7 +125,7 @@ const LocationController = new Hono<{
           },
         },
       });
-      console.log("location is this", location);
+      // console.log("location is this", location);
       if (!location) {
         return c.json(
           {
@@ -194,7 +192,6 @@ const LocationController = new Hono<{
             longitude: data.longitude,
             address: data.address,
             village: data.village,
-            city: data.city,
             state: data.state,
             district: data.district,
             taluka: data.taluka,
@@ -210,7 +207,6 @@ const LocationController = new Hono<{
             longitude: data.longitude,
             address: data.address,
             village: data.village,
-            city: data.city,
             state: data.state,
             district: data.district,
             taluka: data.taluka,
@@ -273,7 +269,6 @@ const LocationController = new Hono<{
           ...(data.longitude !== undefined && { longitude: data.longitude }),
           ...(data.address !== undefined && { address: data.address }),
           ...(data.village !== undefined && { village: data.village }),
-          ...(data.city !== undefined && { city: data.city }),
           ...(data.state !== undefined && { state: data.state }),
           ...(data.district !== undefined && { district: data.district }),
           ...(data.taluka !== undefined && { taluka: data.taluka }),

@@ -29,47 +29,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
-// Define the data structure based on the backend response
-export interface WeatherData {
-  name: string;
-  location: {
-    city: string;
-    state: string;
-  };
-  current: {
-    temp: number;
-    wind: number;
-    rain: number;
-    soil_temp: number;
-  };
-  insights: {
-    spray_guide: {
-      canSprayNow: boolean;
-      currentWind: number;
-      reason: string;
-      forecast: Array<{
-        time: string;
-        isSafe: boolean;
-        reason: string;
-      }>;
-    };
-    water_balance: {
-      valueMm: number;
-      status: "CRITICAL" | "DEFICIT" | "SURPLUS";
-      advice: string;
-    };
-    root_health: {
-      status: "SAVER" | "DANGER" | "OK";
-      title: string;
-      message: string;
-      color: string;
-      data: {
-        surface_moisture: number;
-        deep_moisture: number;
-      };
-    };
-  };
-}
+
+
 
 const WeatherSkelton = () => {
   return (
@@ -84,7 +45,7 @@ export const Route = createFileRoute("/dashboard/home")({
   pendingComponent: WeatherSkelton,
   loader: async () => {
     const response = await getUserWeather();
-    return response as WeatherData;
+    return response;
   },
 });
 
@@ -146,12 +107,12 @@ function RouteComponent() {
   const hero = getHeroInsight();
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto pb-24 animate-in fade-in duration-500">
+    <div className=" space-y-6 max-w-3xl sm:max-w-6xl mx-auto pb-24 animate-in fade-in duration-500">
       {/* Header Section */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {location.city}, {location.state}
+            {location.village}, {location.state}
           </h1>
           <p className="text-muted-foreground">
             {new Date().toLocaleDateString("en-US", {
@@ -161,10 +122,10 @@ function RouteComponent() {
             })}
           </p>
         </div>
-        <div className="flex items-center gap-3 bg-card p-3 rounded-xl border shadow-sm self-start sm:self-auto">
+        <div className="flex items-center gap-3 bg-card p-3 rounded-xl border shadow-sm w-full sm:w-auto self-start sm:self-auto">
           <WeatherIcon
             className={cn(
-              "size-4 sm:size-8",
+              "size-8 sm:size-8",
               isRainy ? "text-blue-500" : "text-yellow-500",
             )}
           />

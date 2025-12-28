@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
+import { Badge } from "@repo/ui/components/badge";
 import {
   Avatar,
   AvatarFallback,
@@ -16,6 +17,8 @@ import {
 } from "@repo/ui/components/avatar";
 import { Bell, ChevronsUpDown, LogOut, Settings } from "lucide-react";
 import { SidebarMenuButton, useSidebar } from "@repo/ui/components/sidebar";
+import { useNotifications } from "@/hooks/use-notifications";
+import { Link } from "@tanstack/react-router";
 
 interface UserInfo {
   name: string;
@@ -33,6 +36,7 @@ export const ProfileComponent = ({
   handleLogout,
 }: ProfileComponentProps) => {
   const { isMobile } = useSidebar();
+  const { unreadCount } = useNotifications();
 
   // Fallback if userInfo is missing (though it should be passed)
   const user = {
@@ -48,10 +52,18 @@ export const ProfileComponent = ({
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
-          <Avatar className="h-8 w-8 rounded-full">
-            <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-          </Avatar>
+          <div className="relative">
+            <Avatar className="h-8 w-8 rounded-full">
+              <AvatarImage src={user.avatar} alt={user.name} />
+              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+            </Avatar>
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary border border-background"></span>
+              </span>
+            )}
+          </div>
           <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
             <span className="truncate font-semibold">{user.name}</span>
             <span className="truncate text-xs">{user.email}</span>
@@ -79,14 +91,28 @@ export const ProfileComponent = ({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell className="mr-2 h-4 w-4" />
-            Notifications
-          </DropdownMenuItem>
+          <Link to="/dashboard/settings/account">
+            <DropdownMenuItem>
+              <Settings className=" h-4 w-4" />
+              Settings
+            </DropdownMenuItem>
+          </Link>
+          <Link to="/dashboard/settings/notification">
+            <DropdownMenuItem className="flex items-center justify-between cursor-pointer">
+              <div className="flex items-center">
+                <Bell className="mr-2 h-4 w-4" />
+                Notifications
+              </div>
+              {unreadCount > 0 && (
+                <Badge
+                  variant="default"
+                  className="h-5 min-w-5 px-1 flex items-center justify-center text-[10px] font-bold"
+                >
+                  {unreadCount}
+                </Badge>
+              )}
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem

@@ -16,6 +16,7 @@ import {
 import { authClient } from "../../lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
 import { ProfileComponent } from "./profile";
+import { useNotifications } from "@/hooks/use-notifications";
 
 interface NavItem {
   label: string;
@@ -52,6 +53,7 @@ interface AppSidebarProps {
 export function AppSidebar({ userInfo }: AppSidebarProps) {
   const { pathname } = useLocation();
   const router = useRouter();
+  const { unreadCount } = useNotifications();
 
   const handleLogout = async () => {
     // Add your logout logic here
@@ -62,17 +64,17 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="">
-        <div className="flex items-center gap-3 px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+    <Sidebar collapsible="icon" className="">
+      <SidebarHeader className="shrink-0">
+        <div className="p-2 flex items-center gap-2 px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
           <img
             src="/favicon/favicon.svg"
             alt="Cropia Logo"
             className="size-10 shrink-0"
           />
-          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand">
+          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand *:leading-tight">
             <span className="text-lg font-bold text-foreground">Cropia</span>
-            <span className="text-xs text-muted-foreground">Smart Farming</span>
+            <div className="text-xs text-primary">farmer</div>
           </div>
         </div>
       </SidebarHeader>
@@ -112,7 +114,7 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
       </SidebarContent>
 
       <SidebarFooter className="*ring-none">
-        <SidebarSeparator className="" />
+        <SidebarSeparator className="bg-primary" />
         <SidebarMenuItem className="ring-none">
           <SidebarMenuButton asChild tooltip={"profile"}>
             <ProfileComponent handleLogout={handleLogout} userInfo={userInfo} />

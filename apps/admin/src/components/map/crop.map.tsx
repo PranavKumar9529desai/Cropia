@@ -49,15 +49,26 @@ const unclusteredPointLayer: LayerProps = {
   type: "circle",
   filter: ["!", ["has", "point_count"]],
   paint: {
-    "circle-color": "#11b4da",
-    "circle-radius": 6,
-    "circle-stroke-width": 1,
+    "circle-color": [
+      "match",
+      ["get", "status"],
+      "healthy",
+      "#22c55e", // Green
+      "warning",
+      "#eab308", // Yellow
+      "critical",
+      "#ef4444", // Red
+      "#11b4da", // Fallback Blue
+    ],
+    "circle-radius": 8,
+    "circle-stroke-width": 2,
     "circle-stroke-color": "#fff",
   },
 };
 
 interface CropMapProps {
   data: any; // This will be your GeoJSON from the API
+  onPointClick?: (properties: any) => void;
   defaultView?: {
     longitude: number;
     latitude: number;
@@ -65,7 +76,11 @@ interface CropMapProps {
   };
 }
 
-export default function CropMap({ data, defaultView }: CropMapProps) {
+export default function CropMap({
+  data,
+  onPointClick,
+  defaultView,
+}: CropMapProps) {
   const mapRef = useRef<MapRef>(null);
 
   const onClick = (event: any) => {
@@ -85,9 +100,9 @@ export default function CropMap({ data, defaultView }: CropMapProps) {
           duration: 500,
         });
       });
-    } else {
-      // Logic: If clicked on a Single Dot -> Show Info (You can add a drawer/modal trigger here)
-      console.log("Clicked scan:", feature.properties);
+    } else if (onPointClick) {
+      // Logic: If clicked on a Single Dot -> Show Info
+      onPointClick(feature.properties);
     }
   };
 
@@ -115,8 +130,25 @@ export default function CropMap({ data, defaultView }: CropMapProps) {
           cluster={true}
           clusterMaxZoom={14} // Stop clustering when zoomed in close
           clusterRadius={50} // Radius of each cluster in pixels
+          clusterProperties={{
+            has_critical: ["any", ["==", ["get", "status"], "critical"]],
+            has_warning: ["any", ["==", ["get", "status"], "warning"]],
+          }}
         >
-          <Layer {...clusterLayer} />
+          <Layer
+            {...clusterLayer}
+            paint={{
+              ...clusterLayer.paint,
+              "circle-color": [
+                "case",
+                ["get", "has_critical"],
+                "#ef4444", // Red if any point is critical
+                ["get", "has_warning"],
+                "#eab308", // Yellow if any point is warning (and none critical)
+                "#22c55e", // Green if all are healthy
+              ],
+            }}
+          />
           <Layer {...clusterCountLayer} />
           <Layer {...unclusteredPointLayer} />
         </Source>

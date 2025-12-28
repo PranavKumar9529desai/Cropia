@@ -3,30 +3,24 @@
   "version": "0.0.0",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./index.ts": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "default": "./dist/index.js"
     },
     "./auth": {
+      "types": "./dist/auth.d.ts",
       "import": "./dist/auth.mjs",
       "require": "./dist/auth.js",
-      "types": "./dist/auth.d.ts"
-    },
-    "./utils/*": {
-      "import": "./dist/utils/*.mjs",
-      "require": "./dist/utils/*.js",
-      "types": "./dist/utils/*.d.ts"
+      "default": "./dist/auth.js"
     }
   },
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup",
+    "dev": "tsup --watch",
     "lint": "eslint .",
     "type-check": "tsc --noEmit"
   },
@@ -39,6 +33,7 @@
     "ai": "^5.0.108",
     "better-auth": "^1.4.0",
     "cloudinary": "^2.8.0",
+    "firebase-admin": "^13.6.0",
     "hono": "^4.0.0",
     "nodemailer": "^7.0.11"
   },

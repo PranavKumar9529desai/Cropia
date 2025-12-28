@@ -3,7 +3,7 @@ import { auth } from "../auth";
 async function main() {
   console.log("🚀 Starting Cropia Setup Script...");
 
-  const email = "fullstackwebdeveloper123@gmail.com";
+  const email = "pranavkdesai1@gmail.com";
   const password = "Intern@31";
   const name = "Admin User";
 
@@ -122,3 +122,5 @@ main().catch((err) => {
   console.error("💥 Critical Script Failure:", err);
   process.exit(1);
 });
+
+//

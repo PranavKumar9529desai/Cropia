@@ -6,14 +6,17 @@ import { Toaster } from "@repo/ui/components/sonner";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import { ThemeProvider } from "./components/theme-provider";
+import { MyRouterContext } from "./routes/__root";
 // import { authClient } from "./lib/auth/auth-client";
 
 // Create a new router instance
 const router = createRouter({
   routeTree,
+  defaultPreload: "intent",
+  defaultViewTransition: true,
   context: {
     auth: null,
-  },
+  } as MyRouterContext,
 });
 
 declare module "@tanstack/react-router" {

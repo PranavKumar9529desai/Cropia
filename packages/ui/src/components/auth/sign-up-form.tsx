@@ -65,7 +65,7 @@ export const SignUpForm = ({
   };
 
   return (
-    <Card className="w-full max-w-sm border-none shadow-none">
+    <Card className="w-full max-w-sm border-none shadow-none ">
       <CardHeader className="text-3xl font-bold text-primary space-y-2">
         <CardTitle>Sign Up</CardTitle>
         <CardDescription>Create Account to Cropia.</CardDescription>

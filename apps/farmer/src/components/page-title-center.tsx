@@ -12,7 +12,7 @@ export const PageHeader = ({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center space-y-4 mt-16",
+        "flex flex-col items-center justify-center space-y-4 mt-16 font-brand",
         className,
       )}
     >

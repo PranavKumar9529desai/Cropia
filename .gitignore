@@ -4,6 +4,8 @@ node_modules
 .env.production
 .env
 dist
-.histroy
+.history
 .vscode
-histroy
+**/service-account.json
+apps/api/.env.preview
+apps/farmer/.env.preview

@@ -7,3 +7,5 @@ http://localhost:4000/api/auth/reference
 - it is super important.
 - need to configure the Email Provider to send email for verification
 - tsup to build api package which produces the js file needed by vercel
+
+bun --env-file=apps/api/.env.production packages/api/src/utils/query.ts

@@ -8,6 +8,7 @@ import { uploadImage } from "../../utils/upload-image";
 import { getCropContext } from "../../utils/agents/assistant-agent/context";
 import { generateFarmerPrompt } from "../../utils/agents/assistant-agent/prompt";
 import { FarmerContext } from "../../utils/agents/assistant-agent/types";
+import { createLocationObject } from "../../utils/scan.helpers";
 
 const AiController = new Hono<{
   Variables: {
@@ -22,6 +23,7 @@ const AiController = new Hono<{
 
     // 1. Ask Gemini: Is this a valid crop?
     const result = await analyzeCropImage(imageBase64);
+    console.log("results of the analyzeCropImage", result);
 
     // 2. SERVER-SIDE LOGIC (The benefit of using Hono)
     if (result.isValid && result.metadata && result.generatedFilename) {
@@ -34,17 +36,22 @@ const AiController = new Hono<{
         });
 
         // We use the generated filename and description from the AI
+        if (!result.metadata) {
+          console.error("No metadata found in analysis result");
+          return c.json({ error: "Failed to analyze image" }, 400);
+        }
+
         const ImageMetaData = {
           description: result.metadata.description,
           crop: result.metadata.crop,
-          diagnosis: result.metadata.visualIssue,
+          diagnosis: result.metadata.diagnosis,
           district: userLocation?.district as string,
           userId: c.get("userId"),
         };
 
         const uploadResult = await uploadImage(
           imageBase64,
-          result.generatedFilename,
+          result.generatedFilename!,
           ImageMetaData,
         );
 
@@ -56,18 +63,24 @@ const AiController = new Hono<{
             crop: result.metadata.crop,
 
             visualIssue: result.metadata.visualIssue,
-            diagnosis: null, // Expert finding, initially null
+            diagnosis: result.metadata.diagnosis,
+            visualSeverity: result.metadata.visualSeverity,
             confidence: result.metadata.confidence,
 
             // Location Snapshot
             state: userLocation?.state,
             district: userLocation?.district,
-            city: userLocation?.city,
             taluka: userLocation?.taluka,
             village: userLocation?.village,
             pincode: userLocation?.pincode,
             latitude: userLocation?.latitude,
             longitude: userLocation?.longitude,
+            ...(userLocation?.latitude && userLocation?.longitude
+              ? createLocationObject(
+                  userLocation.latitude,
+                  userLocation.longitude,
+                )
+              : {}),
 
             userId: c.var.userId,
             // organizationId: c.var.session?.activeOrganizationId
@@ -101,7 +114,6 @@ const AiController = new Hono<{
 
     // AI SDK v5: streamText returns the result object immediately`
     const result = await streamText({
-      // maxium rate limit model
       model: google("gemini-2.5-flash-lite"),
       system: systemPrompt,
       messages: convertToModelMessages(messages), // Convert UI messages to Core messages

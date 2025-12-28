@@ -1,9 +1,11 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { authClient } from "../lib/auth/auth-client";
 
+type Session = typeof authClient.$Infer.Session;
+
 export interface MyRouterContext {
   // This allows child routes to use context.auth in their beforeLoad guards
-  auth: typeof authClient.$Infer.Session | null;
+  auth: Session | null;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({

@@ -11,6 +11,8 @@ import { ThemeProvider } from "./components/theme-provider";
 // Create a new router instance
 const router = createRouter({
   routeTree,
+  defaultPreload: "intent",
+  defaultViewTransition: true,
   context: {
     auth: null,
   },
