@@ -139,7 +139,7 @@ function RouteComponent() {
       </div>
 
       {/* Your Access - Clean Vertical Stack */}
-      <div className="px-6 sm:px-10 space-y-3 bg-card ">
+      <div className="px-6 sm:px-10 space-y-3 ">
         <h2 className="text-xl font-bold tracking-tight">Your Access</h2>
 
         <div className="space-y-2">
