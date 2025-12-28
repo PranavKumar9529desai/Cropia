@@ -13,9 +13,7 @@ function IndexComponent() {
       {session.data ? (
         <>
           <Link to="/dashboard">
-            <Button className="w-full text-center">
-              Go to Dashboard
-            </Button>
+            <Button className="w-full text-center">Go to Dashboard</Button>
           </Link>
           <Button
             className="w-full text-center"

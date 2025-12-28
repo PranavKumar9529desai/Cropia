@@ -8,7 +8,6 @@ export interface MyRouterContext {
   auth: Session | null;
 }
 
-
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   /**
    * 1. ROUTE GUARD LOGIC (Static Check)

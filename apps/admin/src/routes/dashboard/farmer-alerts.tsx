@@ -25,7 +25,14 @@ import {
 import { toast } from "sonner";
 import { apiClient } from "@/lib/rpc";
 import { Badge } from "@repo/ui/components/badge";
-import { Bell, Smartphone, Send, Image as ImageIcon, Users, User } from "lucide-react";
+import {
+  Bell,
+  Smartphone,
+  Send,
+  Image as ImageIcon,
+  Users,
+  User,
+} from "lucide-react";
 import { cn } from "@repo/ui/lib/utils";
 import { PhonePreview } from "@/components/dashboard/phone-preview";
 
@@ -114,8 +121,12 @@ function NotificationsPage() {
         </div>
         <div className="hidden md:flex items-center gap-3">
           <div className="text-right mr-2 hidden lg:block">
-            <p className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-tighter">Status</p>
-            <p className="text-xs font-bold text-emerald-600/80">Active & Ready</p>
+            <p className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-tighter">
+              Status
+            </p>
+            <p className="text-xs font-bold text-emerald-600/80">
+              Active & Ready
+            </p>
           </div>
           {/* <Badge variant="outline" className="px-3 py-1 text-[10px] font-bold border-emerald-100 bg-emerald-50/50 text-emerald-700 uppercase tracking-tight">
             Node: IN-WEST-1
@@ -128,8 +139,10 @@ function NotificationsPage() {
         <div className="lg:col-span-7 space-y-6">
           <div className="bg-card sm:bg-transparent rounded-xl border sm:border-0 shadow-sm p-6 lg:p-8">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
                 {/* Target Section */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 pb-2 border-b">
@@ -144,7 +157,10 @@ function NotificationsPage() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Broadcasting Method</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger className="h-11">
                                 <SelectValue placeholder="Select target type" />
@@ -174,12 +190,18 @@ function NotificationsPage() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            {form.watch("targetType") === "topic" ? "Topic Name" : "User ID"}
+                            {form.watch("targetType") === "topic"
+                              ? "Topic Name"
+                              : "User ID"}
                           </FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Input
-                                placeholder={form.watch("targetType") === "topic" ? "e.g. all, weather-updates" : "Enter User ID"}
+                                placeholder={
+                                  form.watch("targetType") === "topic"
+                                    ? "e.g. all, weather-updates"
+                                    : "Enter User ID"
+                                }
                                 {...field}
                                 className="h-11 pl-4"
                               />
@@ -201,7 +223,9 @@ function NotificationsPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 pb-2 border-b">
                     <Bell className="w-5 h-5 text-emerald-600" />
-                    <h3 className="font-semibold text-lg">Notification Content</h3>
+                    <h3 className="font-semibold text-lg">
+                      Notification Content
+                    </h3>
                   </div>
 
                   <FormField
@@ -211,7 +235,11 @@ function NotificationsPage() {
                       <FormItem>
                         <FormLabel>Title</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g. Heavy Rain Alert" className="h-11 font-medium" {...field} />
+                          <Input
+                            placeholder="e.g. Heavy Rain Alert"
+                            className="h-11 font-medium"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -245,7 +273,11 @@ function NotificationsPage() {
                         <FormControl>
                           <div className="relative">
                             <ImageIcon className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                            <Input placeholder="https://..." className="pl-10 h-11" {...field} />
+                            <Input
+                              placeholder="https://..."
+                              className="pl-10 h-11"
+                              {...field}
+                            />
                           </div>
                         </FormControl>
                         <FormMessage />
@@ -277,7 +309,9 @@ function NotificationsPage() {
           <div className="sticky top-8">
             <div className="flex items-center gap-2 mb-4 justify-center lg:justify-start">
               <Smartphone className="w-5 h-5 text-muted-foreground" />
-              <h3 className="text-muted-foreground font-medium text-sm uppercase tracking-wider">Live Preview</h3>
+              <h3 className="text-muted-foreground font-medium text-sm uppercase tracking-wider">
+                Live Preview
+              </h3>
             </div>
 
             <PhonePreview control={form.control} />
@@ -286,8 +320,9 @@ function NotificationsPage() {
               <p className="flex gap-2">
                 <span className="text-xl">💡</span>
                 <span>
-                  <strong>Tip:</strong> Keep titles under 40 characters for best visibility on lock screens.
-                  Images should be aspect ratio ~2:1.
+                  <strong>Tip:</strong> Keep titles under 40 characters for best
+                  visibility on lock screens. Images should be aspect ratio
+                  ~2:1.
                 </span>
               </p>
             </div>

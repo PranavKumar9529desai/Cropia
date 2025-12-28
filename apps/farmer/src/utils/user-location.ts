@@ -16,10 +16,7 @@ export const getuserLocationStatus = async (): Promise<boolean> => {
     // If success: false (404), location doesn't exist
     const hasLocation = result.success === true;
 
-    console.log(
-      "User location status:",
-      hasLocation ? "Submitted" : "Not submitted",
-    );
+
 
     return hasLocation;
   } catch (error) {
@@ -149,7 +146,8 @@ export const reverseGeocode = async (lat: number, lng: number) => {
     features.forEach((feature: any) => {
       const type = feature.place_type[0];
       if (type === "region") result.state = feature.text;
-      if (type === "subregion" || type === "county") result.district = feature.text;
+      if (type === "subregion" || type === "county")
+        result.district = feature.text;
       if (type === "locality" || type === "place") result.city = feature.text;
       if (type === "postal_code") result.pincode = feature.text;
     });
@@ -194,4 +192,3 @@ export const createLocationSchema = z.object({
 });
 
 export type CreateLocationInputType = z.infer<typeof createLocationSchema>;
-

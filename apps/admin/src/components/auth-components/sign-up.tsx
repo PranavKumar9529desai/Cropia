@@ -12,7 +12,9 @@ export const SignUp = () => {
   return (
     <Card className="w-full max-w-sm border-none shadow-none bg-transparent sm:!bg-card sm:border-card">
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold">Invitation Required</CardTitle>
+        <CardTitle className="text-2xl font-semibold">
+          Invitation Required
+        </CardTitle>
       </CardHeader>
       <CardContent className="text-muted-foreground text-sm">
         <p>

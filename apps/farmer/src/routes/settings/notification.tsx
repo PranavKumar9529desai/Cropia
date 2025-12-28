@@ -1,10 +1,25 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useState, useEffect, useMemo } from "react";
 import { apiClient } from "@/lib/rpc";
-import { Bell, BellOff, Check, ChevronRight, Clock, ChevronLeft, Inbox, CircleCheck } from "lucide-react";
+import {
+  Bell,
+  BellOff,
+  Check,
+  ChevronRight,
+  Clock,
+  ChevronLeft,
+  Inbox,
+  CircleCheck,
+} from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import { cn } from "@repo/ui/lib";
-import { formatDistanceToNow, isToday, isYesterday, startOfDay, subDays } from "date-fns";
+import {
+  formatDistanceToNow,
+  isToday,
+  isYesterday,
+  startOfDay,
+  subDays,
+} from "date-fns";
 import { toast } from "@repo/ui/components/sonner";
 
 import { Badge } from "@repo/ui/components/badge";
@@ -75,7 +90,7 @@ function NotificationsPage() {
       });
       if (res.ok) {
         setNotifications((prev) =>
-          prev.map((n) => (n.id === id ? { ...n, seen: true } : n))
+          prev.map((n) => (n.id === id ? { ...n, seen: true } : n)),
         );
       }
     } catch (error) {
@@ -101,7 +116,8 @@ function NotificationsPage() {
     });
 
     if (today.length > 0) groups.push({ title: "Today", items: today });
-    if (yesterday.length > 0) groups.push({ title: "Yesterday", items: yesterday });
+    if (yesterday.length > 0)
+      groups.push({ title: "Yesterday", items: yesterday });
     if (earlier.length > 0) groups.push({ title: "Earlier", items: earlier });
 
     return groups;
@@ -158,7 +174,9 @@ function NotificationsPage() {
                 <Bell className="w-3.5 h-3.5 text-primary/40" />
               </div>
             </div>
-            <p className="text-[11px] text-muted-foreground/40 font-black tracking-widest uppercase animate-pulse">Syncing Alerts</p>
+            <p className="text-[11px] text-muted-foreground/40 font-black tracking-widest uppercase animate-pulse">
+              Syncing Alerts
+            </p>
           </div>
         ) : notifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[50vh] text-center max-w-[200px] mx-auto opacity-50">
@@ -167,7 +185,9 @@ function NotificationsPage() {
                 <Inbox className="w-10 h-10 text-muted-foreground/30" />
               </div>
             </div>
-            <h3 className="text-base font-black text-foreground/70 tracking-tight">Inbox Empty</h3>
+            <h3 className="text-base font-black text-foreground/70 tracking-tight">
+              Inbox Empty
+            </h3>
             <p className="text-[10px] text-muted-foreground/60 font-bold mt-1 uppercase tracking-widest">
               No notifications yet
             </p>
@@ -182,12 +202,14 @@ function NotificationsPage() {
                 {group.items.map((notification) => (
                   <div
                     key={notification.id}
-                    onClick={() => !notification.seen && markAsSeen(notification.id)}
+                    onClick={() =>
+                      !notification.seen && markAsSeen(notification.id)
+                    }
                     className={cn(
                       "group relative flex items-start gap-4 sm:gap-5 p-4 sm:p-5 rounded-2xl transition-all duration-300 border cursor-pointer",
                       !notification.seen
                         ? "bg-primary/[0.025] border-primary/10 hover:bg-primary/[0.05]"
-                        : "bg-card border-border/50 hover:bg-accent/40"
+                        : "bg-card border-border/50 hover:bg-accent/40",
                     )}
                   >
                     {/* Status Indicator Bar */}
@@ -206,13 +228,20 @@ function NotificationsPage() {
                           />
                         </div>
                       ) : (
-                        <div className={cn(
-                          "size-16 sm:size-20 rounded-xl flex items-center justify-center transition-all duration-300",
-                          !notification.seen
-                            ? "bg-primary text-white shadow-lg shadow-primary/20"
-                            : "bg-muted/50 text-muted-foreground/30"
-                        )}>
-                          <Bell className={cn("w-5 h-5 sm:w-6 sm:h-6", !notification.seen && "fill-white/20")} />
+                        <div
+                          className={cn(
+                            "size-16 sm:size-20 rounded-xl flex items-center justify-center transition-all duration-300",
+                            !notification.seen
+                              ? "bg-primary text-white shadow-lg shadow-primary/20"
+                              : "bg-muted/50 text-muted-foreground/30",
+                          )}
+                        >
+                          <Bell
+                            className={cn(
+                              "w-5 h-5 sm:w-6 sm:h-6",
+                              !notification.seen && "fill-white/20",
+                            )}
+                          />
                         </div>
                       )}
                     </div>
@@ -221,28 +250,42 @@ function NotificationsPage() {
                       <div className="flex items-center justify-between gap-2 sm:gap-3 mb-1 sm:mb-2">
                         <div className="flex items-center gap-2 sm:gap-2.5">
                           {notification.from && (
-                            <Badge variant="outline" className="text-[10px] sm:text-[12px] h-6 sm:h-6 font-primary uppercase tracking-tight rounded-md bg-muted-foreground text-background border-none px-1.5 sm:px-2 leading-none">
+                            <Badge
+                              variant="outline"
+                              className="text-[10px] sm:text-[12px] h-6 sm:h-6 font-primary uppercase tracking-tight rounded-md bg-muted-foreground text-background border-none px-1.5 sm:px-2 leading-none"
+                            >
                               {notification.from.organizationName || "Cropia"}
                             </Badge>
                           )}
                           <span className="text-[9px] sm:text-[10px] text-muted-foreground/50 font-bold tracking-tight">
-                            {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
+                            {formatDistanceToNow(
+                              new Date(notification.createdAt),
+                              { addSuffix: true },
+                            )}
                           </span>
                         </div>
                         <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground/10 group-hover:text-primary transition-all duration-300 group-hover:translate-x-0.5" />
                       </div>
 
                       <div className="space-y-0.5 sm:space-y-1">
-                        <h4 className={cn(
-                          "text-[13px] sm:text-[15px] font-black leading-tight tracking-tight",
-                          !notification.seen ? "text-foreground" : "text-foreground/80"
-                        )}>
+                        <h4
+                          className={cn(
+                            "text-[13px] sm:text-[15px] font-black leading-tight tracking-tight",
+                            !notification.seen
+                              ? "text-foreground"
+                              : "text-foreground/80",
+                          )}
+                        >
                           {notification.title}
                         </h4>
-                        <p className={cn(
-                          "text-[12px] sm:text-sm leading-relaxed line-clamp-2",
-                          !notification.seen ? "text-foreground/60 font-medium" : "text-muted-foreground/50"
-                        )}>
+                        <p
+                          className={cn(
+                            "text-[12px] sm:text-sm leading-relaxed line-clamp-2",
+                            !notification.seen
+                              ? "text-foreground/60 font-medium"
+                              : "text-muted-foreground/50",
+                          )}
+                        >
                           {notification.body}
                         </p>
 
@@ -251,7 +294,6 @@ function NotificationsPage() {
                             <span className="text-[9px] sm:text-[10px] font-bold text-muted-foreground/30  tracking-[0.1em] leading-none">
                               By {notification.from.name}
                             </span>
-
                           </div>
                         )}
                       </div>

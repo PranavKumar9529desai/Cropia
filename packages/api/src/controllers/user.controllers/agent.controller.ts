@@ -23,7 +23,7 @@ const AiController = new Hono<{
 
     // 1. Ask Gemini: Is this a valid crop?
     const result = await analyzeCropImage(imageBase64);
-    console.log("results of the analyzeCropImage", result)
+    console.log("results of the analyzeCropImage", result);
 
     // 2. SERVER-SIDE LOGIC (The benefit of using Hono)
     if (result.isValid && result.metadata && result.generatedFilename) {
@@ -75,8 +75,11 @@ const AiController = new Hono<{
             pincode: userLocation?.pincode,
             latitude: userLocation?.latitude,
             longitude: userLocation?.longitude,
-            ...((userLocation?.latitude && userLocation?.longitude)
-              ? createLocationObject(userLocation.latitude, userLocation.longitude)
+            ...(userLocation?.latitude && userLocation?.longitude
+              ? createLocationObject(
+                  userLocation.latitude,
+                  userLocation.longitude,
+                )
               : {}),
 
             userId: c.var.userId,

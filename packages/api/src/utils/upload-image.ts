@@ -53,6 +53,6 @@ export const uploadProfileImage = async (
       uploader_id: userId,
     },
   });
-  console.log("result from uploadImage", result)
+  console.log("result from uploadImage", result);
   return result;
 };

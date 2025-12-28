@@ -1,4 +1,4 @@
-import { Home, ScanLine, MessageSquare, } from "lucide-react";
+import { Home, ScanLine, MessageSquare } from "lucide-react";
 import { cn } from "@repo/ui/lib";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import {
@@ -64,19 +64,17 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="">
-        <div className="flex items-center gap-3 px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+    <Sidebar collapsible="icon" className="">
+      <SidebarHeader className="shrink-0">
+        <div className="p-2 flex items-center gap-2 px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
           <img
             src="/favicon/favicon.svg"
             alt="Cropia Logo"
             className="size-10 shrink-0"
           />
-          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand">
+          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand *:leading-tight">
             <span className="text-lg font-bold text-foreground">Cropia</span>
-            <div className="flex items-center gap-1.5">
-
-            </div>
+            <div className="text-xs text-primary">farmer</div>
           </div>
         </div>
       </SidebarHeader>

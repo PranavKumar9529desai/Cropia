@@ -76,7 +76,11 @@ interface CropMapProps {
   };
 }
 
-export default function CropMap({ data, onPointClick, defaultView }: CropMapProps) {
+export default function CropMap({
+  data,
+  onPointClick,
+  defaultView,
+}: CropMapProps) {
   const mapRef = useRef<MapRef>(null);
 
   const onClick = (event: any) => {

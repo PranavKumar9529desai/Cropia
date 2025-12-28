@@ -86,14 +86,16 @@ function RouteComponent() {
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"
-                  }`}
+                className={`flex ${
+                  m.role === "user" ? "justify-end" : "justify-start"
+                }`}
               >
                 <div
-                  className={`rounded-lg px-3 py-2 sm:max-w-[85%] max-w-[95%] ${m.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted"
-                    }`}
+                  className={`rounded-lg px-3 py-2 sm:max-w-[85%] max-w-[95%] ${
+                    m.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted"
+                  }`}
                 >
                   {m.parts ? (
                     m.parts.map((part, index) => {

@@ -2,7 +2,7 @@ import { app } from "@repo/api";
 import { handle } from "hono/vercel";
 
 export const config = {
-    runtime: 'nodejs'
+  runtime: "nodejs",
 };
 
 const port = process.env.BACKEND_PORT || 4000;
@@ -17,6 +17,6 @@ export const OPTIONS = handle(app);
 
 // For Bun Runtime (fallback if run locally)
 export default {
-    port,
-    fetch: app.fetch,
+  port,
+  fetch: app.fetch,
 };

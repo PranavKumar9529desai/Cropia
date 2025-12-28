@@ -8,7 +8,6 @@ importScripts('https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-comp
 // For now, I will use placeholders and ask user to fill it or we can use a library to inject.
 // Actually, better to fetch config from a URL or just assume standard keys if user builds it.
 
-// NOTE: Please replace these with your actual Firebase config values
 const firebaseConfig = {
     apiKey: "AIzaSyB0sW3PVtl3MndzdzOxF8sGbJ178wiBIZU",
     authDomain: "cropia-91322.firebaseapp.com",

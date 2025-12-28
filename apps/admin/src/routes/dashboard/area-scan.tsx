@@ -29,7 +29,6 @@ export const Route = createFileRoute("/dashboard/area-scan")({
   component: RouteComponent,
 });
 
-
 function RouteComponent() {
   const { initialAnalysis, jurisdiction } = Route.useLoaderData();
   const [analysis, setAnalysis] = useState<any>(initialAnalysis);
@@ -40,13 +39,12 @@ function RouteComponent() {
     setIsAnalyzing(true);
     setShowLoader(true);
 
-
     try {
       // Run API and minimum timer in parallel
       // TEMPORARY: Commented out API call for loader testing
       const [res] = await Promise.all([
         apiClient.api.admin.analysis.run.$post(),
-        new Promise(resolve => setTimeout(resolve, 10000)) // Guarantee 10s wait
+        new Promise((resolve) => setTimeout(resolve, 10000)), // Guarantee 10s wait
       ]);
       // await new Promise(resolve => setTimeout(resolve, 15000));
 
@@ -56,17 +54,18 @@ function RouteComponent() {
       if (data.success) {
         setAnalysis(data.analysis);
         toast.success("Analysis Complete!", {
-          description: "Fresh insights have been generated for your region."
+          description: "Fresh insights have been generated for your region.",
         });
       } else {
         toast.error("Analysis Failed", {
-          description: data.error || "Please try again later."
+          description: data.error || "Please try again later.",
         });
       }
     } catch (error) {
       console.error("Run Analysis Error:", error);
       toast.error("Deep Analysis Failed", {
-        description: "There was a network error or the AI service is currently unavailable."
+        description:
+          "There was a network error or the AI service is currently unavailable.",
       });
     } finally {
       setIsAnalyzing(false);
@@ -87,7 +86,9 @@ function RouteComponent() {
 
       <div className="mt-8">
         {showLoader && (
-          <AnalysisLoader jurisdiction={jurisdiction?.name || "Target Region"} />
+          <AnalysisLoader
+            jurisdiction={jurisdiction?.name || "Target Region"}
+          />
         )}
         <AreaScanResults analysis={analysis} />
       </div>

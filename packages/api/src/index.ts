@@ -18,9 +18,7 @@ console.log(
   "FRONTEND_URL_FARMER_APP index.ts",
   process.env.FRONTEND_URL_FARMER_APP,
 );
-console.log(
-  process.env.FRONTEND_URL_ADMIN_APP,
-);
+console.log(process.env.FRONTEND_URL_ADMIN_APP);
 const app = new Hono()
   .use(
     "/*",

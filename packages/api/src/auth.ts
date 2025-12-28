@@ -6,7 +6,8 @@ import { transporter } from "./utils/email";
 
 const SENDER_EMAIL = `"Cropia Team" <${process.env.GMAIL_USER}>`;
 // as the admin is invite only, we use the farmer app url for both admin and farmer
-const frontendUrl = process.env.FRONTEND_URL_FARMER_APP || "http://localhost:5000";
+const frontendUrl =
+  process.env.FRONTEND_URL_FARMER_APP || "http://localhost:5000";
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:4000",

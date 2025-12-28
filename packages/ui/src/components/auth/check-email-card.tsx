@@ -2,7 +2,6 @@ import { Mail, ArrowLeft } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,

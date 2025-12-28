@@ -1,129 +1,132 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useState, useRef } from 'react'
-import { authClient } from '@/lib/auth/auth-client'
-import { apiClient } from '@/lib/rpc'
-import { Button } from '@repo/ui/components/button'
-import { Input } from '@repo/ui/components/input'
-import { Label } from '@repo/ui/components/label'
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useRef } from "react";
+import { authClient } from "@/lib/auth/auth-client";
+import { apiClient } from "@/lib/rpc";
+import { Button } from "@repo/ui/components/button";
+import { Input } from "@repo/ui/components/input";
+import { Label } from "@repo/ui/components/label";
 
-import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/avatar'
-import { toast } from '@repo/ui/components/sonner'
-import { Loader2, Camera, Save } from 'lucide-react'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
+import { toast } from "@repo/ui/components/sonner";
+import { Loader2, Camera, Save } from "lucide-react";
 
-export const Route = createFileRoute('/dashboard/settings/account')({
+export const Route = createFileRoute("/dashboard/settings/account")({
   component: AccountSettings,
-})
+});
 
 function AccountSettings() {
-  const { data: session } = authClient.useSession()
-  const [isUploading, setIsUploading] = useState(false)
-  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false)
-  const [isChangingPassword, setIsChangingPassword] = useState(false)
+  const { data: session } = authClient.useSession();
+  const [isUploading, setIsUploading] = useState(false);
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
-  const [name, setName] = useState(session?.user?.name || '')
+  const [name, setName] = useState(session?.user?.name || "");
 
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageClick = () => {
-    fileInputRef.current?.click()
-  }
+    fileInputRef.current?.click();
+  };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      toast.error("File is too large (max 5MB)")
-      return
+      toast.error("File is too large (max 5MB)");
+      return;
     }
 
-    setIsUploading(true)
-    const reader = new FileReader()
+    setIsUploading(true);
+    const reader = new FileReader();
     reader.onloadend = async () => {
-      const base64 = reader.result as string
+      const base64 = reader.result as string;
       try {
         // @ts-ignore - Dynamic route might not be typed yet
-        const res = await apiClient.api.settings['upload-image'].$post({
-          json: { image: base64 }
-        })
-        const data = await res.json()
+        const res = await apiClient.api.settings["upload-image"].$post({
+          json: { image: base64 },
+        });
+        const data = await res.json();
 
         if (data.success && data.url) {
-          toast.success('Profile image updated')
-          await authClient.updateUser({ image: data.url })
-          window.location.reload()
+          toast.success("Profile image updated");
+          await authClient.updateUser({ image: data.url });
+          window.location.reload();
         } else {
-          toast.error('Failed to upload image')
+          toast.error("Failed to upload image");
         }
       } catch (error) {
-        console.error(error)
-        toast.error('An error occurred during upload')
+        console.error(error);
+        toast.error("An error occurred during upload");
       } finally {
-        setIsUploading(false)
+        setIsUploading(false);
       }
-    }
-    reader.readAsDataURL(file)
-  }
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleUpdateProfile = async () => {
-    if (!name.trim()) return toast.error("Name cannot be empty")
+    if (!name.trim()) return toast.error("Name cannot be empty");
 
-    setIsUpdatingProfile(true)
+    setIsUpdatingProfile(true);
     try {
-      const { error } = await authClient.updateUser({ name })
+      const { error } = await authClient.updateUser({ name });
       if (error) {
-        toast.error(error.message)
+        toast.error(error.message);
       } else {
-        toast.success('Profile updated successfully')
+        toast.success("Profile updated successfully");
       }
     } catch (error) {
-      toast.error('Failed to update profile')
+      toast.error("Failed to update profile");
     } finally {
-      setIsUpdatingProfile(false)
+      setIsUpdatingProfile(false);
     }
-  }
+  };
 
   const handleChangePassword = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      return toast.error("Please fill all password fields")
+      return toast.error("Please fill all password fields");
     }
     if (newPassword !== confirmPassword) {
-      toast.error("New passwords don't match")
-      return
+      toast.error("New passwords don't match");
+      return;
     }
     if (newPassword.length < 8) {
-      return toast.error("Password must be at least 8 characters")
+      return toast.error("Password must be at least 8 characters");
     }
 
-    setIsChangingPassword(true)
+    setIsChangingPassword(true);
     try {
       const { error } = await authClient.changePassword({
         currentPassword,
         newPassword,
-        revokeOtherSessions: true
-      })
+        revokeOtherSessions: true,
+      });
       if (error) {
-        toast.error(error.message)
+        toast.error(error.message);
       } else {
-        toast.success('Password changed successfully')
-        setCurrentPassword('')
-        setNewPassword('')
-        setConfirmPassword('')
+        toast.success("Password changed successfully");
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
       }
     } catch (error) {
-      toast.error('Failed to change password')
+      toast.error("Failed to change password");
     } finally {
-      setIsChangingPassword(false)
+      setIsChangingPassword(false);
     }
-  }
+  };
 
   return (
     <div className="w-full max-w-7xl space-y-8 h-[calc(100vh-12rem)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-
       {/* Profile Section */}
       <div className="flex flex-col lg:flex-row gap-8 border-b pb-8 ">
         <div className="lg:w-1/3 space-y-2">
@@ -135,13 +138,25 @@ function AccountSettings() {
         <div className="lg:w-2/3">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col sm:flex-row gap-6 items-start">
-              <div className="relative group cursor-pointer shrink-0" onClick={handleImageClick}>
+              <div
+                className="relative group cursor-pointer shrink-0"
+                onClick={handleImageClick}
+              >
                 <Avatar className="w-24 h-24 sm:w-32 sm:h-32 border-4 border-background shadow-sm transition-opacity group-hover:opacity-80">
-                  <AvatarImage src={session?.user?.image || ''} className="object-cover" />
-                  <AvatarFallback className="text-2xl">{session?.user?.name?.charAt(0) || 'U'}</AvatarFallback>
+                  <AvatarImage
+                    src={session?.user?.image || ""}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="text-2xl">
+                    {session?.user?.name?.charAt(0) || "U"}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                  {isUploading ? <Loader2 className="w-8 h-8 text-white animate-spin" /> : <Camera className="w-8 h-8 text-white" />}
+                  {isUploading ? (
+                    <Loader2 className="w-8 h-8 text-white animate-spin" />
+                  ) : (
+                    <Camera className="w-8 h-8 text-white" />
+                  )}
                 </div>
                 <input
                   type="file"
@@ -163,8 +178,17 @@ function AccountSettings() {
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Your User Name"
                     />
-                    <Button onClick={handleUpdateProfile} disabled={isUpdatingProfile} size="icon" className="shrink-0">
-                      {isUpdatingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                    <Button
+                      onClick={handleUpdateProfile}
+                      disabled={isUpdatingProfile}
+                      size="icon"
+                      className="shrink-0"
+                    >
+                      {isUpdatingProfile ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Save className="w-4 h-4" />
+                      )}
                     </Button>
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -174,7 +198,12 @@ function AccountSettings() {
 
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" value={session?.user?.email || ''} disabled className="bg-muted" />
+                  <Input
+                    id="email"
+                    value={session?.user?.email || ""}
+                    disabled
+                    className="bg-muted"
+                  />
                   <p className="text-xs text-muted-foreground">
                     Email addresses cannot be changed once registered.
                   </p>
@@ -228,13 +257,17 @@ function AccountSettings() {
               </div>
             </div>
             <div className="flex justify-end pt-4">
-              <Button onClick={handleChangePassword} disabled={isChangingPassword}>
+              <Button
+                onClick={handleChangePassword}
+                disabled={isChangingPassword}
+              >
                 {isChangingPassword ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Updating...
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
+                    Updating...
                   </>
                 ) : (
-                  'Change Password'
+                  "Change Password"
                 )}
               </Button>
             </div>
@@ -242,5 +275,5 @@ function AccountSettings() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -104,7 +104,10 @@ export const ProfileComponent = ({
                 Notifications
               </div>
               {unreadCount > 0 && (
-                <Badge variant="default" className="h-5 min-w-5 px-1 flex items-center justify-center text-[10px] font-bold">
+                <Badge
+                  variant="default"
+                  className="h-5 min-w-5 px-1 flex items-center justify-center text-[10px] font-bold"
+                >
                   {unreadCount}
                 </Badge>
               )}

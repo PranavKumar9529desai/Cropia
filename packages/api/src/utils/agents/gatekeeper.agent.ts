@@ -5,15 +5,47 @@ import { z } from "zod";
 // --- SCHEMA DEFINITIONS ---
 
 const AnalysisSchema = z.object({
-  isValidCrop: z.boolean().describe("True ONLY if the image contains a plant, crop, fruit, or vegetable. False for selfies, documents, or non-agri objects."),
+  isValidCrop: z
+    .boolean()
+    .describe(
+      "True ONLY if the image contains a plant, crop, fruit, or vegetable. False for selfies, documents, or non-agri objects.",
+    ),
   confidence: z.number().describe("Confidence score between 0.0 and 1.0"),
-  rejectionReason: z.string().describe("If invalid, explain why (e.g., 'Blurred', 'Not a plant'). If valid, return 'None'."),
-  cropDetected: z.string().describe("The specific crop name (e.g., 'Sugarcane', 'Tomato'). Use 'Unknown' if unclear."),
-  visualIssue: z.string().describe("Short visual observation of the physical state (e.g., 'Yellowing leaves', 'Rust spots', 'No issues')."),
-  diagnosis: z.string().describe("The scientific or common name of the detected disease/pest. Use 'Healthy' if no issue is found."),
-  visualSeverity: z.enum(["healthy", "warning", "critical"]).describe("Classify based on urgency: 'healthy' (no issues), 'warning' (minor spots, early stress), 'critical' (severe disease, pest outbreak, widespread damage)."),
-  filenameSlug: z.string().describe("A short, snake_case descriptor of the content. Example: 'sugarcane_rust' or 'tomato_early_blight'. DO NOT include numbers or IDs."),
-  description: z.string().describe("A professional 1-sentence summary of the visual data for the Admin Dashboard."),
+  rejectionReason: z
+    .string()
+    .describe(
+      "If invalid, explain why (e.g., 'Blurred', 'Not a plant'). If valid, return 'None'.",
+    ),
+  cropDetected: z
+    .string()
+    .describe(
+      "The specific crop name (e.g., 'Sugarcane', 'Tomato'). Use 'Unknown' if unclear.",
+    ),
+  visualIssue: z
+    .string()
+    .describe(
+      "Short visual observation of the physical state (e.g., 'Yellowing leaves', 'Rust spots', 'No issues').",
+    ),
+  diagnosis: z
+    .string()
+    .describe(
+      "The scientific or common name of the detected disease/pest. Use 'Healthy' if no issue is found.",
+    ),
+  visualSeverity: z
+    .enum(["healthy", "warning", "critical"])
+    .describe(
+      "Classify based on urgency: 'healthy' (no issues), 'warning' (minor spots, early stress), 'critical' (severe disease, pest outbreak, widespread damage).",
+    ),
+  filenameSlug: z
+    .string()
+    .describe(
+      "A short, snake_case descriptor of the content. Example: 'sugarcane_rust' or 'tomato_early_blight'. DO NOT include numbers or IDs.",
+    ),
+  description: z
+    .string()
+    .describe(
+      "A professional 1-sentence summary of the visual data for the Admin Dashboard.",
+    ),
 });
 
 type AnalysisResult = z.infer<typeof AnalysisSchema>;
@@ -32,7 +64,9 @@ export interface ImageAnalysisResponse {
   generatedFilename: string | null;
 }
 
-export const analyzeCropImage = async (imageBase64: string): Promise<ImageAnalysisResponse> => {
+export const analyzeCropImage = async (
+  imageBase64: string,
+): Promise<ImageAnalysisResponse> => {
   try {
     // 1. Parse the Base64 input
     const matches = imageBase64.match(/^data:(.+);base64,(.+)$/);
@@ -76,7 +110,10 @@ export const analyzeCropImage = async (imageBase64: string): Promise<ImageAnalys
       ],
     });
 
-    console.log("[Gatekeeper V2] Structured Analysis:", JSON.stringify(object, null, 2));
+    console.log(
+      "[Gatekeeper V2] Structured Analysis:",
+      JSON.stringify(object, null, 2),
+    );
 
     // 3. Post-Processing: Generate Unique Filename
     let finalFilename: string | null = null;
@@ -88,15 +125,18 @@ export const analyzeCropImage = async (imageBase64: string): Promise<ImageAnalys
     // 4. Return Structured Data
     return {
       isValid: object.isValidCrop,
-      rejectionReason: object.rejectionReason === "None" ? null : object.rejectionReason,
-      metadata: object.isValidCrop ? {
-        crop: object.cropDetected,
-        visualIssue: object.visualIssue,
-        diagnosis: object.diagnosis,
-        visualSeverity: object.visualSeverity,
-        description: object.description,
-        confidence: object.confidence,
-      } : null,
+      rejectionReason:
+        object.rejectionReason === "None" ? null : object.rejectionReason,
+      metadata: object.isValidCrop
+        ? {
+            crop: object.cropDetected,
+            visualIssue: object.visualIssue,
+            diagnosis: object.diagnosis,
+            visualSeverity: object.visualSeverity,
+            description: object.description,
+            confidence: object.confidence,
+          }
+        : null,
       generatedFilename: finalFilename,
     };
   } catch (error) {
