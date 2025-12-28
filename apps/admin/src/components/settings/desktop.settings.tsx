@@ -1,9 +1,9 @@
-import { SettingsRoute } from "@/routes/dashboard/settings/route";
 import { Separator } from "@repo/ui/components/separator";
 import { Badge } from "@repo/ui/components/badge";
 import { Outlet, useLocation } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@repo/ui/lib/utils";
+import type { SettingsRoute } from "./settings.constants";
 
 export const SettingsDesktopLayout = ({
   routes,

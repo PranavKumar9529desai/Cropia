@@ -32,6 +32,9 @@ export const Route = createFileRoute("/dashboard")({
 function RouteComponent() {
   const { username, email, image, jurisdiction } = Route.useLoaderData();
   const route = useLocation().pathname.split("/")[2];
+  const isSettingRoute = useLocation().pathname.startsWith(
+    "/dashboard/settings",
+  );
   console.log(route);
   console.log(username, email, image, jurisdiction);
   const jurisdictionDisplay = getJurisdictionDisplay(jurisdiction);
@@ -61,9 +64,11 @@ function RouteComponent() {
       {/* Main content area */}
       <SidebarInset className="h-svh overflow-hidden md:h-auto md:overflow-visible">
         {/* Mobile Topbar - visible only on mobile */}
-        <div className="md:hidden py-1">
-          <MobileTopbar isAdmin={true} jurisdiction={jurisdictionDisplay} />
-        </div>
+        {isSettingRoute ? null : (
+          <div className="md:hidden py-1">
+            <MobileTopbar isAdmin={true} jurisdiction={jurisdictionDisplay} />
+          </div>
+        )}
         {/* <DashboardHeader /> */}
         <div className="flex flex-1 flex-col p-4 md:p-6 overflow-y-auto md:overflow-visible pb-24 md:pb-6 no-scrollbar">
           <Outlet />

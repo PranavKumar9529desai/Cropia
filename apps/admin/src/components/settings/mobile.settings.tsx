@@ -1,9 +1,9 @@
-import { SettingsRoute, settingsRoutes } from "@/routes/dashboard/settings/route";
 import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ChevronRight, LogOut, X } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import { authClient } from "@/lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
+import { settingsRoutes, type SettingsRoute } from "./settings.constants";
 
 export const SettingsMobileLayout = ({
   routes,

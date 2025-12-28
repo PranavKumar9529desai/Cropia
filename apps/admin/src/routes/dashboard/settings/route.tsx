@@ -2,38 +2,13 @@ import { SettingsDesktopLayout } from "@/components/settings/desktop.settings";
 import { SettingsMobileLayout } from "@/components/settings/mobile.settings";
 import { useIsMobile } from "@repo/ui/hooks/use-mobile";
 import { createFileRoute } from "@tanstack/react-router";
-import { LocateIcon, ScanIcon, UserIcon, LucideIcon, Bell } from "lucide-react";
+import { settingsRoutes } from "@/components/settings/settings.constants";
+
 
 export const Route = createFileRoute("/dashboard/settings")({
   component: RouteComponent,
-
 });
 
-export type SettingsRoute = {
-  title: string;
-  href: string;
-  icon: LucideIcon;
-};
-
-export const settingsRoutes: SettingsRoute[] = [
-  // TODO : change ROutes Names to appropiate names
-  {
-    title: "Account",
-    href: "/dashboard/settings/account",
-    icon: UserIcon,
-  },
-
-  {
-    title: "My Scan",
-    href: "/dashboard/settings/scan",
-    icon: ScanIcon,
-  },
-  {
-    title: "Notifications",
-    href: "/dashboard/settings/notification",
-    icon: Bell,
-  },
-];
 
 function RouteComponent() {
   const isMobile = useIsMobile();
