@@ -60,7 +60,7 @@ function RouteComponent() {
           className="flex items-center justify-between p-4  rounded-2xl hover:bg-accent/50 transition-colors h-10"
         >
           <div className="flex items-center gap-2">
-            <div className="p-3 bg-primary/10 rounded-xl text-primary">
+            <div className="p-3 rounded-xl text-primary">
               <route.icon className="w-5 h-5" />
             </div>
             <span className="font-semibold text-lg">{route.title}</span>

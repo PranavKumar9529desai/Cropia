@@ -29,47 +29,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/dialog";
-// Define the data structure based on the backend response
-export interface WeatherData {
-  name: string;
-  location: {
-    city: string;
-    state: string;
-  };
-  current: {
-    temp: number;
-    wind: number;
-    rain: number;
-    soil_temp: number;
-  };
-  insights: {
-    spray_guide: {
-      canSprayNow: boolean;
-      currentWind: number;
-      reason: string;
-      forecast: Array<{
-        time: string;
-        isSafe: boolean;
-        reason: string;
-      }>;
-    };
-    water_balance: {
-      valueMm: number;
-      status: "CRITICAL" | "DEFICIT" | "SURPLUS";
-      advice: string;
-    };
-    root_health: {
-      status: "SAVER" | "DANGER" | "OK";
-      title: string;
-      message: string;
-      color: string;
-      data: {
-        surface_moisture: number;
-        deep_moisture: number;
-      };
-    };
-  };
-}
+
+
 
 const WeatherSkelton = () => {
   return (
@@ -84,7 +45,7 @@ export const Route = createFileRoute("/dashboard/home")({
   pendingComponent: WeatherSkelton,
   loader: async () => {
     const response = await getUserWeather();
-    return response as WeatherData;
+    return response;
   },
 });
 
@@ -151,7 +112,7 @@ function RouteComponent() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {location.city}, {location.state}
+            {location.village}, {location.state}
           </h1>
           <p className="text-muted-foreground">
             {new Date().toLocaleDateString("en-US", {
