@@ -30,6 +30,8 @@ export const ScanAnalyasisController = new Hono<{
       },
     });
     console.log("analysis", analysis);
+    c.header("Cache-Control", "public, max-age=3600"); // 1 hour
+
     return c.json(analysis);
   })
   .post("/run", async (c) => {

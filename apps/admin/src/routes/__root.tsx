@@ -1,5 +1,6 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { authClient } from "../lib/auth/auth-client";
+import { RouteLoadingIndicator } from "@/components/route-loading-indicator";
 
 type Session = typeof authClient.$Infer.Session;
 
@@ -29,7 +30,9 @@ function RootComponent() {
 
   return (
     <>
+      <RouteLoadingIndicator />
       <div className="overflow-hidden w-screen h-screen">
+
         {/* We pass the session through the Outlet context if needed */}
         <Outlet />
       </div>

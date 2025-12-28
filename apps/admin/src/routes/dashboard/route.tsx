@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useLocation } from "@tanstack/react-router";
 import BottomNav from "@/components/dashboard/bottom-navigation";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import {
@@ -31,6 +31,8 @@ export const Route = createFileRoute("/dashboard")({
 
 function RouteComponent() {
   const { username, email, image, jurisdiction } = Route.useLoaderData();
+  const route = useLocation().pathname.split("/")[2];
+  console.log(route);
   console.log(username, email, image, jurisdiction);
   const jurisdictionDisplay = getJurisdictionDisplay(jurisdiction);
 
@@ -43,8 +45,15 @@ function RouteComponent() {
           userInfo={{ name: username || "", email: email || "", avatar: image }}
           jurisdiction={jurisdictionDisplay}
         />
-        <div className="h-fit m-2">
-          <SidebarTrigger />
+        <div className="flex items-center h-10">
+          <div className="h-fit m-2">
+            <SidebarTrigger />
+          </div>
+          {route !== "settings" && (
+            <span className="text-lg font-semibold font-brand capitalize">
+              {route}
+            </span>
+          )}
         </div>
 
       </div>

@@ -1,4 +1,3 @@
-"use client";
 
 import {
   DropdownMenu,
@@ -16,6 +15,7 @@ import {
 } from "@repo/ui/components/avatar";
 import { Bell, ChevronsUpDown, LogOut, Settings } from "lucide-react";
 import { SidebarMenuButton, useSidebar } from "@repo/ui/components/sidebar";
+import { Link } from "@tanstack/react-router";
 
 interface UserInfo {
   name: string;
@@ -48,16 +48,12 @@ export const ProfileComponent = ({
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
-          <Avatar className="h-8 w-8 rounded-full">
-            <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback className="rounded-lg bg-muted">
-              {user.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")
-                .toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+          <div className="relative">
+            <Avatar className="h-8 w-8 rounded-full">
+              <AvatarImage src={user.avatar} alt={user.name} />
+              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+            </Avatar>
+          </div>
           <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
             <span className="truncate font-semibold">{user.name}</span>
             <span className="truncate text-xs">{user.email}</span>
@@ -75,13 +71,7 @@ export const ProfileComponent = ({
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="rounded-lg bg-muted">
-                {user.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-                  .toUpperCase()}
-              </AvatarFallback>
+              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-semibold">{user.name}</span>
@@ -91,14 +81,20 @@ export const ProfileComponent = ({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Bell className="mr-2 h-4 w-4" />
-            Notifications
-          </DropdownMenuItem>
+          <Link to="/dashboard/settings/account">
+            <DropdownMenuItem>
+              <Settings className=" h-4 w-4" />
+              Settings
+            </DropdownMenuItem>
+          </Link>
+          <Link to="/dashboard/settings/notification">
+            <DropdownMenuItem className="flex items-center justify-between cursor-pointer">
+              <div className="flex items-center">
+                <Bell className="mr-2 h-4 w-4" />
+                Notifications
+              </div>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
