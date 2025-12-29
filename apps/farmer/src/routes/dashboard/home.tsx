@@ -169,11 +169,89 @@ function RouteComponent() {
         {/* Zone 1: Smart Spray Planner */}
         <Card className="overflow-hidden ">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Wind className="h-5 w-5 text-blue-500" />
-              Smart Spray Planner
-            </CardTitle>
-            <CardDescription>{insights.spray_guide.reason}</CardDescription>
+            <div className="flex items-start justify-between">
+              <div className="space-y-1.5">
+                <CardTitle className="flex items-center gap-2">
+                  <Wind className="h-5 w-5 text-blue-500" />
+                  Smart Spray Planner
+                </CardTitle>
+                <CardDescription>{insights.spray_guide.reason}</CardDescription>
+              </div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button
+                    className="rounded-full p-1.5 hover:bg-muted transition-colors shrink-0"
+                    aria-label="How is this calculated?"
+                  >
+                    <Info className="h-4 w-4 text-muted-foreground" />
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-sm sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                      <Wind className="h-5 w-5 text-blue-500" />
+                      Spray Safety Logic
+                    </DialogTitle>
+                    <DialogDescription>
+                      How we determine safe spraying windows
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 text-sm">
+                    <div>
+                      <h4 className="font-semibold mb-2 flex items-center gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                        Key Factors
+                      </h4>
+                      <p className="text-muted-foreground leading-relaxed">
+                        We analyze weather conditions hour-by-hour to ensure optimal chemical efficacy and prevent drift:
+                      </p>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200/50 dark:border-blue-900/50">
+                        <div className="font-medium text-blue-900 dark:text-blue-100 mb-1 flex items-center gap-2">
+                          <Wind className="h-4 w-4" />
+                          Wind Speed
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          <strong>Max 15 km/h:</strong> High winds cause spray drift, wasting chemicals and harming nearby crops. Low wind is ideal.
+                        </p>
+                      </div>
+
+                      <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200/50 dark:border-blue-900/50">
+                        <div className="font-medium text-blue-900 dark:text-blue-100 mb-1 flex items-center gap-2">
+                          <CloudRain className="h-4 w-4" />
+                          Rain Probability
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          <strong>Max 30%:</strong> Spraying before rain washes chemicals away. We look for dry windows.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-3 rounded-lg bg-muted/50 border">
+                      <h4 className="font-medium mb-1.5 text-xs">
+                        Planning Guide
+                      </h4>
+                      <ul className="space-y-1.5 text-xs text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="h-3 w-3 text-green-600 dark:text-green-500 mt-0.5 shrink-0" />
+                          <span>
+                            <strong>Safe:</strong> Ideal conditions. Spray now for best results.
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <AlertTriangle className="h-3 w-3 text-red-600 dark:text-red-500 mt-0.5 shrink-0" />
+                          <span>
+                            <strong>Risk:</strong> High wind or rain expected. Wait for a better window.
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
