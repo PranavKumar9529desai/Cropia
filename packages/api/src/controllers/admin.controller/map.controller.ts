@@ -25,14 +25,15 @@ const MapController = new Hono<{
       const value = jurisdiction[level];
       // If it's specific (not "All" and not "*"), filter by it
       if (value && value !== "All" && value !== "*") {
-        where[level] = value;
+        where[level] = { equals: value, mode: "insensitive" };
       }
     });
   }
 
   // 2. Fetch Scans
+  // TODO : add nice caching here
   const scans = await prisma.scan.findMany({
-    // where: where,
+    where: where,
     orderBy: { createdAt: "desc" },
     take: 1000, // Limit for performance, maybe paginate later
   });

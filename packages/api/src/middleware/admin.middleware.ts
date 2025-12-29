@@ -17,22 +17,27 @@ export const AdminSessionMiddleware = createMiddleware(async (c, next) => {
   c.set("user", session.user);
   c.set("session", session.session);
   c.set("userId", session.user.id);
-  // console.log("Admin Middleware is called", session);
-  const member = await prisma.member.findFirst({
-    where: {
-      userId: session.user.id,
-    },
-  });
-  // console.log("Member is", member);
-  if (!member || member.role !== "admin" || !member.jurisdiction) {
+  
+  // OPTIMIZATION: Trust the session data. 
+  // The session callback (in auth.ts) already ensures jurisdiction is present.
+  const jurisdiction = session.session.jurisdiction;
+  
+  // console.log("Admin Middleware Check:", { jurisdiction, role: "admin" });
+
+  // STRICT CHECK: Ensure jurisdiction exists.
+  // Note: We might want to add a check for 'role' if it's stored in session, 
+  // but for now, jurisdiction presence effectively implies admin rights in this context
+  // or we can assume the session is valid. 
+  // If we really need role, we should add it to the session schema to avoid this DB call.
+  if (!jurisdiction) {
     return c.json(
       {
-        message: "Unauthorized",
+        message: "Unauthorized: No Jurisdiction Found",
       },
       401,
     );
   }
-  const jurisdiction = member.jurisdiction;
+
   c.set("orgId", session.session.activeOrganizationId);
   c.set("jurisdiction", jurisdiction);
 

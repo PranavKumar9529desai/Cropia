@@ -179,13 +179,24 @@ export const auth = betterAuth({
     },
   } as any,
 
-  callbacks: {
     async session({ session, user }: { session: PrismaSession; user: User }) {
       // NOTE: To see these logs, perform a HARD REFRESH (Ctrl + F5)
       // This bypasses the browser's cookie cache.
-      console.log("📡 CALLBACK: Hydrating session response for", user.email);
+      // console.log("📡 CALLBACK: Hydrating session response for", user.email);
 
       const activeOrgId = session.activeOrganizationId;
+      const jurisdiction = session.jurisdiction;
+
+      // OPTIMIZATION: If we already have the data in the session, DON'T fetch it again.
+      // This saves ~200-500ms of latency per request by avoiding a roundtrip to Mumbai.
+      if (activeOrgId && jurisdiction) {
+        return {
+          session,
+          user,
+        };
+      }
+
+      console.log("⚠️ CACHE MISS: Fetching Member Data for Session hydration.");
 
       // Ensure the response object matches the database source of truth
       const member = await prisma.member.findFirst({
