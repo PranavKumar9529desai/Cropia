@@ -18,7 +18,6 @@ export function MobileTopbar({
   jurisdiction?: string;
 }) {
   const { pathname } = useLocation();
-  console.log(isAdmin, jurisdiction);
   const title = getTitle(pathname);
 
   return (

@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect, useChildMatches, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useChildMatches } from "@tanstack/react-router";
 import BottomNav from "@/components/dashboard/bottom-navigation";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import {
@@ -31,13 +31,15 @@ export const Route = createFileRoute("/dashboard")({
 
 function RouteComponent() {
   const { username, email, image, jurisdiction } = Route.useLoaderData();
-  const route = useLocation().pathname.split("/")[2];
+  /*
+    The route title logic is derived from identifying the active child match.
+    We look at the last part of the pathname for the current active match.
+  */
   const matches = useChildMatches();
+  const route = matches[0]?.pathname.split("/").pop();
   const isSettingRoute = matches.some((match) =>
     match.routeId.startsWith("/dashboard/settings"),
   );
-  console.log(route);
-  console.log(username, email, image, jurisdiction);
   const jurisdictionDisplay = getJurisdictionDisplay(jurisdiction);
 
 

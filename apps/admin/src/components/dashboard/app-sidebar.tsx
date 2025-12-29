@@ -1,6 +1,6 @@
 import { Map, BellRing, Scan, type LucideIcon } from "lucide-react";
 import { cn } from "@repo/ui/lib";
-import { Link, useLocation, useRouter } from "@tanstack/react-router";
+import { Link, useMatches, useRouter } from "@tanstack/react-router";
 import {
   Sidebar,
   SidebarContent,
@@ -52,7 +52,7 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
-  const { pathname } = useLocation();
+  const matches = useMatches();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -60,7 +60,6 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
     await authClient.signOut();
     toast.success("Logged out successfully");
     router.invalidate();
-    console.log("Logout clicked");
   };
 
   return (
@@ -97,7 +96,9 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
             <SidebarMenu>
               {navItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = pathname === item.path;
+                const isActive = matches.some(
+                  (match) => match.pathname === item.path,
+                );
 
                 return (
                   <SidebarMenuItem key={item.path}>
