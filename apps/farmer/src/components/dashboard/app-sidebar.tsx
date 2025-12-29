@@ -1,6 +1,6 @@
 import { Home, ScanLine, MessageSquare } from "lucide-react";
 import { cn } from "@repo/ui/lib";
-import { Link, useLocation, useRouter } from "@tanstack/react-router";
+import { Link, useMatches, useRouter } from "@tanstack/react-router";
 import {
   Sidebar,
   SidebarContent,
@@ -51,7 +51,7 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ userInfo }: AppSidebarProps) {
-  const { pathname } = useLocation();
+  const matches = useMatches();
   const router = useRouter();
   const { unreadCount } = useNotifications();
 
@@ -85,7 +85,9 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
             <SidebarMenu>
               {navItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = pathname === item.path;
+                const isActive = matches.some(
+                  (match) => match.pathname === item.path,
+                );
 
                 return (
                   <SidebarMenuItem key={item.path}>

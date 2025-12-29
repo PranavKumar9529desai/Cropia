@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useChildMatches, useLocation } from "@tanstack/react-router";
 import BottomNav from "@/components/dashboard/bottom-navigation";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import {
@@ -32,8 +32,9 @@ export const Route = createFileRoute("/dashboard")({
 function RouteComponent() {
   const { username, email, image, jurisdiction } = Route.useLoaderData();
   const route = useLocation().pathname.split("/")[2];
-  const isSettingRoute = useLocation().pathname.startsWith(
-    "/dashboard/settings",
+  const matches = useChildMatches();
+  const isSettingRoute = matches.some((match) =>
+    match.routeId.startsWith("/dashboard/settings"),
   );
   console.log(route);
   console.log(username, email, image, jurisdiction);

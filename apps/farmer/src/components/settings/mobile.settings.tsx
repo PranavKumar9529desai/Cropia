@@ -1,5 +1,5 @@
 import { SettingsRoute, settingsRoutes } from "@/routes/dashboard/settings/route";
-import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
+import { Link, Outlet, useChildMatches, useLocation, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, ChevronRight, LogOut, X } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import { authClient } from "@/lib/auth/auth-client";
@@ -10,13 +10,15 @@ export const SettingsMobileLayout = ({
 }: {
   routes: SettingsRoute[];
 }) => {
+  const matches = useChildMatches();
   const location = useLocation();
   const navigate = useNavigate();
 
   // Check if we are on the root settings page
-  const isRoot =
-    location.pathname === "/dashboard/settings" ||
-    location.pathname === "/dashboard/settings/";
+  // We are at root if there are no child matches OR if the only child match is the index route
+  const isRoot = matches.length === 0 || matches.some(m => m.routeId === '/dashboard/settings/');
+  console.log("matches", matches)
+  console.log("isRoot", isRoot)
 
   // Find the current route title
   const currentRoute = routes.find((r) => r.href === location.pathname);
