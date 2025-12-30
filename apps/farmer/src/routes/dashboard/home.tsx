@@ -112,8 +112,8 @@ function RouteComponent() {
     <div className=" space-y-6 max-w-3xl sm:max-w-6xl mx-auto pb-24 animate-in fade-in duration-500">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">
+        <div className="font-brand">
+          <h1 className="text-2xl font-bold tracking-tight ">
             {location.village}, {location.state}
           </h1>
           <p className="text-muted-foreground">

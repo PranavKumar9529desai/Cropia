@@ -17,9 +17,24 @@ export const requestPermission = async () => {
   try {
     const permission = await Notification.requestPermission();
     if (permission === "granted") {
-      const token = await getToken(messaging, {
-        vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-      });
+      let token;
+
+      try {
+        // Get the existing service worker registration
+        const registration = await navigator.serviceWorker.ready;
+
+        token = await getToken(messaging, {
+          vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+          serviceWorkerRegistration: registration
+        });
+      } catch (e) {
+        console.warn("Failed to get SW registration for FCM, falling back to default:", e);
+        // Fallback (though this might cause the double-worker issue if SW isn't ready)
+        token = await getToken(messaging, {
+          vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+        });
+      }
+
       console.log("FCM Token:", token);
       return token;
     } else {

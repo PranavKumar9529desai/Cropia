@@ -18,6 +18,9 @@ export default defineConfig({
     }),
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'service-worker.ts',
       registerType: "autoUpdate",
       // If you really want the output file to be named 'site.webmanifest'
       manifestFilename: "site.webmanifest",
