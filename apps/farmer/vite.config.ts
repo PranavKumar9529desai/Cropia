@@ -24,10 +24,14 @@ export default defineConfig({
       registerType: "autoUpdate",
       // If you really want the output file to be named 'site.webmanifest'
       manifestFilename: "site.webmanifest",
+      devOptions: {
+        enabled: true,
+      },
 
       manifest: {
         name: "Cropia",
         short_name: "Cropia",
+        start_url: "/",
         icons: [
           {
             src: "/favicon/web-app-manifest-192x192.png",
