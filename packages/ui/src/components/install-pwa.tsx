@@ -38,9 +38,9 @@ export const InstallPWA = () => {
                             Install
                         </Button>
                         <Button
-                            variant="destructive"
+                            // variant="destructive"
                             onClick={() => toast.dismiss(t)}
-                            className="absolute -top-2 -right-2 inline-flex md:static md:ml-2 size-6 items-center justify-center rounded-full bg-muted text-muted-foreground hover:bg-muted-foreground/20 transition-colors"
+                            className="absolute -top-2 -right-2 inline-flex size-6 items-center justify-center rounded-full bg-muted text-muted-foreground hover:bg-muted-foreground/20 transition-colors"
                         >
                             <X className="size-3" />
                             <span className="sr-only">Close</span>

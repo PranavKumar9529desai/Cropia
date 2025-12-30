@@ -36,6 +36,12 @@ const updateSW = registerSW({
       updateSW(true)
     }
   },
+  onRegistered(r) {
+    console.log('SW Registered', r)
+  },
+  onRegisterError(error) {
+    console.log('SW Registration Error', error)
+  },
 })
 
 createRoot(document.getElementById("root")!).render(

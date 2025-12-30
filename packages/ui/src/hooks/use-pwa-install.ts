@@ -16,8 +16,9 @@ export const usePWAInstall = () => {
             // Stash the event so it can be triggered later.
             setDeferredPrompt(e as IBeforeInstallPromptEvent);
             setIsInstallable(true);
-            console.log('UsePWA: beforeinstallprompt captured');
+            console.log('UsePWA: beforeinstallprompt captured', e);
         };
+        console.log('UsePWA: Hook initialized, listener added');
 
         window.addEventListener('beforeinstallprompt', handler);
 

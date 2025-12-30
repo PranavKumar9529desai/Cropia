@@ -26,6 +26,7 @@ export default defineConfig({
       manifestFilename: "site.webmanifest",
       devOptions: {
         enabled: true,
+        type: "module",
       },
 
       manifest: {
