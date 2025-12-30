@@ -55,8 +55,7 @@ export function LocationPicker({
   };
 
   const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(/["'\s]/g, "");
-  console.log("Sanitized API key:", apiKey ? apiKey.slice(0, 5) + "..." : "MISSING");
-  console.log("Api keys are after nice sanitization", apiKey)
+
   const mapStyle = apiKey
     ? `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${apiKey}`
     : "";
