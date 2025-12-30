@@ -77,7 +77,9 @@ export function RouteComponent() {
       const taluka = form.getValues("taluka");
       const village = form.getValues("village");
 
-      const query = `${village ? village + ", " : ""}${taluka ? taluka + ", " : ""}${district}, ${state}, India`;
+      const pincode = form.getValues("pincode");
+
+      const query = `${village ? village + ", " : ""}${taluka ? taluka + ", " : ""}${district}, ${state} ${pincode}, India`;
       const toastId = toast.loading("Locating selection on map...");
       const coords = await forwardGeocode(query);
 
