@@ -57,7 +57,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="container flex flex-col h-[calc(100vh-4rem)] max-w-7xl mx-auto p-2 md:p-6 min-w-3xl w-full">
+    <div className="container flex flex-col  max-w-7xl mx-auto p-2 md:p-6 min-w-3xl w-full">
       <Card className="flex-1 mb-4 overflow-hidden bg-background border-none shadow-none">
         <ScrollArea className="h-full p-4">
           <div className="space-y-6">
