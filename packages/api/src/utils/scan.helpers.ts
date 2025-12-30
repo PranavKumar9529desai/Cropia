@@ -74,6 +74,28 @@ export const createLocationObject = (latitude: number, longitude: number) => {
 };
 
 /**
+ * Applies separate deterministic jitter to longitude and latitude based on the Scan ID.
+ * This ensures that multiple scans at the exact same location appear as distinct dots.
+ */
+const applyDeterministicJitter = (lng: number, lat: number, seedId: string): number[] => {
+  let hash = 0;
+  for (let i = 0; i < seedId.length; i++) {
+    hash = seedId.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Generate deterministic offsets
+  // ~0.0001 degrees is approx 11 meters. We want enough spread to click distinct dots.
+  const JITTER_SCALE = 0.00015;
+
+  // Pseudo-random factors derived from different bits of the hash
+  // Result is in range [-1, 1]
+  const xNoise = ((hash % 1000) / 500) - 1;
+  const yNoise = (((hash >> 5) % 1000) / 500) - 1;
+
+  return [lng + (xNoise * JITTER_SCALE), lat + (yNoise * JITTER_SCALE)];
+};
+
+/**
  * 2. transformToGeoJSON
  * Converts raw DB records into the format MapLibre/Mapbox expects.
  * Handles the logic of deciding dot colors/status.
@@ -102,10 +124,16 @@ export const transformToGeoJSON = (scans: ScanData[]): GeoJSONCollection => {
       }
 
       // Fallback: If map location object is missing, build it from lat/long
-      const coordinates = scan.location?.coordinates || [
+      let coordinates = scan.location?.coordinates || [
         scan.longitude || 0,
         scan.latitude || 0,
       ];
+
+      // Apply Jitter to prevent stacking (uses ID as seed for consistency)
+      // GeoJSON standard is [Longitude, Latitude]
+      if (coordinates.length === 2 && scan.id) {
+        coordinates = applyDeterministicJitter(coordinates[0], coordinates[1], scan.id);
+      }
 
       return {
         type: "Feature",

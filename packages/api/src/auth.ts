@@ -179,31 +179,5 @@ export const auth = betterAuth({
     },
   } as any,
 
-  callbacks: {
-    async session({ session, user }: { session: PrismaSession; user: User }) {
-      // NOTE: To see these logs, perform a HARD REFRESH (Ctrl + F5)
-      // This bypasses the browser's cookie cache.
-      console.log("📡 CALLBACK: Hydrating session response for", user.email);
-
-      const activeOrgId = session.activeOrganizationId;
-
-      // Ensure the response object matches the database source of truth
-      const member = await prisma.member.findFirst({
-        where: {
-          userId: user.id,
-          organizationId: activeOrgId || undefined,
-        },
-        select: { jurisdiction: true, organizationId: true },
-      });
-
-      return {
-        session: {
-          ...session,
-          activeOrganizationId: activeOrgId || member?.organizationId || null,
-          jurisdiction: session.jurisdiction || member?.jurisdiction || null,
-        },
-        user,
-      };
-    },
-  },
-});
+},
+);

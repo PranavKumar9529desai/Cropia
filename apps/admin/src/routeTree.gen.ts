@@ -13,6 +13,7 @@ import { Route as SkeltonRouteImport } from './routes/skelton'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardFarmerAlertsRouteImport } from './routes/dashboard/farmer-alerts'
 import { Route as DashboardCropMapRouteImport } from './routes/dashboard/crop-map'
 import { Route as DashboardAreaScanRouteImport } from './routes/dashboard/area-scan'
@@ -21,6 +22,10 @@ import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
+import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/settings/route'
+import { Route as DashboardSettingsScanRouteImport } from './routes/dashboard/settings/scan'
+import { Route as DashboardSettingsNotificationRouteImport } from './routes/dashboard/settings/notification'
+import { Route as DashboardSettingsAccountRouteImport } from './routes/dashboard/settings/account'
 import { Route as AuthAcceptInvitationIdRouteImport } from './routes/_auth/accept-invitation.$id'
 
 const SkeltonRoute = SkeltonRouteImport.update({
@@ -41,6 +46,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardFarmerAlertsRoute = DashboardFarmerAlertsRouteImport.update({
   id: '/farmer-alerts',
@@ -82,6 +92,28 @@ const AuthCheckEmailRoute = AuthCheckEmailRouteImport.update({
   path: '/check-email',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const DashboardSettingsRouteRoute = DashboardSettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardSettingsScanRoute = DashboardSettingsScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
+  getParentRoute: () => DashboardSettingsRouteRoute,
+} as any)
+const DashboardSettingsNotificationRoute =
+  DashboardSettingsNotificationRouteImport.update({
+    id: '/notification',
+    path: '/notification',
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any)
+const DashboardSettingsAccountRoute =
+  DashboardSettingsAccountRouteImport.update({
+    id: '/account',
+    path: '/account',
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any)
 const AuthAcceptInvitationIdRoute = AuthAcceptInvitationIdRouteImport.update({
   id: '/accept-invitation/$id',
   path: '/accept-invitation/$id',
@@ -92,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
+  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
@@ -100,12 +133,16 @@ export interface FileRoutesByFullPath {
   '/dashboard/area-scan': typeof DashboardAreaScanRoute
   '/dashboard/crop-map': typeof DashboardCropMapRoute
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
+  '/dashboard/settings/account': typeof DashboardSettingsAccountRoute
+  '/dashboard/settings/notification': typeof DashboardSettingsNotificationRoute
+  '/dashboard/settings/scan': typeof DashboardSettingsScanRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
+  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/check-email': typeof AuthCheckEmailRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/reset-password': typeof AuthResetPasswordRoute
@@ -114,7 +151,11 @@ export interface FileRoutesByTo {
   '/dashboard/area-scan': typeof DashboardAreaScanRoute
   '/dashboard/crop-map': typeof DashboardCropMapRoute
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
+  '/dashboard': typeof DashboardIndexRoute
   '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
+  '/dashboard/settings/account': typeof DashboardSettingsAccountRoute
+  '/dashboard/settings/notification': typeof DashboardSettingsNotificationRoute
+  '/dashboard/settings/scan': typeof DashboardSettingsScanRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,6 +163,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/skelton': typeof SkeltonRoute
+  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/_auth/check-email': typeof AuthCheckEmailRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
@@ -130,7 +172,11 @@ export interface FileRoutesById {
   '/dashboard/area-scan': typeof DashboardAreaScanRoute
   '/dashboard/crop-map': typeof DashboardCropMapRoute
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/_auth/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
+  '/dashboard/settings/account': typeof DashboardSettingsAccountRoute
+  '/dashboard/settings/notification': typeof DashboardSettingsNotificationRoute
+  '/dashboard/settings/scan': typeof DashboardSettingsScanRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -138,6 +184,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/skelton'
+    | '/dashboard/settings'
     | '/check-email'
     | '/forgot-password'
     | '/reset-password'
@@ -146,12 +193,16 @@ export interface FileRouteTypes {
     | '/dashboard/area-scan'
     | '/dashboard/crop-map'
     | '/dashboard/farmer-alerts'
+    | '/dashboard/'
     | '/accept-invitation/$id'
+    | '/dashboard/settings/account'
+    | '/dashboard/settings/notification'
+    | '/dashboard/settings/scan'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/dashboard'
     | '/skelton'
+    | '/dashboard/settings'
     | '/check-email'
     | '/forgot-password'
     | '/reset-password'
@@ -160,13 +211,18 @@ export interface FileRouteTypes {
     | '/dashboard/area-scan'
     | '/dashboard/crop-map'
     | '/dashboard/farmer-alerts'
+    | '/dashboard'
     | '/accept-invitation/$id'
+    | '/dashboard/settings/account'
+    | '/dashboard/settings/notification'
+    | '/dashboard/settings/scan'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/dashboard'
     | '/skelton'
+    | '/dashboard/settings'
     | '/_auth/check-email'
     | '/_auth/forgot-password'
     | '/_auth/reset-password'
@@ -175,7 +231,11 @@ export interface FileRouteTypes {
     | '/dashboard/area-scan'
     | '/dashboard/crop-map'
     | '/dashboard/farmer-alerts'
+    | '/dashboard/'
     | '/_auth/accept-invitation/$id'
+    | '/dashboard/settings/account'
+    | '/dashboard/settings/notification'
+    | '/dashboard/settings/scan'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -214,6 +274,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/farmer-alerts': {
       id: '/dashboard/farmer-alerts'
@@ -271,6 +338,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCheckEmailRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/settings/scan': {
+      id: '/dashboard/settings/scan'
+      path: '/scan'
+      fullPath: '/dashboard/settings/scan'
+      preLoaderRoute: typeof DashboardSettingsScanRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
+    '/dashboard/settings/notification': {
+      id: '/dashboard/settings/notification'
+      path: '/notification'
+      fullPath: '/dashboard/settings/notification'
+      preLoaderRoute: typeof DashboardSettingsNotificationRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
+    '/dashboard/settings/account': {
+      id: '/dashboard/settings/account'
+      path: '/account'
+      fullPath: '/dashboard/settings/account'
+      preLoaderRoute: typeof DashboardSettingsAccountRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
     '/_auth/accept-invitation/$id': {
       id: '/_auth/accept-invitation/$id'
       path: '/accept-invitation/$id'
@@ -303,16 +398,38 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface DashboardSettingsRouteRouteChildren {
+  DashboardSettingsAccountRoute: typeof DashboardSettingsAccountRoute
+  DashboardSettingsNotificationRoute: typeof DashboardSettingsNotificationRoute
+  DashboardSettingsScanRoute: typeof DashboardSettingsScanRoute
+}
+
+const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
+  {
+    DashboardSettingsAccountRoute: DashboardSettingsAccountRoute,
+    DashboardSettingsNotificationRoute: DashboardSettingsNotificationRoute,
+    DashboardSettingsScanRoute: DashboardSettingsScanRoute,
+  }
+
+const DashboardSettingsRouteRouteWithChildren =
+  DashboardSettingsRouteRoute._addFileChildren(
+    DashboardSettingsRouteRouteChildren,
+  )
+
 interface DashboardRouteRouteChildren {
+  DashboardSettingsRouteRoute: typeof DashboardSettingsRouteRouteWithChildren
   DashboardAreaScanRoute: typeof DashboardAreaScanRoute
   DashboardCropMapRoute: typeof DashboardCropMapRoute
   DashboardFarmerAlertsRoute: typeof DashboardFarmerAlertsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardSettingsRouteRoute: DashboardSettingsRouteRouteWithChildren,
   DashboardAreaScanRoute: DashboardAreaScanRoute,
   DashboardCropMapRoute: DashboardCropMapRoute,
   DashboardFarmerAlertsRoute: DashboardFarmerAlertsRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

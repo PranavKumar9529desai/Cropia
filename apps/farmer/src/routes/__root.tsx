@@ -1,7 +1,7 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 // import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { authClient } from "../lib/auth/auth-client";
-import { RouteLoadingIndicator } from "../components/route-loading-indicator";
+import { authClient } from "@/lib/auth/auth-client";
+import { RouteLoadingIndicator } from "@/components/route-loading-indicator";
 
 export interface MyRouterContext {
   auth: typeof authClient.$Infer.Session | null;

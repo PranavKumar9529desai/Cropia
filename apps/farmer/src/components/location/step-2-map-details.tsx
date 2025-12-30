@@ -25,10 +25,10 @@ export function Step2MapDetails({ form }: Step2MapDetailsProps) {
     const data = await reverseGeocode(lat, lng);
     if (!data) return;
 
-    // Only update pincode as per user request. Step 1 values (State/District/etc) are authority.
-    if (data.pincode) {
-      form.setValue("pincode", data.pincode, { shouldValidate: true });
-    }
+    // Only update address as per user request. Step 1 values (State/District/Pincode) are authority.
+    // if (data.pincode) {
+    //   form.setValue("pincode", data.pincode, { shouldValidate: true });
+    // }
 
     if (data.address) {
       form.setValue("address", data.address, { shouldValidate: true });

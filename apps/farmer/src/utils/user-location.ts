@@ -112,47 +112,50 @@ export const getVillages = async (
   return result.data.villages;
 };
 
+export const getLocationByPincode = async (pincode: string) => {
+  const response = await apiClient.api.locations.pincode[":pincode"].$get({
+    param: { pincode },
+  });
+  const result = await response.json();
+  if (!result.success) {
+    throw (result as any).error || "Failed to fetch location by pincode";
+  }
+  return result.data;
+};
+
+// ArcGIS Geocoding Implementation
+
 export const reverseGeocode = async (lat: number, lng: number) => {
-  const key = import.meta.env.VITE_MAPTILER_KEY;
-  if (!key) {
-    console.error("MapTiler key not found");
+  const token = import.meta.env.VITE_ESRI_API_KEYS?.replace(/"/g, "") || "";
+  if (!token) {
+    console.error("ArcGIS API key not found");
     return null;
   }
 
   try {
-    const response = await fetch(
-      `https://api.maptiler.com/geocoding/${lng},${lat}.json?key=${key}&language=en`,
-    );
+    const url = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&location=${lng},${lat}&token=${token}`;
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error("Failed to fetch reverse geocoding data");
     }
 
     const data = await response.json();
-    const features = data.features;
-
-    if (!features || features.length === 0) {
+    if (data.error) {
+      console.error("ArcGIS Error:", data.error);
       return null;
     }
 
-    // MapTiler hierarchy: region (State), subregion/county (District), locality (City/Town)
-    const result: any = {
-      state: "",
-      district: "",
-      pincode: "",
-      address: features[0]?.place_name || "",
+    const address = data.address;
+    if (!address) return null;
+
+    return {
+      state: address.Region || "",
+      district: address.Subregion || "",
+      pincode: address.Postal || "",
+      address: address.Match_addr || address.LongLabel || "",
+      city: address.City || "",
     };
-
-    features.forEach((feature: any) => {
-      const type = feature.place_type[0];
-      if (type === "region") result.state = feature.text;
-      if (type === "subregion" || type === "county")
-        result.district = feature.text;
-      if (type === "locality" || type === "place") result.city = feature.text;
-      if (type === "postal_code") result.pincode = feature.text;
-    });
-
-    return result;
   } catch (error) {
     console.error("Reverse geocoding error:", error);
     return null;
@@ -160,17 +163,23 @@ export const reverseGeocode = async (lat: number, lng: number) => {
 };
 
 export const forwardGeocode = async (query: string) => {
-  const key = import.meta.env.VITE_MAPTILER_KEY;
-  if (!key) return null;
+  const token = import.meta.env.VITE_ESRI_API_KEYS?.replace(/"/g, "") || "";
+  if (!token) return null;
 
   try {
-    const response = await fetch(
-      `https://api.maptiler.com/geocoding/${encodeURIComponent(query)}.json?key=${key}&language=en&limit=1`,
-    );
+    const url = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&singleLine=${encodeURIComponent(
+      query
+    )}&maxLocations=1&token=${token}`;
+
+    const response = await fetch(url);
     const data = await response.json();
-    if (data.features && data.features.length > 0) {
-      const [lng, lat] = data.features[0].center;
-      return { lat, lng };
+
+    if (data.candidates && data.candidates.length > 0) {
+      const candidate = data.candidates[0];
+      return {
+        lat: candidate.location.y,
+        lng: candidate.location.x,
+      };
     }
     return null;
   } catch (error) {

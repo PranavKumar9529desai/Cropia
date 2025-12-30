@@ -18,9 +18,11 @@
     "ai": "^5.0.108",
     "date-fns": "^4.1.0",
     "firebase": "^12.7.0",
+    "maplibre-gl": "^5.15.0",
     "markdown-to-jsx": "^9.3.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-map-gl": "^8.1.0",
     "react-webcam": "^7.2.0"
   },
   "devDependencies": {

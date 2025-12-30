@@ -28,6 +28,10 @@ const ScanController = new Hono<{
           confidence: true,
           createdAt: true,
         },
+        cacheStrategy: {
+          swr: 60 * 60, // 
+          ttl: 60 * 60 * 24, //
+        },
       });
 
       return c.json({ success: true, data: scans });

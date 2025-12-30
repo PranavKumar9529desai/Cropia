@@ -1,10 +1,11 @@
 import { Home, ScanLine, MessageSquare } from "lucide-react";
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useMatches } from "@tanstack/react-router";
 import { BottomNavigation } from "@repo/ui/components/bottom-navigation";
 import type { BottomNavItem } from "@repo/ui/components/bottom-navigation";
 
 export default function BottomNav() {
-  const { pathname } = useLocation();
+  const matches = useMatches();
+  const pathname = matches[matches.length - 1]?.pathname;
 
   const navItems: BottomNavItem[] = [
     {

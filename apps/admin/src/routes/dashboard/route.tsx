@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useChildMatches } from "@tanstack/react-router";
 import BottomNav from "@/components/dashboard/bottom-navigation";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import {
@@ -31,7 +31,15 @@ export const Route = createFileRoute("/dashboard")({
 
 function RouteComponent() {
   const { username, email, image, jurisdiction } = Route.useLoaderData();
-  console.log(username, email, image, jurisdiction);
+  /*
+    The route title logic is derived from identifying the active child match.
+    We look at the last part of the pathname for the current active match.
+  */
+  const matches = useChildMatches();
+  const route = matches[0]?.pathname.split("/").pop();
+  const isSettingRoute = matches.some((match) =>
+    match.routeId.startsWith("/dashboard/settings"),
+  );
   const jurisdictionDisplay = getJurisdictionDisplay(jurisdiction);
 
 
@@ -43,8 +51,15 @@ function RouteComponent() {
           userInfo={{ name: username || "", email: email || "", avatar: image }}
           jurisdiction={jurisdictionDisplay}
         />
-        <div className="h-fit m-2">
-          <SidebarTrigger />
+        <div className="flex items-center h-10">
+          <div className="h-fit m-2">
+            <SidebarTrigger />
+          </div>
+          {route !== "settings" && (
+            <span className="text-lg font-semibold font-brand capitalize">
+              {route}
+            </span>
+          )}
         </div>
 
       </div>
@@ -52,9 +67,11 @@ function RouteComponent() {
       {/* Main content area */}
       <SidebarInset className="h-svh overflow-hidden md:h-auto md:overflow-visible">
         {/* Mobile Topbar - visible only on mobile */}
-        <div className="md:hidden py-1">
-          <MobileTopbar isAdmin={true} jurisdiction={jurisdictionDisplay} />
-        </div>
+        {isSettingRoute ? null : (
+          <div className="md:hidden py-1">
+            <MobileTopbar isAdmin={true} jurisdiction={jurisdictionDisplay} />
+          </div>
+        )}
         {/* <DashboardHeader /> */}
         <div className="flex flex-1 flex-col p-4 md:p-6 overflow-y-auto md:overflow-visible pb-24 md:pb-6 no-scrollbar">
           <Outlet />

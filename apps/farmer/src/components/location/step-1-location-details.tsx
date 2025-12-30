@@ -1,3 +1,4 @@
+import * as React from "react";
 import { UseFormReturn } from "react-hook-form";
 import {
   FormControl,
@@ -6,43 +7,121 @@ import {
   FormLabel,
   FormMessage,
 } from "@repo/ui/components/form";
+
+import { Input } from "@repo/ui/components/input";
+import { toast } from "@repo/ui/components/sonner";
+import { Loader2, Check, ChevronsUpDown } from "lucide-react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/components/select";
-import { CreateLocationInputType } from "../../utils/user-location";
-import { useLocationHierarchy } from "../../hooks/use-location-hierarchy";
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@repo/ui/components/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@repo/ui/components/popover";
+import { cn } from "@repo/ui/lib/utils";
+import { Button } from "@repo/ui/components/button";
+import {
+  CreateLocationInputType,
+  getLocationByPincode,
+} from "../../utils/user-location";
 
 interface Step1AdminDetailsProps {
   form: UseFormReturn<CreateLocationInputType>;
 }
 
 export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
-  const selectedState = form.watch("state");
-  const selectedDistrict = form.watch("district");
-  const selectedTaluka = form.watch("taluka");
+  const [villages, setVillages] = React.useState<string[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const {
-    states,
-    districts,
-    talukas,
-    villages,
-    isLoadingStates,
-    isLoadingDistricts,
-    isLoadingTalukas,
-    isLoadingVillages,
-  } = useLocationHierarchy({
-    selectedState,
-    selectedDistrict,
-    selectedTaluka,
-  });
+  // Watch for pincode changes to trigger fetch manually or via blur
+  // We'll primarily use onBlur for efficiency, or a manual button if needed.
+  // But strictly per requirements: "farmer will the type the pincode and we will auto the all the fileds"
+
+  const handlePincodeChange = async (pincode: string) => {
+    if (pincode.length !== 6) return;
+
+    setIsLoading(true);
+    // Reset fields
+    setVillages([]);
+    form.setValue("state", "");
+    form.setValue("district", "");
+    form.setValue("taluka", "");
+    form.setValue("country", "India");
+    form.setValue("village", "");
+
+    // Clear any previous errors
+    form.clearErrors("pincode");
+
+    try {
+      toast.info("Fetching location details...");
+      const data = await getLocationByPincode(pincode);
+
+      if (data) {
+        form.setValue("state", data.state);
+        form.setValue("district", data.district);
+        form.setValue("taluka", data.taluka);
+        form.setValue("country", data.country);
+
+        // Update village list
+        setVillages(data.villages);
+
+        toast.success("Location details found!");
+      }
+    } catch (error) {
+      console.error(error);
+      form.setError("pincode", {
+        type: "manual",
+        message: "Invalid Pincode or no data found.",
+      });
+      toast.error("Could not fetch details for this Pincode.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-4">
-      {/* State and District */}
+      {/* Pincode Field */}
+      <FormField
+        control={form.control}
+        name="pincode"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Pincode</FormLabel>
+            <div className="relative">
+              <FormControl>
+                <Input
+                  placeholder="Enter 6-digit Pincode"
+                  maxLength={6}
+                  {...field}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^0-9]/g, "");
+                    field.onChange(value);
+                    if (value.length === 6) {
+                      handlePincodeChange(value);
+                    }
+                  }}
+                  className="pr-10"
+                />
+              </FormControl>
+              {isLoading && (
+                <div className="absolute right-3 top-2.5">
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                </div>
+              )}
+            </div>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* State and District (Read-Only) */}
       <div className="grid grid-cols-2 gap-4">
         <FormField
           control={form.control}
@@ -50,32 +129,9 @@ export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>State</FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  field.onChange(value);
-                  form.setValue("district", "");
-                  form.setValue("taluka", "");
-                  form.setValue("village", "");
-                }}
-                value={field.value}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        isLoadingStates ? "Loading..." : "Select State"
-                      }
-                    />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="max-h-[200px]">
-                  {states.map((state, i) => (
-                    <SelectItem key={`${state.code}_${i}`} value={state.name}>
-                      {state.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Input {...field} readOnly className="bg-muted text-muted-foreground cursor-not-allowed" placeholder="Auto-filled" />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -87,71 +143,26 @@ export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>District</FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  field.onChange(value);
-                  form.setValue("taluka", "");
-                  form.setValue("village", "");
-                }}
-                value={field.value}
-                disabled={!selectedState}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        isLoadingDistricts ? "Loading..." : "Select District"
-                      }
-                    />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="max-h-[200px]">
-                  {districts.map((d, i) => (
-                    <SelectItem key={`${d.code}_${i}`} value={d.name}>
-                      {d.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Input {...field} readOnly className="bg-muted text-muted-foreground cursor-not-allowed" placeholder="Auto-filled" />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
       </div>
 
-      {/* Taluka and Village */}
+      {/* Taluka (Read-Only) and Village (Select) */}
       <div className="grid grid-cols-2 gap-4">
         <FormField
           control={form.control}
           name="taluka"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Taluka</FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  field.onChange(value);
-                  // form.setValue("village", ""); // Optional: Reset village if taluka changes
-                }}
-                value={field.value}
-                disabled={!selectedDistrict}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        isLoadingTalukas ? "Loading..." : "Select Taluka"
-                      }
-                    />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="max-h-[200px]">
-                  {talukas.map((t, i) => (
-                    <SelectItem key={`${t.code}_${i}`} value={t.name}>
-                      {t.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormLabel>Sub-District</FormLabel>
+              <FormControl>
+                <Input {...field} readOnly className="bg-muted text-muted-foreground cursor-not-allowed" placeholder="Auto-filled" />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -162,29 +173,58 @@ export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
           name="village"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Village</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                value={field.value}
-                disabled={!selectedTaluka}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        isLoadingVillages ? "Loading..." : "Select Village"
-                      }
-                    />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="max-h-[200px]">
-                  {villages.map((v, i) => (
-                    <SelectItem key={`${v.code}_${i}`} value={v.name}>
-                      {v.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormLabel>Village / Post Office</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between mt-1",
+                        !field.value && "text-muted-foreground"
+                      )}
+                      disabled={villages.length === 0}
+                    >
+                      {field.value
+                        ? villages.find((v) => v === field.value)
+                        : villages.length === 0
+                          ? "Enter Pincode first"
+                          : "Select Village"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search village..." />
+                    <CommandList>
+                      <CommandEmpty>No village found.</CommandEmpty>
+                      <CommandGroup>
+                        {villages.map((village) => (
+                          <CommandItem
+                            value={village}
+                            key={village}
+                            onSelect={() => {
+                              form.setValue("village", village);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                village === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {village}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}

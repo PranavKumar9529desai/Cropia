@@ -20,7 +20,6 @@ export function LocationPicker({
   onLocationChange,
 }: LocationPickerProps) {
   const mapRef = React.useRef<MapRef>(null);
-
   const [viewState, setViewState] = React.useState({
     latitude: latitude || 16.705, // Default to a central point if 0
     longitude: longitude || 74.2433,
@@ -43,6 +42,7 @@ export function LocationPicker({
       });
     }
   }, [latitude, longitude]);
+
   // @ts-ignore
   const onMarkerDragEnd = (event: any) => {
     const { lng, lat } = event.lngLat;
@@ -59,9 +59,10 @@ export function LocationPicker({
       <Map
         {...viewState}
         ref={mapRef}
+        attributionControl={false}
         onMove={(evt) => setViewState(evt.viewState)}
         onClick={onMapClick}
-        mapStyle={`https://api.maptiler.com/maps/hybrid/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`}
+        mapStyle={`https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${import.meta.env.VITE_ESRI_API_KEYS.replace(/"/g, '')}`}
         style={{ width: "100%", height: "100%" }}
       >
         <GeolocateControl position="top-right" />

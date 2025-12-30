@@ -45,6 +45,7 @@ const WeatherController = new Hono<{
     );
 
     // 3. Construct Clean JSON for Frontend
+    c.header("Cache-Control", "public, max-age=3600"); // 1 hour
     return c.json({
       name,
       location: userLocation,

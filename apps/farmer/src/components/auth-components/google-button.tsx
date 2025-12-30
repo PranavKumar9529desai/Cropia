@@ -16,7 +16,6 @@ export const GoogleButton = ({ title }: { title: string }) => {
         import.meta.env.VITE_FRONTEND_URL || window.location.origin;
       const redirect_url = frontendUrl + "/dashboard";
 
-      console.log("redirect_url", redirect_url);
       const { error } = await authClient.signIn.social({
         provider: "google",
         callbackURL: redirect_url,

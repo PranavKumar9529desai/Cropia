@@ -57,11 +57,11 @@ const app = new Hono()
   .route("/api/ai", AiController)
   .route("/api/invitation", InvitationController)
   .route("/api/notifications", NotificationController)
+  .route("/api/settings", SettingsController)
+  .route("/api/scans", ScanController)
   .route("/api/admin/map", MapController)
   .route("/api/admin/analysis", ScanAnalyasisController)
   .route("/api/admin/notifications", AdminNotificationController)
-  .route("/api/settings", SettingsController)
-  .route("/api/scans", ScanController);
 
 export type AppType = typeof app;
 

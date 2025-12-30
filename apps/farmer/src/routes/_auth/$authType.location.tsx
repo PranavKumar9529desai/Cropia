@@ -77,7 +77,9 @@ export function RouteComponent() {
       const taluka = form.getValues("taluka");
       const village = form.getValues("village");
 
-      const query = `${village ? village + ", " : ""}${taluka ? taluka + ", " : ""}${district}, ${state}, India`;
+      const pincode = form.getValues("pincode");
+
+      const query = `${village ? village + ", " : ""}${taluka ? taluka + ", " : ""}${district}, ${state} ${pincode}, India`;
       const toastId = toast.loading("Locating selection on map...");
       const coords = await forwardGeocode(query);
 
@@ -133,7 +135,7 @@ export function RouteComponent() {
           } else {
             errorMessage = JSON.stringify((errorData as any).error);
           }
-        } catch (e) {}
+        } catch (e) { }
 
         toast.error(errorMessage, { id: toastId });
         return;
@@ -153,7 +155,7 @@ export function RouteComponent() {
   return (
     <>
       <Card className="w-full max-w-md sm:max-w-lg border-none shadow-none bg-transparent px-4 sm:px-2">
-        <CardHeader className="text-3xl font-bold text-primary space-y-2 p-4">
+        <CardHeader className="text-3xl font-bold text-primary space-y-2 p-4 px-2">
           <CardTitle className="">
             {authType === "sign-up" ? "Final Step" : "Location Required"}
           </CardTitle>
