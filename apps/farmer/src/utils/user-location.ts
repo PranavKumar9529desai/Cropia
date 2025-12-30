@@ -112,6 +112,17 @@ export const getVillages = async (
   return result.data.villages;
 };
 
+export const getLocationByPincode = async (pincode: string) => {
+  const response = await apiClient.api.locations.pincode[":pincode"].$get({
+    param: { pincode },
+  });
+  const result = await response.json();
+  if (!result.success) {
+    throw (result as any).error || "Failed to fetch location by pincode";
+  }
+  return result.data;
+};
+
 export const reverseGeocode = async (lat: number, lng: number) => {
   const key = import.meta.env.VITE_MAPTILER_KEY;
   if (!key) {

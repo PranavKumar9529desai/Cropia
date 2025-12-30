@@ -9,6 +9,7 @@ import {
   fetchTalukas,
   fetchVillages,
 } from "../../utils/location-helpers";
+import { fetchLocationByPincode } from "../../utils/location-helpers-2";
 
 // Validation schema matching the frontend form
 const createLocationSchema = z.object({
@@ -85,6 +86,35 @@ const LocationController = new Hono<{
     } catch (error) {
       console.error("Error fetching villages:", error);
       return c.json({ success: false, error: "Failed to fetch villages" }, 500);
+    }
+  })
+
+  .get("/pincode/:pincode", async (c) => {
+    try {
+      const pincode = c.req.param("pincode");
+      if (!pincode || pincode.length < 6) {
+        return c.json(
+          { success: false, error: "Invalid pincode" },
+          400
+        );
+      }
+
+      const locationData = await fetchLocationByPincode(pincode);
+
+      if (!locationData) {
+        return c.json(
+          { success: false, error: "Location details not found for this pincode" },
+          404
+        );
+      }
+
+      return c.json({ success: true, data: locationData });
+    } catch (error) {
+      console.error("Error fetching location by pincode:", error);
+      return c.json(
+        { success: false, error: "Failed to fetch location data" },
+        500
+      );
     }
   })
 

@@ -1,18 +1,20 @@
-import { District, INDIA_LOCATION_API_BASE } from "./location-helpers";
 
-export async function fetchDistricts(state_name: string): Promise<District[]> {
+
+export const INDIA_LOCATION_API_BASE = "https://india-location-hub.in/api/locations"
+
+export async function fetchStates(): Promise<any[]> {
     try {
-        const response = await fetch(
-            `${INDIA_LOCATION_API_BASE}/districts?state=${state_name}`,
-        );
-        if (!response.ok) throw new Error("Failed to fetch districts");
+        const response = await fetch(`${INDIA_LOCATION_API_BASE}/states`);
+        console.log("response from the location helpers", response)
+        if (!response.ok) throw new Error("Failed to fetch states");
         const data = await response.json();
-        return data.data.districts || [];
+        return data.data.states || [];
     } catch (error) {
-        console.error("Error in fetchDistricts:", error);
+        console.error("Error in fetchStates:", error);
         return [];
     }
 }
 
+console.log("states are ", await fetchStates())
 
-console.log("fetchDistricts", await fetchDistricts("Maharashtra"));
+
