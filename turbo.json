@@ -16,7 +16,8 @@
     "CLOUDINARY_CLOUD_NAME",
     "CLOUDINARY_API_KEY",
     "CLOUDINARY_API_SECRET",
-    "INDIA_LOCATION_API_BASE"
+    "INDIA_LOCATION_API_BASE",
+    "VITE_ESRI_API_KEYS"
   ],
   "tasks": {
     "db:generate": {
