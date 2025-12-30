@@ -19,7 +19,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         <Outlet />
       </div>
       {/* This adds the floating dev tools in the corner */}
-      {/* <TanStackRouterDevtools />s */}
+      {/* <TanStackRouterDevtools /> */}
     </>
   ),
 });

@@ -11,12 +11,14 @@ export function MobileTopbar() {
     <Topbar
       className="border-b bg-background/80 backdrop-blur-md"
       leftContent={
-        <div className="flex items-center gap-2">
-          <img src="/favicon/favicon.svg" alt="Logo" className="w-8 h-8" />
-          <span className="font-brand font-bold text-2xl tracking-tight">
-            Cropia
-          </span>
-        </div>
+        <Link to="/dashboard">
+          <div className="flex items-center gap-2">
+            <img src="/favicon/favicon.svg" alt="Logo" className="w-8 h-8" />
+            <span className="font-brand font-bold text-2xl tracking-tight">
+              Cropia
+            </span>
+          </div>
+        </Link>
       }
       rightContent={
         <div className="flex items-center gap-1">

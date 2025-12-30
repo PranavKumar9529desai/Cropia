@@ -42,7 +42,7 @@ export function SlideShowCard({ slides }: SlideShowCardProps) {
   }, [api]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden -mt-10">
+    <div className="relative w-full h-full overflow-hidden -mt-10 ">
       <Carousel
         setApi={setApi}
         plugins={[plugin.current]}

@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { apiClient } from "../../lib/rpc";
-import AreaScanHeader from "../../components/area-scan/area-scan-header";
-import AreaScanResults from "../../components/area-scan/area-scan-results";
+import { apiClient } from "@/lib/rpc";
+import AreaScanHeader from "@/components/area-scan/area-scan-header";
+import AreaScanResults from "@/components/area-scan/area-scan-results";
 import { toast } from "sonner";
-import AnalysisLoader from "../../components/area-scan/analysis-loader";
+import AnalysisLoader from "@/components/area-scan/analysis-loader";
 
 export const Route = createFileRoute("/dashboard/area-scan")({
   loader: async ({ context }) => {
@@ -26,6 +26,8 @@ export const Route = createFileRoute("/dashboard/area-scan")({
       };
     }
   },
+  staleTime: 1000 * 60 * 5, // 5 minutes
+  gcTime: 1000 * 60 * 10, // 10 minutes
   component: RouteComponent,
 });
 
