@@ -59,6 +59,7 @@ export function LocationPicker({
       <Map
         {...viewState}
         ref={mapRef}
+        attributionControl={false}
         onMove={(evt) => setViewState(evt.viewState)}
         onClick={onMapClick}
         mapStyle={`https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${import.meta.env.VITE_ESRI_API_KEYS.replace(/"/g, '')}`}

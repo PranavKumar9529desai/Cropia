@@ -238,7 +238,7 @@ function AccountSettings() {
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder=""
               />
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -249,7 +249,7 @@ function AccountSettings() {
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder=""
                 />
               </div>
               <div className="grid gap-2">
@@ -259,7 +259,7 @@ function AccountSettings() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder=""
                 />
               </div>
             </div>
