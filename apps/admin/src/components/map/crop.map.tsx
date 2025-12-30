@@ -119,8 +119,7 @@ export default function CropMap({
           }
         }
         // The "Fuel"
-        mapStyle={`https://api.maptiler.com/maps/hybrid/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`}
-        interactiveLayerIds={["clusters", "unclustered-point"]}
+        mapStyle={`https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${import.meta.env.VITE_ESRI_API_KEYS.replace(/"/g, '')}`} interactiveLayerIds={["clusters", "unclustered-point"]}
         onClick={onClick}
       >
         <Source

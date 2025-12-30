@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_SLIDE_1: string;
   readonly VITE_SLIDE_2: string;
   readonly VITE_SLIDE_3: string;
+  VITE_ESRI_API_KEYS: string;
 }
 
 interface ImportMeta {

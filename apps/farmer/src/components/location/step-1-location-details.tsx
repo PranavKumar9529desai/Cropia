@@ -7,16 +7,25 @@ import {
   FormLabel,
   FormMessage,
 } from "@repo/ui/components/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/components/select";
+
 import { Input } from "@repo/ui/components/input";
 import { toast } from "@repo/ui/components/sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Check, ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@repo/ui/components/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@repo/ui/components/popover";
+import { cn } from "@repo/ui/lib/utils";
+import { Button } from "@repo/ui/components/button";
 import {
   CreateLocationInputType,
   getLocationByPincode,
@@ -165,30 +174,57 @@ export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Village / Post Office</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                value={field.value}
-                disabled={villages.length === 0}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder={
-                        villages.length === 0
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between mt-1",
+                        !field.value && "text-muted-foreground"
+                      )}
+                      disabled={villages.length === 0}
+                    >
+                      {field.value
+                        ? villages.find((v) => v === field.value)
+                        : villages.length === 0
                           ? "Enter Pincode first"
-                          : "Select Village"
-                      }
-                    />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="max-h-[200px]">
-                  {villages.map((v, i) => (
-                    <SelectItem key={`${v}_${i}`} value={v}>
-                      {v}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                          : "Select Village"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search village..." />
+                    <CommandList>
+                      <CommandEmpty>No village found.</CommandEmpty>
+                      <CommandGroup>
+                        {villages.map((village) => (
+                          <CommandItem
+                            value={village}
+                            key={village}
+                            onSelect={() => {
+                              form.setValue("village", village);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                village === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {village}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
