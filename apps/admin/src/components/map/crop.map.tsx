@@ -115,6 +115,7 @@ export default function CropMap({
   onPointClick,
   defaultView,
 }: CropMapProps) {
+  console.log("api key from crop map", import.meta.env.VITE_ESRI_API_KEYS)
   const mapRef = useRef<MapRef>(null);
 
   const onMapLoad = () => {

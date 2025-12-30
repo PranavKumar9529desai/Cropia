@@ -15,7 +15,9 @@
                 "../../packages/db/src/index.ts"
             ]
         },
-        "noEmit": true
+        "noEmit": true,
+        "target": "ES2022",
+        "downlevelIteration": true
     },
     "include": [
         "src/**/*"
