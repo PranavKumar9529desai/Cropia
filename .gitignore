@@ -9,3 +9,5 @@ dist
 **/service-account.json
 apps/api/.env.preview
 apps/farmer/.env.preview
+
+!*.env.copy

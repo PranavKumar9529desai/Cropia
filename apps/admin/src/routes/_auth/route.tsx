@@ -39,7 +39,7 @@ function RouteComponent() {
           <Outlet />
         </div>
       </div>
-      <div className="md:flex hidden w-3/5 h-screen bg-background">
+      <div className="sm:flex hidden w-3/5 h-screen bg-background">
         <SlideShow />
       </div>
     </div>

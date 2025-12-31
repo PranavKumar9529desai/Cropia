@@ -115,7 +115,9 @@ export default function CropMap({
   onPointClick,
   defaultView,
 }: CropMapProps) {
-  console.log("api key from crop map", import.meta.env.VITE_ESRI_API_KEYS)
+  const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(/["'\s]/g, "");
+  // console.log("api key from crop map", apiKey)
+
   const mapRef = useRef<MapRef>(null);
 
   const onMapLoad = () => {
@@ -191,7 +193,7 @@ export default function CropMap({
           }
         }
         // The "Fuel"
-        mapStyle={`https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${import.meta.env.VITE_ESRI_API_KEYS.replace(/"/g, '')}`} interactiveLayerIds={["clusters", "unclustered-point"]}
+        mapStyle={`https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${apiKey}`} interactiveLayerIds={["clusters", "unclustered-point"]}
         onClick={onClick}
       >
         <Source

@@ -28,6 +28,22 @@ export function App() {
   return <RouterProvider router={router} />;
 }
 
+import { registerSW } from 'virtual:pwa-register'
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    if (confirm('New content available. Reload?')) {
+      updateSW(true)
+    }
+  },
+  onRegistered(r) {
+    console.log('SW Registered', r)
+  },
+  onRegisterError(error) {
+    console.log('SW Registration Error', error)
+  },
+})
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">

@@ -19,7 +19,6 @@ export function LocationPicker({
   longitude,
   onLocationChange,
 }: LocationPickerProps) {
-  console.log("api keys are ", import.meta.env.VITE_ESRI_API_KEYS)
   const mapRef = React.useRef<MapRef>(null);
   const [viewState, setViewState] = React.useState({
     latitude: latitude || 16.705, // Default to a central point if 0
@@ -55,12 +54,11 @@ export function LocationPicker({
     onLocationChange(lat, lng);
   };
 
-  const apiKey = import.meta.env.VITE_ESRI_API_KEYS?.replace(/"/g, "") || "";
+  const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(/["'\s]/g, "");
+
   const mapStyle = apiKey
     ? `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${apiKey}`
     : "";
-
-  console.log("API key", apiKey)
 
   return (
     <div className="relative w-full h-[250px] sm:h-[300px] rounded-lg overflow-hidden border border-input shadow-inner bg-muted/20 mt-2">

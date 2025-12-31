@@ -4,8 +4,6 @@ import { authClient } from "../../lib/auth/auth-client";
 import { CloudRain, ScanLine, Bot, ArrowRight, Sun, Sunset, Sunrise } from "lucide-react";
 import { cn } from "@repo/ui/lib/utils";
 
-
-
 import {
   Card,
   CardContent,
@@ -16,6 +14,8 @@ import {
 
 export const Route = createFileRoute("/dashboard/")({
   component: RouteComponent,
+  staleTime: 1000 * 60 * 10, // 10 minutes
+  gcTime: 1000 * 60 * 15, // 15 minutes
 });
 
 function RouteComponent() {

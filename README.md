@@ -1,101 +1,195 @@
-# Cropia
+Here is the comprehensive **README.md** for your final semester project, updated to reflect the actual code structure, specific AI models (Gemini 2.5 Flash Lite), and features found in your repository.
 
-Cropia is a modern web application built with a robust monorepo architecture using Turborepo. It leverages the power of Bun for fast package management and execution.
+---
 
-## Tech Stack
+# Cropia: AI-Powered Early Crop Health Detection System
 
-- **Monorepo**: [Turborepo](https://turbo.build/repo)
-- **Package Manager**: [Bun](https://bun.sh/)
-- **Frontend**: [React](https://react.dev/), [Vite](https://vitejs.dev/), [TanStack Router](https://tanstack.com/router/latest) (`apps/web`)
-- **Backend**: [Hono](https://hono.dev/) (`packages/api`)
-- **Auth**: [BetterAuth](https://better-auth.com/)
-  - Handler: `repo/api/src/auth.ts`
-  - Client: `apps/web/src/lib/auth/auth-client.ts`
-- **Database**: MongoDB (via [Prisma](https://www.prisma.io/) in `packages/db`)
-- **Type-Safety**: End-to-end type safety with Hono RPC (`apps/web/src/lib/rpc.ts`)
-- **UI**: [Shadcn UI](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com/) (`packages/ui`)
+**Cropia** is an intelligent agricultural platform designed to bridge the gap between farmers and administrative bodies. It empowers farmers with real-time, offline-first disease detection and decision support, while providing government officials and NGOs with a "God View" of regional crop health to prevent outbreaks.
 
-## Project Structure
+Built as a high-performance monorepo using **Turborepo**, **Bun**, and **Hono**, Cropia leverages Google's **Gemini 2.5 Flash Lite** for speed and accuracy in low-resource environments.
 
-- `apps/farmer`: The main frontend application built with Vite and TanStack Router.
-- `apps/admin`: The main frontend application built with Vite and TanStack Router.
-- `packages/api`: The backend API server built with Hono.
-- `packages/ui`: A shared UI component library using Shadcn UI and Tailwind CSS.
-- `packages/db`: Database schema and Prisma client configuration.
-- `packages/tsconfig`: Shared TypeScript configurations used throughout the monorepo.
+---
 
-## Getting Started
+## 🚀 Key Features
+
+### 👨‍🌾 For Farmers (The Field App)
+
+* **AI Crop Scanner ("The Gatekeeper"):**
+* Instantly validates if an image is a crop (filtering out selfies/documents).
+* Detects diseases, pests, and nutrient deficiencies in real-time.
+* Provides a "Confidence Score" and "Visual Severity" rating (Healthy vs. Warning vs. Critical).
+
+
+* **Decision Support Dashboard:**
+* **Smart Spray Planner:** A 12-hour timeline analyzing **Wind Speed (<15km/h)** and **Rain Probability (<30%)** to recommend safe spraying windows.
+* **Root Health X-Ray:** Visualizes soil moisture at two depths (**Surface 0-10cm** vs. **Deep 10-30cm**) to detect "false dryness" and prevent over-irrigation.
+* **Water Balance Calculator:** Tracks net water deficit (`Rain - Evapotranspiration`) over the last 3 days.
+
+
+* **Cropia Assistant:** A conversational AI chatbot that can answer questions about recent scans, weather forecasts, and agronomy advice.
+
+### 🏢 For Admin/Government ("The Watchtower")
+
+* **The God View (Live Map):**
+* Interactive geospatial map visualizing every crop scan in the jurisdiction.
+* Color-coded markers (Green=Healthy, Red=Critical) for spotting regional outbreaks.
+
+
+* **Regional Analysis Agent:**
+* Aggregates data from thousands of scans to generate "News Headlines" (e.g., *"Sugarcane Rust cases up 40% in Kolhapur"*).
+* Provides statistical breakdowns of disease distribution per district/taluka.
+
+
+* **Jurisdiction Control:** Granular RBAC allowing officials to view data specifically for their State, District, or Taluka.
+
+
+
+## 🛠 Tech Stack
+
+**Core Infrastructure**
+
+* **Monorepo:** [Turborepo](https://turbo.build/)
+* **Runtime/Manager:** [Bun](https://bun.sh/) (v1.2.20)
+* **Language:** TypeScript (v5.9)
+
+**Frontend (Web & PWA)**
+
+* **Framework:** React (Vite)
+* **Styling:** Tailwind CSS + Shadcn UI (`@repo/ui`)
+* **State/Routing:** TanStack Query + TanStack Router
+* **Maps:** Mapbox / Leaflet (via React)
+
+**Backend (API & Edge)**
+
+* **Framework:** [Hono](https://hono.dev/) (Lightweight, Edge-ready)
+* **Communication:** Hono RPC (Type-safe client-server contract)
+* **Database:** MongoDB (via Prisma ORM)
+* **Auth:** BetterAuth (Multi-tenant Organization support)
+
+**Artificial Intelligence**
+
+* **Vision Model:** Google **Gemini 2.5 Flash Lite** (Optimized for low latency).
+* **Framework:** Vercel AI SDK (`@ai-sdk/google`).
+* **Agents:**
+1. **Gatekeeper Agent:** Validates image integrity and diagnoses specific crop issues.
+2. **Analysis Agent:** Summarizes regional data into actionable natural language insights.
+
+
+
+---
+
+## 🏗 Architecture & Repository Structure
+
+The project follows a modern monorepo structure:
+
+```text
+.
+├── apps
+│   ├── farmer       # The Farmer PWA (Vite + React)
+│   ├── admin        # The Government Dashboard (Vite + React)
+│   └── api          # Hono Backend (Business Logic + AI Agents)
+├── packages
+│   ├── db           # Prisma Schema & MongoDB Client
+│   ├── ui           # Shared Shadcn UI Components
+│   ├── config       # Shared TS/Eslint Configs
+│   └── scripts      # Utility scripts
+└── turbo.json       # Build pipeline configuration
+
+```
+
+### The AI Pipeline
+
+Cropia uses a **Conditional Agentic Workflow**:
+
+1. **Input:** Image uploaded by farmer.
+2. **Gatekeeper (Gemini 2.5 Flash Lite):**
+* *Check:* Is this a plant? (Reject if false).
+* *Analyze:* Identify Crop -> Detect Issue -> Assess Severity.
+* *Label:* Generate semantic filename (e.g., `sugarcane_rust_timestamp`).
+
+
+3. **Persistence:** Data stored in MongoDB with a "Location Snapshot" (State/District/Village frozen at upload time) for fast geospatial queries.
+4. **Async Analysis:** The "Analysis Agent" runs periodically to aggregate these snapshots into regional reports for the Admin.
+
+---
+
+## 💾 Database Schema (Key Highlights)
+
+* **User/Auth:** Uses `BetterAuth` with `Organization` and `Member` tables for managing Co-ops and Government hierarchies.
+* **Scan Model:** Stores the `imageUrl`, `aiMetadata` (diagnosis, confidence), and a **Location Snapshot** (`state`, `district`, `taluka`) to avoid expensive joins during analytics.
+* **Jurisdiction Type:** A custom composite type defining an admin's scope (e.g., `{ state: "Maharashtra", district: "Kolhapur" }`).
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- [Bun](https://bun.sh/) (v1.0.0 or later)
-- [MongoDB](https://www.mongodb.com/) (Local or Atlas)
+* **Bun** (v1.0+)
+* **MongoDB** (Local or Atlas URL)
+* **Cloudinary Account** (for image storage)
+* **Google Gemini API Key**
 
 ### Installation
 
-Clone the repository and install dependencies:
-
+1. **Clone the repository:**
 ```bash
-git clone <repository-url>
-cd Cropia
+git clone https://github.com/your-username/cropia.git
+cd cropia
+
+```
+
+
+2. **Install dependencies:**
+```bash
 bun install
+
 ```
 
-### Environment Variables
 
-Copy the example environment file to create your local `.env` file:
+3. **Environment Setup:**
+Create a `.env` file in the root (see `.env.example`):
+```env
+DATABASE_URL="mongodb+srv://..."
+GOOGLE_GENERATIVE_AI_API_KEY="AIzaSy..."
+CLOUDINARY_CLOUD_NAME="..."
+BETTER_AUTH_SECRET="..."
 
+```
+
+
+4. **Database Push:**
 ```bash
-cp .env.example .env
+bun run db:push
+
 ```
 
-Ensure you update the `DATABASE_URL` in `.env` to point to your MongoDB instance.
 
-### Database Setup
-
-Start the MongoDB database using Podman:
-
-```bash
-cd packages/db && bun run db:up
-```
-
-Then, generate the Prisma client and push the schema:
-
-```bash
-# Generate Prisma Client
-cd packages/db && bun run db:generate
-
-# Push schema to the database
-cd packages/db && bun run db:push
-```
-
-### Running Development Server
-
-Start the development server for all apps and packages:
-
+5. **Run Development Server:**
 ```bash
 bun run dev
+
 ```
 
-This will start:
 
-- Web App: `http://localhost:5173` (usually)
-- API Server: `http://localhost:4000` (check console for exact port)
+* Farmer App: `http://localhost:5173`
+* Admin App: `http://localhost:5174`
+* Backend API: `http://localhost:3000`
 
-## Scripts
 
-- `bun run dev`: Starts the development server.
-- `bun run build`: Builds the application for production.
-- `bun run lint`: Runs the linter to ensure code quality.
-- `bun run check-types`: Runs TypeScript type checking.
 
-### Admin Features
+---
 
-- 1. Maps UI
-- 2. Agent Run
-- 3. Alert Creator
-- 4. Extra Feature : Crop Health Certificate, which can be approved by government in-order take any form of the Insurence.
+## 🤝 Contributing
 
-### Moral
+1. Fork the repo.
+2. Create your feature branch (`git checkout -b feature/amazing-feature`).
+3. Commit your changes (`git commit -m 'Add amazing feature'`).
+4. Push to the branch (`git push origin feature/amazing-feature`).
+5. Open a Pull Request.
 
-- Cropia is Multi-tenacy supported Web application made for the real life use case of the farmer in India.
+---
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
