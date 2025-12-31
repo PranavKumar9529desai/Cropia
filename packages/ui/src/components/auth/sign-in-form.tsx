@@ -58,7 +58,7 @@ export const SignInForm = ({
   };
 
   return (
-    <Card className="w-full max-w-sm border-none shadow-none bg-transparent sm:bg-card">
+    <Card className="w-full max-w-sm border-none shadow-none bg-transparent ">
       <CardHeader className="text-3xl font-bold text-primary space-y-2">
         <CardTitle>Sign In</CardTitle>
         <CardDescription>Sign in to start using Cropia.</CardDescription>
