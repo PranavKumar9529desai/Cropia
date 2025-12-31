@@ -10,8 +10,8 @@ import { Button } from "@repo/ui/components/button";
 
 export const SignUp = () => {
   return (
-    <Card className="w-full max-w-sm border-none shadow-none bg-transparent sm:!bg-card sm:border-card">
-      <CardHeader className="borde-border bg-primary">
+    <Card className="w-full max-w-sm border-none shadow-none bg-transparent sm:border-card">
+      <CardHeader className="borde-border text-destructive">
         <CardTitle className="text-2xl font-semibold">
           Invitation Required
         </CardTitle>

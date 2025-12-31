@@ -107,8 +107,7 @@ function RouteComponent() {
       {/* Welcome Banner */}
       <div className="relative">
         {/* Abstract Background Shapes */}
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 w-96 h-96 bg-white/10 rounded-full blur-3xl opacity-40 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-80 h-80 bg-black/10 rounded-full blur-3xl opacity-30 pointer-events-none" />
+
 
         <div className="relative p-6 sm:p-10 sm:pb-6 text-primary-foreground shadow-none">
           <div className="flex items-center gap-2.5 opacity-90 mb-4">

@@ -51,7 +51,7 @@ export function ResetPasswordCard({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-transparent shadow-none border-none">
       <CardHeader>
         <CardTitle>Reset Password</CardTitle>
         <CardDescription>Enter your new password below.</CardDescription>
