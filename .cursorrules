@@ -25,9 +25,9 @@ Cropia is a monorepo platform connecting farmers and administrators, likely for 
 
 ## Data fetching and Route guard for the layout
 - use simple route.tsx to have guard the layout and route after that
-ex ( dashboard/route.tsx has the layout which will be used by the 
+ex ( dashboard/route.tsx has the layout which will be used by the
 dashboard/home.tsx , dashboard/crop-map.tsx etc)
-- don't use "useEffect" to fetch use the loader in RouteComponent instead.
+- dont'use "useEffect" to fetch use the loader in RouteComponent instead.
 
 ## Key Workflows
 - **Add Component**: Use `/add-component` or strictly follow `.agent/workflows/add-component.md` to add UI components to `packages/ui`.
