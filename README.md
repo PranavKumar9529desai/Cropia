@@ -7,6 +7,13 @@ Built as a high-performance monorepo using **Turborepo**, **Bun**, and **Hono**,
 
 ---
 
+## 🌐 Live Demos
+
+* **Admin Dashboard (Government/NGO):** [https://cropia-admin.vercel.app](https://cropia-admin.vercel.app)
+* **Farmer App:** [https://cropia-farmer.vercel.app](https://cropia-farmer.vercel.app)
+
+---
+
 ## 🚀 Key Features
 
 ### 👨‍🌾 For Farmers (The Field App)
