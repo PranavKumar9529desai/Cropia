@@ -1,12 +1,16 @@
-Here is the comprehensive **README.md** for your final semester project, updated to reflect the actual code structure, specific AI models (Gemini 2.5 Flash Lite), and features found in your repository.
-
----
 
 # Cropia: AI-Powered Early Crop Health Detection System
 
 **Cropia** is an intelligent agricultural platform designed to bridge the gap between farmers and administrative bodies. It empowers farmers with real-time, offline-first disease detection and decision support, while providing government officials and NGOs with a "God View" of regional crop health to prevent outbreaks.
 
 Built as a high-performance monorepo using **Turborepo**, **Bun**, and **Hono**, Cropia leverages Google's **Gemini 2.5 Flash Lite** for speed and accuracy in low-resource environments.
+
+---
+
+## 🌐 Live Demos
+
+* **Admin Dashboard (Government/NGO):** [https://cropia-admin.vercel.app](https://cropia-admin.vercel.app)
+* **Farmer App:** [https://cropia-farmer.vercel.app](https://cropia-farmer.vercel.app)
 
 ---
 
