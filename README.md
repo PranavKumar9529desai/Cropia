@@ -1,6 +1,3 @@
-Here is the comprehensive **README.md** for your final semester project, updated to reflect the actual code structure, specific AI models (Gemini 2.5 Flash Lite), and features found in your repository.
-
----
 
 # Cropia: AI-Powered Early Crop Health Detection System
 
