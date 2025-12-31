@@ -65,7 +65,7 @@ export const SignUpForm = ({
   };
 
   return (
-    <Card className="w-full max-w-sm border-none shadow-none ">
+    <Card className="w-full max-w-sm border-none shadow-none bg-transparent">
       <CardHeader className="text-3xl font-bold text-primary space-y-2">
         <CardTitle>Sign Up</CardTitle>
         <CardDescription>Create Account to Cropia.</CardDescription>
@@ -141,7 +141,10 @@ export const SignUpForm = ({
         </form>
       </Form>
       <CardFooter className="text-muted-foreground">
-        Already have account? {signInLink}
+        Already have account?{" "}
+        <span className="decoration-primary text-primary underline">
+          {signInLink}
+        </span>
       </CardFooter>
       {googleButton && (
         <CardFooter className="w-full text-center space-y-1 flex-col">

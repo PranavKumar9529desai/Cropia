@@ -51,7 +51,7 @@ export const SignIn = () => {
       signUpLink={
         <Link
           to="/sign-up"
-          className="text-primary/90 hover:text-primary/20 ml-1"
+          className="text-primary/90 hover:text-primary/20 ml-1 underline"
         >
           Sign Up
         </Link>
@@ -59,7 +59,7 @@ export const SignIn = () => {
       forgotPasswordLink={
         <Link
           to="/forgot-password"
-          className="font-light text-sm  hover:text-primary hover:underline decoration-primary p-2 duration-200 transition-colors"
+          className="underline font-light text-sm  hover:text-primary hover:underline decoration-primary p-2 duration-200 transition-colors"
         >
           Forgot Password ?
         </Link>

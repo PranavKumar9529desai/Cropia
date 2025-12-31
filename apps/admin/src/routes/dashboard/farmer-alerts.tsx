@@ -24,7 +24,6 @@ import {
 } from "@repo/ui/components/select";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/rpc";
-import { Badge } from "@repo/ui/components/badge";
 import {
   Bell,
   Smartphone,
@@ -33,7 +32,6 @@ import {
   Users,
   User,
 } from "lucide-react";
-import { cn } from "@repo/ui/lib/utils";
 import { PhonePreview } from "@/components/dashboard/phone-preview";
 
 export const Route = createFileRoute("/dashboard/farmer-alerts")({
@@ -137,7 +135,7 @@ function NotificationsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         {/* Left Column: Form */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="bg-card sm:bg-transparent rounded-xl border sm:border-0 shadow-sm p-6 lg:p-8">
+          <div className="rounded-xl border-none shadow-sm p-6 lg:p-8">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
