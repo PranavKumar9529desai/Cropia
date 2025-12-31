@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { usePWAInstall } from "../hooks/use-pwa-install";
 import { Button } from "./button";
 import { X } from "lucide-react";
-// @ts-ignore
+// @ts-expect-error logo import
 import logo from "../assests/favicon.svg";
 
 export const InstallPWA = () => {
