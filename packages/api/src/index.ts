@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { auth } from "./auth";
+import { farmerAuth, adminAuth } from "./auth";
 import { cors } from "hono/cors";
 import { UserSessionMiddleware } from "./middleware/user.middleware";
 import WeatherController from "./controllers/user.controllers/weather.controller";
@@ -19,6 +19,7 @@ console.log(
   process.env.FRONTEND_URL_FARMER_APP,
 );
 console.log(process.env.FRONTEND_URL_ADMIN_APP);
+
 const app = new Hono()
   .use(
     "/*",
@@ -40,8 +41,18 @@ const app = new Hono()
     }),
   )
   .on(["POST", "GET"], "/api/auth/*", (c) => {
-    return auth.handler(c.req.raw);
+    const origin = c.req.header("Origin");
+    const adminUrl = process.env.FRONTEND_URL_ADMIN_APP;
+
+    // If request comes from Admin app, use adminAuth
+    if (adminUrl && origin === adminUrl) {
+      return adminAuth.handler(c.req.raw);
+    }
+
+    // Default to farmerAuth
+    return farmerAuth.handler(c.req.raw);
   })
+
 
   .use("/api/locations/*", UserSessionMiddleware)
   .use("/api/weather/*", UserSessionMiddleware)

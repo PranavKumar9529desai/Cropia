@@ -36,4 +36,7 @@ export const authClient = createAuthClient({
   baseURL: backendUrl ?? "http://localhost:4000",
 
   plugins: [organizationClient()],
+  advanced: {
+    cookiePrefix: "cropia-farmer",
+  },
 });
