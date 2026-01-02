@@ -18,17 +18,29 @@ export const usePWAInstall = () => {
             setIsInstallable(true);
             console.log('UsePWA: beforeinstallprompt captured', e);
         };
+
+        const appInstalledHandler = () => {
+            console.log('UsePWA: App installed');
+            setIsInstallable(false);
+            setDeferredPrompt(null);
+        };
+
         console.log('UsePWA: Hook initialized, listener added');
 
         window.addEventListener('beforeinstallprompt', handler);
+        window.addEventListener('appinstalled', appInstalledHandler);
 
         return () => {
             window.removeEventListener('beforeinstallprompt', handler);
+            window.removeEventListener('appinstalled', appInstalledHandler);
         };
     }, []);
 
     const install = async () => {
-        if (!deferredPrompt) return;
+        if (!deferredPrompt) {
+            console.warn('UsePWA: No deferred prompt available');
+            return;
+        }
 
         // Show the install prompt
         await deferredPrompt.prompt();
