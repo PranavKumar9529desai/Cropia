@@ -4,6 +4,7 @@ import { ArrowLeft, ChevronRight, LogOut, X } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import { authClient } from "@/lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
+import { ModeToggle } from "../theme-toggle";
 
 export const SettingsMobileLayout = ({
   routes,
@@ -42,7 +43,6 @@ export const SettingsMobileLayout = ({
             >
               <X className="w-5 h-5" />
             </Button>
-
           </div>
           <div className="flex-1 h-full mt-10 container px-2">
             <Outlet />
@@ -113,6 +113,7 @@ const SettingRouteComponent = () => {
     ))}
 
     <div className="p-4 mt-auto ">
+      <ModeToggle />
       <Button
         variant="ghost"
         className="w-full h-auto text-destructive flex justify-start"
