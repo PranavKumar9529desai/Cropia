@@ -1,5 +1,6 @@
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
+import { InputPassword } from "@repo/ui/components/input-password";
 import type { ReactNode } from "react";
 import {
   Form,
@@ -76,7 +77,11 @@ export const SignInForm = ({
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
+                    <Input
+                      placeholder="Enter your email"
+                      autoComplete="username"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,9 +97,9 @@ export const SignInForm = ({
                     {forgotPasswordLink}
                   </div>
                   <FormControl>
-                    <Input
-                      type="password"
+                    <InputPassword
                       placeholder="Enter your password"
+                      autoComplete="current-password"
                       {...field}
                     />
                   </FormControl>

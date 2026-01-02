@@ -126,13 +126,13 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="*ring-none">
-        <SidebarSeparator className="bg-primary" />
-        <SidebarMenuItem className="ring-none">
-          <SidebarMenuButton asChild tooltip={"profile"}>
+      <SidebarFooter>
+        <SidebarSeparator />
+        <SidebarMenu>
+          <SidebarMenuItem>
             <ProfileComponent handleLogout={handleLogout} userInfo={userInfo} />
-          </SidebarMenuButton>
-        </SidebarMenuItem>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   );

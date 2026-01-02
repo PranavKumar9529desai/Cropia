@@ -30,8 +30,10 @@ export default defineConfig({
       },
 
       manifest: {
+        id: "/",
         name: "Cropia",
         short_name: "Cropia",
+        description: "Cropia - Smart Farming Solutions for Farmers",
         start_url: "/",
         icons: [
           {
@@ -53,6 +55,20 @@ export default defineConfig({
             type: "image/png",
             purpose: "any",
           },
+        ],
+        screenshots: [
+          {
+            src: "/screenshots/pwa-screenshot-mobile.png",
+            sizes: "1024x1024",
+            type: "image/png",
+            form_factor: "narrow"
+          },
+          {
+            src: "/screenshots/pwa-screenshot-desktop.png",
+            sizes: "1024x1024",
+            type: "image/png",
+            form_factor: "wide"
+          }
         ],
         theme_color: "#b1e360",
         background_color: "#b1e360",

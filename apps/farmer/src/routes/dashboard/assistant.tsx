@@ -55,6 +55,7 @@ function RouteComponent() {
     sendMessage({ text: input });
     setInput("");
   };
+  // TODO: add the auto scroll behaviour to the scroll area
 
   return (
     <div className="container h-[calc(100vh-4rem)] flex flex-col  max-w-7xl mx-auto p-2 md:p-6 min-w-3xl w-full">

@@ -9,7 +9,7 @@ const SENDER_EMAIL = `"Cropia Team" <${process.env.GMAIL_USER}>`;
 const frontendUrl =
   process.env.FRONTEND_URL_FARMER_APP || "http://localhost:5000";
 
-export const auth = betterAuth({
+const baseConfig = {
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:4000",
   trustedOrigins: [
     process.env.FRONTEND_URL_FARMER_APP || "http://localhost:5000",
@@ -29,7 +29,7 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
-    async sendResetPassword({ user, url, token }) {
+    async sendResetPassword({ user, url, token }: { user: any; url: string; token?: string }) {
       const resetLink = `${frontendUrl}/reset-password?token=${token || url.split("=")[1]}`;
       await transporter.sendMail({
         from: SENDER_EMAIL,
@@ -43,7 +43,7 @@ export const auth = betterAuth({
   emailVerification: {
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
-    async sendVerificationEmail({ user, url, token }) {
+    async sendVerificationEmail({ user, url, token }: { user: any; url: string; token: string }) {
       const verifyLink = `${frontendUrl}/verify-email?token=${token || url.split("=")[1]}`;
       await transporter.sendMail({
         from: SENDER_EMAIL,
@@ -57,7 +57,7 @@ export const auth = betterAuth({
   session: {
     additionalFields: {
       jurisdiction: {
-        type: "json",
+        type: "json" as any,
         required: false,
       },
     },
@@ -65,7 +65,7 @@ export const auth = betterAuth({
 
   advanced: {
     defaultCookieAttributes: {
-      sameSite: "None",
+      sameSite: "None" as const,
       secure: true,
     },
   },
@@ -146,12 +146,9 @@ export const auth = betterAuth({
         });
       },
     }),
-  ],
+  ] as any[],
 
-  /**
-   * Database Hooks: Ensures every new login/session is correctly scoped to the
-   * Admin's organization and jurisdiction.
-   */
+
   databaseHooks: {
     session: {
       create: {
@@ -178,6 +175,25 @@ export const auth = betterAuth({
       },
     },
   } as any,
+};
 
-},
-);
+
+export const farmerAuth = betterAuth({
+  ...baseConfig,
+  advanced: {
+    ...baseConfig.advanced,
+    cookiePrefix: "cropia-farmer",
+  },
+});
+
+export const adminAuth = betterAuth({
+  ...baseConfig,
+  advanced: {
+    ...baseConfig.advanced,
+    cookiePrefix: "cropia-admin",
+  },
+});
+
+// For backward compatibility or general use, we can export one as default or keep 'auth'
+export const auth = farmerAuth;
+
