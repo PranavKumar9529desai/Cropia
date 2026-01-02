@@ -19,6 +19,7 @@ import { Bell, ChevronsUpDown, LogOut, Settings } from "lucide-react";
 import { SidebarMenuButton, useSidebar } from "@repo/ui/components/sidebar";
 import { useNotifications } from "@/hooks/use-notifications";
 import { Link } from "@tanstack/react-router";
+import { ModeToggle } from "../theme-toggle";
 
 interface UserInfo {
   name: string;
@@ -50,12 +51,14 @@ export const ProfileComponent = ({
       <DropdownMenuTrigger asChild>
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+          className="w-full data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground hover:bg-sidebar-accent transition-all duration-200"
         >
           <div className="relative">
-            <Avatar className="h-8 w-8 rounded-full">
+            <Avatar className="h-8 w-8 rounded-full border border-border/50">
               <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <AvatarFallback className="rounded-lg bg-primary/10 text-primary font-bold">
+                {user.name.substring(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             {unreadCount > 0 && (
               <span className="absolute -top-1 -right-1 flex h-3 w-3">
@@ -64,11 +67,15 @@ export const ProfileComponent = ({
               </span>
             )}
           </div>
-          <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="truncate font-semibold">{user.name}</span>
-            <span className="truncate text-xs">{user.email}</span>
+          <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden overflow-hidden">
+            <span className="truncate font-semibold text-foreground">
+              {user.name}
+            </span>
+            <span className="truncate text-xs text-muted-foreground italic">
+              {user.email}
+            </span>
           </div>
-          <ChevronsUpDown className="ml-auto size-4 group-data-[collapsible=icon]:hidden" />
+          <ChevronsUpDown className="ml-auto size-4 text-muted-foreground group-data-[collapsible=icon]:hidden opacity-50" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -115,6 +122,9 @@ export const ProfileComponent = ({
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+        <DropdownMenuItem className="h-10 -ml-2">
+          <ModeToggle reverse={true} />
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={handleLogout}
           className="focus:bg-red-500 focus:text-white text-red-500"

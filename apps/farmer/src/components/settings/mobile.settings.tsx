@@ -1,10 +1,12 @@
 import { SettingsRoute, settingsRoutes } from "@/routes/dashboard/settings/route";
 import { Link, Outlet, useChildMatches, useLocation, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, ChevronRight, LogOut, X } from "lucide-react";
+import { ChevronRight, LogOut, X, Moon, User } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import { authClient } from "@/lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
 import { ModeToggle } from "../theme-toggle";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
+import { Card, CardContent } from "@repo/ui/components/card";
 
 export const SettingsMobileLayout = ({
   routes,
@@ -16,50 +18,42 @@ export const SettingsMobileLayout = ({
   const navigate = useNavigate();
 
   // Check if we are on the root settings page
-  // We are at root if there are no child matches OR if the only child match is the index route
   const isRoot = matches.length === 0 || matches.some(m => m.routeId === '/dashboard/settings/');
 
   // Find the current route title
   const currentRoute = routes.find((r) => r.href === location.pathname);
 
   return (
-    <div className="flex flex-col h-full md:hidden">
-      {isRoot ? <SettingRouteComponent /> : (
-        <div>
-          <div className="flex items-center justify-between px-2 py-3 border-b bg-background sticky top-0 z-10">
-            <div className="flex items-center gap-3">
-              {currentRoute?.icon && (
-                <currentRoute.icon className="w-5 h-5 text-muted-foreground" />
-              )}
-              <h1 className="font-bold text-lg">
-                {currentRoute?.title || "Settings"}
-              </h1>
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full h-8 w-8 hover:bg-muted"
-              onClick={() => navigate({ to: "/dashboard/settings" })}
-            >
-              <X className="w-5 h-5" />
-            </Button>
-          </div>
-          <div className="flex-1 h-full mt-10 container px-2">
+    <div className="flex flex-col   md:hidden ">
+      <div className="flex items-center justify-between px-3 py-4  bg-background border-b sticky top-0 z-20">
+        <h1 className="text-xl font-bold font-brand tracking-tight z-10">
+          {isRoot ? "Settings" : (currentRoute?.title || "Settings")}
+        </h1>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="rounded-full h-8 w-8"
+          onClick={() => isRoot ? navigate({ to: "/dashboard" }) : navigate({ to: "/dashboard/settings" })}
+        >
+          <X className="w-5 h-5 text-muted-foreground" />
+        </Button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto pb-24">
+        {isRoot ? <SettingRouteComponent /> : (
+          <div className="p-4">
             <Outlet />
           </div>
-        </div>
-      )}
-
-
+        )}
+      </div>
     </div>
   );
 };
 
-
-
-
 const SettingRouteComponent = () => {
-  const navigate = useNavigate()
+  const { data: session } = authClient.useSession();
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     await authClient.signOut({
       fetchOptions: {
@@ -74,58 +68,84 @@ const SettingRouteComponent = () => {
     });
   };
 
+  const user = session?.user;
 
-  return <div className="flex flex-col gap-4 p-4 ">
-    <div className="flex items-center gap-2 mb-4">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-9 w-9 rounded-full -ml-2"
-        asChild
-      >
-        <Link to="/dashboard">
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-      </Button>
-      <div>
-        <h1 className="text-2xl font-bold font-brand">Settings</h1>
-        <span className="text-muted-foreground text-sm font-brand">
-          Manage your app settings
-        </span>
+  return (
+    <div className="p-4 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+      {/* Profile Section */}
+      <Card className="border-none shadow-sm overflow-hidden bg-background">
+        <CardContent className="p-4 flex items-center gap-4">
+          <Avatar className="h-14 w-14 border-2 border-primary/10">
+            <AvatarImage src={user?.image || ""} />
+            <AvatarFallback className="bg-primary/5 text-primary">
+              <User className="w-6 h-6" />
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <h2 className="font-bold text-lg truncate">{user?.name}</h2>
+            <p className="text-sm text-muted-foreground truncate">{user?.email}</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Settings Grid */}
+      <div className="space-y-4">
+        <div className="px-1">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2 ml-1">General</h3>
+          <Card className="border-none shadow-sm overflow-hidden bg-background">
+            <div className="divide-y divide-border/40">
+              {settingsRoutes.map((route) => (
+                <Link
+                  key={route.href}
+                  to={route.href}
+                  className="flex items-center justify-between p-4 hover:bg-accent/50 transition-colors group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-xl bg-primary/5 text-primary group-hover:bg-primary/10 transition-colors">
+                      <route.icon className="w-5 h-5" />
+                    </div>
+                    <span className="font-medium text-base">{route.title}</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-muted-foreground/50" />
+                </Link>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        <div className="px-1">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2 ml-1">Appearance</h3>
+          <Card className="border-none shadow-sm overflow-hidden bg-background">
+            <div className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-primary/5 text-primary">
+                  <Moon className="w-5 h-5" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-medium text-base">Theme</span>
+                  <span className="text-xs text-muted-foreground">Adjust your view</span>
+                </div>
+              </div>
+              <ModeToggle />
+            </div>
+          </Card>
+        </div>
+
+        <div className="px-1 pt-2">
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/5 h-12 rounded-xl border-none shadow-none"
+            onClick={handleLogout}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <div className="p-2 rounded-xl bg-destructive/5">
+                <LogOut className="w-5 h-5" />
+              </div>
+              <span className="font-semibold text-base">Log Out</span>
+            </div>
+          </Button>
+        </div>
       </div>
     </div>
-    {settingsRoutes.map((route) => (
-      <Link
-        key={route.href}
-        to={route.href}
-        className="flex items-center justify-between p-4  rounded-2xl hover:bg-accent/50 transition-colors h-10"
-      >
-        <div className="flex items-center gap-2">
-          <div className="p-3 rounded-xl text-primary">
-            <route.icon className="w-5 h-5" />
-          </div>
-          <span className="font-semibold text-lg">{route.title}</span>
-        </div>
-        <div className="p-2 text-muted-foreground">
-          <ChevronRight className="w-5 h-5" />
-        </div>
-      </Link>
-    ))}
-
-    <div className="p-4 mt-auto ">
-      <ModeToggle />
-      <Button
-        variant="ghost"
-        className="w-full h-auto text-destructive flex justify-start"
-        onClick={handleLogout}
-      >
-        <div className="flex items-center gap-4 ">
-          <div className="">
-            <LogOut className="w-5 h-5" />
-          </div>
-          <span className="font-semibold text-lg">Log Out</span>
-        </div>
-      </Button>
-    </div>
-  </div>
+  );
 }

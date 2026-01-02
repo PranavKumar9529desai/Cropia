@@ -15,6 +15,7 @@ import {
 import { Bell, ChevronsUpDown, LogOut, Settings } from "lucide-react";
 import { SidebarMenuButton, useSidebar } from "@repo/ui/components/sidebar";
 
+
 interface UserInfo {
   name: string;
   email: string;
@@ -93,6 +94,9 @@ export const ProfileComponent = ({
         >
           <LogOut className="mr-2 h-4 w-4" />
           Log out
+        </DropdownMenuItem>
+        <DropdownMenuItem >
+          <ModeToggle reverse={true} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
