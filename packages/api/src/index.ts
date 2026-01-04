@@ -49,7 +49,7 @@ const app = new Hono()
       return adminAuth.handler(c.req.raw);
     }
 
-    // Default to farmerAuth
+    // Default to farmerAuth handler
     return farmerAuth.handler(c.req.raw);
   })
 
