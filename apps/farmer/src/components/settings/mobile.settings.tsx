@@ -1,4 +1,4 @@
-import { SettingsRoute, settingsRoutes } from "@/routes/dashboard/settings/route";
+import { SettingsRoutes, SettingsRouteType } from "./settings.constants";
 import { Link, Outlet, useChildMatches, useLocation, useNavigate } from "@tanstack/react-router";
 import { ChevronRight, LogOut, X, Moon, User } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
@@ -11,7 +11,7 @@ import { Card, CardContent } from "@repo/ui/components/card";
 export const SettingsMobileLayout = ({
   routes,
 }: {
-  routes: SettingsRoute[];
+  routes: SettingsRouteType[];
 }) => {
   const matches = useChildMatches();
   const location = useLocation();
@@ -94,7 +94,7 @@ const SettingRouteComponent = () => {
           <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2 ml-1">General</h3>
           <Card className="border-none shadow-sm overflow-hidden bg-background">
             <div className="divide-y divide-border/40">
-              {settingsRoutes.map((route) => (
+              {SettingsRoutes.map((route) => (
                 <Link
                   key={route.href}
                   to={route.href}

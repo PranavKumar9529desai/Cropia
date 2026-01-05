@@ -1,12 +1,12 @@
 import { LocateIcon, ScanIcon, UserIcon, LucideIcon, Bell } from "lucide-react";
 
-export type SettingsRoute = {
+export type SettingsRouteType = {
   title: string;
   href: string;
   icon: LucideIcon;
 };
 
-export const settingsRoutes: SettingsRoute[] = [
+export const SettingsRoutes: SettingsRouteType[] = [
   {
     title: "Account",
     href: "/settings/account",
