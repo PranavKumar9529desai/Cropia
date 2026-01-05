@@ -1,3 +1,4 @@
+"use client";
 
 import {
   DropdownMenu,
@@ -8,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
+import { Badge } from "@repo/ui/components/badge";
 import {
   Avatar,
   AvatarFallback,
@@ -34,6 +36,7 @@ export const ProfileComponent = ({
   handleLogout,
 }: ProfileComponentProps) => {
   const { isMobile } = useSidebar();
+
 
   // Fallback if userInfo is missing (though it should be passed)
   const user = {
@@ -100,11 +103,12 @@ export const ProfileComponent = ({
                 <Bell className="mr-2 h-4 w-4" />
                 Notifications
               </div>
+
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem className="h-10 -ml-2">
           <ModeToggle reverse={true} />
         </DropdownMenuItem>
         <DropdownMenuItem
