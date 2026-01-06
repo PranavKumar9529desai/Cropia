@@ -5,7 +5,7 @@ async function main() {
 
     const email = "pranavkdesai1@gmail.com";
     const password = "Intern@31";
-    const inviteEmail = "dheerajyadav0303@gmail.com";
+    const inviteEmail = "tootahawa18@gmail.com";
     let headers = new Headers();
 
     // 1. Authenticate
@@ -64,10 +64,10 @@ async function main() {
                 organizationId: targetOrgId as string,
                 // Custom jurisdiction data handled by auth hooks
                 jurisdiction: {
-                    state: "Maharashtra",
-                    district: "Satara",
-                    taluka: "Karad",
-                    village: "All",
+                    state: "Punjab",
+                    district: "Kapurthala",
+                    taluka: "Phagwara",
+                    village: "University Campus Nanak Nagri",
                 },
             } as any,
             headers,
