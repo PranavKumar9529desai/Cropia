@@ -9,17 +9,17 @@ export type SettingsRouteType = {
 export const SettingsRoutes: SettingsRouteType[] = [
   {
     title: "Account",
-    href: "/settings/account",
+    href: "/dashboard/settings/account",
     icon: UserIcon,
   },
   {
     title: "My Location",
-    href: "/settings/location",
+    href: "/dashboard/settings/location",
     icon: LocateIcon,
   },
   {
     title: "Notifications",
-    href: "/settings/notification",
+    href: "/dashboard/settings/notification",
     icon: Bell,
   },
   {
