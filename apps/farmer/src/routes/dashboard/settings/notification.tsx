@@ -8,6 +8,12 @@ import { formatDistanceToNow, isToday, isYesterday } from "date-fns";
 import { toast } from "@repo/ui/components/sonner";
 
 import { Badge } from "@repo/ui/components/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@repo/ui/components/tooltip";
 import { SettingsLoader } from "@/components/settings/loader";
 
 export const Route = createFileRoute("/dashboard/settings/notification")({
@@ -230,12 +236,41 @@ function NotificationsPage() {
                               </p>
                             </div>
                             {notification.from && (
-                              <Badge
-                                variant="outline"
-                                className="text-[10px] h-5 px-1.5 uppercase tracking-wider font-medium text-muted-foreground bg-muted/50 border-border/50"
-                              >
-                                {notification.from.organizationName || "Cropia"}
-                              </Badge>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Badge
+                                      variant="outline"
+                                      className="text-[10px] h-5 px-1.5 uppercase tracking-wider font-medium text-muted-foreground bg-muted/50 border-border/50 cursor-help"
+                                    >
+                                      <span className="md:hidden">
+                                        {notification.from.organizationName
+                                          ? notification.from.organizationName
+                                            .split(" ")
+                                            .length > 1
+                                            ? notification.from.organizationName
+                                              .split(" ")
+                                              .map((word) =>
+                                                word[0].toUpperCase(),
+                                              )
+                                              .join(".")
+                                            : notification.from.organizationName
+                                          : "Cropia"}
+                                      </span>
+                                      <span className="hidden md:inline">
+                                        {notification.from.organizationName ||
+                                          "Cropia"}
+                                      </span>
+                                    </Badge>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>
+                                      {notification.from.organizationName ||
+                                        "Cropia"}
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
                             )}
                           </div>
 

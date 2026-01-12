@@ -14,7 +14,6 @@ import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as SettingsNotificationRouteImport } from './routes/settings/notification'
 import { Route as DashboardScanRouteImport } from './routes/dashboard/scan'
 import { Route as DashboardHomeRouteImport } from './routes/dashboard/home'
 import { Route as DashboardAssistantRouteImport } from './routes/dashboard/assistant'
@@ -57,11 +56,6 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardRouteRoute,
-} as any)
-const SettingsNotificationRoute = SettingsNotificationRouteImport.update({
-  id: '/settings/notification',
-  path: '/settings/notification',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardScanRoute = DashboardScanRouteImport.update({
   id: '/scan',
@@ -171,7 +165,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/assistant': typeof DashboardAssistantRoute
   '/dashboard/home': typeof DashboardHomeRoute
   '/dashboard/scan': typeof DashboardScanRouteWithChildren
-  '/settings/notification': typeof SettingsNotificationRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/$authType/location': typeof AuthAuthTypeLocationRoute
   '/dashboard/scan/failure': typeof DashboardScanFailureRoute
@@ -194,7 +187,6 @@ export interface FileRoutesByTo {
   '/dashboard/assistant': typeof DashboardAssistantRoute
   '/dashboard/home': typeof DashboardHomeRoute
   '/dashboard/scan': typeof DashboardScanRouteWithChildren
-  '/settings/notification': typeof SettingsNotificationRoute
   '/dashboard': typeof DashboardIndexRoute
   '/$authType/location': typeof AuthAuthTypeLocationRoute
   '/dashboard/scan/failure': typeof DashboardScanFailureRoute
@@ -221,7 +213,6 @@ export interface FileRoutesById {
   '/dashboard/assistant': typeof DashboardAssistantRoute
   '/dashboard/home': typeof DashboardHomeRoute
   '/dashboard/scan': typeof DashboardScanRouteWithChildren
-  '/settings/notification': typeof SettingsNotificationRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/_auth/$authType/location': typeof AuthAuthTypeLocationRoute
   '/dashboard/scan/failure': typeof DashboardScanFailureRoute
@@ -248,7 +239,6 @@ export interface FileRouteTypes {
     | '/dashboard/assistant'
     | '/dashboard/home'
     | '/dashboard/scan'
-    | '/settings/notification'
     | '/dashboard/'
     | '/$authType/location'
     | '/dashboard/scan/failure'
@@ -271,7 +261,6 @@ export interface FileRouteTypes {
     | '/dashboard/assistant'
     | '/dashboard/home'
     | '/dashboard/scan'
-    | '/settings/notification'
     | '/dashboard'
     | '/$authType/location'
     | '/dashboard/scan/failure'
@@ -297,7 +286,6 @@ export interface FileRouteTypes {
     | '/dashboard/assistant'
     | '/dashboard/home'
     | '/dashboard/scan'
-    | '/settings/notification'
     | '/dashboard/'
     | '/_auth/$authType/location'
     | '/dashboard/scan/failure'
@@ -314,7 +302,6 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   SkeltonRoute: typeof SkeltonRoute
-  SettingsNotificationRoute: typeof SettingsNotificationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -353,13 +340,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
-    }
-    '/settings/notification': {
-      id: '/settings/notification'
-      path: '/settings/notification'
-      fullPath: '/settings/notification'
-      preLoaderRoute: typeof SettingsNotificationRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/dashboard/scan': {
       id: '/dashboard/scan'
@@ -575,7 +555,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   SkeltonRoute: SkeltonRoute,
-  SettingsNotificationRoute: SettingsNotificationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

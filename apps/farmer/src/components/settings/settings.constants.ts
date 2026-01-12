@@ -24,7 +24,7 @@ export const SettingsRoutes: SettingsRouteType[] = [
   },
   {
     title: "My Scan",
-    href: "/settings/scan",
+    href: "/dashboard/settings/scan",
     icon: ScanIcon,
   },
 ];
