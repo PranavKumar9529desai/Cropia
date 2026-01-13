@@ -1,7 +1,7 @@
 import { Link, useMatches } from "@tanstack/react-router";
 import { BottomNavigation } from "@repo/ui/components/bottom-navigation";
 import type { BottomNavItem } from "@repo/ui/components/bottom-navigation";
-import { Map, BellRing, Scan } from "lucide-react";
+import { Map, BellRing, Scan, Building2 } from "lucide-react";
 
 export default function BottomNav() {
   const matches = useMatches();
@@ -16,7 +16,6 @@ export default function BottomNav() {
     {
       label: "Crop Map",
       icon: Map,
-      isFloating: true,
       path: "/dashboard/crop-map",
     },
     {
@@ -24,6 +23,11 @@ export default function BottomNav() {
 
       icon: BellRing,
       path: "/dashboard/farmer-alerts",
+    },
+    {
+      label: "Organization",
+      icon: Building2,
+      path: "/dashboard/organization/my-organization",
     },
   ];
 

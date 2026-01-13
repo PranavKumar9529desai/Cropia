@@ -37,50 +37,48 @@ function RouteComponent() {
   */
   const matches = useChildMatches();
   const fullRoute = matches[0]?.pathname;
-  const route = matches[0]?.pathname.split("/").pop();
+  const lastSegment = matches[matches.length - 1]?.pathname.split("/").pop();
+
   const isSettingRoute = matches.some((match) =>
     match.routeId.startsWith("/dashboard/settings"),
   );
   const jurisdictionDisplay = getJurisdictionDisplay(jurisdiction);
 
+  const displayTitle = fullRoute?.includes("organization") ? "My organization" : lastSegment;
 
   return (
     <SidebarProvider>
-      {/* Sidebar - visible on md and larger screens */}
-      <div className="hidden sm:flex gap-4">
-        <AppSidebar
-          userInfo={{ name: username || "", email: email || "", avatar: image }}
-          jurisdiction={jurisdictionDisplay}
-        />
-        <div className="flex items-center h-10 relative ">
-          <div className="h-fit m-2 ">
-            <SidebarTrigger />
-          </div>
-          {route !== "settings" && (
+      <AppSidebar
+        userInfo={{ name: username || "", email: email || "", avatar: image }}
+        jurisdiction={jurisdictionDisplay}
+      />
 
-            <span className="absolute left-12 z-50 text-lg font-semibold font-brand capitalize text-nowrap">
-              {fullRoute?.includes("organization") ? "My organization" : route}
-            </span>
-          )}
-        </div>
-
-      </div>
-
-      {/* Main content area */}
-      <SidebarInset className="h-svh overflow-hidden md:h-auto md:overflow-visible">
+      <SidebarInset className="flex flex-col h-svh overflow-hidden">
         {/* Mobile Topbar - visible only on mobile */}
-        {isSettingRoute ? null : (
+        {!isSettingRoute && (
           <div className="md:hidden py-1">
             <MobileTopbar isAdmin={true} jurisdiction={jurisdictionDisplay} />
           </div>
         )}
-        {/* <DashboardHeader /> */}
-        <div className="flex flex-1 flex-col p-4 md:p-6 overflow-y-auto md:overflow-visible pb-24 md:pb-6 no-scrollbar">
+
+        {/* Desktop Header - sticky top */}
+        <header className="hidden md:flex h-14 shrink-0 items-center justify-between px-4 border-b sticky top-0 bg-background/80 backdrop-blur-sm z-10">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <div className="h-4 w-px bg-border mx-1" />
+            <span className="text-lg font-semibold font-brand capitalize">
+              {displayTitle === "dashboard" ? "Overview" : displayTitle}
+            </span>
+          </div>
+        </header>
+
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-y-auto p-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <Outlet />
-        </div>
+        </main>
       </SidebarInset>
 
-      {/* Bottom Navigation - visible only on mobile (md:hidden) */}
+      {/* Bottom Navigation - visible only on mobile */}
       <div className="md:hidden">
         <BottomNav />
       </div>

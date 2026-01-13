@@ -48,7 +48,10 @@ export function BottomNavigation({
       <TabsList
         className={cn(
           "w-full h-16 bg-background border-t border-border pb-safe rounded-none",
-          "grid grid-cols-3 max-w-lg mx-auto p-0",
+          "grid max-w-lg mx-auto p-0",
+          items.length === 3 && "grid-cols-3",
+          items.length === 4 && "grid-cols-4",
+          items.length === 5 && "grid-cols-5",
         )}
       >
         {items.map((item) => {

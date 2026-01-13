@@ -451,15 +451,7 @@ function RouteComponent() {
               )}
             </div>
 
-            <div className="p-6 rounded-3xl bg-emerald-500/5 border border-emerald-500/10 space-y-4">
-              <div className="flex items-center gap-2 text-emerald-600">
-                <CheckCircle2 className="w-4 h-4" />
-                <h4 className="text-xs font-bold uppercase tracking-widest">Onboarding Tip</h4>
-              </div>
-              <p className="text-xs text-emerald-700/70 font-medium leading-relaxed">
-                Inviting members as 'Analysts' is recommended for those who only need to monitor crop health without administrative overhead.
-              </p>
-            </div>
+
           </div>
 
         </div>

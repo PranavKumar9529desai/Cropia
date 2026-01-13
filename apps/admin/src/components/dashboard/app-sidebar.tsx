@@ -1,4 +1,4 @@
-import { Map, BellRing, Scan, Building2, Users, UserPlus, ChevronDown, type LucideIcon } from "lucide-react";
+import { Map, BellRing, Scan, Building2, Users, UserPlus, ChevronDown, Boxes, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@repo/ui/lib";
 import { Link, useMatches, useRouter } from "@tanstack/react-router";
@@ -86,7 +86,7 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar collapsible="icon" >
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader className="">
         <div className="flex items-center gap-3 px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
           <img
@@ -153,16 +153,17 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
             <SidebarMenuItem>
               <SidebarMenuButton
                 onClick={() => setIsOrgOpen(!isOrgOpen)}
-                className="hover:!bg-transparent group/org"
+                className="hover:!bg-accent group/org"
                 tooltip="Organization"
               >
-                <div className="flex w-full items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60">
+                <div className="flex w-full items-center">
+                  <Boxes className="size-4 shrink-0 transition-transform duration-300 group-hover/org:scale-110" />
+                  <span className="ml-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 group-data-[collapsible=icon]:hidden">
                     Organization
                   </span>
                   <ChevronDown
                     className={cn(
-                      "size-3 text-muted-foreground/60 transition-transform duration-200",
+                      "ml-auto size-3 text-muted-foreground/60 transition-transform duration-300 group-data-[collapsible=icon]:hidden",
                       isOrgOpen ? "rotate-0" : "-rotate-90",
                     )}
                   />
@@ -170,7 +171,10 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
               </SidebarMenuButton>
 
               {isOrgOpen && (
-                <SidebarMenuSub className="mt-1">
+                <SidebarMenuSub className={cn(
+                  "mt-1 transition-all duration-300 ease-in-out animate-in fade-in slide-in-from-top-2",
+                  "group-data-[collapsible=icon]:mx-0 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:border-none group-data-[collapsible=icon]:!flex group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:items-center group-data-[collapsible=icon]:gap-2"
+                )}>
                   {orgItems.map((item) => {
                     const Icon = item.icon;
                     const isActive = matches.some(
@@ -178,23 +182,26 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
                     );
 
                     return (
-                      <SidebarMenuSubItem key={item.path}>
-                        <SidebarMenuSubButton
+                      <SidebarMenuItem key={item.path} className="w-full">
+                        <SidebarMenuButton
                           asChild
                           isActive={isActive}
+                          tooltip={item.label}
                           className={cn(
                             "duration-300 transition-colors hover:!bg-accent hover:!text-accent-foreground",
                             isActive
                               ? "bg-accent/50 text-accent-foreground font-medium"
                               : "text-muted-foreground/70",
+                            "group-data-[collapsible=icon]:!flex group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 group-data-[collapsible=icon]:!justify-center",
+                            "px-4" // Indent items when expanded
                           )}
                         >
                           <Link to={item.path}>
                             <Icon className="size-4" strokeWidth={isActive ? 2.5 : 2} />
-                            <span>{item.label}</span>
+                            <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
                           </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
                     );
                   })}
                 </SidebarMenuSub>
