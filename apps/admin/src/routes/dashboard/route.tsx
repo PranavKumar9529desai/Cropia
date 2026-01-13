@@ -56,8 +56,9 @@ function RouteComponent() {
             <SidebarTrigger />
           </div>
           {route !== "settings" && (
+
             <span className="absolute left-12 z-50 text-lg font-semibold font-brand capitalize text-nowrap">
-              {route}
+              {route === "organization" ? "my organization" : route}
             </span>
           )}
         </div>
