@@ -33,7 +33,7 @@ export function ConfirmationDialog({
 }: ConfirmationDialogProps) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="rounded-3xl border-border/50 shadow-2xl sm:max-w-[400px] p-6">
+            <DialogContent className="rounded-3xl border-border/50 shadow-2xl w-[calc(100%-2rem)] sm:max-w-[400px] p-6">
                 <DialogHeader className="space-y-3">
                     <DialogTitle className="text-xl font-bold font-brand leading-tight text-foreground">
                         {title}

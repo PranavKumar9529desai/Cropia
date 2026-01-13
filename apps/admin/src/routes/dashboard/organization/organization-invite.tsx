@@ -202,11 +202,11 @@ function RouteComponent() {
 
       {/* SCROLLABLE CONTENT AREA */}
       <div className="flex-1 overflow-y-auto subtle-scrollbar scroll-smooth">
-        <div className="max-w-6xl mx-auto p-4 md:p-8 grid lg:grid-cols-12 gap-10 pb-16">
+        <div className="max-w-7xl mx-auto p-4 md:p-8 grid lg:grid-cols-12 gap-10 pb-16">
 
           {/* INVITE FORM AREA */}
           <div className="lg:col-span-7 container w-full mx-auto space-y-8">
-            <Card className="rounded-3xl border-border/50 shadow-none overflow-hidden bg-background">
+            <Card className="bg-background shadow-none border-none overflow-hidden ">
               <CardHeader className="bg-primary/[0.02] border-b border-primary/5 p-8">
                 <CardTitle className="text-xl font-bold font-brand flex items-center gap-3 text-primary">
                   <Send className="w-5 h-5" />
@@ -399,7 +399,7 @@ function RouteComponent() {
           </div>
 
           {/* PENDING INVITES LIST */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-6 lg:border-l lg:border-border lg:pl-10">
             <div className="space-y-4">
               <h3 className="text-lg font-bold font-brand px-1">Pending Invitations</h3>
               {pendingInvites.length > 0 ? (

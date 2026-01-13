@@ -103,7 +103,7 @@ function RouteComponent() {
   ];
 
   return (
-    <div className="overflow-x-hidden space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-10">
+    <div className="container mx-auto max-w-7xl overflow-x-hidden space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-10">
       {/* Welcome Banner */}
       <div className="relative">
         {/* Abstract Background Shapes */}
