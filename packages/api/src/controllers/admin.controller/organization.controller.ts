@@ -16,7 +16,17 @@ export const OrganizationController = new Hono<{
     .get("/dashboard", async (c) => {
         const orgId = c.get("orgId");
         const jurisdiction = c.get("jurisdiction");
+        const range = c.req.query("range") || "30d";
+
+        let startDate: Date | undefined;
+        let days = 30;
+
+        if (range === "7d") { startDate = subDays(new Date(), 7); days = 7; }
+        else if (range === "30d") { startDate = subDays(new Date(), 30); days = 30; }
+        else if (range === "90d") { startDate = subDays(new Date(), 90); days = 90; }
+
         const filter = getJurisdictionFilter(jurisdiction);
+        const dateFilter = startDate ? { createdAt: { gte: startDate } } : {};
 
         // 1. Fetch Organization Basic Info
         const organization = await prisma.organization.findUnique({
@@ -33,11 +43,14 @@ export const OrganizationController = new Hono<{
             return c.json({ error: "Organization not found" }, 404);
         }
 
-        // 2. Pulse Statistics
-        const [totalMembers, scans] = await Promise.all([
+        // 2. Pulse Statistics & Scans
+        const [totalMembers, scans, latestAnalyses] = await Promise.all([
             prisma.member.count({ where: { organizationId: orgId } }),
             prisma.scan.findMany({
-                where: filter, // Query based on jurisdiction, not orgId
+                where: {
+                    ...filter,
+                    ...dateFilter,
+                },
                 select: {
                     id: true,
                     confidence: true,
@@ -49,6 +62,16 @@ export const OrganizationController = new Hono<{
                     visualSeverity: true,
                 },
             }),
+            prisma.agentScanAnalysis.findMany({
+                where: {
+                    organizationId: orgId,
+                    state: jurisdiction.state === "All" ? null : jurisdiction.state,
+                    district: jurisdiction.district === "All" ? null : jurisdiction.district,
+                    taluka: jurisdiction.taluka === "All" ? null : jurisdiction.taluka,
+                },
+                orderBy: { createdAt: "desc" },
+                take: 3,
+            }),
         ]);
 
         const totalScans = scans.length;
@@ -58,18 +81,18 @@ export const OrganizationController = new Hono<{
 
         const uniqueVillages = new Set(scans.map(s => s.village).filter(Boolean)).size;
 
-        // 3. Scan Trends (Last 30 Days)
-        const last30Days = Array.from({ length: 30 }).map((_, i) => {
+        // 3. Scan Trends
+        const lastNDays = Array.from({ length: days }).map((_, i) => {
             const date = subDays(new Date(), i);
             return format(date, "MMM dd");
         }).reverse();
 
         const trendsMap: Record<string, number> = {};
-        last30Days.forEach(day => trendsMap[day] = 0);
+        lastNDays.forEach(day => trendsMap[day] = 0);
 
-        const thirtyDaysAgo = subDays(startOfDay(new Date()), 30);
+        const rangeLimit = startDate ? startOfDay(startDate) : subDays(startOfDay(new Date()), 365);
         scans.forEach(scan => {
-            if (scan.createdAt >= thirtyDaysAgo) {
+            if (scan.createdAt >= rangeLimit) {
                 const day = format(scan.createdAt, "MMM dd");
                 if (trendsMap[day] !== undefined) {
                     trendsMap[day]++;
@@ -101,13 +124,9 @@ export const OrganizationController = new Hono<{
         const healthMap: Record<string, number> = { Healthy: 0, Warning: 0, Critical: 0 };
         scans.forEach(scan => {
             const severity = scan.visualSeverity?.toLowerCase() || "healthy";
-            if (severity === "critical") {
-                healthMap.Critical++;
-            } else if (severity === "warning") {
-                healthMap.Warning++;
-            } else {
-                healthMap.Healthy++;
-            }
+            if (severity === "critical") healthMap.Critical++;
+            else if (severity === "warning") healthMap.Warning++;
+            else healthMap.Healthy++;
         });
 
         const totalForHealth = totalScans || 1;
@@ -129,6 +148,8 @@ export const OrganizationController = new Hono<{
                 trends,
                 regions,
                 health,
-            }
+            },
+            latestAnalyses,
+            range,
         });
     });
