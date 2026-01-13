@@ -3,6 +3,7 @@ import Map, { Source, Layer, MapRef, LayerProps } from "react-map-gl/maplibre";
 import { GeoJSONSource } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
+// TODO : Show spread throught joining images 
 const createPulsingDot = (map: any, size: number, rgbColor: [number, number, number]) => {
   return {
     width: size,

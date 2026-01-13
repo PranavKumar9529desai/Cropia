@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import prisma, { Jurisdiction } from "@repo/db";
 import { auth } from "../../auth";
 import { transformToGeoJSON } from "../../utils/scan.helpers";
+import { getJurisdictionFilter } from "../../utils/jurisdiction";
 
 const MapController = new Hono<{
   Variables: {
@@ -15,20 +16,7 @@ const MapController = new Hono<{
   const jurisdiction = c.get("jurisdiction");
 
   // 1. Build Dynamic Filter based on Jurisdiction
-  const where: any = {};
-
-  // Iterate through the hierarchy levels
-  const levels = ["state", "district", "taluka", "village"] as const;
-
-  if (jurisdiction) {
-    levels.forEach((level) => {
-      const value = jurisdiction[level];
-      // If it's specific (not "All" and not "*"), filter by it
-      if (value && value !== "All" && value !== "*") {
-        where[level] = { equals: value, mode: "insensitive" };
-      }
-    });
-  }
+  const where = getJurisdictionFilter(jurisdiction);
 
   // 2. Fetch Scans
   // TODO : add nice caching here

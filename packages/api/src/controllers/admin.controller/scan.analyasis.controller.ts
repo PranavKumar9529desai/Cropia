@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import prisma, { Jurisdiction } from "@repo/db";
 import { auth } from "../../auth";
 import { runScanAnalysis } from "../../utils/agents/analyasis-agent";
+import { getJurisdictionFilter } from "../../utils/jurisdiction";
 
 export const ScanAnalyasisController = new Hono<{
   Variables: {
@@ -17,14 +18,16 @@ export const ScanAnalyasisController = new Hono<{
     const jurisdiction = c.get("jurisdiction");
     const orgId = c.get("orgId");
 
+    // For analysis, we look for records matching the exact jurisdiction level
+    // If a field is "All", the record should have it as null in DB
+    const analysisWhere: any = { organizationId: orgId };
+    ["state", "district", "taluka"].forEach((level) => {
+      const value = (jurisdiction as any)[level];
+      analysisWhere[level] = value === "All" ? null : value;
+    });
+
     const analysis = await prisma.agentScanAnalysis.findFirst({
-      where: {
-        organizationId: orgId,
-        state: jurisdiction.state === "All" ? null : jurisdiction.state,
-        district:
-          jurisdiction.district === "All" ? null : jurisdiction.district,
-        taluka: jurisdiction.taluka === "All" ? null : jurisdiction.taluka,
-      },
+      where: analysisWhere,
       orderBy: {
         createdAt: "desc",
       },
@@ -44,13 +47,7 @@ export const ScanAnalyasisController = new Hono<{
       console.log("result", result);
       // 2. Count current scans for record keeping
       const scanCount = await prisma.scan.count({
-        where: {
-          state: jurisdiction.state === "All" ? undefined : jurisdiction.state,
-          district:
-            jurisdiction.district === "All" ? undefined : jurisdiction.district,
-          taluka:
-            jurisdiction.taluka === "All" ? undefined : jurisdiction.taluka,
-        },
+        where: getJurisdictionFilter(jurisdiction),
       });
 
       // 3. Save to DB
@@ -69,6 +66,19 @@ export const ScanAnalyasisController = new Hono<{
           },
           lastScanCount: scanCount,
           lastProcessedAt: new Date(),
+        },
+      });
+
+      const addAnlaysisToOrganization = await prisma.organization.update({
+        where: {
+          id: orgId,
+        },
+        data: {
+          agentScanAnalyses: {
+            connect: {
+              id: savedAnalysis.id,
+            },
+          },
         },
       });
 
