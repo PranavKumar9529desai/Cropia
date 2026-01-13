@@ -104,7 +104,7 @@ function RouteComponent() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* SUBTLE HEADER */}
-      <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-20">
+      <div className=" backdrop-blur-sm sticky top-0 z-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-5">

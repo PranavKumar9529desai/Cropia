@@ -36,15 +36,16 @@ function RouteComponent() {
     We look at the last part of the pathname for the current active match.
   */
   const matches = useChildMatches();
-  const fullRoute = matches[0]?.pathname;
-  const lastSegment = matches[matches.length - 1]?.pathname.split("/").pop();
+  const lastMatch = matches[matches.length - 1];
+  const fullRoute = matches[0]?.pathname || "";
+  const lastSegment = lastMatch?.pathname.split("/").filter(Boolean).pop() || "dashboard";
 
   const isSettingRoute = matches.some((match) =>
     match.routeId.startsWith("/dashboard/settings"),
   );
   const jurisdictionDisplay = getJurisdictionDisplay(jurisdiction);
 
-  const displayTitle = fullRoute?.includes("organization") ? "My organization" : lastSegment;
+  const displayTitle = fullRoute.includes("organization") ? "My organization" : lastSegment;
 
   return (
     <SidebarProvider>
