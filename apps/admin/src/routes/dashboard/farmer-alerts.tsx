@@ -104,10 +104,10 @@ function NotificationsPage() {
   };
 
   return (
-    <div className="container mx-auto py-8 max-w-7xl animate-in fade-in slide-in-from-bottom-4 duration-500 md:px-0 px-2">
-      <div className="mb-10 flex items-center justify-between border-b border-border/40 pb-6">
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2">
+    <div className="container mx-auto  max-w-7xl animate-in fade-in slide-in-from-bottom-4 duration-500 sm:p-4 ">
+      <div className="flex items-center justify-between border-b border-border/40 pb-6">
+        <div className="space-y-1.5 p-4">
+          <div className="flex items-center gap-2 ">
             <h1 className="text-xl font-bold tracking-tight text-foreground/90">
               Farmer Alerts
             </h1>

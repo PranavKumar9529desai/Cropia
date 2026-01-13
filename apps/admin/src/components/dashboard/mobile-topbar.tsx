@@ -4,9 +4,7 @@ import { Button } from "@repo/ui/components/button";
 import { Bell, Settings } from "lucide-react";
 
 const getTitle = (pathname: string) => {
-  if (pathname.includes("/home")) return "Home";
-  if (pathname.includes("/scan")) return "Scan";
-  if (pathname.includes("/assistant")) return "Assistant";
+
   return "Cropia";
 };
 
@@ -25,7 +23,7 @@ export function MobileTopbar({
       className="border-b bg-background/80 backdrop-blur-md"
       leftContent={
         <div className="flex flex-wrap gap-y-[2px] gap-x-[2px]">
-          {(title === "Cropia" || title === "Home") ? (
+          {(title === "Cropia" || title === "Overview") ? (
             <Link to="/dashboard" className="flex items-center gap-2">
               <img src="/favicon/favicon.svg" alt="Logo" className="size-8" />
               <div className="flex flex-col">
@@ -40,7 +38,7 @@ export function MobileTopbar({
                     {jurisdiction && (
                       <>
                         <span className="h-0.5 w-0.5 rounded-full bg-muted-foreground" />
-                        <span className="text-[10px] font-medium text-primary ">
+                        <span className="text-[10px] font-medium text-primary text-nowrap">
                           {jurisdiction}
                         </span>
                       </>

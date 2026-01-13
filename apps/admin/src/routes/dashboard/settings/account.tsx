@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import { authClient } from "@/lib/auth/auth-client";
 import { apiClient } from "@/lib/rpc";
 import { Button } from "@repo/ui/components/button";
+import { ConfirmationDialog } from "@repo/ui/components/confirmation-dialog";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 
@@ -30,6 +31,20 @@ function AccountSettings() {
   const [isUploading, setIsUploading] = useState(false);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+  // Confirmation Dialog State
+  const [confirmConfig, setConfirmConfig] = useState<{
+    open: boolean;
+    title: string;
+    description: string;
+    onConfirm: () => void;
+    variant?: "default" | "destructive";
+  }>({
+    open: false,
+    title: "",
+    description: "",
+    onConfirm: () => { },
+  });
 
   const [name, setName] = useState(session?.user?.name || "");
 
@@ -80,10 +95,20 @@ function AccountSettings() {
     reader.readAsDataURL(file);
   };
 
-  const handleUpdateProfile = async () => {
+  const handleUpdateProfile = () => {
     if (!name.trim()) return toast.error("Name cannot be empty");
 
+    setConfirmConfig({
+      open: true,
+      title: "Update Profile",
+      description: "Are you sure you want to update your profile information?",
+      onConfirm: executeUpdateProfile,
+    });
+  };
+
+  const executeUpdateProfile = async () => {
     setIsUpdatingProfile(true);
+    setConfirmConfig(prev => ({ ...prev, open: false }));
     try {
       const { error } = await authClient.updateUser({ name });
       if (error) {
@@ -98,7 +123,7 @@ function AccountSettings() {
     }
   };
 
-  const handleChangePassword = async () => {
+  const handleChangePassword = () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
       return toast.error("Please fill all password fields");
     }
@@ -110,7 +135,17 @@ function AccountSettings() {
       return toast.error("Password must be at least 8 characters");
     }
 
+    setConfirmConfig({
+      open: true,
+      title: "Change Password",
+      description: "Are you sure you want to change your password? You will be logged out of other sessions.",
+      onConfirm: executeChangePassword,
+    });
+  };
+
+  const executeChangePassword = async () => {
     setIsChangingPassword(true);
+    setConfirmConfig(prev => ({ ...prev, open: false }));
     try {
       const { error } = await authClient.changePassword({
         currentPassword,
@@ -281,6 +316,16 @@ function AccountSettings() {
           </div>
         </div>
       </div>
+
+      <ConfirmationDialog
+        open={confirmConfig.open}
+        onOpenChange={(open) => setConfirmConfig(prev => ({ ...prev, open }))}
+        onConfirm={confirmConfig.onConfirm}
+        title={confirmConfig.title}
+        description={confirmConfig.description}
+        variant={confirmConfig.variant}
+        isLoading={isUpdatingProfile || isChangingPassword}
+      />
     </div>
   );
 }

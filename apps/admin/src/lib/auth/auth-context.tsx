@@ -2,11 +2,13 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { authClient } from "./auth-client";
 
 type userType = typeof authClient.$Infer.Session.user;
+type sessionType = typeof authClient.$Infer.Session.session;
 
 export type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
   user: userType | null;
+  session: sessionType | null;
   refreshAuth: () => Promise<void>;
 };
 
@@ -14,14 +16,17 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<userType | null>(null);
+  const [session, setSession] = useState<sessionType | null>(null);
   const [isLoading, setisLoading] = useState<boolean>(true);
 
   const checkAuth = async () => {
     try {
       const { data } = await authClient.getSession();
       setUser(data?.user || null);
+      setSession(data?.session || null);
     } catch {
       setUser(null);
+      setSession(null);
     } finally {
       setisLoading(false);
     }
@@ -39,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, isLoading, user, refreshAuth }}
+      value={{ isAuthenticated, isLoading, user, session, refreshAuth }}
     >
       {children}
     </AuthContext.Provider>

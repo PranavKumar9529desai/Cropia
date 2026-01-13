@@ -1,4 +1,4 @@
-import { auth } from "../auth";
+import { adminAuth, auth, farmerAuth } from "../auth";
 
 async function main() {
     console.log("🚀 Starting Invitation Script...");
@@ -57,7 +57,7 @@ async function main() {
     try {
         console.log(`📩 Sending invitation to: ${inviteEmail}`);
 
-        const invitation = await auth.api.createInvitation({
+        const invitation = await adminAuth.api.createInvitation({
             body: {
                 email: inviteEmail,
                 role: "admin",

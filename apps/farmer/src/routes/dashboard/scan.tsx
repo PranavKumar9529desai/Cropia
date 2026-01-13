@@ -231,9 +231,8 @@ function ScanPage() {
           <div className="p-6 pt-4 flex flex-col gap-4">
             <DialogHeader>
               <DialogTitle
-                className={`text-xl ${
-                  analysisResult?.isValid ? "text-green-600" : "text-red-600"
-                }`}
+                className={`text-xl ${analysisResult?.isValid ? "text-green-600" : "text-red-600"
+                  }`}
               >
                 {analysisResult?.isValid
                   ? "Analysis Successful"

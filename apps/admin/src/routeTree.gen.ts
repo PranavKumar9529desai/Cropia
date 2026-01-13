@@ -26,7 +26,11 @@ import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/s
 import { Route as DashboardSettingsScanRouteImport } from './routes/dashboard/settings/scan'
 import { Route as DashboardSettingsNotificationRouteImport } from './routes/dashboard/settings/notification'
 import { Route as DashboardSettingsAccountRouteImport } from './routes/dashboard/settings/account'
+import { Route as DashboardOrganizationOrganizationInviteRouteImport } from './routes/dashboard/organization/organization-invite'
+import { Route as DashboardOrganizationMyOrganizationRouteImport } from './routes/dashboard/organization/my-organization'
 import { Route as AuthAcceptInvitationIdRouteImport } from './routes/_auth/accept-invitation.$id'
+import { Route as DashboardOrganizationMembersIndexRouteImport } from './routes/dashboard/organization/members.index'
+import { Route as DashboardOrganizationMembersIdRouteImport } from './routes/dashboard/organization/members.$id'
 
 const SkeltonRoute = SkeltonRouteImport.update({
   id: '/skelton',
@@ -114,11 +118,35 @@ const DashboardSettingsAccountRoute =
     path: '/account',
     getParentRoute: () => DashboardSettingsRouteRoute,
   } as any)
+const DashboardOrganizationOrganizationInviteRoute =
+  DashboardOrganizationOrganizationInviteRouteImport.update({
+    id: '/organization/organization-invite',
+    path: '/organization/organization-invite',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
+const DashboardOrganizationMyOrganizationRoute =
+  DashboardOrganizationMyOrganizationRouteImport.update({
+    id: '/organization/my-organization',
+    path: '/organization/my-organization',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 const AuthAcceptInvitationIdRoute = AuthAcceptInvitationIdRouteImport.update({
   id: '/accept-invitation/$id',
   path: '/accept-invitation/$id',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const DashboardOrganizationMembersIndexRoute =
+  DashboardOrganizationMembersIndexRouteImport.update({
+    id: '/organization/members/',
+    path: '/organization/members/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
+const DashboardOrganizationMembersIdRoute =
+  DashboardOrganizationMembersIdRouteImport.update({
+    id: '/organization/members/$id',
+    path: '/organization/members/$id',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -135,9 +163,13 @@ export interface FileRoutesByFullPath {
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
+  '/dashboard/organization/my-organization': typeof DashboardOrganizationMyOrganizationRoute
+  '/dashboard/organization/organization-invite': typeof DashboardOrganizationOrganizationInviteRoute
   '/dashboard/settings/account': typeof DashboardSettingsAccountRoute
   '/dashboard/settings/notification': typeof DashboardSettingsNotificationRoute
   '/dashboard/settings/scan': typeof DashboardSettingsScanRoute
+  '/dashboard/organization/members/$id': typeof DashboardOrganizationMembersIdRoute
+  '/dashboard/organization/members': typeof DashboardOrganizationMembersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -153,9 +185,13 @@ export interface FileRoutesByTo {
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
   '/dashboard': typeof DashboardIndexRoute
   '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
+  '/dashboard/organization/my-organization': typeof DashboardOrganizationMyOrganizationRoute
+  '/dashboard/organization/organization-invite': typeof DashboardOrganizationOrganizationInviteRoute
   '/dashboard/settings/account': typeof DashboardSettingsAccountRoute
   '/dashboard/settings/notification': typeof DashboardSettingsNotificationRoute
   '/dashboard/settings/scan': typeof DashboardSettingsScanRoute
+  '/dashboard/organization/members/$id': typeof DashboardOrganizationMembersIdRoute
+  '/dashboard/organization/members': typeof DashboardOrganizationMembersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -174,9 +210,13 @@ export interface FileRoutesById {
   '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/_auth/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
+  '/dashboard/organization/my-organization': typeof DashboardOrganizationMyOrganizationRoute
+  '/dashboard/organization/organization-invite': typeof DashboardOrganizationOrganizationInviteRoute
   '/dashboard/settings/account': typeof DashboardSettingsAccountRoute
   '/dashboard/settings/notification': typeof DashboardSettingsNotificationRoute
   '/dashboard/settings/scan': typeof DashboardSettingsScanRoute
+  '/dashboard/organization/members/$id': typeof DashboardOrganizationMembersIdRoute
+  '/dashboard/organization/members/': typeof DashboardOrganizationMembersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -195,9 +235,13 @@ export interface FileRouteTypes {
     | '/dashboard/farmer-alerts'
     | '/dashboard/'
     | '/accept-invitation/$id'
+    | '/dashboard/organization/my-organization'
+    | '/dashboard/organization/organization-invite'
     | '/dashboard/settings/account'
     | '/dashboard/settings/notification'
     | '/dashboard/settings/scan'
+    | '/dashboard/organization/members/$id'
+    | '/dashboard/organization/members'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -213,9 +257,13 @@ export interface FileRouteTypes {
     | '/dashboard/farmer-alerts'
     | '/dashboard'
     | '/accept-invitation/$id'
+    | '/dashboard/organization/my-organization'
+    | '/dashboard/organization/organization-invite'
     | '/dashboard/settings/account'
     | '/dashboard/settings/notification'
     | '/dashboard/settings/scan'
+    | '/dashboard/organization/members/$id'
+    | '/dashboard/organization/members'
   id:
     | '__root__'
     | '/'
@@ -233,9 +281,13 @@ export interface FileRouteTypes {
     | '/dashboard/farmer-alerts'
     | '/dashboard/'
     | '/_auth/accept-invitation/$id'
+    | '/dashboard/organization/my-organization'
+    | '/dashboard/organization/organization-invite'
     | '/dashboard/settings/account'
     | '/dashboard/settings/notification'
     | '/dashboard/settings/scan'
+    | '/dashboard/organization/members/$id'
+    | '/dashboard/organization/members/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -366,12 +418,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsAccountRouteImport
       parentRoute: typeof DashboardSettingsRouteRoute
     }
+    '/dashboard/organization/organization-invite': {
+      id: '/dashboard/organization/organization-invite'
+      path: '/organization/organization-invite'
+      fullPath: '/dashboard/organization/organization-invite'
+      preLoaderRoute: typeof DashboardOrganizationOrganizationInviteRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/organization/my-organization': {
+      id: '/dashboard/organization/my-organization'
+      path: '/organization/my-organization'
+      fullPath: '/dashboard/organization/my-organization'
+      preLoaderRoute: typeof DashboardOrganizationMyOrganizationRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/_auth/accept-invitation/$id': {
       id: '/_auth/accept-invitation/$id'
       path: '/accept-invitation/$id'
       fullPath: '/accept-invitation/$id'
       preLoaderRoute: typeof AuthAcceptInvitationIdRouteImport
       parentRoute: typeof AuthRouteRoute
+    }
+    '/dashboard/organization/members/': {
+      id: '/dashboard/organization/members/'
+      path: '/organization/members'
+      fullPath: '/dashboard/organization/members'
+      preLoaderRoute: typeof DashboardOrganizationMembersIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/organization/members/$id': {
+      id: '/dashboard/organization/members/$id'
+      path: '/organization/members/$id'
+      fullPath: '/dashboard/organization/members/$id'
+      preLoaderRoute: typeof DashboardOrganizationMembersIdRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
   }
 }
@@ -422,6 +502,10 @@ interface DashboardRouteRouteChildren {
   DashboardCropMapRoute: typeof DashboardCropMapRoute
   DashboardFarmerAlertsRoute: typeof DashboardFarmerAlertsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardOrganizationMyOrganizationRoute: typeof DashboardOrganizationMyOrganizationRoute
+  DashboardOrganizationOrganizationInviteRoute: typeof DashboardOrganizationOrganizationInviteRoute
+  DashboardOrganizationMembersIdRoute: typeof DashboardOrganizationMembersIdRoute
+  DashboardOrganizationMembersIndexRoute: typeof DashboardOrganizationMembersIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
@@ -430,6 +514,13 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardCropMapRoute: DashboardCropMapRoute,
   DashboardFarmerAlertsRoute: DashboardFarmerAlertsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardOrganizationMyOrganizationRoute:
+    DashboardOrganizationMyOrganizationRoute,
+  DashboardOrganizationOrganizationInviteRoute:
+    DashboardOrganizationOrganizationInviteRoute,
+  DashboardOrganizationMembersIdRoute: DashboardOrganizationMembersIdRoute,
+  DashboardOrganizationMembersIndexRoute:
+    DashboardOrganizationMembersIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

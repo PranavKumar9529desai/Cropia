@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "@repo/ui/components/sonner";
 import { Button } from "@repo/ui/components/button";
 import { Form } from "@repo/ui/components/form";
+import { ConfirmationDialog } from "@repo/ui/components/confirmation-dialog";
 import { Loader2, MapPin, Save } from "lucide-react";
 import {
   createLocationSchema,
@@ -37,6 +38,10 @@ function LocationSettings() {
   const locationData = Route.useLoaderData();
   const [isSaving, setIsSaving] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
+
+  // Confirmation Dialog State
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [pendingValues, setPendingValues] = useState<CreateLocationInputType | null>(null);
 
   const form = useForm<CreateLocationInputType>({
     resolver: zodResolver(createLocationSchema),
@@ -93,10 +98,18 @@ function LocationSettings() {
     }
   };
 
-  const onSubmit = async (values: CreateLocationInputType) => {
+  const onSubmit = (values: CreateLocationInputType) => {
+    setPendingValues(values);
+    setIsConfirmDialogOpen(true);
+  };
+
+  const executeSubmit = async () => {
+    if (!pendingValues) return;
+
     setIsSaving(true);
+    setIsConfirmDialogOpen(false);
     try {
-      const response = await postuserlocation(values);
+      const response = await postuserlocation(pendingValues);
       // @ts-ignore
       if (response.ok) {
         toast.success("Location updated successfully");
@@ -175,6 +188,16 @@ function LocationSettings() {
           </div>
         </form>
       </Form>
+
+      <ConfirmationDialog
+        open={isConfirmDialogOpen}
+        onOpenChange={setIsConfirmDialogOpen}
+        onConfirm={executeSubmit}
+        isLoading={isSaving}
+        title="Update Location"
+        description="Are you sure you want to update your farm's location information?"
+        confirmText="Yes, Update Location"
+      />
     </div>
   );
 }

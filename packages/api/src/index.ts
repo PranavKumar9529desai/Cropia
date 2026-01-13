@@ -9,6 +9,7 @@ import InvitationController from "./controllers/user.controllers/invitation.cont
 import { AdminSessionMiddleware } from "./middleware/admin.middleware";
 import MapController from "./controllers/admin.controller/map.controller";
 import { ScanAnalyasisController } from "./controllers/admin.controller/scan.analyasis.controller";
+import { OrganizationController } from "./controllers/admin.controller/organization.controller";
 import NotificationController from "./controllers/user.controllers/notification.controller";
 import AdminNotificationController from "./controllers/admin.controller/notification.controller";
 import SettingsController from "./controllers/user.controllers/settings.controller";
@@ -40,7 +41,7 @@ const app = new Hono()
       // exposeHeaders: ['Set-Cookie']
     }),
   )
-  .on(["POST", "GET"], "/api/auth/*", (c) => {
+  .all("/api/auth/*", (c) => {
     const origin = c.req.header("Origin");
     const adminUrl = process.env.FRONTEND_URL_ADMIN_APP;
 
@@ -72,6 +73,7 @@ const app = new Hono()
   .route("/api/scans", ScanController)
   .route("/api/admin/map", MapController)
   .route("/api/admin/analysis", ScanAnalyasisController)
+  .route("/api/admin/organization", OrganizationController)
   .route("/api/admin/notifications", AdminNotificationController)
 
 export type AppType = typeof app;

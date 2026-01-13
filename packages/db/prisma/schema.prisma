@@ -88,7 +88,6 @@ model Organization {
   metadata          String?
   members           Member[]
   invitations       Invitation[]
-  scans             Scan[]
   agentScanAnalyses AgentScanAnalysis[]
 
   @@unique([slug])
@@ -211,12 +210,8 @@ model Scan {
   userId    String
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  organizationId String?       @map("organizationId")
-  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
   // 5. INDEXES (Powering "The Watchtower")
   @@index([userId])
-  @@index([organizationId])
   // Dashboard Queries:
   // "Show me all scans in Maharashtra"
   @@index([state, createdAt])

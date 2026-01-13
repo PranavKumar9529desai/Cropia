@@ -29,6 +29,9 @@ export default defineConfig({
         type: "module",
       },
 
+      injectManifest: {
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4 MiB
+      },
       manifest: {
         id: "/",
         name: "Cropia Admin",
