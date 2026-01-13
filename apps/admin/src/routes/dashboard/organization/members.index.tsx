@@ -1,5 +1,6 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { apiClient } from "@/lib/rpc";
+import { authClient } from "@/lib/auth/auth-client";
 import { useState } from "react";
 import {
   Users,
@@ -41,7 +42,7 @@ import {
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
 
-export const Route = createFileRoute('/dashboard/organization/members')({
+export const Route = createFileRoute('/dashboard/organization/members/')({
   loader: async () => {
     try {
       const res = await apiClient.api.admin.organization.members.$get();
@@ -57,6 +58,9 @@ export const Route = createFileRoute('/dashboard/organization/members')({
 
 function RouteComponent() {
   const members = Route.useLoaderData();
+  const navigate = useNavigate();
+  const { data: session } = authClient.useSession();
+  const currentRole = session?.member?.role;
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
 
@@ -74,11 +78,13 @@ function RouteComponent() {
       case "admin":
         return <Badge variant="secondary" className="bg-blue-500/10 text-blue-500 border-blue-500/20 font-bold uppercase tracking-wider text-[10px]">Admin</Badge>;
       default:
-        return <Badge variant="secondary" className="bg-muted text-muted-foreground border-transparent font-bold uppercase tracking-wider text-[10px]">Viewer</Badge>;
+        return null;
     }
   };
 
-  const getJurisdictionLabel = (j: any) => {
+  const getJurisdictionLabel = (member: any) => {
+    if (member.role?.toLowerCase() === "owner") return "All Access";
+    const j = member.jurisdiction;
     if (!j) return "No Access";
     if (j.village && j.village !== "All") return `Village: ${j.village}`;
     if (j.taluka && j.taluka !== "All") return `Taluka: ${j.taluka}`;
@@ -136,7 +142,6 @@ function RouteComponent() {
                 <SelectItem value="all">All Roles</SelectItem>
                 <SelectItem value="owner">Owner</SelectItem>
                 <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="viewer">Viewer</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -160,7 +165,14 @@ function RouteComponent() {
                 <tbody className="divide-y divide-border/30">
                   {filteredMembers.length > 0 ? (
                     filteredMembers.map((member: any) => (
-                      <tr key={member.id} className="group hover:bg-muted/5 transition-colors cursor-pointer" onClick={() => { }}>
+                      <tr
+                        key={member.id}
+                        className="group hover:bg-muted/5 transition-colors cursor-pointer"
+                        onClick={() => navigate({
+                          to: "/dashboard/organization/members/$id",
+                          params: { id: member.id }
+                        })}
+                      >
                         <td className="px-6 py-5">
                           <div className="flex items-center gap-4">
                             <Avatar className="w-10 h-10 rounded-xl border border-border/50 shadow-sm">
@@ -181,17 +193,11 @@ function RouteComponent() {
                         <td className="px-6 py-5">
                           <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
                             <MapPin className="w-3.5 h-3.5" />
-                            {getJurisdictionLabel(member.jurisdiction)}
+                            {getJurisdictionLabel(member)}
                           </div>
                         </td>
                         <td className="px-6 py-5 text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <Link to="/dashboard/organization/members/$id" params={{ id: member.id }}>
-                              <Button variant="ghost" size="sm" className="h-8 rounded-lg text-xs font-bold gap-1.5 hover:bg-primary/5 hover:text-primary">
-                                Profile
-                                <ChevronRight className="w-3.5 h-3.5" />
-                              </Button>
-                            </Link>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-muted" onClick={(e) => e.stopPropagation()}>
@@ -200,18 +206,15 @@ function RouteComponent() {
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end" className="rounded-xl w-48">
                                 <DropdownMenuLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground pt-3 px-3">Quick Actions</DropdownMenuLabel>
-                                <DropdownMenuItem className="rounded-lg gap-2 cursor-pointer font-medium text-sm">
+                                <DropdownMenuItem
+                                  className="rounded-lg gap-2 cursor-pointer font-medium text-sm"
+                                  onClick={() => navigate({
+                                    to: "/dashboard/organization/members/$id",
+                                    params: { id: member.id }
+                                  })}
+                                >
                                   <Eye className="w-4 h-4 text-muted-foreground" />
-                                  View Activity
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className="rounded-lg gap-2 cursor-pointer font-medium text-sm">
-                                  <Settings2 className="w-4 h-4 text-muted-foreground" />
-                                  Edit Permissions
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="rounded-lg gap-2 cursor-pointer font-medium text-sm text-destructive focus:bg-destructive/5 focus:text-destructive">
-                                  <Shield className="w-4 h-4" />
-                                  Remove Member
+                                  View Profile
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>

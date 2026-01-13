@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { apiClient } from "@/lib/rpc";
+import { authClient } from "@/lib/auth/auth-client";
 import {
   ArrowLeft,
   Mail,
@@ -49,6 +50,9 @@ export const Route = createFileRoute('/dashboard/organization/members/$id')({
 function RouteComponent() {
   const member = Route.useLoaderData();
   const navigate = useNavigate();
+  const { data: session } = authClient.useSession();
+  const currentRole = session?.member?.role;
+  const isOwner = currentRole === "owner";
 
   if (!member) {
     return (
@@ -87,7 +91,7 @@ function RouteComponent() {
       case "admin":
         return <Badge className="bg-blue-500/10 text-blue-500 border-blue-500/20 font-bold uppercase tracking-wider text-[10px]">Admin</Badge>;
       default:
-        return <Badge className="bg-muted text-muted-foreground border-transparent font-bold uppercase tracking-wider text-[10px]">Viewer</Badge>;
+        return null;
     }
   };
 
@@ -121,10 +125,12 @@ function RouteComponent() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="h-10 px-4 rounded-xl text-sm font-bold border-destructive/20 text-destructive hover:bg-destructive/5" onClick={handleRemoveMember}>
-              <Trash2 className="w-4 h-4 mr-2" />
-              Remove Member
-            </Button>
+            {isOwner && (
+              <Button variant="outline" className="h-10 px-4 rounded-xl text-sm font-bold border-destructive/20 text-destructive hover:bg-destructive/5" onClick={handleRemoveMember}>
+                <Trash2 className="w-4 h-4 mr-2" />
+                Remove Member
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -153,14 +159,13 @@ function RouteComponent() {
                       {getRoleBadge(member.role)}
                       <p className="text-sm font-medium">Determines administrative capabilities.</p>
                     </div>
-                    <Select defaultValue={member.role}>
+                    <Select defaultValue={member.role} disabled={!isOwner}>
                       <SelectTrigger className="w-[120px] h-9 rounded-xl text-xs font-bold border-border/50 bg-background">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="rounded-xl font-medium">
                         <SelectItem value="owner">Owner</SelectItem>
                         <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="viewer">Viewer</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -189,10 +194,12 @@ function RouteComponent() {
                         </div>
                       </div>
                     </div>
-                    <Button variant="outline" className="w-full h-11 rounded-xl text-sm font-bold gap-2">
-                      <MapPin className="w-4 h-4 text-muted-foreground" />
-                      Modify Jurisdiction
-                    </Button>
+                    {isOwner && (
+                      <Button variant="outline" className="w-full h-11 rounded-xl text-sm font-bold gap-2">
+                        <MapPin className="w-4 h-4 text-muted-foreground" />
+                        Modify Jurisdiction
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardContent>

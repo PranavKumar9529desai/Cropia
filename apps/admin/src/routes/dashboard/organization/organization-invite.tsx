@@ -1,6 +1,7 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
 import { apiClient } from "@/lib/rpc";
+import { authClient } from "@/lib/auth/auth-client";
 import { useState } from "react";
+import { createFileRoute, Link } from '@tanstack/react-router';
 import {
   UserPlus,
   Mail,
@@ -51,16 +52,22 @@ export const Route = createFileRoute(
 function RouteComponent() {
   const pendingInvites = Route.useLoaderData();
   const navigate = Route.useNavigate();
+  const { data: session } = authClient.useSession();
+  const activeMember = session?.member;
+  const inviterJurisdiction = activeMember?.jurisdiction as any;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
-    role: "viewer",
+    role: "admin",
+    level: inviterJurisdiction?.district && inviterJurisdiction.district !== "All" ? "district" :
+      inviterJurisdiction?.taluka && inviterJurisdiction.taluka !== "All" ? "taluka" :
+        inviterJurisdiction?.village && inviterJurisdiction.village !== "All" ? "village" : "state",
     jurisdiction: {
-      state: "Maharashtra",
-      district: "All",
-      taluka: "All",
-      village: "All"
+      state: inviterJurisdiction?.state || "Maharashtra",
+      district: inviterJurisdiction?.district || "All",
+      taluka: inviterJurisdiction?.taluka || "All",
+      village: inviterJurisdiction?.village || "All"
     }
   });
 
@@ -178,14 +185,16 @@ function RouteComponent() {
                         </SelectTrigger>
                         <SelectContent className="rounded-2xl font-medium">
                           <SelectItem value="admin">Administrator</SelectItem>
-                          <SelectItem value="viewer">Viewer / Analyst</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
                     <div className="space-y-4">
                       <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Jurisdiction Level</label>
-                      <Select defaultValue="state">
+                      <Select
+                        value={formData.level}
+                        onValueChange={(val: any) => setFormData({ ...formData, level: val })}
+                      >
                         <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-primary/60" />
@@ -193,13 +202,113 @@ function RouteComponent() {
                           </div>
                         </SelectTrigger>
                         <SelectContent className="rounded-2xl font-medium">
-                          <SelectItem value="state">State Level</SelectItem>
-                          <SelectItem value="district">District Level</SelectItem>
-                          <SelectItem value="taluka">Taluka Level</SelectItem>
+                          {(!inviterJurisdiction?.district || inviterJurisdiction.district === "All") && (
+                            <SelectItem value="state">State Level</SelectItem>
+                          )}
+                          {(!inviterJurisdiction?.taluka || inviterJurisdiction.taluka === "All") && (
+                            <SelectItem value="district">District Level</SelectItem>
+                          )}
+                          {(!inviterJurisdiction?.village || inviterJurisdiction.village === "All") && (
+                            <SelectItem value="taluka">Taluka Level</SelectItem>
+                          )}
                           <SelectItem value="village">Village Level</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
+                  </div>
+
+                  {/* Specific Jurisdiction Selection */}
+                  <div className="grid grid-cols-2 gap-6 pt-2">
+                    {formData.level !== "state" && (
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">State</label>
+                        <Select
+                          value={formData.jurisdiction.state}
+                          onValueChange={(val) => setFormData({
+                            ...formData,
+                            jurisdiction: { ...formData.jurisdiction, state: val, district: "All", taluka: "All", village: "All" }
+                          })}
+                          disabled={inviterJurisdiction?.state && inviterJurisdiction.state !== "All"}
+                        >
+                          <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-2xl font-medium">
+                            <SelectItem value="Maharashtra">Maharashtra</SelectItem>
+                            <SelectItem value="Karnataka">Karnataka</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+
+                    {(formData.level === "district" || formData.level === "taluka" || formData.level === "village") && (
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">District</label>
+                        <Select
+                          value={formData.jurisdiction.district}
+                          onValueChange={(val) => setFormData({
+                            ...formData,
+                            jurisdiction: { ...formData.jurisdiction, district: val, taluka: "All", village: "All" }
+                          })}
+                          disabled={inviterJurisdiction?.district && inviterJurisdiction.district !== "All"}
+                        >
+                          <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-2xl font-medium">
+                            <SelectItem value="All">All Districts</SelectItem>
+                            <SelectItem value="Satara">Satara</SelectItem>
+                            <SelectItem value="Sangli">Sangli</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+
+                    {(formData.level === "taluka" || formData.level === "village") && (
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Taluka</label>
+                        <Select
+                          value={formData.jurisdiction.taluka}
+                          onValueChange={(val) => setFormData({
+                            ...formData,
+                            jurisdiction: { ...formData.jurisdiction, taluka: val, village: "All" }
+                          })}
+                          disabled={inviterJurisdiction?.taluka && inviterJurisdiction.taluka !== "All"}
+                        >
+                          <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-2xl font-medium">
+                            <SelectItem value="All">All Talukas</SelectItem>
+                            <SelectItem value="Karad">Karad</SelectItem>
+                            <SelectItem value="Patan">Patan</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+
+                    {formData.level === "village" && (
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Village</label>
+                        <Select
+                          value={formData.jurisdiction.village}
+                          onValueChange={(val) => setFormData({
+                            ...formData,
+                            jurisdiction: { ...formData.jurisdiction, village: val }
+                          })}
+                          disabled={inviterJurisdiction?.village && inviterJurisdiction.village !== "All"}
+                        >
+                          <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-2xl font-medium">
+                            <SelectItem value="All">All Villages</SelectItem>
+                            <SelectItem value="Vasantgad">Vasantgad</SelectItem>
+                            <SelectItem value="Kole">Kole</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                   </div>
 
                   <div className="p-6 rounded-2xl bg-muted/5 border border-dashed border-border/50 space-y-4">
