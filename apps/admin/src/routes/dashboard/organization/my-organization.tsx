@@ -8,7 +8,6 @@ import {
   TrendingUp,
   Activity,
   PieChart as PieChartIcon,
-  ArrowRight,
   Settings,
   Calendar,
   Sparkles,
@@ -247,6 +246,7 @@ function RouteComponent() {
             ))}
           </div>
 
+          {/* Visual Analytics */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-4">
             {/* Scan Trends Area Chart */}
             <div className="lg:col-span-8 space-y-6">
@@ -261,7 +261,6 @@ function RouteComponent() {
                   </p>
                 </div>
 
-                {/* Filter Moved Here */}
                 <Select value={range} onValueChange={handleRangeChange}>
                   <SelectTrigger className="w-[110px] h-9 rounded-xl text-xs font-bold border-border/50 bg-muted/20">
                     <Calendar className="w-3.5 h-3.5 mr-2 text-muted-foreground" />
@@ -281,16 +280,8 @@ function RouteComponent() {
                   <AreaChart data={charts?.trends || []} margin={{ left: -20, right: 10 }}>
                     <defs>
                       <linearGradient id="colorScans" x1="0" y1="0" x2="0" y2="1">
-                        <stop
-                          offset="5%"
-                          stopColor="var(--primary)"
-                          stopOpacity={0.2}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor="var(--primary)"
-                          stopOpacity={0}
-                        />
+                        <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <XAxis
@@ -333,10 +324,7 @@ function RouteComponent() {
               </div>
 
               <div className="flex flex-col items-center pt-4">
-                <ChartContainer
-                  config={chartConfig}
-                  className="mx-auto aspect-square w-full max-w-[220px]"
-                >
+                <ChartContainer config={chartConfig} className="mx-auto aspect-square w-full max-w-[220px]">
                   <PieChart>
                     <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
                     <Pie
@@ -375,7 +363,7 @@ function RouteComponent() {
               </div>
             </div>
 
-            {/* Latest Intelligence Section - Reordered to be THIRD */}
+            {/* Latest Intelligence Section */}
             <div className="lg:col-span-12">
               <Card className="border border-primary/10 bg-primary/[0.02] rounded-3xl overflow-hidden shadow-none">
                 <CardHeader className="border-b border-primary/5 bg-primary/[0.01] px-8 py-6">
@@ -416,9 +404,7 @@ function RouteComponent() {
                               <div className="mt-1 h-3 w-3 rounded-full bg-primary/20 flex-shrink-0 flex items-center justify-center">
                                 <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                               </div>
-                              <p className="text-sm font-medium leading-relaxed">
-                                {headline}
-                              </p>
+                              <p className="text-sm font-medium leading-relaxed">{headline}</p>
                             </div>
                           ))}
                         </div>
@@ -449,9 +435,7 @@ function RouteComponent() {
                       </div>
                       <div className="space-y-1">
                         <p className="text-sm font-bold">No Analysis Reports Found</p>
-                        <p className="text-xs text-muted-foreground max-w-[300px]">
-                          Run your first area scan to generate predictive intelligence for this jurisdiction.
-                        </p>
+                        <p className="text-xs text-muted-foreground max-w-[300px]">Run your first area scan to generate predictive intelligence for this jurisdiction.</p>
                       </div>
                     </div>
                   )}
@@ -467,9 +451,7 @@ function RouteComponent() {
                     <Activity className="w-5 h-5 text-primary" />
                     Jurisdiction Impact
                   </h3>
-                  <p className="text-sm text-muted-foreground font-medium">
-                    Comparative scan volume by sub-regions.
-                  </p>
+                  <p className="text-sm text-muted-foreground font-medium">Comparative scan volume by sub-regions.</p>
                 </div>
               </div>
 
@@ -484,19 +466,9 @@ function RouteComponent() {
                         tick={{ fill: "var(--muted-foreground)", fontSize: 10, fontWeight: 600 }}
                         dy={10}
                       />
-                      <YAxis
-                        axisLine={false}
-                        tickLine={false}
-                        tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
-                      />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: "var(--muted-foreground)", fontSize: 10 }} />
                       <ChartTooltip content={<ChartTooltipContent />} />
-                      <Bar
-                        dataKey="count"
-                        fill="var(--primary)"
-                        radius={[4, 4, 0, 0]}
-                        barSize={40}
-                        animationDuration={1500}
-                      />
+                      <Bar dataKey="count" fill="var(--primary)" radius={[4, 4, 0, 0]} barSize={40} animationDuration={1500} />
                     </BarChart>
                   </ChartContainer>
                 </div>

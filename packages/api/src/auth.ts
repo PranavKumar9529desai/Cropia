@@ -69,86 +69,6 @@ const baseConfig = {
       secure: true,
     },
   },
-
-  plugins: [
-    openAPI(),
-    organization({
-      // v1.4.0: Automatically activates the first organization for the user
-      autoSetOrganization: true,
-      schema: {
-        invitation: {
-          additionalFields: {
-            jurisdiction: { type: "json", required: false, input: true },
-          },
-        },
-        member: {
-          additionalFields: {
-            jurisdiction: { type: "json", required: false, input: true },
-          },
-        },
-      },
-      organizationHooks: {
-        /**
-         * Runs after an admin accepts an invitation.
-         * Since ctx.session can be unreliable during signup, we find the session row manually.
-         */
-        afterAcceptInvitation: async ({
-          invitation,
-          user,
-        }: {
-          invitation: Invitation;
-          user: User;
-        }) => {
-          console.log("🚀 CROPIA: Invite accepted for:", user.email);
-
-          if (invitation && invitation.jurisdiction) {
-            try {
-              // 1. Permanently update the Member record
-              await prisma.member.updateMany({
-                where: {
-                  userId: user.id,
-                  organizationId: invitation.organizationId,
-                },
-                data: {
-                  jurisdiction: invitation.jurisdiction,
-                },
-              });
-
-              // 2. Find the user's latest session row and update it
-              const latestSession = await prisma.session.findFirst({
-                where: { userId: user.id },
-                orderBy: { createdAt: "desc" },
-              });
-
-              if (latestSession) {
-                await prisma.session.update({
-                  where: { id: latestSession.id },
-                  data: {
-                    activeOrganizationId: invitation.organizationId,
-                    jurisdiction: invitation.jurisdiction as any,
-                  },
-                });
-                console.log("✅ Live Session row updated with Jurisdiction.");
-              }
-            } catch (e) {
-              console.error("❌ Sync Error in afterAcceptInvitation:", e);
-            }
-          }
-        },
-      } as any,
-      async sendInvitationEmail(data) {
-        const inviteLink = `${process.env.FRONTEND_URL_ADMIN_APP || "http://localhost:5001"}/accept-invitation/${data.id}`;
-        await transporter.sendMail({
-          from: SENDER_EMAIL,
-          to: data.email,
-          subject: "Join the Cropia Team",
-          html: `<h1>Welcome!</h1><p>Join <b>${data.organization.name}</b>.</p><a href="${inviteLink}">Accept Invitation</a>`,
-        });
-      },
-    }),
-  ] as any[],
-
-
   databaseHooks: {
     session: {
       create: {
@@ -177,9 +97,87 @@ const baseConfig = {
   } as any,
 };
 
+const getPlugins = () => [
+  openAPI(),
+  organization({
+    // v1.4.0: Automatically activates the first organization for the user
+    autoSetOrganization: true,
+    schema: {
+      invitation: {
+        additionalFields: {
+          jurisdiction: { type: "json", required: false, input: true },
+        },
+      },
+      member: {
+        additionalFields: {
+          jurisdiction: { type: "json", required: false, input: true },
+        },
+      },
+    },
+    organizationHooks: {
+      /**
+       * Runs after an admin accepts an invitation.
+       * Since ctx.session can be unreliable during signup, we find the session row manually.
+       */
+      afterAcceptInvitation: async ({
+        invitation,
+        user,
+      }: {
+        invitation: Invitation;
+        user: User;
+      }) => {
+        console.log("🚀 CROPIA: Invite accepted for:", user.email);
+
+        if (invitation && invitation.jurisdiction) {
+          try {
+            // 1. Permanently update the Member record
+            await prisma.member.updateMany({
+              where: {
+                userId: user.id,
+                organizationId: invitation.organizationId,
+              },
+              data: {
+                jurisdiction: invitation.jurisdiction,
+              },
+            });
+
+            // 2. Find the user's latest session row and update it
+            const latestSession = await prisma.session.findFirst({
+              where: { userId: user.id },
+              orderBy: { createdAt: "desc" },
+            });
+
+            if (latestSession) {
+              await prisma.session.update({
+                where: { id: latestSession.id },
+                data: {
+                  activeOrganizationId: invitation.organizationId,
+                  jurisdiction: invitation.jurisdiction as any,
+                },
+              });
+              console.log("✅ Live Session row updated with Jurisdiction.");
+            }
+          } catch (e) {
+            console.error("❌ Sync Error in afterAcceptInvitation:", e);
+          }
+        }
+      },
+    } as any,
+    async sendInvitationEmail(data: any) {
+      const inviteLink = `${process.env.FRONTEND_URL_ADMIN_APP || "http://localhost:5001"}/accept-invitation/${data.id}`;
+      await transporter.sendMail({
+        from: SENDER_EMAIL,
+        to: data.email,
+        subject: "Join the Cropia Team",
+        html: `<h1>Welcome!</h1><p>Join <b>${data.organization.name}</b>.</p><a href="${inviteLink}">Accept Invitation</a>`,
+      });
+    },
+  }),
+];
 
 export const farmerAuth = betterAuth({
   ...baseConfig,
+  plugins: getPlugins(),
   advanced: {
     ...baseConfig.advanced,
     cookiePrefix: "cropia-farmer",
@@ -188,6 +186,7 @@ export const farmerAuth = betterAuth({
 
 export const adminAuth = betterAuth({
   ...baseConfig,
+  plugins: getPlugins(),
   advanced: {
     ...baseConfig.advanced,
     cookiePrefix: "cropia-admin",

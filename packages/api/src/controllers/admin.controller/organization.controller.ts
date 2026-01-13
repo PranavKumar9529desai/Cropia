@@ -1,13 +1,16 @@
 import { Hono } from "hono";
 import prisma, { Jurisdiction } from "@repo/db";
-import { auth } from "../../auth";
+import { adminAuth } from "../../auth";
 import { getJurisdictionFilter, getJurisdictionDetails } from "../../utils/jurisdiction";
-import { subDays, startOfDay, format } from "date-fns";
+import { subDays, startOfDay, format, addDays } from "date-fns";
+import { z } from "zod";
+import { zValidator } from "@hono/zod-validator";
+import { nanoid } from "nanoid";
 
 export const OrganizationController = new Hono<{
     Variables: {
-        user: typeof auth.$Infer.Session.user;
-        session: typeof auth.$Infer.Session.session;
+        user: typeof adminAuth.$Infer.Session.user;
+        session: typeof adminAuth.$Infer.Session.session;
         userId: string;
         orgId: string;
         jurisdiction: Jurisdiction;
@@ -152,4 +155,123 @@ export const OrganizationController = new Hono<{
             latestAnalyses,
             range,
         });
+    })
+    .get("/members", async (c) => {
+        const orgId = c.get("orgId");
+        // Use Better Auth API to list members
+        // Passing headers is required for server-side API calls to resolve session
+        const result = await (adminAuth.api as any).listMembers({
+            query: {
+                organizationId: orgId
+            },
+            headers: c.req.raw.headers
+        });
+
+        // Better Auth returns an object, we need the members array
+        return c.json(result?.members || []);
+    })
+    .get("/members/:memberId", async (c) => {
+        const orgId = c.get("orgId");
+        const memberId = c.req.param("memberId");
+
+        const member = await prisma.member.findFirst({
+            where: { id: memberId, organizationId: orgId },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        image: true,
+                    },
+                },
+            },
+        });
+
+        if (!member) return c.json({ error: "Member not found" }, 404);
+
+        return c.json(member);
+    })
+    .get("/invitations", async (c) => {
+        const orgId = c.get("orgId");
+        // Use Better Auth API to list invitations
+        const result = await (adminAuth.api as any).listInvitations({
+            query: {
+                organizationId: orgId
+            },
+            headers: c.req.raw.headers
+        });
+
+        // Better Auth returns an object, we need the invitations array
+        return c.json(result?.invitations || []);
+    })
+    .post("/invite",
+        zValidator("json", z.object({
+            email: z.string().email(),
+            role: z.enum(["owner", "admin", "viewer"]),
+            jurisdiction: z.object({
+                state: z.string(),
+                district: z.string(),
+                taluka: z.string(),
+                village: z.string(),
+            }),
+        })),
+        async (c) => {
+            const orgId = c.get("orgId");
+            const { email, role, jurisdiction } = c.req.valid("json");
+
+            try {
+                // Use Better Auth API to create invitation
+                // This will trigger sendInvitationEmail hook in auth.ts
+                const invitation = await (adminAuth.api as any).createInvitation({
+                    body: {
+                        email,
+                        role: role as any,
+                        organizationId: orgId,
+                        // Pass additional fields if supported by schema
+                        jurisdiction: jurisdiction as any
+                    },
+                    headers: c.req.raw.headers
+                });
+
+                return c.json(invitation);
+            } catch (error: any) {
+                console.error("Invite Error:", error);
+                return c.json({ error: error.message || "Failed to create invitation" }, 400);
+            }
+        }
+    )
+    .delete("/members/:memberId", async (c) => {
+        const orgId = c.get("orgId");
+        const memberId = c.req.param("memberId");
+
+        try {
+            await (adminAuth.api as any).removeMember({
+                body: {
+                    memberId: memberId,
+                    organizationId: orgId
+                },
+                headers: c.req.raw.headers
+            });
+            return c.json({ success: true });
+        } catch (error: any) {
+            return c.json({ error: error.message || "Failed to remove member" }, 400);
+        }
+    })
+    .delete("/invitations/:invitationId", async (c) => {
+        const orgId = c.get("orgId");
+        const invitationId = c.req.param("invitationId");
+
+        try {
+            await (adminAuth.api as any).cancelInvitation({
+                body: {
+                    invitationId,
+                    organizationId: orgId
+                },
+                headers: c.req.raw.headers
+            });
+            return c.json({ success: true });
+        } catch (error: any) {
+            return c.json({ error: error.message || "Failed to cancel invitation" }, 400);
+        }
     });

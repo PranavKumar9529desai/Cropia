@@ -41,7 +41,7 @@ const app = new Hono()
       // exposeHeaders: ['Set-Cookie']
     }),
   )
-  .on(["POST", "GET"], "/api/auth/*", (c) => {
+  .all("/api/auth/*", (c) => {
     const origin = c.req.header("Origin");
     const adminUrl = process.env.FRONTEND_URL_ADMIN_APP;
 
