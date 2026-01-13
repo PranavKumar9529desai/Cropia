@@ -51,12 +51,12 @@ function RouteComponent() {
           userInfo={{ name: username || "", email: email || "", avatar: image }}
           jurisdiction={jurisdictionDisplay}
         />
-        <div className="flex items-center h-10">
-          <div className="h-fit m-2">
+        <div className="flex items-center h-10 relative ">
+          <div className="h-fit m-2 ">
             <SidebarTrigger />
           </div>
           {route !== "settings" && (
-            <span className="text-lg font-semibold font-brand capitalize">
+            <span className="absolute left-12 z-50 text-lg font-semibold font-brand capitalize text-nowrap">
               {route}
             </span>
           )}
