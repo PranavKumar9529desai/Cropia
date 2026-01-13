@@ -36,6 +36,7 @@ function RouteComponent() {
     We look at the last part of the pathname for the current active match.
   */
   const matches = useChildMatches();
+  const fullRoute = matches[0]?.pathname;
   const route = matches[0]?.pathname.split("/").pop();
   const isSettingRoute = matches.some((match) =>
     match.routeId.startsWith("/dashboard/settings"),
@@ -58,7 +59,7 @@ function RouteComponent() {
           {route !== "settings" && (
 
             <span className="absolute left-12 z-50 text-lg font-semibold font-brand capitalize text-nowrap">
-              {route === "organization" ? "my organization" : route}
+              {fullRoute?.includes("organization") ? "My organization" : route}
             </span>
           )}
         </div>

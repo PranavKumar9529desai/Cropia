@@ -62,8 +62,8 @@ function RouteComponent() {
       <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
         <AlertCircle className="w-10 h-10 text-muted-foreground/50" />
         <div className="text-center space-y-1">
-          <p className="text-lg font-semibold tracking-tight">Member not found</p>
-          <p className="text-sm text-muted-foreground">This member may have been removed.</p>
+          <p className="text-lg font-semibold tracking-tight ">Access Denied</p>
+          <p className="text-sm text-muted-foreground">You do not have permission to view this member.</p>
         </div>
         <Link to="/dashboard/organization/members">
           <Button variant="outline" size="sm">Back to Members</Button>

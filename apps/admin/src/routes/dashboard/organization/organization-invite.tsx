@@ -1,7 +1,9 @@
 import { apiClient } from "@/lib/rpc";
 import { authClient } from "@/lib/auth/auth-client";
 import { useState } from "react";
+import { ConfirmationDialog } from "@repo/ui/components/confirmation-dialog";
 import { createFileRoute, Link } from '@tanstack/react-router';
+import { formatDistanceToNow } from "date-fns";
 import {
   UserPlus,
   Mail,
@@ -12,7 +14,8 @@ import {
   Send,
   Building2,
   ChevronRight,
-  CheckCircle2
+  CheckCircle2,
+  Loader2
 } from "lucide-react";
 import {
   Card,
@@ -38,7 +41,7 @@ export const Route = createFileRoute(
 )({
   loader: async () => {
     try {
-      const res = await apiClient.api.admin.organization.invitations.$get();
+      const res = await apiClient.api.admin.organization.invite.$get();
       if (!res.ok) throw new Error("Failed to fetch invitations");
       return await res.json();
     } catch (error) {
@@ -56,6 +59,13 @@ function RouteComponent() {
   const activeMember = session?.member;
   const inviterJurisdiction = activeMember?.jurisdiction as any;
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPincodeLoading, setIsPincodeLoading] = useState(false);
+  const [villages, setVillages] = useState<string[]>([]);
+
+  // Cancel Invite State
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [inviteIdToCancel, setInviteIdToCancel] = useState<string | null>(null);
+  const [isCancelling, setIsCancelling] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -63,6 +73,7 @@ function RouteComponent() {
     level: inviterJurisdiction?.district && inviterJurisdiction.district !== "All" ? "district" :
       inviterJurisdiction?.taluka && inviterJurisdiction.taluka !== "All" ? "taluka" :
         inviterJurisdiction?.village && inviterJurisdiction.village !== "All" ? "village" : "state",
+    pincode: "",
     jurisdiction: {
       state: inviterJurisdiction?.state || "Maharashtra",
       district: inviterJurisdiction?.district || "All",
@@ -70,6 +81,43 @@ function RouteComponent() {
       village: inviterJurisdiction?.village || "All"
     }
   });
+
+  const handlePincodeChange = async (pincode: string) => {
+    if (pincode.length !== 6) return;
+
+    setIsPincodeLoading(true);
+    try {
+      const res = await apiClient.api.admin.organization.invite.pincode[":pincode"].$get({
+        param: { pincode }
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        if (result.success && result.data) {
+          const { state, district, taluka, villages: villageList } = result.data;
+
+          setFormData(prev => ({
+            ...prev,
+            jurisdiction: {
+              ...prev.jurisdiction,
+              state: state,
+              district: district,
+              taluka: prev.level === "district" ? "All" : taluka,
+              village: prev.level === "village" ? "All" : "All"
+            }
+          }));
+          setVillages(villageList);
+          toast.success("Location details auto-filled!");
+        }
+      } else {
+        toast.error("Could not fetch location details for this pincode");
+      }
+    } catch (error) {
+      console.error("Pincode Error:", error);
+    } finally {
+      setIsPincodeLoading(false);
+    }
+  };
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,19 +147,31 @@ function RouteComponent() {
     }
   };
 
-  const handleCancelInvite = async (inviteId: string) => {
+  const handleCancelInvite = (inviteId: string) => {
+    setInviteIdToCancel(inviteId);
+    setIsCancelDialogOpen(true);
+  };
+
+  const confirmCancel = async () => {
+    if (!inviteIdToCancel) return;
+
+    setIsCancelling(true);
     try {
-      const res = await apiClient.api.admin.organization.invitations[":invitationId"].$delete({
-        param: { invitationId: inviteId }
+      const res = await apiClient.api.admin.organization.invite[":invitationId"].$delete({
+        param: { invitationId: inviteIdToCancel }
       });
       if (res.ok) {
         toast.success("Invitation cancelled");
         navigate({ search: (prev: any) => ({ ...prev }) }); // Refresh loader
+        setIsCancelDialogOpen(false);
       } else {
         toast.error("Failed to cancel invitation");
       }
     } catch (error) {
       toast.error("An error occurred while cancelling the invitation");
+    } finally {
+      setIsCancelling(false);
+      setInviteIdToCancel(null);
     }
   };
 
@@ -193,7 +253,16 @@ function RouteComponent() {
                       <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Jurisdiction Level</label>
                       <Select
                         value={formData.level}
-                        onValueChange={(val: any) => setFormData({ ...formData, level: val })}
+                        onValueChange={(val: any) => {
+                          const baseJurisdiction = {
+                            state: inviterJurisdiction?.state || "Maharashtra",
+                            district: "All",
+                            taluka: "All",
+                            village: "All"
+                          };
+                          setFormData({ ...formData, level: val, pincode: "", jurisdiction: baseJurisdiction });
+                          setVillages([]);
+                        }}
                       >
                         <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
                           <div className="flex items-center gap-2">
@@ -217,73 +286,63 @@ function RouteComponent() {
                     </div>
                   </div>
 
+                  {formData.level !== "state" && (
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Pincode</label>
+                      <div className="relative">
+                        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          placeholder="e.g. 415110"
+                          maxLength={6}
+                          className="pl-12 h-12 rounded-2xl bg-muted/20 border-border/50 focus:bg-background transition-all"
+                          value={formData.pincode}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, "");
+                            setFormData({ ...formData, pincode: val });
+                            if (val.length === 6) handlePincodeChange(val);
+                          }}
+                        />
+                        {isPincodeLoading && (
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                            <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Specific Jurisdiction Selection */}
                   <div className="grid grid-cols-2 gap-6 pt-2">
                     {formData.level !== "state" && (
                       <div className="space-y-4">
                         <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">State</label>
-                        <Select
+                        <Input
                           value={formData.jurisdiction.state}
-                          onValueChange={(val) => setFormData({
-                            ...formData,
-                            jurisdiction: { ...formData.jurisdiction, state: val, district: "All", taluka: "All", village: "All" }
-                          })}
-                          disabled={inviterJurisdiction?.state && inviterJurisdiction.state !== "All"}
-                        >
-                          <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="rounded-2xl font-medium">
-                            <SelectItem value="Maharashtra">Maharashtra</SelectItem>
-                            <SelectItem value="Karnataka">Karnataka</SelectItem>
-                          </SelectContent>
-                        </Select>
+                          readOnly
+                          className="h-12 rounded-2xl bg-muted/50 border-border/50 text-muted-foreground"
+                        />
                       </div>
                     )}
 
                     {(formData.level === "district" || formData.level === "taluka" || formData.level === "village") && (
                       <div className="space-y-4">
                         <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">District</label>
-                        <Select
+                        <Input
                           value={formData.jurisdiction.district}
-                          onValueChange={(val) => setFormData({
-                            ...formData,
-                            jurisdiction: { ...formData.jurisdiction, district: val, taluka: "All", village: "All" }
-                          })}
-                          disabled={inviterJurisdiction?.district && inviterJurisdiction.district !== "All"}
-                        >
-                          <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="rounded-2xl font-medium">
-                            <SelectItem value="All">All Districts</SelectItem>
-                            <SelectItem value="Satara">Satara</SelectItem>
-                            <SelectItem value="Sangli">Sangli</SelectItem>
-                          </SelectContent>
-                        </Select>
+                          readOnly
+                          className="h-12 rounded-2xl bg-muted/50 border-border/50 text-muted-foreground"
+                        />
                       </div>
                     )}
 
                     {(formData.level === "taluka" || formData.level === "village") && (
                       <div className="space-y-4">
                         <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Taluka</label>
-                        <Select
+                        <Input
                           value={formData.jurisdiction.taluka}
-                          onValueChange={(val) => setFormData({
-                            ...formData,
-                            jurisdiction: { ...formData.jurisdiction, taluka: val, village: "All" }
-                          })}
-                          disabled={inviterJurisdiction?.taluka && inviterJurisdiction.taluka !== "All"}
-                        >
-                          <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="rounded-2xl font-medium">
-                            <SelectItem value="All">All Talukas</SelectItem>
-                            <SelectItem value="Karad">Karad</SelectItem>
-                            <SelectItem value="Patan">Patan</SelectItem>
-                          </SelectContent>
-                        </Select>
+                          readOnly
+                          className="h-12 rounded-2xl bg-muted/50 border-border/50 text-muted-foreground"
+                        />
                       </div>
                     )}
 
@@ -292,19 +351,20 @@ function RouteComponent() {
                         <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Village</label>
                         <Select
                           value={formData.jurisdiction.village}
+                          disabled={villages.length === 0}
                           onValueChange={(val) => setFormData({
                             ...formData,
                             jurisdiction: { ...formData.jurisdiction, village: val }
                           })}
-                          disabled={inviterJurisdiction?.village && inviterJurisdiction.village !== "All"}
                         >
                           <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
-                            <SelectValue />
+                            <SelectValue placeholder={villages.length === 0 ? "Enter Pincode" : "Select Village"} />
                           </SelectTrigger>
                           <SelectContent className="rounded-2xl font-medium">
                             <SelectItem value="All">All Villages</SelectItem>
-                            <SelectItem value="Vasantgad">Vasantgad</SelectItem>
-                            <SelectItem value="Kole">Kole</SelectItem>
+                            {villages.map(v => (
+                              <SelectItem key={v} value={v}>{v}</SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>
@@ -351,12 +411,19 @@ function RouteComponent() {
                           <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
                             <Clock className="w-5 h-5" />
                           </div>
-                          <div className="space-y-0.5">
+                          <div className="flex flex-col gap-1">
                             <p className="text-sm font-bold truncate max-w-[180px]">{invite.email}</p>
-                            <div className="flex items-center gap-2">
-                              <Badge variant="outline" className="text-[9px] uppercase tracking-tighter h-4 px-1">{invite.role}</Badge>
-                              <span className="text-[10px] text-muted-foreground font-medium italic">Pending</span>
-                            </div>
+                            <p className="text-[10px] text-muted-foreground font-medium truncate max-w-[180px]">
+                              {invite.jurisdiction?.village !== "All" ? `${invite.jurisdiction?.village}, ` : ""}
+                              {invite.jurisdiction?.taluka !== "All" ? `${invite.jurisdiction?.taluka}, ` : ""}
+                              {invite.jurisdiction?.district !== "All" ? `${invite.jurisdiction?.district}` : invite.jurisdiction?.state}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="text-[9px] uppercase tracking-tighter h-4 px-1">{invite.role}</Badge>
+                            <span className="text-[10px] text-muted-foreground font-medium italic">
+                              {formatDistanceToNow(new Date(invite.createdAt), { addSuffix: true })}
+                            </span>
                           </div>
                         </div>
                         <Button
@@ -397,6 +464,17 @@ function RouteComponent() {
 
         </div>
       </div>
+
+      <ConfirmationDialog
+        open={isCancelDialogOpen}
+        onOpenChange={setIsCancelDialogOpen}
+        onConfirm={confirmCancel}
+        isLoading={isCancelling}
+        title="Cancel Invitation"
+        description="Are you sure you want to cancel this invitation? This action cannot be undone and the invitee will no longer be able to use the join link."
+        confirmText="Yes, Cancel Invite"
+        variant="destructive"
+      />
 
       <style>{`
         .subtle-scrollbar::-webkit-scrollbar {

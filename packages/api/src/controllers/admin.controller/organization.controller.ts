@@ -6,6 +6,7 @@ import { subDays, startOfDay, format, addDays } from "date-fns";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { nanoid } from "nanoid";
+import OrganizationInviteController from "./organization.invite.controller";
 
 export const OrganizationController = new Hono<{
     Variables: {
@@ -16,6 +17,7 @@ export const OrganizationController = new Hono<{
         jurisdiction: Jurisdiction;
     };
 }>()
+    .route("/invite", OrganizationInviteController)
     .get("/dashboard", async (c) => {
         const orgId = c.get("orgId");
         const jurisdiction = c.get("jurisdiction");
@@ -192,55 +194,6 @@ export const OrganizationController = new Hono<{
 
         return c.json(member);
     })
-    .get("/invitations", async (c) => {
-        const orgId = c.get("orgId");
-        // Use Better Auth API to list invitations
-        const result = await (adminAuth.api as any).listInvitations({
-            query: {
-                organizationId: orgId
-            },
-            headers: c.req.raw.headers
-        });
-
-        // Better Auth returns an object, we need the invitations array
-        return c.json(result?.invitations || []);
-    })
-    .post("/invite",
-        zValidator("json", z.object({
-            email: z.string().email(),
-            role: z.enum(["owner", "admin", "viewer"]),
-            jurisdiction: z.object({
-                state: z.string(),
-                district: z.string(),
-                taluka: z.string(),
-                village: z.string(),
-            }),
-        })),
-        async (c) => {
-            const orgId = c.get("orgId");
-            const { email, role, jurisdiction } = c.req.valid("json");
-
-            try {
-                // Use Better Auth API to create invitation
-                // This will trigger sendInvitationEmail hook in auth.ts
-                const invitation = await (adminAuth.api as any).createInvitation({
-                    body: {
-                        email,
-                        role: role as any,
-                        organizationId: orgId,
-                        // Pass additional fields if supported by schema
-                        jurisdiction: jurisdiction as any
-                    },
-                    headers: c.req.raw.headers
-                });
-
-                return c.json(invitation);
-            } catch (error: any) {
-                console.error("Invite Error:", error);
-                return c.json({ error: error.message || "Failed to create invitation" }, 400);
-            }
-        }
-    )
     .delete("/members/:memberId", async (c) => {
         const orgId = c.get("orgId");
         const memberId = c.req.param("memberId");
@@ -256,22 +209,5 @@ export const OrganizationController = new Hono<{
             return c.json({ success: true });
         } catch (error: any) {
             return c.json({ error: error.message || "Failed to remove member" }, 400);
-        }
-    })
-    .delete("/invitations/:invitationId", async (c) => {
-        const orgId = c.get("orgId");
-        const invitationId = c.req.param("invitationId");
-
-        try {
-            await (adminAuth.api as any).cancelInvitation({
-                body: {
-                    invitationId,
-                    organizationId: orgId
-                },
-                headers: c.req.raw.headers
-            });
-            return c.json({ success: true });
-        } catch (error: any) {
-            return c.json({ error: error.message || "Failed to cancel invitation" }, 400);
         }
     });

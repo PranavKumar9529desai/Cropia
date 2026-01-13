@@ -155,7 +155,7 @@ function RouteComponent() {
   const latestAnalysis = latestAnalyses?.[0];
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col overflow-hidden">
+    <div className="h-[calc(100vh-4rem)] flex flex-col overflow-hidden container mx-auto">
       <style dangerouslySetInnerHTML={{
         __html: `
         .subtle-scrollbar::-webkit-scrollbar {
@@ -187,7 +187,7 @@ function RouteComponent() {
               </AvatarFallback>
             </Avatar>
             <div className="space-y-1.5">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight font-brand text-foreground leading-none">
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-brand text-foreground leading-none">
                 {info?.name || "My Organization"}
               </h1>
               <p className="text-muted-foreground font-medium flex items-center justify-center md:justify-start gap-1.5 text-sm">
@@ -230,7 +230,7 @@ function RouteComponent() {
           {/* Pulse Statistics */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {statItems.map((stat) => (
-              <div key={stat.label} className="space-y-3">
+              <Card key={stat.label} className="space-y-3 p-4">
                 <div className="flex items-center gap-2.5">
                   <div className={cn("p-2 rounded-xl", stat.bg, stat.color)}>
                     <stat.icon className="w-4 h-4" />
@@ -242,7 +242,7 @@ function RouteComponent() {
                 <h2 className="text-4xl font-bold font-brand tracking-tight">
                   {stat.value}
                 </h2>
-              </div>
+              </Card>
             ))}
           </div>
 

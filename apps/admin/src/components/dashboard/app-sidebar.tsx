@@ -1,4 +1,5 @@
-import { Map, BellRing, Scan, type LucideIcon } from "lucide-react";
+import { Map, BellRing, Scan, Building2, Users, UserPlus, ChevronDown, type LucideIcon } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@repo/ui/lib";
 import { Link, useMatches, useRouter } from "@tanstack/react-router";
 import {
@@ -11,6 +12,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarSeparator,
 } from "@repo/ui/components/sidebar";
 import { authClient } from "@/lib/auth/auth-client";
@@ -42,6 +46,24 @@ const navItems: NavItem[] = [
   },
 ];
 
+const orgItems: NavItem[] = [
+  {
+    label: "My Organization",
+    icon: Building2,
+    path: "/dashboard/organization/my-organization",
+  },
+  {
+    label: "Team Members",
+    icon: Users,
+    path: "/dashboard/organization/members",
+  },
+  {
+    label: "Invite New Member",
+    icon: UserPlus,
+    path: "/dashboard/organization/organization-invite",
+  },
+];
+
 interface AppSidebarProps {
   jurisdiction?: string;
   userInfo: {
@@ -54,6 +76,7 @@ interface AppSidebarProps {
 export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
   const matches = useMatches();
   const router = useRouter();
+  const [isOrgOpen, setIsOrgOpen] = useState(true);
 
   const handleLogout = async () => {
     // Add your logout logic here
@@ -123,6 +146,61 @@ export function AppSidebar({ userInfo, jurisdiction }: AppSidebarProps) {
               })}
             </SidebarMenu>
           </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={() => setIsOrgOpen(!isOrgOpen)}
+                className="hover:!bg-transparent group/org"
+                tooltip="Organization"
+              >
+                <div className="flex w-full items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60">
+                    Organization
+                  </span>
+                  <ChevronDown
+                    className={cn(
+                      "size-3 text-muted-foreground/60 transition-transform duration-200",
+                      isOrgOpen ? "rotate-0" : "-rotate-90",
+                    )}
+                  />
+                </div>
+              </SidebarMenuButton>
+
+              {isOrgOpen && (
+                <SidebarMenuSub className="mt-1">
+                  {orgItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = matches.some(
+                      (match) => match.pathname === item.path,
+                    );
+
+                    return (
+                      <SidebarMenuSubItem key={item.path}>
+                        <SidebarMenuSubButton
+                          asChild
+                          isActive={isActive}
+                          className={cn(
+                            "duration-300 transition-colors hover:!bg-accent hover:!text-accent-foreground",
+                            isActive
+                              ? "bg-accent/50 text-accent-foreground font-medium"
+                              : "text-muted-foreground/70",
+                          )}
+                        >
+                          <Link to={item.path}>
+                            <Icon className="size-4" strokeWidth={isActive ? 2.5 : 2} />
+                            <span>{item.label}</span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    );
+                  })}
+                </SidebarMenuSub>
+              )}
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
 
