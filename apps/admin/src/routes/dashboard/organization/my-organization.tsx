@@ -187,7 +187,7 @@ function RouteComponent() {
               </AvatarFallback>
             </Avatar>
             <div className="space-y-1.5">
-              <h1 className="text-2xl md:text-3xl font-bold tracking-tight font-brand text-foreground leading-none">
+              <h1 className="text-xl md:text-3xl font-bold tracking-tight font-brand text-foreground leading-none">
                 {info?.name || "My Organization"}
               </h1>
               <p className="text-muted-foreground font-medium flex items-center justify-center md:justify-start gap-1.5 text-sm">

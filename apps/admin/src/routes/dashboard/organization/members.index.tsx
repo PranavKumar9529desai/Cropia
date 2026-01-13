@@ -99,7 +99,7 @@ function RouteComponent() {
       <div className="px-4 md:px-8 py-6 border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-20">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1">
-            <h1 className="text-3xl font-bold tracking-tight font-brand flex items-center gap-3">
+            <h1 className="text-xl font-bold tracking-tight font-brand flex items-center gap-3">
               <Users className="w-8 h-8 text-primary" />
               Organization Members
             </h1>
