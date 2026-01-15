@@ -73,6 +73,8 @@ const clusterCountLayer: LayerProps = {
     "text-field": "{point_count_abbreviated}",
     "text-font": ["Noto Sans Regular", "Arial Unicode MS Regular"],
     "text-size": 14,
+    "text-allow-overlap": true,
+    "text-ignore-placement": true,
   },
 };
 
@@ -110,6 +112,8 @@ interface CropMapProps {
   showConnections?: boolean;
 }
 
+import { useIsMobile } from "@repo/ui/hooks/use-mobile";
+
 const CropMap = ({
   data,
   onPointClick,
@@ -118,6 +122,7 @@ const CropMap = ({
   mapStyle = "satellite",
   showConnections = false,
 }: CropMapProps) => {
+  const isMobile = useIsMobile();
   const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(
     /["'\s]/g,
     "",
@@ -243,7 +248,7 @@ const CropMap = ({
   };
 
   return (
-    <div className="h-[600px] w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative">
+    <div className={`${isMobile ? 'h-[450px]' : 'h-[600px]'} w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative`}>
       <Map
         ref={mapRef}
         onLoad={onMapLoad}
@@ -267,28 +272,29 @@ const CropMap = ({
         onClick={onClick}
       >
         {/* Connections Source (Separate) - Rendered first to be at the bottom */}
-        {showConnections && (
-          <Source id="connections" type="geojson" data={connectionData}>
-            <Layer
-              id="disease-connections"
-              type="line"
-              paint={{
-                "line-color": [
-                  "match",
-                  ["get", "status"],
-                  "critical",
-                  "#ef4444",
-                  "warning",
-                  "#eab308",
-                  "#ef4444", // Fallback
-                ],
-                "line-width": 5,
-                "line-opacity": 1,
-                "line-dasharray": [2, 2],
-              }}
-            />
-          </Source>
-        )}
+        <Source id="connections" type="geojson" data={connectionData}>
+          <Layer
+            id="disease-connections"
+            type="line"
+            layout={{
+              visibility: showConnections ? "visible" : "none",
+            }}
+            paint={{
+              "line-color": [
+                "match",
+                ["get", "status"],
+                "critical",
+                "#ef4444",
+                "warning",
+                "#eab308",
+                "#ef4444", // Fallback
+              ],
+              "line-width": 5,
+              "line-opacity": 1,
+              "line-dasharray": [2, 2],
+            }}
+          />
+        </Source>
 
         {/* Scans Source - Always keep clustering enabled if we might use it */}
         <Source

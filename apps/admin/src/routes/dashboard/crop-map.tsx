@@ -36,7 +36,10 @@ export const Route = createFileRoute("/dashboard/crop-map")({
   component: RouteComponent,
 });
 
+import { useIsMobile } from "@repo/ui/hooks/use-mobile";
+
 function RouteComponent() {
+  const isMobile = useIsMobile();
   const { data, defaultView, jurisdiction } = Route.useLoaderData();
   const search = Route.useSearch() as any;
   const navigate = useNavigate();
@@ -89,7 +92,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500 slide-in-from-bottom-4 space-y-4 overflow-y-auto ">
+    <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500 slide-in-from-bottom-4 space-y-4">
       <CropScanHeader jurisdiction={jurisdiction} />
 
       <MapFilters data={data} />
@@ -97,7 +100,7 @@ function RouteComponent() {
       {/* Map Container */}
       <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden relative">
         {/* Floating Overlays */}
-        <div className="absolute top-4 left-4 z-10 flex flex-col gap-3">
+        <div className={`absolute top-4 left-4 z-10 flex flex-col gap-3 ${isMobile ? 'max-w-[calc(100%-100px)]' : ''}`}>
           <MapStats data={filteredData} />
           <MapLegend />
         </div>
@@ -115,8 +118,30 @@ function RouteComponent() {
           showConnections={search.connections === "on"}
         />
 
-        {/* Floating Time Slider Overlay */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 w-[90%] md:w-[80%] lg:w-[60%]">
+        {/* Floating Time Slider Overlay - Desktop Only */}
+        {!isMobile && (
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 w-[90%] md:w-[80%] lg:w-[60%]">
+            <MapTimeSlider
+              data={data}
+              onTimestampChange={(ts: number) => setAnimationTimestamp(ts)}
+              onAnimationEnd={(ts: number | undefined) => {
+                setAnimationTimestamp(null);
+                navigate({
+                  search: (prev: any) => ({
+                    ...prev,
+                    date: ts?.toString(),
+                  }),
+                });
+              }}
+              activeTimestamp={animationTimestamp ?? (search.date ? parseInt(search.date) : undefined)}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Time Slider - Outside the map */}
+      {isMobile && (
+        <div className="pt-2">
           <MapTimeSlider
             data={data}
             onTimestampChange={(ts: number) => setAnimationTimestamp(ts)}
@@ -132,7 +157,7 @@ function RouteComponent() {
             activeTimestamp={animationTimestamp ?? (search.date ? parseInt(search.date) : undefined)}
           />
         </div>
-      </div>
+      )}
 
       {/* Scan Detail Dialog */}
       <Dialog open={!!selectedScan} onOpenChange={() => setSelectedScan(null)}>
