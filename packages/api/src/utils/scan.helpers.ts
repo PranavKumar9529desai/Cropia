@@ -152,6 +152,7 @@ export const transformToGeoJSON = (scans: ScanData[]): GeoJSONCollection => {
           visualIssue: scan.visualIssue || "Unknown",
           status: status,
           status_weight: status === "critical" ? 3 : status === "warning" ? 2 : 1,
+          timestamp: scan.createdAt.getTime(),
           thumbnail: scan.imageUrl,
           date: scan.createdAt.toISOString(),
           locationText: scan.village || scan.district || "Unknown Location",

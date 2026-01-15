@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import CropMap from "../../components/map/crop.map";
 import { apiClient } from "../../lib/rpc";
@@ -39,14 +39,18 @@ export const Route = createFileRoute("/dashboard/crop-map")({
 function RouteComponent() {
   const { data, defaultView, jurisdiction } = Route.useLoaderData();
   const search = Route.useSearch() as any;
+  const navigate = useNavigate();
   const [selectedScan, setSelectedScan] = useState<any>(null);
+  const [animationTimestamp, setAnimationTimestamp] = useState<number | null>(null);
 
-  // Client-side filtering
+  // Client-side filtering (Crop, Disease, Status, and Date)
   const filteredData = useMemo(() => {
     if (!data || !data.features) return data;
 
+    const displayTimestamp = animationTimestamp ?? (search.date ? parseInt(search.date) : Infinity);
+
     const filteredFeatures = data.features.filter((feature: any) => {
-      const { crop, disease, status } = feature.properties;
+      const { crop, disease, status, timestamp } = feature.properties;
 
       if (search.crop && search.crop !== "all" && crop !== search.crop)
         return false;
@@ -63,12 +67,8 @@ function RouteComponent() {
       )
         return false;
 
-      // Date filtering (Show only scans up to the selected date)
-      if (search.date) {
-        const scanTime = new Date(feature.properties.date).getTime();
-        const filterTime = parseInt(search.date);
-        if (scanTime > filterTime) return false;
-      }
+      // Filter by timestamp (either animation or URL search)
+      if (timestamp > displayTimestamp) return false;
 
       return true;
     });
@@ -77,7 +77,7 @@ function RouteComponent() {
       ...data,
       features: filteredFeatures,
     };
-  }, [data, search]);
+  }, [data, search.crop, search.disease, search.status, search.date, animationTimestamp]);
 
   // Function to optimize Cloudinary URL
   const getOptimizedUrl = (url: string) => {
@@ -89,7 +89,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500 slide-in-from-bottom-4 space-y-4">
+    <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500 slide-in-from-bottom-4 space-y-4 overflow-y-auto ">
       <CropScanHeader jurisdiction={jurisdiction} />
 
       <MapFilters data={data} />
@@ -117,7 +117,20 @@ function RouteComponent() {
 
         {/* Floating Time Slider Overlay */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 w-[90%] md:w-[80%] lg:w-[60%]">
-          <MapTimeSlider data={data} />
+          <MapTimeSlider
+            data={data}
+            onTimestampChange={(ts: number) => setAnimationTimestamp(ts)}
+            onAnimationEnd={(ts: number | undefined) => {
+              setAnimationTimestamp(null);
+              navigate({
+                search: (prev: any) => ({
+                  ...prev,
+                  date: ts?.toString(),
+                }),
+              });
+            }}
+            activeTimestamp={animationTimestamp ?? (search.date ? parseInt(search.date) : undefined)}
+          />
         </div>
       </div>
 

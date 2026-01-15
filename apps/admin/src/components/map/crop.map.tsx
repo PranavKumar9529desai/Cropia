@@ -1,4 +1,4 @@
-import { useRef, useMemo } from "react";
+import React, { useRef, useMemo } from "react";
 import Map, { Source, Layer, MapRef, LayerProps } from "react-map-gl/maplibre";
 import { GeoJSONSource } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -110,42 +110,34 @@ interface CropMapProps {
   showConnections?: boolean;
 }
 
-export default function CropMap({
+const CropMap = ({
   data,
   onPointClick,
   defaultView,
   viewType = "points",
   mapStyle = "satellite",
   showConnections = false,
-}: CropMapProps) {
+}: CropMapProps) => {
   const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(
     /["'\s]/g,
     "",
   );
-  // console.log("api key from crop map", apiKey)
 
   const mapRef = useRef<MapRef>(null);
 
   // Generate connection lines for same disease in proximity
   const connectionData = useMemo(() => {
-    console.log("CropMap Debug: showConnections =", showConnections);
     if (!showConnections || !data || !data.features) {
-      console.log("CropMap Debug: Connections disabled or no data available");
       return { type: "FeatureCollection" as const, features: [] };
     }
 
     const features: any[] = [];
     const points = [...data.features];
-    console.log("CropMap Debug: Total scan points =", points.length);
 
     // Group features by disease
     const diseaseGroups: Record<string, any[]> = {};
     points.forEach((p) => {
       const disease = p.properties.disease?.toLowerCase();
-      // Log some samples to see if the property structure is correct
-      if (Math.random() < 0.05) {
-        console.log("CropMap Debug: Sample point properties:", p.properties);
-      }
 
       if (
         disease &&
@@ -158,8 +150,6 @@ export default function CropMap({
       }
     });
 
-    console.log("CropMap Debug: Identified disease groups:", Object.keys(diseaseGroups));
-
     // For each disease group, sort by date and create sequential lines
     Object.values(diseaseGroups).forEach((group) => {
       // Sort by date ascending
@@ -168,8 +158,6 @@ export default function CropMap({
           new Date(a.properties.date).getTime() -
           new Date(b.properties.date).getTime(),
       );
-
-      console.log(`CropMap Debug: Processing group with ${group.length} points for disease: ${group[0].properties.disease}`);
 
       for (let i = 0; i < group.length - 1; i++) {
         const p1 = group[i];
@@ -189,19 +177,17 @@ export default function CropMap({
             properties: {
               disease: p1.properties.disease,
               status: p1.properties.status,
+              timestamp: p2.properties.timestamp, // Use the later point's timestamp
             },
             geometry: {
               type: "LineString",
               coordinates: [coord1, coord2],
             },
           });
-        } else {
-          console.log(`CropMap Debug: Points too far apart (${dist.toFixed(2)} deg), skipping connection`);
         }
       }
     });
 
-    console.log("CropMap Debug: Generated total connection features =", features.length);
     return { type: "FeatureCollection" as const, features };
   }, [data, showConnections]);
 
@@ -280,6 +266,30 @@ export default function CropMap({
         interactiveLayerIds={["clusters", "unclustered-point"]}
         onClick={onClick}
       >
+        {/* Connections Source (Separate) - Rendered first to be at the bottom */}
+        {showConnections && (
+          <Source id="connections" type="geojson" data={connectionData}>
+            <Layer
+              id="disease-connections"
+              type="line"
+              paint={{
+                "line-color": [
+                  "match",
+                  ["get", "status"],
+                  "critical",
+                  "#ef4444",
+                  "warning",
+                  "#eab308",
+                  "#ef4444", // Fallback
+                ],
+                "line-width": 5,
+                "line-opacity": 1,
+                "line-dasharray": [2, 2],
+              }}
+            />
+          </Source>
+        )}
+
         {/* Scans Source - Always keep clustering enabled if we might use it */}
         <Source
           id="scans"
@@ -374,10 +384,8 @@ export default function CropMap({
         {/* Cluster Count Layer */}
         <Layer
           {...({
-            id: clusterCountLayer.id,
-            type: "symbol",
+            ...clusterCountLayer,
             source: "scans",
-            filter: clusterCountLayer.filter,
             layout: {
               ...(clusterCountLayer.layout as any),
               "text-size": 12,
@@ -389,10 +397,8 @@ export default function CropMap({
         {/* Unclustered Point Layer */}
         <Layer
           {...({
-            id: unclusteredPointLayer.id,
-            type: "symbol",
+            ...unclusteredPointLayer,
             source: "scans",
-            filter: unclusteredPointLayer.filter,
             layout: {
               ...(unclusteredPointLayer.layout as any),
               "icon-size": 1.0, // Large enough to be very clear
@@ -400,31 +406,9 @@ export default function CropMap({
             }
           } as any)}
         />
-
-        {/* Connections Source (Separate) */}
-        {showConnections && (
-          <Source id="connections" type="geojson" data={connectionData}>
-            <Layer
-              id="disease-connections"
-              type="line"
-              paint={{
-                "line-color": [
-                  "match",
-                  ["get", "status"],
-                  "critical",
-                  "#ef4444",
-                  "warning",
-                  "#eab308",
-                  "#ef4444", // Fallback
-                ],
-                "line-width": 5,
-                "line-opacity": 1,
-                "line-dasharray": [2, 2],
-              }}
-            />
-          </Source>
-        )}
       </Map>
     </div>
   );
-}
+};
+
+export default React.memo(CropMap);

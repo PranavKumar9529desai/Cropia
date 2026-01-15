@@ -1,4 +1,3 @@
-import { useSearch, useNavigate } from "@tanstack/react-router";
 import { Slider } from "@repo/ui/components/slider";
 import { Button } from "@repo/ui/components/button";
 import { Play, Pause, RotateCcw, Calendar } from "lucide-react";
@@ -7,13 +6,21 @@ import { format } from "date-fns";
 
 interface MapTimeSliderProps {
     data: any; // GeoJSON
+    onTimestampChange: (timestamp: number) => void;
+    onAnimationEnd: (timestamp: number | undefined) => void;
+    activeTimestamp?: number;
 }
 
-export default function MapTimeSlider({ data }: MapTimeSliderProps) {
-    const search = useSearch({ from: "/dashboard/crop-map" }) as any;
-    const navigate = useNavigate();
+export default function MapTimeSlider({
+    data,
+    onTimestampChange,
+    onAnimationEnd,
+    activeTimestamp,
+}: MapTimeSliderProps) {
     const [isPlaying, setIsPlaying] = useState(false);
+    const [localTimestamp, setLocalTimestamp] = useState<number | null>(null);
     const playIntervalRef = useRef<any>(null);
+    const loopsPerformed = useRef(0);
 
     // Extract date range from data
     const { minDate, maxDate, dates } = useMemo(() => {
@@ -33,33 +40,30 @@ export default function MapTimeSlider({ data }: MapTimeSliderProps) {
         };
     }, [data]);
 
-    const currentTimestamp = search.date
-        ? parseInt(search.date)
-        : maxDate.getTime();
+    const currentTimestamp = localTimestamp ?? activeTimestamp ?? maxDate.getTime();
 
     const handleSliderChange = (values: number[]) => {
         const timestamp = values[0];
-        navigate({
-            search: ((prev: any) => ({
-                ...prev,
-                date: timestamp.toString(),
-            })) as any,
-        });
+        setLocalTimestamp(timestamp);
+        onTimestampChange(timestamp);
     };
 
     const togglePlay = () => {
+        if (!isPlaying) {
+            loopsPerformed.current = 0;
+            // Clear local override when starting play to stay in sync with props
+            setLocalTimestamp(null);
+        } else {
+            // When pausing, sync back to parent
+            onAnimationEnd(currentTimestamp);
+        }
         setIsPlaying(!isPlaying);
     };
 
     const reset = () => {
         setIsPlaying(false);
-        navigate({
-            search: ((prev: any) => {
-                const next = { ...prev };
-                delete next.date;
-                return next;
-            }) as any,
-        });
+        setLocalTimestamp(null);
+        onAnimationEnd(undefined);
     };
 
     useEffect(() => {
@@ -70,14 +74,17 @@ export default function MapTimeSlider({ data }: MapTimeSliderProps) {
 
                 if (nextIndex >= dates.length) {
                     nextIndex = 0; // Loop back
+                    loopsPerformed.current += 1;
+                    if (loopsPerformed.current >= 2) {
+                        setIsPlaying(false);
+                        onAnimationEnd(dates[dates.length - 1]);
+                        return;
+                    }
                 }
 
-                navigate({
-                    search: (prev: any) => ({
-                        ...prev,
-                        date: dates[nextIndex].toString(),
-                    }),
-                });
+                const nextTimestamp = dates[nextIndex];
+                setLocalTimestamp(nextTimestamp);
+                onTimestampChange(nextTimestamp);
             }, 800);
         } else {
             if (playIntervalRef.current) clearInterval(playIntervalRef.current);
@@ -86,7 +93,7 @@ export default function MapTimeSlider({ data }: MapTimeSliderProps) {
         return () => {
             if (playIntervalRef.current) clearInterval(playIntervalRef.current);
         };
-    }, [isPlaying, dates, currentTimestamp, navigate]);
+    }, [isPlaying, dates, currentTimestamp, onAnimationEnd, onTimestampChange]);
 
     if (dates.length <= 1) return null;
 
@@ -138,6 +145,11 @@ export default function MapTimeSlider({ data }: MapTimeSliderProps) {
                     max={maxDate.getTime()}
                     step={1} // Ideally would be filtered steps from 'dates' but for smooth UI simple timestamp is fine
                     onValueChange={handleSliderChange}
+                    onValueCommit={() => {
+                        // When slider drag ends, sync to URL
+                        onAnimationEnd(currentTimestamp);
+                        setLocalTimestamp(null);
+                    }}
                     className="py-4"
                 />
                 <div className="flex justify-between mt-1">
