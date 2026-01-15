@@ -25,7 +25,6 @@ for the project
 - simple dropdown to select farm after the scan/upload image.
 
 # support for native langauge
-
 - using react-i18next using json files.
 
 # Insurence Pdf claim

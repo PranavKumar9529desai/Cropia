@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { apiClient } from "@/lib/rpc";
 import { authClient } from "@/lib/auth/auth-client";
 import { useState } from "react";
@@ -10,24 +10,13 @@ import {
   UserPlus,
   Filter,
   MoreVertical,
-  Shield,
-  Eye,
-  Settings2,
+  Eye
 } from "lucide-react";
-import { cn } from "@repo/ui/lib/utils";
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
 } from "@repo/ui/components/card";
 import { Badge } from "@repo/ui/components/badge";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@repo/ui/components/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import {
@@ -42,11 +31,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/ui/components/dropdown-menu";
 
-export const Route = createFileRoute("/dashboard/organization/members/")({
+export const Route = createFileRoute('/dashboard/organization/members/')({
   loader: async () => {
     try {
       const res = await apiClient.api.admin.organization.members.$get();
@@ -58,7 +46,7 @@ export const Route = createFileRoute("/dashboard/organization/members/")({
     }
   },
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
   const members = Route.useLoaderData();
@@ -69,8 +57,7 @@ function RouteComponent() {
   const [roleFilter, setRoleFilter] = useState("all");
 
   const filteredMembers = members.filter((member: any) => {
-    const matchesSearch =
-      member.user.name.toLowerCase().includes(search.toLowerCase()) ||
+    const matchesSearch = member.user.name.toLowerCase().includes(search.toLowerCase()) ||
       member.user.email.toLowerCase().includes(search.toLowerCase());
     const matchesRole = roleFilter === "all" || member.role === roleFilter;
     return matchesSearch && matchesRole;
@@ -79,23 +66,9 @@ function RouteComponent() {
   const getRoleBadge = (role: string) => {
     switch (role.toLowerCase()) {
       case "owner":
-        return (
-          <Badge
-            variant="secondary"
-            className="bg-violet-500/10 text-violet-500 border-violet-500/20 font-bold uppercase tracking-wider text-[10px]"
-          >
-            Owner
-          </Badge>
-        );
+        return <Badge variant="secondary" className="bg-violet-500/10 text-violet-500 border-violet-500/20 font-bold uppercase tracking-wider text-[10px]">Owner</Badge>;
       case "admin":
-        return (
-          <Badge
-            variant="secondary"
-            className="bg-blue-500/10 text-blue-500 border-blue-500/20 font-bold uppercase tracking-wider text-[10px]"
-          >
-            Admin
-          </Badge>
-        );
+        return <Badge variant="secondary" className="bg-blue-500/10 text-blue-500 border-blue-500/20 font-bold uppercase tracking-wider text-[10px]">Admin</Badge>;
       default:
         return null;
     }
@@ -128,10 +101,7 @@ function RouteComponent() {
           </div>
           <div className="flex items-center gap-3">
             <Link to="/dashboard/organization/organization-invite">
-              <Button
-                size="sm"
-                className="h-9 md:h-10 px-3 md:px-4 gap-2 rounded-xl text-xs md:text-sm font-bold shadow-lg shadow-primary/20"
-              >
+              <Button size="sm" className="h-9 md:h-10 px-3 md:px-4 gap-2 rounded-xl text-xs md:text-sm font-bold shadow-lg shadow-primary/20">
                 <UserPlus className="w-3.5 h-3.5 md:w-4 md:h-4" />
                 Invite
               </Button>
@@ -178,18 +148,10 @@ function RouteComponent() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-border/50 bg-muted/5">
-                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                      Member
-                    </th>
-                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                      Role
-                    </th>
-                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                      Jurisdiction
-                    </th>
-                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground text-right">
-                      Actions
-                    </th>
+                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Member</th>
+                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Role</th>
+                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Jurisdiction</th>
+                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/30">
@@ -198,12 +160,10 @@ function RouteComponent() {
                       <tr
                         key={member.id}
                         className="group hover:bg-muted/5 transition-colors cursor-pointer"
-                        onClick={() =>
-                          navigate({
-                            to: "/dashboard/organization/members/$id",
-                            params: { id: member.id },
-                          })
-                        }
+                        onClick={() => navigate({
+                          to: "/dashboard/organization/members/$id",
+                          params: { id: member.id }
+                        })}
                       >
                         <td className="px-6 py-5">
                           <div className="flex items-center gap-4">
@@ -214,12 +174,8 @@ function RouteComponent() {
                               </AvatarFallback>
                             </Avatar>
                             <div className="space-y-0.5">
-                              <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
-                                {member.user.name}
-                              </p>
-                              <p className="text-xs text-muted-foreground font-medium">
-                                {member.user.email}
-                              </p>
+                              <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{member.user.name}</p>
+                              <p className="text-xs text-muted-foreground font-medium">{member.user.email}</p>
                             </div>
                           </div>
                         </td>
@@ -236,30 +192,18 @@ function RouteComponent() {
                           <div className="flex items-center justify-end gap-2">
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-8 w-8 rounded-lg hover:bg-muted"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
+                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-muted" onClick={(e) => e.stopPropagation()}>
                                   <MoreVertical className="w-4 h-4 text-muted-foreground" />
                                 </Button>
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent
-                                align="end"
-                                className="rounded-xl w-48"
-                              >
-                                <DropdownMenuLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground pt-3 px-3">
-                                  Quick Actions
-                                </DropdownMenuLabel>
+                              <DropdownMenuContent align="end" className="rounded-xl w-48">
+                                <DropdownMenuLabel className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground pt-3 px-3">Quick Actions</DropdownMenuLabel>
                                 <DropdownMenuItem
                                   className="rounded-lg gap-2 cursor-pointer font-medium text-sm"
-                                  onClick={() =>
-                                    navigate({
-                                      to: "/dashboard/organization/members/$id",
-                                      params: { id: member.id },
-                                    })
-                                  }
+                                  onClick={() => navigate({
+                                    to: "/dashboard/organization/members/$id",
+                                    params: { id: member.id }
+                                  })}
                                 >
                                   <Eye className="w-4 h-4 text-muted-foreground" />
                                   View Profile
@@ -276,13 +220,8 @@ function RouteComponent() {
                         <div className="flex flex-col items-center justify-center space-y-3 opacity-50">
                           <Users className="w-12 h-12 text-muted-foreground" />
                           <div className="space-y-1">
-                            <p className="text-sm font-bold">
-                              No members found
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Try adjusting your filters or invite new team
-                              members.
-                            </p>
+                            <p className="text-sm font-bold">No members found</p>
+                            <p className="text-xs text-muted-foreground">Try adjusting your filters or invite new team members.</p>
                           </div>
                         </div>
                       </td>
@@ -299,12 +238,10 @@ function RouteComponent() {
                   <div
                     key={member.id}
                     className="p-4 active:bg-muted/10 transition-colors flex items-center justify-between gap-4"
-                    onClick={() =>
-                      navigate({
-                        to: "/dashboard/organization/members/$id",
-                        params: { id: member.id },
-                      })
-                    }
+                    onClick={() => navigate({
+                      to: "/dashboard/organization/members/$id",
+                      params: { id: member.id }
+                    })}
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <Avatar className="w-10 h-10 rounded-xl border border-border/50 shadow-sm shrink-0">
@@ -315,16 +252,12 @@ function RouteComponent() {
                       </Avatar>
                       <div className="space-y-0.5 min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="text-sm font-bold text-foreground truncate">
-                            {member.user.name}
-                          </p>
+                          <p className="text-sm font-bold text-foreground truncate">{member.user.name}</p>
                           {getRoleBadge(member.role)}
                         </div>
                         <p className="text-[11px] text-muted-foreground font-medium flex items-center gap-1">
                           <MapPin className="size-3 shrink-0" />
-                          <span className="truncate">
-                            {getJurisdictionLabel(member)}
-                          </span>
+                          <span className="truncate">{getJurisdictionLabel(member)}</span>
                         </p>
                       </div>
                     </div>
@@ -361,5 +294,5 @@ function RouteComponent() {
         }
       `}</style>
     </div>
-  );
+  )
 }
