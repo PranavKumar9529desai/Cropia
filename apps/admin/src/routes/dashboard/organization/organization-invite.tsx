@@ -178,21 +178,22 @@ function RouteComponent() {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden bg-muted/5">
       {/* HEADER SECTION */}
-      <div className="px-4 md:px-8 py-6 border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-1">
-            <h1 className="text-xl md:text-3xl font-bold tracking-tight font-brand flex items-center gap-3">
-              <UserPlus className="size-6 md:size-8 text-primary" />
-              Invite New Members
+      <div className="px-8 py-4 md:py-6 border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-20">
+        <div className="max-w-6xl mx-auto flex flex-row items-center justify-between gap-4">
+          <div className="space-y-0.5">
+            <h1 className="text-lg md:text-3xl font-bold tracking-tight font-brand flex items-center gap-2 md:gap-3">
+              <UserPlus className="size-5 md:size-8 text-primary" />
+              <span className="truncate">Invite</span>
             </h1>
-            <p className="text-muted-foreground font-medium text-sm">
-              Expand your organization by adding specialized personnel.
+            <p className="text-muted-foreground font-medium text-[10px] md:text-sm">
+              Add specialized personnel
             </p>
           </div>
           <div className="flex items-center gap-3">
             <Link to="/dashboard/organization/members">
-              <Button variant="ghost" size="sm" className="h-9 px-3 gap-2 rounded-xl text-xs font-bold">
-                View All Members
+              <Button variant="ghost" size="sm" className="h-9 px-3 gap-1 md:gap-2 rounded-xl text-[10px] md:text-xs font-bold">
+                <span className="hidden xs:inline">View Members</span>
+                <span className="xs:hidden">Directory</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </Button>
             </Link>
@@ -206,17 +207,17 @@ function RouteComponent() {
 
           {/* INVITE FORM AREA */}
           <div className="lg:col-span-7 container w-full mx-auto space-y-8">
-            <Card className="bg-background shadow-none border-none overflow-hidden ">
-              <CardHeader className="bg-primary/[0.02] border-b border-primary/5 p-8">
-                <CardTitle className="text-xl font-bold font-brand flex items-center gap-3 text-primary">
+            <Card className="bg-background shadow-none border overflow-hidden ">
+              <CardHeader className="p-4 md:p-8">
+                <CardTitle className="text-lg md:text-xl font-bold font-brand flex items-center gap-3 text-primary">
                   <Send className="w-5 h-5" />
                   Send Invitation
                 </CardTitle>
-                <CardDescription className="font-medium">
+                <CardDescription className="text-xs md:text-sm font-medium">
                   New members will receive an email to join your organization.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-8">
+              <CardContent className="p-4 md:p-8">
                 <form onSubmit={handleInvite} className="space-y-8">
                   <div className="space-y-4">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Email Address</label>
@@ -387,7 +388,7 @@ function RouteComponent() {
 
                   <Button
                     type="submit"
-                    className="w-full h-12 rounded-2xl text-sm font-bold gap-2 shadow-lg shadow-primary/20"
+                    className="w-full h-12 text-sm font-bold gap-2 shadow-lg shadow-primary/20"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Sending..." : "Send Invitation Request"}
@@ -406,34 +407,31 @@ function RouteComponent() {
                 <div className="space-y-3">
                   {pendingInvites.map((invite: any) => (
                     <Card key={invite.id} className="rounded-2xl border-border/50 shadow-none hover:border-primary/20 transition-all bg-background group">
-                      <CardContent className="p-4 flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                          <div className="w-10 h-10 shrink-0 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
-                            <Clock className="w-5 h-5" />
+                      <CardContent className="p-3 md:p-4 flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                          <div className="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
+                            <Clock className="w-4 h-4 md:w-5 md:h-5" />
                           </div>
-                          <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                              <p className="text-sm font-bold truncate">{invite.email}</p>
-                              <Badge variant="outline" className="text-[9px] uppercase tracking-tighter h-4 px-1 w-fit shrink-0">{invite.role}</Badge>
+                          <div className="flex flex-col gap-0 min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <p className="text-xs md:text-sm font-bold truncate">{invite.email}</p>
+                              <Badge variant="outline" className="text-[8px] md:text-[9px] uppercase tracking-tighter h-3.5 md:h-4 px-1 w-fit shrink-0">{invite.role}</Badge>
                             </div>
-                            <p className="text-[10px] text-muted-foreground font-medium truncate">
+                            <p className="text-[9px] md:text-[10px] text-muted-foreground font-medium truncate">
                               {invite.jurisdiction?.village !== "All" ? `${invite.jurisdiction?.village}, ` : ""}
                               {invite.jurisdiction?.taluka !== "All" ? `${invite.jurisdiction?.taluka}, ` : ""}
                               {invite.jurisdiction?.district !== "All" ? `${invite.jurisdiction?.district}` : invite.jurisdiction?.state}
                             </p>
-                            <span className="text-[10px] text-muted-foreground font-medium italic sm:hidden">
-                              {formatDistanceToNow(new Date(invite.createdAt), { addSuffix: true })}
-                            </span>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="hidden sm:block text-xs lg:text-[10px] text-muted-foreground font-medium italic whitespace-nowrap">
+                          <span className="text-[8px] md:text-[10px] text-muted-foreground font-medium italic whitespace-nowrap">
                             {formatDistanceToNow(new Date(invite.createdAt), { addSuffix: true })}
                           </span>
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity"
+                            className="h-8 w-8 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                             onClick={() => handleCancelInvite(invite.id)}
                           >
                             <X className="w-4 h-4" />

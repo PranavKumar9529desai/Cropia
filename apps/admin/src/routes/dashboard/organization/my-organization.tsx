@@ -177,28 +177,28 @@ function RouteComponent() {
       `}} />
 
       {/* STICKY HEADER AREA */}
-      <div className="px-4 md:px-8 py-6 border-b border-border/50 sticky top-0 z-20 bg-background/95 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center md:items-end justify-between gap-6">
-          <div className="flex flex-col md:flex-row items-center md:items-center gap-6 text-center md:text-left">
-            <Avatar className="w-20 h-20 rounded-2xl border-2 border-primary/10 shadow-sm">
+      <div className="px-4 md:px-8 py-4 md:py-6 border-b border-border/50 sticky top-0 z-20 bg-background/95 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-4 md:gap-6">
+          <div className="flex flex-row items-center gap-4 md:gap-6 text-left">
+            <Avatar className="w-14 h-14 md:w-20 md:h-20 rounded-2xl border-2 border-primary/10 shadow-sm shrink-0">
               <AvatarImage src={info?.logo || ""} alt={info?.name} />
-              <AvatarFallback className="text-2xl font-brand bg-primary/5 text-primary rounded-2xl">
+              <AvatarFallback className="text-xl md:text-2xl font-brand bg-primary/5 text-primary rounded-2xl">
                 {info?.name?.[0] || "O"}
               </AvatarFallback>
             </Avatar>
-            <div className="space-y-1.5">
-              <h1 className="text-xl md:text-3xl font-bold tracking-tight font-brand text-foreground leading-none">
+            <div className="space-y-1 md:space-y-1.5 min-w-0">
+              <h1 className="text-lg md:text-3xl font-bold tracking-tight font-brand text-foreground leading-tight truncate">
                 {info?.name || "My Organization"}
               </h1>
-              <p className="text-muted-foreground font-medium flex items-center justify-center md:justify-start gap-1.5 text-sm">
-                <MapPin className="w-3.5 h-3.5" />
-                {info?.metadata || "Maharashtra, India"}
+              <p className="text-muted-foreground font-medium flex items-center gap-1.5 text-xs md:text-sm">
+                <MapPin className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">{info?.metadata || "Maharashtra, India"}</span>
               </p>
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-1">
+              <div className="flex items-center gap-3">
                 {jurisdiction && (
                   <Badge
                     variant="secondary"
-                    className="text-[10px] uppercase tracking-widest font-bold bg-muted/50 border-transparent"
+                    className="text-[9px] md:text-[10px] uppercase tracking-widest font-bold bg-muted/50 border-transparent px-2 py-0"
                   >
                     {jurisdiction.state || "National"} Level
                   </Badge>
@@ -207,16 +207,17 @@ function RouteComponent() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Link to="/dashboard/settings">
-              <Button variant="outline" size="sm" className="h-9 px-3 gap-2 rounded-xl text-xs font-bold">
+          <div className="flex items-center gap-2 md:gap-3 w-full md:w-auto">
+            <Link to="/dashboard/settings" className="flex-1 md:flex-none">
+              <Button variant="outline" size="sm" className="w-full h-9 px-3 gap-2 rounded-xl text-[10px] md:text-xs font-bold">
                 <Settings className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Settings</span>
+                Settings
               </Button>
             </Link>
-            <Link to="/dashboard/organization/members">
-              <Button size="sm" className="h-9 px-3 gap-2 rounded-xl text-xs font-bold bg-primary hover:bg-primary/90">
-                Manage Members
+            <Link to="/dashboard/organization/members" className="flex-1 md:flex-none">
+              <Button size="sm" className="w-full h-9 px-3 gap-2 rounded-xl text-[10px] md:text-xs font-bold bg-primary hover:bg-primary/90">
+                <span className="hidden xs:inline">Manage Members</span>
+                <span className="xs:hidden">Members</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </Button>
             </Link>
@@ -228,18 +229,18 @@ function RouteComponent() {
       <div className="flex-1 overflow-y-auto subtle-scrollbar scroll-smooth">
         <div className="container max-w-7xl mx-auto p-4 md:p-8 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-16">
           {/* Pulse Statistics */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
             {statItems.map((stat) => (
-              <Card key={stat.label} className="space-y-3 p-4">
-                <div className="flex items-center gap-2.5">
-                  <div className={cn("p-2 rounded-xl", stat.bg, stat.color)}>
-                    <stat.icon className="w-4 h-4" />
+              <Card key={stat.label} className="space-y-2 md:space-y-3 p-3 md:p-4">
+                <div className="flex items-center gap-2 md:gap-2.5">
+                  <div className={cn("p-1.5 md:p-2 rounded-lg md:rounded-xl", stat.bg, stat.color)}>
+                    <stat.icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
                   </div>
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em]">
+                  <p className="text-[9px] md:text-[10px] font-bold text-muted-foreground uppercase tracking-[0.1em] md:tracking-[0.15em] truncate">
                     {stat.label}
                   </p>
                 </div>
-                <h2 className="text-4xl font-bold font-brand tracking-tight">
+                <h2 className="text-2xl md:text-4xl font-bold font-brand tracking-tight">
                   {stat.value}
                 </h2>
               </Card>

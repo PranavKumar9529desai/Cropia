@@ -96,22 +96,22 @@ function RouteComponent() {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
       {/* HEADER SECTION */}
-      <div className="px-4 md:px-8 py-6 border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-1">
-            <h1 className="text-xl md:text-3xl font-bold tracking-tight font-brand flex items-center gap-3">
-              <Users className="size-6 md:size-8 text-primary" />
-              Organization Members
+      <div className="px-6 md:px-8 py-4 md:py-6 border-b border-border/50 bg-background/95 backdrop-blur-sm sticky top-0 z-20">
+        <div className="max-w-7xl mx-auto flex flex-row items-center justify-between gap-4">
+          <div className="space-y-0.5">
+            <h1 className="text-lg md:text-3xl font-bold tracking-tight font-brand flex items-center gap-2 md:gap-3">
+              <Users className="size-5 md:size-8 text-primary" />
+              <span className="truncate">Members</span>
             </h1>
-            <p className="text-muted-foreground font-medium text-sm">
-              Manage permissions and jurisdictions for {members.length} personnel.
+            <p className="text-muted-foreground font-medium text-[10px] md:text-sm">
+              {members.length} personnel total
             </p>
           </div>
           <div className="flex items-center gap-3">
             <Link to="/dashboard/organization/organization-invite">
-              <Button className="h-10 px-4 gap-2 rounded-xl text-sm font-bold shadow-lg shadow-primary/20">
-                <UserPlus className="w-4 h-4" />
-                Invite Member
+              <Button size="sm" className="h-9 md:h-10 px-3 md:px-4 gap-2 rounded-xl text-xs md:text-sm font-bold shadow-lg shadow-primary/20">
+                <UserPlus className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                Invite
               </Button>
             </Link>
           </div>
@@ -152,7 +152,7 @@ function RouteComponent() {
       <div className="flex-1 overflow-y-auto subtle-scrollbar">
         <div className="max-w-7xl mx-auto p-4 md:p-8">
           <Card className="rounded-2xl border-border/50 overflow-hidden shadow-none bg-background">
-            <div className="overflow-x-auto">
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-border/50 bg-muted/5">
@@ -237,6 +237,49 @@ function RouteComponent() {
                   )}
                 </tbody>
               </table>
+            </div>
+
+            {/* MOBILE CARD VIEW */}
+            <div className="md:hidden divide-y divide-border/30">
+              {filteredMembers.length > 0 ? (
+                filteredMembers.map((member: any) => (
+                  <div
+                    key={member.id}
+                    className="p-4 active:bg-muted/10 transition-colors flex items-center justify-between gap-4"
+                    onClick={() => navigate({
+                      to: "/dashboard/organization/members/$id",
+                      params: { id: member.id }
+                    })}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <Avatar className="w-10 h-10 rounded-xl border border-border/50 shadow-sm shrink-0">
+                        <AvatarImage src={member.user.image || ""} />
+                        <AvatarFallback className="rounded-xl bg-primary/5 text-primary font-bold">
+                          {member.user.name?.[0] || "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-0.5 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-bold text-foreground truncate">{member.user.name}</p>
+                          {getRoleBadge(member.role)}
+                        </div>
+                        <p className="text-[11px] text-muted-foreground font-medium flex items-center gap-1">
+                          <MapPin className="size-3 shrink-0" />
+                          <span className="truncate">{getJurisdictionLabel(member)}</span>
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="size-4 text-muted-foreground/50 shrink-0" />
+                  </div>
+                ))
+              ) : (
+                <div className="px-6 py-12 text-center">
+                  <div className="flex flex-col items-center justify-center space-y-3 opacity-50">
+                    <Users className="w-10 h-10 text-muted-foreground" />
+                    <p className="text-sm font-bold">No members found</p>
+                  </div>
+                </div>
+              )}
             </div>
           </Card>
         </div>

@@ -104,55 +104,57 @@ function RouteComponent() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* SUBTLE HEADER */}
-      <div className=" backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="flex items-center gap-5">
+      <div className="backdrop-blur-sm sticky top-0 z-20 border-b border-border/50 bg-background/95">
+        <div className="max-w-5xl mx-auto px-4 md:px-8 py-4">
+          <div className="flex flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
               <Link to="/dashboard/organization/members">
-                <Button variant="ghost" size="icon" className="rounded-full hover:bg-muted">
+                <Button variant="ghost" size="icon" className="size-8 rounded-full hover:bg-muted shrink-0">
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </Link>
-              <div className="flex items-center gap-4">
-                <Avatar className="w-14 h-14 rounded-full border shadow-sm">
+              <div className="flex items-center gap-3 min-w-0">
+                <Avatar className="size-10 md:size-14 rounded-full border shadow-sm shrink-0">
                   <AvatarImage src={member.user.image || ""} />
                   <AvatarFallback className="bg-primary/5 text-primary font-bold">
                     {member.user.name?.[0] || "U"}
                   </AvatarFallback>
                 </Avatar>
-                <div className="space-y-0.5">
+                <div className="space-y-0 min-w-0">
                   <div className="flex items-center gap-2">
-                    <h1 className="text-xl font-bold tracking-tight">
+                    <h1 className="text-sm md:text-xl font-bold tracking-tight truncate">
                       {member.user.name}
                     </h1>
-                    {getRoleBadge(member.role)}
+                    <div className="hidden xs:block">{getRoleBadge(member.role)}</div>
                   </div>
-                  <p className="text-sm text-muted-foreground font-medium flex items-center gap-1.5">
-                    <Mail className="w-3 h-3 opacity-70" />
+                  <p className="text-[10px] md:text-sm text-muted-foreground font-medium flex items-center gap-1.5 truncate">
+                    <Mail className="w-3 h-3 opacity-70 shrink-0" />
                     {member.user.email}
                   </p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               {isOwner && (
                 <Button
                   variant="outline"
                   size="sm"
-                  className="rounded-lg text-destructive hover:bg-destructive/5 hover:text-destructive border-border shadow-none"
+                  className="h-8 md:h-9 rounded-lg text-destructive hover:bg-destructive/5 hover:text-destructive border-border shadow-none text-[10px] md:text-sm px-2 md:px-3"
                   onClick={handleRemoveMember}
                 >
-                  <Trash2 className="w-3.5 h-3.5 mr-2" />
-                  Remove
+                  <Trash2 className="w-3.5 h-3.5 md:mr-2" />
+                  <span className="hidden md:inline">Remove</span>
                 </Button>
               )}
             </div>
           </div>
+          {/* Mobile Badge Row */}
+          <div className="xs:hidden pt-2 pl-11">
+            {getRoleBadge(member.role)}
+          </div>
         </div>
       </div>
-
-      {/* CONTENT AREA */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <div className="max-w-5xl mx-auto px-4 md:px-8 py-6 md:py-8 w-full">
         <div className="grid lg:grid-cols-3 gap-6">
           {/* MAIN SECTION */}
           <div className="lg:col-span-2 space-y-6">
