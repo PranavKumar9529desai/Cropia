@@ -271,32 +271,8 @@ const CropMap = ({
         interactiveLayerIds={["clusters", "unclustered-point"]}
         onClick={onClick}
       >
-        {/* Connections Source (Separate) - Rendered first to be at the bottom */}
-        <Source id="connections" type="geojson" data={connectionData}>
-          <Layer
-            id="disease-connections"
-            type="line"
-            layout={{
-              visibility: showConnections ? "visible" : "none",
-            }}
-            paint={{
-              "line-color": [
-                "match",
-                ["get", "status"],
-                "critical",
-                "#ef4444",
-                "warning",
-                "#eab308",
-                "#ef4444", // Fallback
-              ],
-              "line-width": 5,
-              "line-opacity": 1,
-              "line-dasharray": [2, 2],
-            }}
-          />
-        </Source>
-
-        {/* Scans Source - Always keep clustering enabled if we might use it */}
+        {/* Sources */}
+        <Source id="connections" type="geojson" data={connectionData} />
         <Source
           id="scans"
           type="geojson"
@@ -307,6 +283,33 @@ const CropMap = ({
           clusterProperties={{
             has_critical: ["any", ["==", ["get", "status"], "critical"]],
             has_warning: ["any", ["==", ["get", "status"], "warning"]],
+          }}
+        />
+
+        {/* Layers in strict order: Line -> Heatmap -> Circle -> Symbol/Text */}
+
+        {/* Connections Layer (Line) - Bottom-most custom layer */}
+        <Layer
+          id="disease-connections"
+          type="line"
+          source="connections"
+          beforeId="scans-heat"
+          layout={{
+            visibility: showConnections ? "visible" : "none",
+          }}
+          paint={{
+            "line-color": [
+              "match",
+              ["get", "status"],
+              "critical",
+              "#ef4444",
+              "warning",
+              "#eab308",
+              "#ef4444", // Fallback
+            ],
+            "line-width": 5,
+            "line-opacity": 1,
+            "line-dasharray": [2, 2],
           }}
         />
 
