@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import CropMap from "../../components/map/crop.map";
 import { apiClient } from "../../lib/rpc";
 import {
@@ -12,7 +12,12 @@ import {
 import { Button } from "@repo/ui/components/button";
 import { MapPin } from "lucide-react";
 import calculateViewState from "@/components/map/map.helper";
-import CropScanHeader from "../../components/map/crop-scan-header";
+import CropScanHeader from "@/components/map/crop-scan-header";
+import MapFilters from "@/components/map/map-filters";
+import MapTimeSlider from "@/components/map/map-time-slider";
+import MapLayerControl from "@/components/map/map-layer-control";
+import MapLegend from "@/components/map/map-legend";
+import MapStats from "@/components/map/map-stats";
 
 export const Route = createFileRoute("/dashboard/crop-map")({
   loader: async ({ context }) => {
@@ -33,7 +38,46 @@ export const Route = createFileRoute("/dashboard/crop-map")({
 
 function RouteComponent() {
   const { data, defaultView, jurisdiction } = Route.useLoaderData();
+  const search = Route.useSearch() as any;
   const [selectedScan, setSelectedScan] = useState<any>(null);
+
+  // Client-side filtering
+  const filteredData = useMemo(() => {
+    if (!data || !data.features) return data;
+
+    const filteredFeatures = data.features.filter((feature: any) => {
+      const { crop, disease, status } = feature.properties;
+
+      if (search.crop && search.crop !== "all" && crop !== search.crop)
+        return false;
+      if (
+        search.disease &&
+        search.disease !== "all" &&
+        disease !== search.disease
+      )
+        return false;
+      if (
+        search.status &&
+        search.status !== "all" &&
+        status !== search.status
+      )
+        return false;
+
+      // Date filtering (Show only scans up to the selected date)
+      if (search.date) {
+        const scanTime = new Date(feature.properties.date).getTime();
+        const filterTime = parseInt(search.date);
+        if (scanTime > filterTime) return false;
+      }
+
+      return true;
+    });
+
+    return {
+      ...data,
+      features: filteredFeatures,
+    };
+  }, [data, search]);
 
   // Function to optimize Cloudinary URL
   const getOptimizedUrl = (url: string) => {
@@ -48,13 +92,32 @@ function RouteComponent() {
     <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500 slide-in-from-bottom-4 space-y-4">
       <CropScanHeader jurisdiction={jurisdiction} />
 
+      <MapFilters data={data} />
+
       {/* Map Container */}
-      <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
+      <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden relative">
+        {/* Floating Overlays */}
+        <div className="absolute top-4 left-4 z-10 flex flex-col gap-3">
+          <MapStats data={filteredData} />
+          <MapLegend />
+        </div>
+
+        <div className="absolute top-4 right-4 z-10">
+          <MapLayerControl />
+        </div>
+
         <CropMap
-          data={data}
+          data={filteredData}
           defaultView={defaultView}
           onPointClick={(props) => setSelectedScan(props)}
+          viewType={search.view || "points"}
+          mapStyle={search.style || "satellite"}
         />
+
+        {/* Floating Time Slider Overlay */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 w-[90%] md:w-[80%] lg:w-[60%]">
+          <MapTimeSlider data={data} />
+        </div>
       </div>
 
       {/* Scan Detail Dialog */}
@@ -70,13 +133,12 @@ function RouteComponent() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute top-4 left-4">
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md ${
-                    selectedScan.status === "healthy"
-                      ? "bg-green-500/80 text-white"
-                      : selectedScan.status === "warning"
-                        ? "bg-yellow-500/80 text-white"
-                        : "bg-red-500/80 text-white"
-                  }`}
+                  className={`px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md ${selectedScan.status === "healthy"
+                    ? "bg-green-500/80 text-white"
+                    : selectedScan.status === "warning"
+                      ? "bg-yellow-500/80 text-white"
+                      : "bg-red-500/80 text-white"
+                    }`}
                 >
                   {selectedScan.status.toUpperCase()}
                 </span>
@@ -101,33 +163,30 @@ function RouteComponent() {
               <div className="space-y-4">
                 {/* Status-specific highlight */}
                 <div
-                  className={`p-4 rounded-lg border ${
-                    selectedScan.status === "healthy"
-                      ? "bg-green-50 border-green-200"
-                      : selectedScan.status === "warning"
-                        ? "bg-yellow-50 border-yellow-200"
-                        : "bg-red-50 border-red-200"
-                  }`}
+                  className={`p-4 rounded-lg border ${selectedScan.status === "healthy"
+                    ? "bg-green-50 border-green-200"
+                    : selectedScan.status === "warning"
+                      ? "bg-yellow-50 border-yellow-200"
+                      : "bg-red-50 border-red-200"
+                    }`}
                 >
                   <h4
-                    className={`font-semibold mb-1 flex items-center gap-2 ${
-                      selectedScan.status === "healthy"
-                        ? "text-green-800"
-                        : selectedScan.status === "warning"
-                          ? "text-yellow-800"
-                          : "text-red-800"
-                    }`}
+                    className={`font-semibold mb-1 flex items-center gap-2 ${selectedScan.status === "healthy"
+                      ? "text-green-800"
+                      : selectedScan.status === "warning"
+                        ? "text-yellow-800"
+                        : "text-red-800"
+                      }`}
                   >
                     {selectedScan.crop}
                   </h4>
                   <p
-                    className={`text-sm ${
-                      selectedScan.status === "healthy"
-                        ? "text-green-700"
-                        : selectedScan.status === "warning"
-                          ? "text-yellow-700"
-                          : "text-red-700"
-                    }`}
+                    className={`text-sm ${selectedScan.status === "healthy"
+                      ? "text-green-700"
+                      : selectedScan.status === "warning"
+                        ? "text-yellow-700"
+                        : "text-red-700"
+                      }`}
                   >
                     {selectedScan.disease}
                   </p>

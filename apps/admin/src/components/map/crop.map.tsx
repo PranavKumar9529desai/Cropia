@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import Map, { Source, Layer, MapRef, LayerProps } from "react-map-gl/maplibre";
 import { GeoJSONSource } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -29,8 +29,8 @@ const createPulsingDot = (
       const duration = 1500;
       const t = (performance.now() % duration) / duration;
 
-      const radius = (size / 2) * 0.3;
-      const outerRadius = (size / 2) * 0.7 * t + radius;
+      const radius = (size / 2) * 0.5;
+      const outerRadius = (size / 2) * 0.8 * t + radius;
       const context = this.context;
 
       if (!context) return false;
@@ -71,8 +71,8 @@ const clusterCountLayer: LayerProps = {
   filter: ["has", "point_count"],
   layout: {
     "text-field": "{point_count_abbreviated}",
-    "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-    "text-size": 12,
+    "text-font": ["Noto Sans Regular", "Arial Unicode MS Regular"],
+    "text-size": 14,
   },
 };
 
@@ -105,12 +105,18 @@ interface CropMapProps {
     latitude: number;
     zoom: number;
   };
+  viewType?: "points" | "heatmap";
+  mapStyle?: "satellite" | "streets";
+  showConnections?: boolean;
 }
 
 export default function CropMap({
   data,
   onPointClick,
   defaultView,
+  viewType = "points",
+  mapStyle = "satellite",
+  showConnections = false,
 }: CropMapProps) {
   const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(
     /["'\s]/g,
@@ -120,38 +126,75 @@ export default function CropMap({
 
   const mapRef = useRef<MapRef>(null);
 
-  const onMapLoad = () => {
+  // Generate connection lines for same disease in proximity
+  const connectionData = useMemo(() => {
+    if (!showConnections || !data || !data.features)
+      return { type: "FeatureCollection" as const, features: [] };
+
+    const features: any[] = [];
+    const points = data.features;
+
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        const p1 = points[i];
+        const p2 = points[j];
+
+        // Match same disease (case insensitive) and not healthy/unknown
+        const d1 = p1.properties.disease?.toLowerCase();
+        const d2 = p2.properties.disease?.toLowerCase();
+
+        if (d1 === d2 && d1 !== "unknown" && d1 !== "healthy" && d1 !== "no issue") {
+          const coord1 = p1.geometry.coordinates;
+          const coord2 = p2.geometry.coordinates;
+
+          // Expanded distance check (approx 100km)
+          const dist = Math.sqrt(
+            Math.pow(coord1[0] - coord2[0], 2) + Math.pow(coord1[1] - coord2[1], 2)
+          );
+
+          if (dist < 1.0) {
+            features.push({
+              type: "Feature",
+              properties: { disease: p1.properties.disease },
+              geometry: {
+                type: "LineString",
+                coordinates: [coord1, coord2],
+              },
+            });
+          }
+        }
+      }
+    }
+
+    return { type: "FeatureCollection" as const, features };
+  }, [data, showConnections]);
+
+  const addPulsingDots = () => {
     const map = mapRef.current?.getMap();
     if (!map) return;
 
-    if (!map.hasImage("pulsing-dot-healthy")) {
-      map.addImage(
-        "pulsing-dot-healthy",
-        createPulsingDot(map, 100, [34, 197, 94]),
-        { pixelRatio: 2 },
-      );
-    }
-    if (!map.hasImage("pulsing-dot-warning")) {
-      map.addImage(
-        "pulsing-dot-warning",
-        createPulsingDot(map, 100, [234, 179, 8]),
-        { pixelRatio: 2 },
-      );
-    }
-    if (!map.hasImage("pulsing-dot-critical")) {
-      map.addImage(
-        "pulsing-dot-critical",
-        createPulsingDot(map, 100, [239, 68, 68]),
-        { pixelRatio: 2 },
-      );
-    }
-    if (!map.hasImage("pulsing-dot-unknown")) {
-      map.addImage(
-        "pulsing-dot-unknown",
-        createPulsingDot(map, 100, [17, 180, 218]),
-        { pixelRatio: 2 },
-      );
-    }
+    const colors: Record<string, [number, number, number]> = {
+      "healthy": [34, 197, 94],
+      "warning": [234, 179, 8],
+      "critical": [239, 68, 68],
+      "unknown": [100, 116, 139]
+    };
+
+    Object.entries(colors).forEach(([status, rgb]) => {
+      const id = `pulsing-dot-${status}`;
+      if (!map.hasImage(id)) {
+        map.addImage(id, createPulsingDot(map, 100, rgb), { pixelRatio: 2 });
+      }
+    });
+  };
+
+  const onMapLoad = () => {
+    addPulsingDots();
+  };
+
+  // Re-add dots if style changes
+  const onStyleData = () => {
+    addPulsingDots();
   };
 
   const onClick = (event: any) => {
@@ -182,6 +225,7 @@ export default function CropMap({
       <Map
         ref={mapRef}
         onLoad={onMapLoad}
+        onStyleData={onStyleData}
         attributionControl={false}
         //  TODO: default should be juridiction center
         initialViewState={
@@ -192,49 +236,150 @@ export default function CropMap({
           }
         }
         // The "Fuel"
-        mapStyle={`https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${apiKey}`}
+        mapStyle={
+          mapStyle === "streets"
+            ? `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Streets?type=style&token=${apiKey}`
+            : `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${apiKey}`
+        }
         interactiveLayerIds={["clusters", "unclustered-point"]}
         onClick={onClick}
       >
+        {/* Scans Source - Always keep clustering enabled if we might use it */}
         <Source
           id="scans"
           type="geojson"
           data={data}
           cluster={true}
-          clusterMaxZoom={14} // Stop clustering when zoomed in close
-          clusterRadius={50} // Radius of each cluster in pixels
+          clusterMaxZoom={12} // Uncluster earlier
+          clusterRadius={50}
           clusterProperties={{
             has_critical: ["any", ["==", ["get", "status"], "critical"]],
             has_warning: ["any", ["==", ["get", "status"], "warning"]],
           }}
-        >
-          <Layer
-            id="clusters"
-            type="circle"
-            filter={["has", "point_count"]}
-            paint={{
-              "circle-color": [
-                "case",
-                ["get", "has_critical"],
-                "#ef4444", // Red if any point is critical
-                ["get", "has_warning"],
-                "#eab308", // Yellow if any point is warning (and none critical)
-                "#22c55e", // Green if all are healthy
-              ],
-              "circle-radius": [
-                "step",
-                ["get", "point_count"],
-                20, // 20px radius
-                100,
-                30, // 30px radius
-                750,
-                40, // 40px radius
-              ],
-            }}
-          />
-          <Layer {...clusterCountLayer} />
-          <Layer {...unclusteredPointLayer} />
-        </Source>
+        />
+
+        {/* Heatmap Layer */}
+        <Layer
+          id="scans-heat"
+          type="heatmap"
+          source="scans"
+          layout={{
+            visibility: viewType === "heatmap" ? "visible" : "none"
+          }}
+          paint={{
+            "heatmap-weight": [
+              "interpolate",
+              ["linear"],
+              ["get", "status_weight"],
+              0, 0,
+              3, 1
+            ],
+            "heatmap-intensity": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              0, 1,
+              15, 3
+            ],
+            "heatmap-color": [
+              "interpolate",
+              ["linear"],
+              ["heatmap-density"],
+              0, "rgba(33,102,172,0)",
+              0.2, "rgb(103,169,207)",
+              0.4, "rgb(209,229,240)",
+              0.6, "rgb(253,219,199)",
+              0.8, "rgb(239,138,98)",
+              1, "rgb(178,24,43)"
+            ],
+            "heatmap-radius": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              0, 2,
+              15, 20
+            ],
+            "heatmap-opacity": 0.8
+          }}
+        />
+
+        {/* Cluster Circle Layer */}
+        <Layer
+          id="clusters"
+          type="circle"
+          source="scans"
+          filter={["has", "point_count"]}
+          layout={{
+            visibility: viewType === "points" ? "visible" : "none"
+          }}
+          paint={{
+            "circle-color": [
+              "case",
+              ["get", "has_critical"],
+              "#ef4444",
+              ["get", "has_warning"],
+              "#eab308",
+              "#22c55e",
+            ],
+            "circle-radius": [
+              "step",
+              ["get", "point_count"],
+              20,
+              100,
+              30,
+              750,
+              40,
+            ],
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#fff"
+          }}
+        />
+
+        {/* Cluster Count Layer */}
+        <Layer
+          {...({
+            id: clusterCountLayer.id,
+            type: "symbol",
+            source: "scans",
+            filter: clusterCountLayer.filter,
+            layout: {
+              ...(clusterCountLayer.layout as any),
+              "text-size": 12,
+              visibility: viewType === "points" ? "visible" : "none"
+            }
+          } as any)}
+        />
+
+        {/* Unclustered Point Layer */}
+        <Layer
+          {...({
+            id: unclusteredPointLayer.id,
+            type: "symbol",
+            source: "scans",
+            filter: unclusteredPointLayer.filter,
+            layout: {
+              ...(unclusteredPointLayer.layout as any),
+              "icon-size": 1.0, // Large enough to be very clear
+              visibility: viewType === "points" ? "visible" : "none"
+            }
+          } as any)}
+        />
+
+        {/* Connections Source (Separate) */}
+        {showConnections && (
+          <Source id="connections" type="geojson" data={connectionData}>
+            <Layer
+              id="disease-connections"
+              type="line"
+              paint={{
+                "line-color": "#ef4444",
+                "line-width": 2,
+                "line-opacity": 0.8,
+                "line-dasharray": [2, 2],
+              }}
+            />
+          </Source>
+        )}
       </Map>
     </div>
   );
