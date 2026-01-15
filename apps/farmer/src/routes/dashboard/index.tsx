@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { authClient } from "../../lib/auth/auth-client";
 
-import { CloudRain, ScanLine, Bot, ArrowRight, Sun, Sunset, Sunrise } from "lucide-react";
+import {
+  CloudRain,
+  ScanLine,
+  Bot,
+  ArrowRight,
+  Sun,
+  Sunset,
+  Sunrise,
+} from "lucide-react";
 import { cn } from "@repo/ui/lib/utils";
 
 import {
@@ -41,7 +49,7 @@ function RouteComponent() {
       href: "/dashboard/home",
       gradient: "from-blue-500/10 to-blue-500/5",
       iconColor: "text-blue-600 dark:text-blue-400",
-      borderColor: "group-hover:border-blue-500/50"
+      borderColor: "group-hover:border-blue-500/50",
     },
     {
       title: "New Crop Scan",
@@ -50,7 +58,7 @@ function RouteComponent() {
       href: "/dashboard/scan",
       gradient: "from-green-500/10 to-green-500/5",
       iconColor: "text-green-600 dark:text-green-400",
-      borderColor: "group-hover:border-green-500/50"
+      borderColor: "group-hover:border-green-500/50",
     },
     {
       title: "AI Assistant",
@@ -59,8 +67,8 @@ function RouteComponent() {
       href: "/dashboard/assistant",
       gradient: "from-purple-500/10 to-purple-500/5",
       iconColor: "text-purple-600 dark:text-purple-400",
-      borderColor: "group-hover:border-purple-500/50"
-    }
+      borderColor: "group-hover:border-purple-500/50",
+    },
   ];
 
   return (
@@ -69,27 +77,33 @@ function RouteComponent() {
       <div className="relative ">
         {/* Abstract Background Shapes */}
 
-
         <div className="relative p-6 sm:p-10 text-primary-foreground  shadow-none">
           <div className="flex items-center gap-2.5 opacity-90 mb-4">
             <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-md">
               <GreetingIcon className="w-5 h-5 text-primary" />
             </div>
-            <span className="text-sm font-semibold tracking-wide uppercase text-foreground/90">{greeting.text}</span>
+            <span className="text-sm font-semibold tracking-wide uppercase text-foreground/90">
+              {greeting.text}
+            </span>
           </div>
 
           <div className="space-y-2 mb-8">
             <h1 className="text-3xl sm:text-5xl font-bold tracking-tight font-brand text-foreground">
-              Hello, {userData?.name?.split(' ')[0] || 'Farmer'}
+              Hello, {userData?.name?.split(" ")[0] || "Farmer"}
             </h1>
             <p className="text-lg text-foreground/80 max-w-lg leading-relaxed font-medium">
-              Your farm's performance at a glance. What would you like to check today?
+              Your farm's performance at a glance. What would you like to check
+              today?
             </p>
           </div>
 
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-xs font-medium text-foreground/80">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            {new Date().toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric' })}
+            {new Date().toLocaleDateString("en-US", {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+            })}
           </div>
         </div>
       </div>
@@ -103,19 +117,28 @@ function RouteComponent() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 px-8">
           {quickActions.map((action) => (
             <Link key={action.title} to={action.href} className="group">
-              <Card className={cn(
-                "bg-transparent border-border h-full transition-all duration-300 hover:-translate-y-1 overflow-hidden relative shadow-none",
+              <Card
+                className={cn(
+                  "bg-transparent border-border h-full transition-all duration-300 hover:-translate-y-1 overflow-hidden relative shadow-none",
 
-                ""
-              )}>
-                <div className={cn("absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br", action.gradient)} />
+                  "",
+                )}
+              >
+                <div
+                  className={cn(
+                    "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br",
+                    action.gradient,
+                  )}
+                />
 
                 <CardHeader className="relative space-y-0 pb-2">
                   <div className="flex justify-between items-start">
-                    <div className={cn(
-                      "p-3 rounded-2xl bg-muted/50 transition-colors group-hover:bg-background/80",
-                      action.iconColor
-                    )}>
+                    <div
+                      className={cn(
+                        "p-3 rounded-2xl bg-muted/50 transition-colors group-hover:bg-background/80",
+                        action.iconColor,
+                      )}
+                    >
                       <action.icon className="h-6 w-6" />
                     </div>
                     <ArrowRight className="h-5 w-5 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />

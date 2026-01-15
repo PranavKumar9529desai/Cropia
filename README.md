@@ -1,4 +1,3 @@
-
 # Cropia: AI-Powered Early Crop Health Detection System
 
 **Cropia** is an intelligent agricultural platform designed to bridge the gap between farmers and administrative bodies. It empowers farmers with real-time, offline-first disease detection and decision support, while providing government officials and NGOs with a "God View" of regional crop health to prevent outbreaks.
@@ -9,8 +8,8 @@ Built as a high-performance monorepo using **Turborepo**, **Bun**, and **Hono**,
 
 ## 🌐 Live Demos
 
-* **Admin Dashboard (Government/NGO):** [https://cropia-admin.vercel.app](https://cropia-admin.vercel.app)
-* **Farmer App:** [https://cropia-farmer.vercel.app](https://cropia-farmer.vercel.app)
+- **Admin Dashboard (Government/NGO):** [https://cropia-admin.vercel.app](https://cropia-admin.vercel.app)
+- **Farmer App:** [https://cropia-farmer.vercel.app](https://cropia-farmer.vercel.app)
 
 ---
 
@@ -18,67 +17,60 @@ Built as a high-performance monorepo using **Turborepo**, **Bun**, and **Hono**,
 
 ### 👨‍🌾 For Farmers (The Field App)
 
-* **AI Crop Scanner ("The Gatekeeper"):**
-* Instantly validates if an image is a crop (filtering out selfies/documents).
-* Detects diseases, pests, and nutrient deficiencies in real-time.
-* Provides a "Confidence Score" and "Visual Severity" rating (Healthy vs. Warning vs. Critical).
+- **AI Crop Scanner ("The Gatekeeper"):**
+- Instantly validates if an image is a crop (filtering out selfies/documents).
+- Detects diseases, pests, and nutrient deficiencies in real-time.
+- Provides a "Confidence Score" and "Visual Severity" rating (Healthy vs. Warning vs. Critical).
 
+- **Decision Support Dashboard:**
+- **Smart Spray Planner:** A 12-hour timeline analyzing **Wind Speed (<15km/h)** and **Rain Probability (<30%)** to recommend safe spraying windows.
+- **Root Health X-Ray:** Visualizes soil moisture at two depths (**Surface 0-10cm** vs. **Deep 10-30cm**) to detect "false dryness" and prevent over-irrigation.
+- **Water Balance Calculator:** Tracks net water deficit (`Rain - Evapotranspiration`) over the last 3 days.
 
-* **Decision Support Dashboard:**
-* **Smart Spray Planner:** A 12-hour timeline analyzing **Wind Speed (<15km/h)** and **Rain Probability (<30%)** to recommend safe spraying windows.
-* **Root Health X-Ray:** Visualizes soil moisture at two depths (**Surface 0-10cm** vs. **Deep 10-30cm**) to detect "false dryness" and prevent over-irrigation.
-* **Water Balance Calculator:** Tracks net water deficit (`Rain - Evapotranspiration`) over the last 3 days.
-
-
-* **Cropia Assistant:** A conversational AI chatbot that can answer questions about recent scans, weather forecasts, and agronomy advice.
+- **Cropia Assistant:** A conversational AI chatbot that can answer questions about recent scans, weather forecasts, and agronomy advice.
 
 ### 🏢 For Admin/Government ("The Watchtower")
 
-* **The God View (Live Map):**
-* Interactive geospatial map visualizing every crop scan in the jurisdiction.
-* Color-coded markers (Green=Healthy, Red=Critical) for spotting regional outbreaks.
+- **The God View (Live Map):**
+- Interactive geospatial map visualizing every crop scan in the jurisdiction.
+- Color-coded markers (Green=Healthy, Red=Critical) for spotting regional outbreaks.
 
+- **Regional Analysis Agent:**
+- Aggregates data from thousands of scans to generate "News Headlines" (e.g., _"Sugarcane Rust cases up 40% in Kolhapur"_).
+- Provides statistical breakdowns of disease distribution per district/taluka.
 
-* **Regional Analysis Agent:**
-* Aggregates data from thousands of scans to generate "News Headlines" (e.g., *"Sugarcane Rust cases up 40% in Kolhapur"*).
-* Provides statistical breakdowns of disease distribution per district/taluka.
-
-
-* **Jurisdiction Control:** Granular RBAC allowing officials to view data specifically for their State, District, or Taluka.
-
-
+- **Jurisdiction Control:** Granular RBAC allowing officials to view data specifically for their State, District, or Taluka.
 
 ## 🛠 Tech Stack
 
 **Core Infrastructure**
 
-* **Monorepo:** [Turborepo](https://turbo.build/)
-* **Runtime/Manager:** [Bun](https://bun.sh/) (v1.2.20)
-* **Language:** TypeScript (v5.9)
+- **Monorepo:** [Turborepo](https://turbo.build/)
+- **Runtime/Manager:** [Bun](https://bun.sh/) (v1.2.20)
+- **Language:** TypeScript (v5.9)
 
 **Frontend (Web & PWA)**
 
-* **Framework:** React (Vite)
-* **Styling:** Tailwind CSS + Shadcn UI (`@repo/ui`)
-* **State/Routing:** TanStack Query + TanStack Router
-* **Maps:** Mapbox / Leaflet (via React)
+- **Framework:** React (Vite)
+- **Styling:** Tailwind CSS + Shadcn UI (`@repo/ui`)
+- **State/Routing:** TanStack Query + TanStack Router
+- **Maps:** Mapbox / Leaflet (via React)
 
 **Backend (API & Edge)**
 
-* **Framework:** [Hono](https://hono.dev/) (Lightweight, Edge-ready)
-* **Communication:** Hono RPC (Type-safe client-server contract)
-* **Database:** MongoDB (via Prisma ORM)
-* **Auth:** BetterAuth (Multi-tenant Organization support)
+- **Framework:** [Hono](https://hono.dev/) (Lightweight, Edge-ready)
+- **Communication:** Hono RPC (Type-safe client-server contract)
+- **Database:** MongoDB (via Prisma ORM)
+- **Auth:** BetterAuth (Multi-tenant Organization support)
 
 **Artificial Intelligence**
 
-* **Vision Model:** Google **Gemini 2.5 Flash Lite** (Optimized for low latency).
-* **Framework:** Vercel AI SDK (`@ai-sdk/google`).
-* **Agents:**
+- **Vision Model:** Google **Gemini 2.5 Flash Lite** (Optimized for low latency).
+- **Framework:** Vercel AI SDK (`@ai-sdk/google`).
+- **Agents:**
+
 1. **Gatekeeper Agent:** Validates image integrity and diagnoses specific crop issues.
 2. **Analysis Agent:** Summarizes regional data into actionable natural language insights.
-
-
 
 ---
 
@@ -107,10 +99,10 @@ Cropia uses a **Conditional Agentic Workflow**:
 
 1. **Input:** Image uploaded by farmer.
 2. **Gatekeeper (Gemini 2.5 Flash Lite):**
-* *Check:* Is this a plant? (Reject if false).
-* *Analyze:* Identify Crop -> Detect Issue -> Assess Severity.
-* *Label:* Generate semantic filename (e.g., `sugarcane_rust_timestamp`).
 
+- _Check:_ Is this a plant? (Reject if false).
+- _Analyze:_ Identify Crop -> Detect Issue -> Assess Severity.
+- _Label:_ Generate semantic filename (e.g., `sugarcane_rust_timestamp`).
 
 3. **Persistence:** Data stored in MongoDB with a "Location Snapshot" (State/District/Village frozen at upload time) for fast geospatial queries.
 4. **Async Analysis:** The "Analysis Agent" runs periodically to aggregate these snapshots into regional reports for the Admin.
@@ -119,9 +111,9 @@ Cropia uses a **Conditional Agentic Workflow**:
 
 ## 💾 Database Schema (Key Highlights)
 
-* **User/Auth:** Uses `BetterAuth` with `Organization` and `Member` tables for managing Co-ops and Government hierarchies.
-* **Scan Model:** Stores the `imageUrl`, `aiMetadata` (diagnosis, confidence), and a **Location Snapshot** (`state`, `district`, `taluka`) to avoid expensive joins during analytics.
-* **Jurisdiction Type:** A custom composite type defining an admin's scope (e.g., `{ state: "Maharashtra", district: "Kolhapur" }`).
+- **User/Auth:** Uses `BetterAuth` with `Organization` and `Member` tables for managing Co-ops and Government hierarchies.
+- **Scan Model:** Stores the `imageUrl`, `aiMetadata` (diagnosis, confidence), and a **Location Snapshot** (`state`, `district`, `taluka`) to avoid expensive joins during analytics.
+- **Jurisdiction Type:** A custom composite type defining an admin's scope (e.g., `{ state: "Maharashtra", district: "Kolhapur" }`).
 
 ---
 
@@ -129,30 +121,31 @@ Cropia uses a **Conditional Agentic Workflow**:
 
 ### Prerequisites
 
-* **Bun** (v1.0+)
-* **MongoDB** (Local or Atlas URL)
-* **Cloudinary Account** (for image storage)
-* **Google Gemini API Key**
+- **Bun** (v1.0+)
+- **MongoDB** (Local or Atlas URL)
+- **Cloudinary Account** (for image storage)
+- **Google Gemini API Key**
 
 ### Installation
 
 1. **Clone the repository:**
+
 ```bash
 git clone https://github.com/your-username/cropia.git
 cd cropia
 
 ```
 
-
 2. **Install dependencies:**
+
 ```bash
 bun install
 
 ```
 
-
 3. **Environment Setup:**
-Create a `.env` file in the root (see `.env.example`):
+   Create a `.env` file in the root (see `.env.example`):
+
 ```env
 DATABASE_URL="mongodb+srv://..."
 GOOGLE_GENERATIVE_AI_API_KEY="AIzaSy..."
@@ -161,26 +154,23 @@ BETTER_AUTH_SECRET="..."
 
 ```
 
-
 4. **Database Push:**
+
 ```bash
 bun run db:push
 
 ```
 
-
 5. **Run Development Server:**
+
 ```bash
 bun run dev
 
 ```
 
-
-* Farmer App: `http://localhost:5173`
-* Admin App: `http://localhost:5174`
-* Backend API: `http://localhost:3000`
-
-
+- Farmer App: `http://localhost:5173`
+- Admin App: `http://localhost:5174`
+- Backend API: `http://localhost:3000`
 
 ---
 

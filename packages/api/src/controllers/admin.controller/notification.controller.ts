@@ -33,7 +33,7 @@ const AdminNotificationController = new Hono<{
     const messaging = getFirebaseMessaging();
 
     const adminUser = c.get("user");
-    const jurisdiction = c.get("jurisdiction") as any;
+    const jurisdiction = c.get("jurisdiction") as Jurisdiction;
 
     // Fetch organization name if possible
     const member = await prisma.member.findFirst({

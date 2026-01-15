@@ -34,7 +34,6 @@ function RootComponent() {
       <RouteLoadingIndicator />
       <InstallPWA />
       <div className="overflow-hidden w-screen h-screen">
-
         {/* We pass the session through the Outlet context if needed */}
         <Outlet />
       </div>

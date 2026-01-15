@@ -3,8 +3,12 @@ import Map, { Source, Layer, MapRef, LayerProps } from "react-map-gl/maplibre";
 import { GeoJSONSource } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
-// TODO : Show spread throught joining images 
-const createPulsingDot = (map: any, size: number, rgbColor: [number, number, number]) => {
+// TODO : Show spread throught joining images
+const createPulsingDot = (
+  map: any,
+  size: number,
+  rgbColor: [number, number, number],
+) => {
   return {
     width: size,
     height: size,
@@ -34,13 +38,7 @@ const createPulsingDot = (map: any, size: number, rgbColor: [number, number, num
       // Draw the outer circle.
       context.clearRect(0, 0, this.width, this.height);
       context.beginPath();
-      context.arc(
-        this.width / 2,
-        this.height / 2,
-        outerRadius,
-        0,
-        Math.PI * 2
-      );
+      context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
       context.fillStyle = `rgba(${rgbColor[0]}, ${rgbColor[1]}, ${rgbColor[2]}, ${1 - t})`;
       context.fill();
 
@@ -65,8 +63,6 @@ const createPulsingDot = (map: any, size: number, rgbColor: [number, number, num
     },
   };
 };
-
-
 
 // 2. The Number inside the Circle
 const clusterCountLayer: LayerProps = {
@@ -116,7 +112,10 @@ export default function CropMap({
   onPointClick,
   defaultView,
 }: CropMapProps) {
-  const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(/["'\s]/g, "");
+  const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(
+    /["'\s]/g,
+    "",
+  );
   // console.log("api key from crop map", apiKey)
 
   const mapRef = useRef<MapRef>(null);
@@ -129,32 +128,31 @@ export default function CropMap({
       map.addImage(
         "pulsing-dot-healthy",
         createPulsingDot(map, 100, [34, 197, 94]),
-        { pixelRatio: 2 }
+        { pixelRatio: 2 },
       );
     }
     if (!map.hasImage("pulsing-dot-warning")) {
       map.addImage(
         "pulsing-dot-warning",
         createPulsingDot(map, 100, [234, 179, 8]),
-        { pixelRatio: 2 }
+        { pixelRatio: 2 },
       );
     }
     if (!map.hasImage("pulsing-dot-critical")) {
       map.addImage(
         "pulsing-dot-critical",
         createPulsingDot(map, 100, [239, 68, 68]),
-        { pixelRatio: 2 }
+        { pixelRatio: 2 },
       );
     }
     if (!map.hasImage("pulsing-dot-unknown")) {
       map.addImage(
         "pulsing-dot-unknown",
         createPulsingDot(map, 100, [17, 180, 218]),
-        { pixelRatio: 2 }
+        { pixelRatio: 2 },
       );
     }
   };
-
 
   const onClick = (event: any) => {
     const feature = event.features[0];
@@ -194,7 +192,8 @@ export default function CropMap({
           }
         }
         // The "Fuel"
-        mapStyle={`https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${apiKey}`} interactiveLayerIds={["clusters", "unclustered-point"]}
+        mapStyle={`https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${apiKey}`}
+        interactiveLayerIds={["clusters", "unclustered-point"]}
         onClick={onClick}
       >
         <Source

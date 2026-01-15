@@ -16,8 +16,6 @@ export const getuserLocationStatus = async (): Promise<boolean> => {
     // If success: false (404), location doesn't exist
     const hasLocation = result.success === true;
 
-
-
     return hasLocation;
   } catch (error) {
     console.error("Error checking user location status:", error);
@@ -168,7 +166,7 @@ export const forwardGeocode = async (query: string) => {
 
   try {
     const url = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&singleLine=${encodeURIComponent(
-      query
+      query,
     )}&maxLocations=1&token=${token}`;
 
     const response = await fetch(url);

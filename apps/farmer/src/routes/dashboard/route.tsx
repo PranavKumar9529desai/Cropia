@@ -54,7 +54,7 @@ function RouteComponent() {
     We look at the last part of the pathname for the current active match.
   */
   const route = matches[0]?.pathname.split("/").pop();
-  console.log("theroute is this", route)
+  console.log("theroute is this", route);
   console.log(username, email, image);
   return (
     <SidebarProvider>

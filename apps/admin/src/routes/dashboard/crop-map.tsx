@@ -70,12 +70,13 @@ function RouteComponent() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute top-4 left-4">
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md ${selectedScan.status === "healthy"
-                    ? "bg-green-500/80 text-white"
-                    : selectedScan.status === "warning"
-                      ? "bg-yellow-500/80 text-white"
-                      : "bg-red-500/80 text-white"
-                    }`}
+                  className={`px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md ${
+                    selectedScan.status === "healthy"
+                      ? "bg-green-500/80 text-white"
+                      : selectedScan.status === "warning"
+                        ? "bg-yellow-500/80 text-white"
+                        : "bg-red-500/80 text-white"
+                  }`}
                 >
                   {selectedScan.status.toUpperCase()}
                 </span>
@@ -100,30 +101,33 @@ function RouteComponent() {
               <div className="space-y-4">
                 {/* Status-specific highlight */}
                 <div
-                  className={`p-4 rounded-lg border ${selectedScan.status === "healthy"
-                    ? "bg-green-50 border-green-200"
-                    : selectedScan.status === "warning"
-                      ? "bg-yellow-50 border-yellow-200"
-                      : "bg-red-50 border-red-200"
-                    }`}
+                  className={`p-4 rounded-lg border ${
+                    selectedScan.status === "healthy"
+                      ? "bg-green-50 border-green-200"
+                      : selectedScan.status === "warning"
+                        ? "bg-yellow-50 border-yellow-200"
+                        : "bg-red-50 border-red-200"
+                  }`}
                 >
                   <h4
-                    className={`font-semibold mb-1 flex items-center gap-2 ${selectedScan.status === "healthy"
-                      ? "text-green-800"
-                      : selectedScan.status === "warning"
-                        ? "text-yellow-800"
-                        : "text-red-800"
-                      }`}
+                    className={`font-semibold mb-1 flex items-center gap-2 ${
+                      selectedScan.status === "healthy"
+                        ? "text-green-800"
+                        : selectedScan.status === "warning"
+                          ? "text-yellow-800"
+                          : "text-red-800"
+                    }`}
                   >
                     {selectedScan.crop}
                   </h4>
                   <p
-                    className={`text-sm ${selectedScan.status === "healthy"
-                      ? "text-green-700"
-                      : selectedScan.status === "warning"
-                        ? "text-yellow-700"
-                        : "text-red-700"
-                      }`}
+                    className={`text-sm ${
+                      selectedScan.status === "healthy"
+                        ? "text-green-700"
+                        : selectedScan.status === "warning"
+                          ? "text-yellow-700"
+                          : "text-red-700"
+                    }`}
                   >
                     {selectedScan.disease}
                   </p>

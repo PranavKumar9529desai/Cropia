@@ -130,7 +130,12 @@ export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
             <FormItem>
               <FormLabel>State</FormLabel>
               <FormControl>
-                <Input {...field} readOnly className="bg-muted text-muted-foreground cursor-not-allowed" placeholder="Auto-filled" />
+                <Input
+                  {...field}
+                  readOnly
+                  className="bg-muted text-muted-foreground cursor-not-allowed"
+                  placeholder="Auto-filled"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -144,7 +149,12 @@ export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
             <FormItem>
               <FormLabel>District</FormLabel>
               <FormControl>
-                <Input {...field} readOnly className="bg-muted text-muted-foreground cursor-not-allowed" placeholder="Auto-filled" />
+                <Input
+                  {...field}
+                  readOnly
+                  className="bg-muted text-muted-foreground cursor-not-allowed"
+                  placeholder="Auto-filled"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -161,7 +171,12 @@ export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
             <FormItem>
               <FormLabel>Sub-District</FormLabel>
               <FormControl>
-                <Input {...field} readOnly className="bg-muted text-muted-foreground cursor-not-allowed" placeholder="Auto-filled" />
+                <Input
+                  {...field}
+                  readOnly
+                  className="bg-muted text-muted-foreground cursor-not-allowed"
+                  placeholder="Auto-filled"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -182,7 +197,7 @@ export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
                       role="combobox"
                       className={cn(
                         "w-full justify-between mt-1",
-                        !field.value && "text-muted-foreground"
+                        !field.value && "text-muted-foreground",
                       )}
                       disabled={villages.length === 0}
                     >
@@ -214,7 +229,7 @@ export function Step1AdminDetails({ form }: Step1AdminDetailsProps) {
                                 "mr-2 h-4 w-4",
                                 village === field.value
                                   ? "opacity-100"
-                                  : "opacity-0"
+                                  : "opacity-0",
                               )}
                             />
                             {village}

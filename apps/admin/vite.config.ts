@@ -18,9 +18,9 @@ export default defineConfig({
     }),
     react(),
     VitePWA({
-      strategies: 'injectManifest',
-      srcDir: 'src',
-      filename: 'service-worker.ts',
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "service-worker.ts",
       registerType: "autoUpdate",
       // If you really want the output file to be named 'site.webmanifest'
       manifestFilename: "site.webmanifest",
@@ -64,14 +64,14 @@ export default defineConfig({
             src: "/screenshots/pwa-screenshot-mobile.png",
             sizes: "1024x1024",
             type: "image/png",
-            form_factor: "narrow"
+            form_factor: "narrow",
           },
           {
             src: "/screenshots/pwa-screenshot-desktop.png",
             sizes: "1024x1024",
             type: "image/png",
-            form_factor: "wide"
-          }
+            form_factor: "wide",
+          },
         ],
         theme_color: "#b1e360",
         background_color: "#b1e360",

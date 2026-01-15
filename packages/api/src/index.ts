@@ -54,7 +54,6 @@ const app = new Hono()
     return farmerAuth.handler(c.req.raw);
   })
 
-
   .use("/api/locations/*", UserSessionMiddleware)
   .use("/api/weather/*", UserSessionMiddleware)
   .use("/api/ai/*", UserSessionMiddleware)
@@ -74,7 +73,7 @@ const app = new Hono()
   .route("/api/admin/map", MapController)
   .route("/api/admin/analysis", ScanAnalyasisController)
   .route("/api/admin/organization", OrganizationController)
-  .route("/api/admin/notifications", AdminNotificationController)
+  .route("/api/admin/notifications", AdminNotificationController);
 
 export type AppType = typeof app;
 

@@ -37,7 +37,6 @@ export const ProfileComponent = ({
 }: ProfileComponentProps) => {
   const { isMobile } = useSidebar();
 
-
   // Fallback if userInfo is missing (though it should be passed)
   const user = {
     name: userInfo?.name || "User",
@@ -103,7 +102,6 @@ export const ProfileComponent = ({
                 <Bell className="mr-2 h-4 w-4" />
                 Notifications
               </div>
-
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>

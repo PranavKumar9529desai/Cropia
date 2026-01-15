@@ -54,7 +54,10 @@ export function LocationPicker({
     onLocationChange(lat, lng);
   };
 
-  const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(/["'\s]/g, "");
+  const apiKey = (import.meta.env.VITE_ESRI_API_KEYS || "").replace(
+    /["'\s]/g,
+    "",
+  );
 
   const mapStyle = apiKey
     ? `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:Imagery?type=style&token=${apiKey}`
@@ -96,6 +99,6 @@ export function LocationPicker({
             : "Drag the pin to your exact farm location"}
         </div>
       </div>
-    </div >
+    </div>
   );
 }

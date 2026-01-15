@@ -128,12 +128,13 @@ function ScanHistorySettings() {
                         loading="lazy"
                       />
                       <div
-                        className={`absolute bottom-0 left-0 right-0 h-1 ${scan.visualSeverity === "healthy"
-                          ? "bg-green-500"
-                          : scan.visualSeverity === "warning"
-                            ? "bg-yellow-500"
-                            : "bg-red-500"
-                          }`}
+                        className={`absolute bottom-0 left-0 right-0 h-1 ${
+                          scan.visualSeverity === "healthy"
+                            ? "bg-green-500"
+                            : scan.visualSeverity === "warning"
+                              ? "bg-yellow-500"
+                              : "bg-red-500"
+                        }`}
                       />
                     </div>
 
@@ -141,12 +142,13 @@ function ScanHistorySettings() {
                       <div className="flex items-center gap-2">
                         <h4 className="font-semibold truncate">{scan.crop}</h4>
                         <span
-                          className={`text-xs px-2 py-0.5 rounded-full capitalize ${scan.visualSeverity === "healthy"
-                            ? "bg-green-100 text-green-700"
-                            : scan.visualSeverity === "warning"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : "bg-red-100 text-red-700"
-                            }`}
+                          className={`text-xs px-2 py-0.5 rounded-full capitalize ${
+                            scan.visualSeverity === "healthy"
+                              ? "bg-green-100 text-green-700"
+                              : scan.visualSeverity === "warning"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : "bg-red-100 text-red-700"
+                          }`}
                         >
                           {scan.visualSeverity || "Unknown"}
                         </span>
@@ -243,4 +245,3 @@ function ScanHistorySettings() {
     </div>
   );
 }
-

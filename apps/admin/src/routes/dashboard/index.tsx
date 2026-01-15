@@ -1,9 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth/auth-client";
 import {
-  Sun, Sunset, Sunrise,
-  Building2, MapPin, ArrowRight,
-  Bell, Map, ScanLine
+  Sun,
+  Sunset,
+  Sunrise,
+  Building2,
+  MapPin,
+  ArrowRight,
+  Bell,
+  Map,
+  ScanLine,
 } from "lucide-react";
 import { cn } from "@repo/ui/lib/utils";
 import {
@@ -14,13 +20,11 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 
-export const Route = createFileRoute("/dashboard/")(
-  {
-    component: RouteComponent,
-    staleTime: 1000 * 60 * 10, // 10 minutes
-    gcTime: 1000 * 60 * 15, // 15 minutes
-  }
-);
+export const Route = createFileRoute("/dashboard/")({
+  component: RouteComponent,
+  staleTime: 1000 * 60 * 10, // 10 minutes
+  gcTime: 1000 * 60 * 15, // 15 minutes
+});
 
 // Helper type for jurisdiction
 type Jurisdiction = {
@@ -37,7 +41,7 @@ function RouteComponent() {
   const userData = session?.user;
   const jurisdiction = session?.session?.jurisdiction as Jurisdiction;
   const activeOrgId = session?.session?.activeOrganizationId;
-  const activeOrg = organizations?.find(org => org.id === activeOrgId);
+  const activeOrg = organizations?.find((org) => org.id === activeOrgId);
 
   // Greeting Logic
   const getGreeting = () => {
@@ -70,7 +74,6 @@ function RouteComponent() {
     return parts.length > 0 ? parts.join(" → ") : null;
   };
 
-
   const jurisdictionText = formatJurisdiction(jurisdiction);
 
   // Quick actions for admin dashboard
@@ -99,7 +102,6 @@ function RouteComponent() {
       gradient: "from-purple-500/10 to-purple-500/5",
       iconColor: "text-purple-600 dark:text-purple-400",
     },
-
   ];
 
   return (
@@ -107,7 +109,6 @@ function RouteComponent() {
       {/* Welcome Banner */}
       <div className="relative">
         {/* Abstract Background Shapes */}
-
 
         <div className="relative p-6 sm:p-10 sm:pb-6 text-primary-foreground shadow-none">
           <div className="flex items-center gap-2.5 opacity-90 mb-4">
@@ -146,16 +147,19 @@ function RouteComponent() {
         <div className="space-y-2">
           <div className="flex items-center gap-3 text-foreground">
             <Building2 className="h-5 w-5 text-indigo-600 dark:text-indigo-400 shrink-0" />
-            <span className="font-semibold">{activeOrg?.name || "Not assigned"}</span>
+            <span className="font-semibold">
+              {activeOrg?.name || "Not assigned"}
+            </span>
           </div>
 
           <div className="flex items-center gap-3 text-foreground/80">
             <MapPin className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span className="font-medium">{jurisdictionText || "All regions"}</span>
+            <span className="font-medium">
+              {jurisdictionText || "All regions"}
+            </span>
           </div>
         </div>
       </div>
-
 
       {/* Quick Actions */}
       <div className="grid gap-5 px-6 sm:px-10 pt-10">
@@ -166,13 +170,13 @@ function RouteComponent() {
             <Link key={action.title} to={action.href} className="group">
               <Card
                 className={cn(
-                  "bg-transparent border-border h-full transition-all duration-300 hover:-translate-y-1 overflow-hidden relative shadow-none"
+                  "bg-transparent border-border h-full transition-all duration-300 hover:-translate-y-1 overflow-hidden relative shadow-none",
                 )}
               >
                 <div
                   className={cn(
                     "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br",
-                    action.gradient
+                    action.gradient,
                   )}
                 />
 
@@ -181,7 +185,7 @@ function RouteComponent() {
                     <div
                       className={cn(
                         "p-3 rounded-2xl bg-muted/50 transition-colors group-hover:bg-background/80",
-                        action.iconColor
+                        action.iconColor,
                       )}
                     >
                       <action.icon className="h-6 w-6" />

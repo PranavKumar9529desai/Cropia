@@ -2,7 +2,7 @@ import { apiClient } from "@/lib/rpc";
 import { authClient } from "@/lib/auth/auth-client";
 import { useState } from "react";
 import { ConfirmationDialog } from "@repo/ui/components/confirmation-dialog";
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { formatDistanceToNow } from "date-fns";
 import {
   UserPlus,
@@ -15,7 +15,7 @@ import {
   Building2,
   ChevronRight,
   CheckCircle2,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import {
   Card,
@@ -37,7 +37,7 @@ import {
 } from "@repo/ui/components/select";
 
 export const Route = createFileRoute(
-  '/dashboard/organization/organization-invite',
+  "/dashboard/organization/organization-invite",
 )({
   loader: async () => {
     try {
@@ -50,7 +50,7 @@ export const Route = createFileRoute(
     }
   },
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   const pendingInvites = Route.useLoaderData();
@@ -70,16 +70,22 @@ function RouteComponent() {
   const [formData, setFormData] = useState({
     email: "",
     role: "admin",
-    level: inviterJurisdiction?.district && inviterJurisdiction.district !== "All" ? "district" :
-      inviterJurisdiction?.taluka && inviterJurisdiction.taluka !== "All" ? "taluka" :
-        inviterJurisdiction?.village && inviterJurisdiction.village !== "All" ? "village" : "state",
+    level:
+      inviterJurisdiction?.district && inviterJurisdiction.district !== "All"
+        ? "district"
+        : inviterJurisdiction?.taluka && inviterJurisdiction.taluka !== "All"
+          ? "taluka"
+          : inviterJurisdiction?.village &&
+              inviterJurisdiction.village !== "All"
+            ? "village"
+            : "state",
     pincode: "",
     jurisdiction: {
       state: inviterJurisdiction?.state || "Maharashtra",
       district: inviterJurisdiction?.district || "All",
       taluka: inviterJurisdiction?.taluka || "All",
-      village: inviterJurisdiction?.village || "All"
-    }
+      village: inviterJurisdiction?.village || "All",
+    },
   });
 
   const handlePincodeChange = async (pincode: string) => {
@@ -87,24 +93,31 @@ function RouteComponent() {
 
     setIsPincodeLoading(true);
     try {
-      const res = await apiClient.api.admin.organization.invite.pincode[":pincode"].$get({
-        param: { pincode }
+      const res = await apiClient.api.admin.organization.invite.pincode[
+        ":pincode"
+      ].$get({
+        param: { pincode },
       });
 
       if (res.ok) {
         const result = await res.json();
         if (result.success && result.data) {
-          const { state, district, taluka, villages: villageList } = result.data;
+          const {
+            state,
+            district,
+            taluka,
+            villages: villageList,
+          } = result.data;
 
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             jurisdiction: {
               ...prev.jurisdiction,
               state: state,
               district: district,
               taluka: prev.level === "district" ? "All" : taluka,
-              village: prev.level === "village" ? "All" : "All"
-            }
+              village: prev.level === "village" ? "All" : "All",
+            },
           }));
           setVillages(villageList);
           toast.success("Location details auto-filled!");
@@ -128,8 +141,8 @@ function RouteComponent() {
         json: {
           email: formData.email,
           role: formData.role as any,
-          jurisdiction: formData.jurisdiction
-        }
+          jurisdiction: formData.jurisdiction,
+        },
       });
 
       if (res.ok) {
@@ -137,7 +150,7 @@ function RouteComponent() {
         setFormData({ ...formData, email: "" });
         navigate({ search: (prev: any) => ({ ...prev }) }); // Refresh loader
       } else {
-        const error = await res.json() as any;
+        const error = (await res.json()) as any;
         toast.error(error.error || "Failed to send invitation");
       }
     } catch (error) {
@@ -157,8 +170,10 @@ function RouteComponent() {
 
     setIsCancelling(true);
     try {
-      const res = await apiClient.api.admin.organization.invite[":invitationId"].$delete({
-        param: { invitationId: inviteIdToCancel }
+      const res = await apiClient.api.admin.organization.invite[
+        ":invitationId"
+      ].$delete({
+        param: { invitationId: inviteIdToCancel },
       });
       if (res.ok) {
         toast.success("Invitation cancelled");
@@ -191,7 +206,11 @@ function RouteComponent() {
           </div>
           <div className="flex items-center gap-3">
             <Link to="/dashboard/organization/members">
-              <Button variant="ghost" size="sm" className="h-9 px-3 gap-1 md:gap-2 rounded-xl text-[10px] md:text-xs font-bold">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-9 px-3 gap-1 md:gap-2 rounded-xl text-[10px] md:text-xs font-bold"
+              >
                 <span className="hidden xs:inline">View Members</span>
                 <span className="xs:hidden">Directory</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -204,10 +223,9 @@ function RouteComponent() {
       {/* SCROLLABLE CONTENT AREA */}
       <div className="flex-1 overflow-y-auto subtle-scrollbar scroll-smooth">
         <div className="max-w-7xl mx-auto p-4 md:p-8 grid lg:grid-cols-12 gap-10 pb-16">
-
           {/* INVITE FORM AREA */}
-          <div className="lg:col-span-7 container w-full mx-auto space-y-8">
-            <Card className="bg-background shadow-none border overflow-hidden ">
+          <div className="lg:col-span-7 p-4 space-y-8">
+            <Card className="bg-background shadow-none border mx-auto w-full max-w-xl">
               <CardHeader className="p-4 md:p-8">
                 <CardTitle className="text-lg md:text-xl font-bold font-brand flex items-center gap-3 text-primary">
                   <Send className="w-5 h-5" />
@@ -220,7 +238,9 @@ function RouteComponent() {
               <CardContent className="p-4 md:p-8">
                 <form onSubmit={handleInvite} className="space-y-8">
                   <div className="space-y-4">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Email Address</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">
+                      Email Address
+                    </label>
                     <div className="relative">
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
@@ -229,15 +249,24 @@ function RouteComponent() {
                         required
                         className="pl-12 h-12 rounded-2xl bg-muted/20 border-border/50 focus:bg-background transition-all"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Assign Role</label>
-                      <Select value={formData.role} onValueChange={(val) => setFormData({ ...formData, role: val })}>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">
+                        Assign Role
+                      </label>
+                      <Select
+                        value={formData.role}
+                        onValueChange={(val) =>
+                          setFormData({ ...formData, role: val })
+                        }
+                      >
                         <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
                           <div className="flex items-center gap-2">
                             <Shield className="w-4 h-4 text-primary/60" />
@@ -251,7 +280,9 @@ function RouteComponent() {
                     </div>
 
                     <div className="space-y-4">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Jurisdiction Level</label>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">
+                        Jurisdiction Level
+                      </label>
                       <Select
                         value={formData.level}
                         onValueChange={(val: any) => {
@@ -259,9 +290,14 @@ function RouteComponent() {
                             state: inviterJurisdiction?.state || "Maharashtra",
                             district: "All",
                             taluka: "All",
-                            village: "All"
+                            village: "All",
                           };
-                          setFormData({ ...formData, level: val, pincode: "", jurisdiction: baseJurisdiction });
+                          setFormData({
+                            ...formData,
+                            level: val,
+                            pincode: "",
+                            jurisdiction: baseJurisdiction,
+                          });
                           setVillages([]);
                         }}
                       >
@@ -272,13 +308,18 @@ function RouteComponent() {
                           </div>
                         </SelectTrigger>
                         <SelectContent className="rounded-2xl font-medium">
-                          {(!inviterJurisdiction?.district || inviterJurisdiction.district === "All") && (
+                          {(!inviterJurisdiction?.district ||
+                            inviterJurisdiction.district === "All") && (
                             <SelectItem value="state">State Level</SelectItem>
                           )}
-                          {(!inviterJurisdiction?.taluka || inviterJurisdiction.taluka === "All") && (
-                            <SelectItem value="district">District Level</SelectItem>
+                          {(!inviterJurisdiction?.taluka ||
+                            inviterJurisdiction.taluka === "All") && (
+                            <SelectItem value="district">
+                              District Level
+                            </SelectItem>
                           )}
-                          {(!inviterJurisdiction?.village || inviterJurisdiction.village === "All") && (
+                          {(!inviterJurisdiction?.village ||
+                            inviterJurisdiction.village === "All") && (
                             <SelectItem value="taluka">Taluka Level</SelectItem>
                           )}
                           <SelectItem value="village">Village Level</SelectItem>
@@ -289,7 +330,9 @@ function RouteComponent() {
 
                   {formData.level !== "state" && (
                     <div className="space-y-4">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Pincode</label>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">
+                        Pincode
+                      </label>
                       <div className="relative">
                         <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <Input
@@ -316,7 +359,9 @@ function RouteComponent() {
                   <div className="grid grid-cols-2 gap-6 pt-2">
                     {formData.level !== "state" && (
                       <div className="space-y-4">
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">State</label>
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">
+                          State
+                        </label>
                         <Input
                           value={formData.jurisdiction.state}
                           readOnly
@@ -325,9 +370,13 @@ function RouteComponent() {
                       </div>
                     )}
 
-                    {(formData.level === "district" || formData.level === "taluka" || formData.level === "village") && (
+                    {(formData.level === "district" ||
+                      formData.level === "taluka" ||
+                      formData.level === "village") && (
                       <div className="space-y-4">
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">District</label>
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">
+                          District
+                        </label>
                         <Input
                           value={formData.jurisdiction.district}
                           readOnly
@@ -336,9 +385,12 @@ function RouteComponent() {
                       </div>
                     )}
 
-                    {(formData.level === "taluka" || formData.level === "village") && (
+                    {(formData.level === "taluka" ||
+                      formData.level === "village") && (
                       <div className="space-y-4">
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Taluka</label>
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">
+                          Taluka
+                        </label>
                         <Input
                           value={formData.jurisdiction.taluka}
                           readOnly
@@ -349,22 +401,37 @@ function RouteComponent() {
 
                     {formData.level === "village" && (
                       <div className="space-y-4">
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">Village</label>
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground px-1">
+                          Village
+                        </label>
                         <Select
                           value={formData.jurisdiction.village}
                           disabled={villages.length === 0}
-                          onValueChange={(val) => setFormData({
-                            ...formData,
-                            jurisdiction: { ...formData.jurisdiction, village: val }
-                          })}
+                          onValueChange={(val) =>
+                            setFormData({
+                              ...formData,
+                              jurisdiction: {
+                                ...formData.jurisdiction,
+                                village: val,
+                              },
+                            })
+                          }
                         >
                           <SelectTrigger className="h-12 rounded-2xl bg-muted/20 border-border/50">
-                            <SelectValue placeholder={villages.length === 0 ? "Enter Pincode" : "Select Village"} />
+                            <SelectValue
+                              placeholder={
+                                villages.length === 0
+                                  ? "Enter Pincode"
+                                  : "Select Village"
+                              }
+                            />
                           </SelectTrigger>
                           <SelectContent className="rounded-2xl font-medium">
                             <SelectItem value="All">All Villages</SelectItem>
-                            {villages.map(v => (
-                              <SelectItem key={v} value={v}>{v}</SelectItem>
+                            {villages.map((v) => (
+                              <SelectItem key={v} value={v}>
+                                {v}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
@@ -380,7 +447,9 @@ function RouteComponent() {
                       <div className="space-y-1">
                         <h4 className="text-sm font-bold">Scope Definition</h4>
                         <p className="text-xs text-muted-foreground font-medium leading-relaxed">
-                          This member will have access to data and analysis for the selected jurisdiction. You can refine specific areas in the member details later.
+                          This member will have access to data and analysis for
+                          the selected jurisdiction. You can refine specific
+                          areas in the member details later.
                         </p>
                       </div>
                     </div>
@@ -402,11 +471,16 @@ function RouteComponent() {
           {/* PENDING INVITES LIST */}
           <div className="lg:col-span-5 space-y-6 lg:border-l lg:border-border lg:pl-10">
             <div className="space-y-4">
-              <h3 className="text-lg font-bold font-brand px-1">Pending Invitations</h3>
+              <h3 className="text-lg font-bold font-brand px-1">
+                Pending Invitations
+              </h3>
               {pendingInvites.length > 0 ? (
                 <div className="space-y-3">
                   {pendingInvites.map((invite: any) => (
-                    <Card key={invite.id} className="rounded-2xl border-border/50 shadow-none hover:border-primary/20 transition-all bg-background group">
+                    <Card
+                      key={invite.id}
+                      className="rounded-2xl border-border/50 shadow-none hover:border-primary/20 transition-all bg-background group"
+                    >
                       <CardContent className="p-3 md:p-4 flex items-center justify-between gap-3">
                         <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
                           <div className="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
@@ -414,19 +488,34 @@ function RouteComponent() {
                           </div>
                           <div className="flex flex-col gap-0 min-w-0 flex-1">
                             <div className="flex items-center gap-2">
-                              <p className="text-xs md:text-sm font-bold truncate">{invite.email}</p>
-                              <Badge variant="outline" className="text-[8px] md:text-[9px] uppercase tracking-tighter h-3.5 md:h-4 px-1 w-fit shrink-0">{invite.role}</Badge>
+                              <p className="text-xs md:text-sm font-bold truncate">
+                                {invite.email}
+                              </p>
+                              <Badge
+                                variant="outline"
+                                className="text-[8px] md:text-[9px] uppercase tracking-tighter h-3.5 md:h-4 px-1 w-fit shrink-0"
+                              >
+                                {invite.role}
+                              </Badge>
                             </div>
                             <p className="text-[9px] md:text-[10px] text-muted-foreground font-medium truncate">
-                              {invite.jurisdiction?.village !== "All" ? `${invite.jurisdiction?.village}, ` : ""}
-                              {invite.jurisdiction?.taluka !== "All" ? `${invite.jurisdiction?.taluka}, ` : ""}
-                              {invite.jurisdiction?.district !== "All" ? `${invite.jurisdiction?.district}` : invite.jurisdiction?.state}
+                              {invite.jurisdiction?.village !== "All"
+                                ? `${invite.jurisdiction?.village}, `
+                                : ""}
+                              {invite.jurisdiction?.taluka !== "All"
+                                ? `${invite.jurisdiction?.taluka}, `
+                                : ""}
+                              {invite.jurisdiction?.district !== "All"
+                                ? `${invite.jurisdiction?.district}`
+                                : invite.jurisdiction?.state}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
                           <span className="text-[8px] md:text-[10px] text-muted-foreground font-medium italic whitespace-nowrap">
-                            {formatDistanceToNow(new Date(invite.createdAt), { addSuffix: true })}
+                            {formatDistanceToNow(new Date(invite.createdAt), {
+                              addSuffix: true,
+                            })}
                           </span>
                           <Button
                             variant="ghost"
@@ -446,17 +535,18 @@ function RouteComponent() {
                   <CardContent className="p-10 flex flex-col items-center justify-center text-center space-y-3 opacity-50">
                     <Clock className="w-8 h-8 text-muted-foreground" />
                     <div className="space-y-1">
-                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Queue is empty</p>
-                      <p className="text-[10px] font-medium leading-relaxed max-w-[200px]">No pending invitations at the moment.</p>
+                      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                        Queue is empty
+                      </p>
+                      <p className="text-[10px] font-medium leading-relaxed max-w-[200px]">
+                        No pending invitations at the moment.
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
               )}
             </div>
-
-
           </div>
-
         </div>
       </div>
 
@@ -488,5 +578,5 @@ function RouteComponent() {
         }
       `}</style>
     </div>
-  )
+  );
 }

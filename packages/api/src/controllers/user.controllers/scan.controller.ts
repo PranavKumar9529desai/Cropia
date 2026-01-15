@@ -29,7 +29,7 @@ const ScanController = new Hono<{
           createdAt: true,
         },
         cacheStrategy: {
-          swr: 60 * 60, // 
+          swr: 60 * 60, //
           ttl: 60 * 60 * 24, //
         },
       });

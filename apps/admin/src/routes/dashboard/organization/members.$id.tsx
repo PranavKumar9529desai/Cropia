@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { apiClient } from "@/lib/rpc";
 import { authClient } from "@/lib/auth/auth-client";
 import {
@@ -12,7 +12,7 @@ import {
   CheckCircle2,
   AlertCircle,
   MoreVertical,
-  Settings2
+  Settings2,
 } from "lucide-react";
 import { Separator } from "@repo/ui/components/separator";
 import {
@@ -23,7 +23,11 @@ import {
   CardDescription,
 } from "@repo/ui/components/card";
 import { Badge } from "@repo/ui/components/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
 import { Button } from "@repo/ui/components/button";
 import { toast } from "sonner";
 import {
@@ -34,11 +38,13 @@ import {
   SelectTrigger,
 } from "@repo/ui/components/select";
 
-export const Route = createFileRoute('/dashboard/organization/members/$id')({
+export const Route = createFileRoute("/dashboard/organization/members/$id")({
   loader: async ({ params: { id } }) => {
     try {
-      const res = await apiClient.api.admin.organization.members[":memberId"].$get({
-        param: { memberId: id }
+      const res = await apiClient.api.admin.organization.members[
+        ":memberId"
+      ].$get({
+        param: { memberId: id },
       });
       if (!res.ok) throw new Error("Failed to fetch member details");
       return await res.json();
@@ -48,7 +54,7 @@ export const Route = createFileRoute('/dashboard/organization/members/$id')({
     }
   },
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   const member = Route.useLoaderData();
@@ -63,21 +69,32 @@ function RouteComponent() {
         <AlertCircle className="w-10 h-10 text-muted-foreground/50" />
         <div className="text-center space-y-1">
           <p className="text-lg font-semibold tracking-tight ">Access Denied</p>
-          <p className="text-sm text-muted-foreground">You do not have permission to view this member.</p>
+          <p className="text-sm text-muted-foreground">
+            You do not have permission to view this member.
+          </p>
         </div>
         <Link to="/dashboard/organization/members">
-          <Button variant="outline" size="sm">Back to Members</Button>
+          <Button variant="outline" size="sm">
+            Back to Members
+          </Button>
         </Link>
       </div>
     );
   }
 
   const handleRemoveMember = async () => {
-    if (!confirm("Are you sure you want to remove this member? This action cannot be undone.")) return;
+    if (
+      !confirm(
+        "Are you sure you want to remove this member? This action cannot be undone.",
+      )
+    )
+      return;
 
     try {
-      const res = await apiClient.api.admin.organization.members[":memberId"].$delete({
-        param: { memberId: member.id }
+      const res = await apiClient.api.admin.organization.members[
+        ":memberId"
+      ].$delete({
+        param: { memberId: member.id },
       });
       if (res.ok) {
         toast.success("Member removed successfully");
@@ -93,11 +110,32 @@ function RouteComponent() {
   const getRoleBadge = (role: string) => {
     switch (role.toLowerCase()) {
       case "owner":
-        return <Badge variant="secondary" className="bg-violet-500/10 text-violet-600 hover:bg-violet-500/15 border-transparent font-bold uppercase tracking-wider text-[10px]">Owner</Badge>;
+        return (
+          <Badge
+            variant="secondary"
+            className="bg-violet-500/10 text-violet-600 hover:bg-violet-500/15 border-transparent font-bold uppercase tracking-wider text-[10px]"
+          >
+            Owner
+          </Badge>
+        );
       case "admin":
-        return <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 hover:bg-blue-500/15 border-transparent font-bold uppercase tracking-wider text-[10px]">Admin</Badge>;
+        return (
+          <Badge
+            variant="secondary"
+            className="bg-blue-500/10 text-blue-600 hover:bg-blue-500/15 border-transparent font-bold uppercase tracking-wider text-[10px]"
+          >
+            Admin
+          </Badge>
+        );
       default:
-        return <Badge variant="outline" className="font-bold uppercase tracking-wider text-[10px]">Member</Badge>;
+        return (
+          <Badge
+            variant="outline"
+            className="font-bold uppercase tracking-wider text-[10px]"
+          >
+            Member
+          </Badge>
+        );
     }
   };
 
@@ -109,7 +147,11 @@ function RouteComponent() {
           <div className="flex flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
               <Link to="/dashboard/organization/members">
-                <Button variant="ghost" size="icon" className="size-8 rounded-full hover:bg-muted shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 rounded-full hover:bg-muted shrink-0"
+                >
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
               </Link>
@@ -125,7 +167,9 @@ function RouteComponent() {
                     <h1 className="text-sm md:text-xl font-bold tracking-tight truncate">
                       {member.user.name}
                     </h1>
-                    <div className="hidden xs:block">{getRoleBadge(member.role)}</div>
+                    <div className="hidden xs:block">
+                      {getRoleBadge(member.role)}
+                    </div>
                   </div>
                   <p className="text-[10px] md:text-sm text-muted-foreground font-medium flex items-center gap-1.5 truncate">
                     <Mail className="w-3 h-3 opacity-70 shrink-0" />
@@ -162,7 +206,9 @@ function RouteComponent() {
               <CardHeader className="border-b bg-muted/30 py-4 px-6">
                 <div className="flex items-center gap-2">
                   <Shield className="w-4 h-4 text-primary" />
-                  <CardTitle className="text-sm font-bold">Access & Permissions</CardTitle>
+                  <CardTitle className="text-sm font-bold">
+                    Access & Permissions
+                  </CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="p-6 space-y-8">
@@ -171,22 +217,34 @@ function RouteComponent() {
                   <div className="flex items-center justify-between gap-4">
                     <div className="space-y-0.5">
                       <p className="text-sm font-bold">Organizational Role</p>
-                      <p className="text-xs text-muted-foreground">Higher level roles grant more administrative access.</p>
+                      <p className="text-xs text-muted-foreground">
+                        Higher level roles grant more administrative access.
+                      </p>
                     </div>
                     <Select defaultValue={member.role} disabled={!isOwner}>
                       <SelectTrigger className="w-[120px] h-9 rounded-lg text-xs font-bold bg-background">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="rounded-lg shadow-lg">
-                        <SelectItem value="owner" className="text-xs font-medium">Owner</SelectItem>
-                        <SelectItem value="admin" className="text-xs font-medium">Admin</SelectItem>
+                        <SelectItem
+                          value="owner"
+                          className="text-xs font-medium"
+                        >
+                          Owner
+                        </SelectItem>
+                        <SelectItem
+                          value="admin"
+                          className="text-xs font-medium"
+                        >
+                          Admin
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="p-3 rounded-lg bg-muted/20 border text-[11px] text-muted-foreground leading-relaxed flex items-start gap-2">
                     <Activity className="w-3.5 h-3.5 text-primary mt-0.5" />
                     <span>
-                      {member.role === 'owner'
+                      {member.role === "owner"
                         ? "Complete administrative control over the organization, user management, and sensitive settings."
                         : "Partial administrative control. Can view most data but restricted from high-level management."}
                     </span>
@@ -200,7 +258,11 @@ function RouteComponent() {
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-bold">Jurisdiction Scope</p>
                     {isOwner && (
-                      <Button variant="ghost" size="sm" className="h-7 px-2 text-xs font-bold text-primary hover:bg-primary/5">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 px-2 text-xs font-bold text-primary hover:bg-primary/5"
+                      >
                         <Settings2 className="w-3 h-3 mr-1.5" />
                         Configure
                       </Button>
@@ -209,24 +271,37 @@ function RouteComponent() {
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="p-4 rounded-xl border bg-muted/10 space-y-1">
-                      <p className="text-[10px] uppercase font-bold text-muted-foreground/60 tracking-wider">State Access</p>
+                      <p className="text-[10px] uppercase font-bold text-muted-foreground/60 tracking-wider">
+                        State Access
+                      </p>
                       <div className="flex items-center gap-2">
                         <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-                        <span className="text-sm font-semibold">{member.jurisdiction?.state || "All Access"}</span>
+                        <span className="text-sm font-semibold">
+                          {member.jurisdiction?.state || "All Access"}
+                        </span>
                       </div>
                     </div>
                     <div className="p-4 rounded-xl border bg-muted/10 space-y-1">
-                      <p className="text-[10px] uppercase font-bold text-muted-foreground/60 tracking-wider">Primary Region</p>
+                      <p className="text-[10px] uppercase font-bold text-muted-foreground/60 tracking-wider">
+                        Primary Region
+                      </p>
                       <div className="flex items-center gap-2">
                         <MapPin className="w-3.5 h-3.5 text-muted-foreground/50" />
-                        <span className="text-sm font-semibold text-foreground/80">{member.jurisdiction?.district || "Global Area"}</span>
+                        <span className="text-sm font-semibold text-foreground/80">
+                          {member.jurisdiction?.district || "Global Area"}
+                        </span>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 p-4 rounded-xl border border-dashed text-xs text-muted-foreground bg-muted/5">
                     <Activity className="w-4 h-4 opacity-50" />
-                    <p>Current depth monitoring: <span className="font-bold text-foreground">{member.jurisdiction?.taluka || "Full Sub-hierarchy"}</span></p>
+                    <p>
+                      Current depth monitoring:{" "}
+                      <span className="font-bold text-foreground">
+                        {member.jurisdiction?.taluka || "Full Sub-hierarchy"}
+                      </span>
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -237,7 +312,9 @@ function RouteComponent() {
           <div className="space-y-6">
             <Card className="rounded-xl border shadow-sm">
               <CardHeader className="py-4 px-6 border-b bg-muted/30">
-                <CardTitle className="text-sm font-bold">Member Information</CardTitle>
+                <CardTitle className="text-sm font-bold">
+                  Member Information
+                </CardTitle>
               </CardHeader>
               <CardContent className="p-5 space-y-6">
                 <div className="flex items-center gap-3">
@@ -245,7 +322,9 @@ function RouteComponent() {
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-70">Status</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-70">
+                      Status
+                    </p>
                     <p className="text-sm font-bold text-emerald-600">Active</p>
                   </div>
                 </div>
@@ -254,9 +333,15 @@ function RouteComponent() {
                     <Calendar className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-70">Joined On</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-70">
+                      Joined On
+                    </p>
                     <p className="text-sm font-bold">
-                      {new Date(member.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                      {new Date(member.createdAt).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
                     </p>
                   </div>
                 </div>
@@ -269,12 +354,17 @@ function RouteComponent() {
                 Administrative Note
               </h3>
               <p className="text-xs text-orange-700/80 dark:text-orange-400/80 font-medium leading-relaxed">
-                Role and scope changes take effect immediately. The member may need to re-log to see full permission updates.
+                Role and scope changes take effect immediately. The member may
+                need to re-log to see full permission updates.
               </p>
             </Card>
 
             <Link to="/dashboard/organization/members" className="block">
-              <Button variant="ghost" size="sm" className="w-full text-muted-foreground hover:text-foreground font-semibold px-0 text-xs">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full text-muted-foreground hover:text-foreground font-semibold px-0 text-xs"
+              >
                 <ArrowLeft className="w-3 h-3 mr-2" />
                 Return to member directory
               </Button>
@@ -283,5 +373,5 @@ function RouteComponent() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -41,7 +41,8 @@ function LocationSettings() {
 
   // Confirmation Dialog State
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const [pendingValues, setPendingValues] = useState<CreateLocationInputType | null>(null);
+  const [pendingValues, setPendingValues] =
+    useState<CreateLocationInputType | null>(null);
 
   const form = useForm<CreateLocationInputType>({
     resolver: zodResolver(createLocationSchema),

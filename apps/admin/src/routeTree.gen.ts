@@ -8,461 +8,461 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as SkeltonRouteImport } from './routes/skelton'
-import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
-import { Route as AuthRouteRouteImport } from './routes/_auth/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as DashboardFarmerAlertsRouteImport } from './routes/dashboard/farmer-alerts'
-import { Route as DashboardCropMapRouteImport } from './routes/dashboard/crop-map'
-import { Route as DashboardAreaScanRouteImport } from './routes/dashboard/area-scan'
-import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
-import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
-import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
-import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
-import { Route as AuthCheckEmailRouteImport } from './routes/_auth/check-email'
-import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/settings/route'
-import { Route as DashboardSettingsScanRouteImport } from './routes/dashboard/settings/scan'
-import { Route as DashboardSettingsNotificationRouteImport } from './routes/dashboard/settings/notification'
-import { Route as DashboardSettingsAccountRouteImport } from './routes/dashboard/settings/account'
-import { Route as DashboardOrganizationOrganizationInviteRouteImport } from './routes/dashboard/organization/organization-invite'
-import { Route as DashboardOrganizationMyOrganizationRouteImport } from './routes/dashboard/organization/my-organization'
-import { Route as AuthAcceptInvitationIdRouteImport } from './routes/_auth/accept-invitation.$id'
-import { Route as DashboardOrganizationMembersIndexRouteImport } from './routes/dashboard/organization/members.index'
-import { Route as DashboardOrganizationMembersIdRouteImport } from './routes/dashboard/organization/members.$id'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as SkeltonRouteImport } from "./routes/skelton";
+import { Route as DashboardRouteRouteImport } from "./routes/dashboard/route";
+import { Route as AuthRouteRouteImport } from "./routes/_auth/route";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
+import { Route as DashboardFarmerAlertsRouteImport } from "./routes/dashboard/farmer-alerts";
+import { Route as DashboardCropMapRouteImport } from "./routes/dashboard/crop-map";
+import { Route as DashboardAreaScanRouteImport } from "./routes/dashboard/area-scan";
+import { Route as AuthSignUpRouteImport } from "./routes/_auth/sign-up";
+import { Route as AuthSignInRouteImport } from "./routes/_auth/sign-in";
+import { Route as AuthResetPasswordRouteImport } from "./routes/_auth/reset-password";
+import { Route as AuthForgotPasswordRouteImport } from "./routes/_auth/forgot-password";
+import { Route as AuthCheckEmailRouteImport } from "./routes/_auth/check-email";
+import { Route as DashboardSettingsRouteRouteImport } from "./routes/dashboard/settings/route";
+import { Route as DashboardSettingsScanRouteImport } from "./routes/dashboard/settings/scan";
+import { Route as DashboardSettingsNotificationRouteImport } from "./routes/dashboard/settings/notification";
+import { Route as DashboardSettingsAccountRouteImport } from "./routes/dashboard/settings/account";
+import { Route as DashboardOrganizationOrganizationInviteRouteImport } from "./routes/dashboard/organization/organization-invite";
+import { Route as DashboardOrganizationMyOrganizationRouteImport } from "./routes/dashboard/organization/my-organization";
+import { Route as AuthAcceptInvitationIdRouteImport } from "./routes/_auth/accept-invitation.$id";
+import { Route as DashboardOrganizationMembersIndexRouteImport } from "./routes/dashboard/organization/members.index";
+import { Route as DashboardOrganizationMembersIdRouteImport } from "./routes/dashboard/organization/members.$id";
 
 const SkeltonRoute = SkeltonRouteImport.update({
-  id: '/skelton',
-  path: '/skelton',
+  id: "/skelton",
+  path: "/skelton",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+  id: "/dashboard",
+  path: "/dashboard",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthRouteRoute = AuthRouteRouteImport.update({
-  id: '/_auth',
+  id: "/_auth",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => DashboardRouteRoute,
-} as any)
+} as any);
 const DashboardFarmerAlertsRoute = DashboardFarmerAlertsRouteImport.update({
-  id: '/farmer-alerts',
-  path: '/farmer-alerts',
+  id: "/farmer-alerts",
+  path: "/farmer-alerts",
   getParentRoute: () => DashboardRouteRoute,
-} as any)
+} as any);
 const DashboardCropMapRoute = DashboardCropMapRouteImport.update({
-  id: '/crop-map',
-  path: '/crop-map',
+  id: "/crop-map",
+  path: "/crop-map",
   getParentRoute: () => DashboardRouteRoute,
-} as any)
+} as any);
 const DashboardAreaScanRoute = DashboardAreaScanRouteImport.update({
-  id: '/area-scan',
-  path: '/area-scan',
+  id: "/area-scan",
+  path: "/area-scan",
   getParentRoute: () => DashboardRouteRoute,
-} as any)
+} as any);
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
-  id: '/sign-up',
-  path: '/sign-up',
+  id: "/sign-up",
+  path: "/sign-up",
   getParentRoute: () => AuthRouteRoute,
-} as any)
+} as any);
 const AuthSignInRoute = AuthSignInRouteImport.update({
-  id: '/sign-in',
-  path: '/sign-in',
+  id: "/sign-in",
+  path: "/sign-in",
   getParentRoute: () => AuthRouteRoute,
-} as any)
+} as any);
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
+  id: "/reset-password",
+  path: "/reset-password",
   getParentRoute: () => AuthRouteRoute,
-} as any)
+} as any);
 const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
+  id: "/forgot-password",
+  path: "/forgot-password",
   getParentRoute: () => AuthRouteRoute,
-} as any)
+} as any);
 const AuthCheckEmailRoute = AuthCheckEmailRouteImport.update({
-  id: '/check-email',
-  path: '/check-email',
+  id: "/check-email",
+  path: "/check-email",
   getParentRoute: () => AuthRouteRoute,
-} as any)
+} as any);
 const DashboardSettingsRouteRoute = DashboardSettingsRouteRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+  id: "/settings",
+  path: "/settings",
   getParentRoute: () => DashboardRouteRoute,
-} as any)
+} as any);
 const DashboardSettingsScanRoute = DashboardSettingsScanRouteImport.update({
-  id: '/scan',
-  path: '/scan',
+  id: "/scan",
+  path: "/scan",
   getParentRoute: () => DashboardSettingsRouteRoute,
-} as any)
+} as any);
 const DashboardSettingsNotificationRoute =
   DashboardSettingsNotificationRouteImport.update({
-    id: '/notification',
-    path: '/notification',
+    id: "/notification",
+    path: "/notification",
     getParentRoute: () => DashboardSettingsRouteRoute,
-  } as any)
+  } as any);
 const DashboardSettingsAccountRoute =
   DashboardSettingsAccountRouteImport.update({
-    id: '/account',
-    path: '/account',
+    id: "/account",
+    path: "/account",
     getParentRoute: () => DashboardSettingsRouteRoute,
-  } as any)
+  } as any);
 const DashboardOrganizationOrganizationInviteRoute =
   DashboardOrganizationOrganizationInviteRouteImport.update({
-    id: '/organization/organization-invite',
-    path: '/organization/organization-invite',
+    id: "/organization/organization-invite",
+    path: "/organization/organization-invite",
     getParentRoute: () => DashboardRouteRoute,
-  } as any)
+  } as any);
 const DashboardOrganizationMyOrganizationRoute =
   DashboardOrganizationMyOrganizationRouteImport.update({
-    id: '/organization/my-organization',
-    path: '/organization/my-organization',
+    id: "/organization/my-organization",
+    path: "/organization/my-organization",
     getParentRoute: () => DashboardRouteRoute,
-  } as any)
+  } as any);
 const AuthAcceptInvitationIdRoute = AuthAcceptInvitationIdRouteImport.update({
-  id: '/accept-invitation/$id',
-  path: '/accept-invitation/$id',
+  id: "/accept-invitation/$id",
+  path: "/accept-invitation/$id",
   getParentRoute: () => AuthRouteRoute,
-} as any)
+} as any);
 const DashboardOrganizationMembersIndexRoute =
   DashboardOrganizationMembersIndexRouteImport.update({
-    id: '/organization/members/',
-    path: '/organization/members/',
+    id: "/organization/members/",
+    path: "/organization/members/",
     getParentRoute: () => DashboardRouteRoute,
-  } as any)
+  } as any);
 const DashboardOrganizationMembersIdRoute =
   DashboardOrganizationMembersIdRouteImport.update({
-    id: '/organization/members/$id',
-    path: '/organization/members/$id',
+    id: "/organization/members/$id",
+    path: "/organization/members/$id",
     getParentRoute: () => DashboardRouteRoute,
-  } as any)
+  } as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/skelton': typeof SkeltonRoute
-  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
-  '/check-email': typeof AuthCheckEmailRoute
-  '/forgot-password': typeof AuthForgotPasswordRoute
-  '/reset-password': typeof AuthResetPasswordRoute
-  '/sign-in': typeof AuthSignInRoute
-  '/sign-up': typeof AuthSignUpRoute
-  '/dashboard/area-scan': typeof DashboardAreaScanRoute
-  '/dashboard/crop-map': typeof DashboardCropMapRoute
-  '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
-  '/dashboard/organization/my-organization': typeof DashboardOrganizationMyOrganizationRoute
-  '/dashboard/organization/organization-invite': typeof DashboardOrganizationOrganizationInviteRoute
-  '/dashboard/settings/account': typeof DashboardSettingsAccountRoute
-  '/dashboard/settings/notification': typeof DashboardSettingsNotificationRoute
-  '/dashboard/settings/scan': typeof DashboardSettingsScanRoute
-  '/dashboard/organization/members/$id': typeof DashboardOrganizationMembersIdRoute
-  '/dashboard/organization/members': typeof DashboardOrganizationMembersIndexRoute
+  "/": typeof IndexRoute;
+  "/dashboard": typeof DashboardRouteRouteWithChildren;
+  "/skelton": typeof SkeltonRoute;
+  "/dashboard/settings": typeof DashboardSettingsRouteRouteWithChildren;
+  "/check-email": typeof AuthCheckEmailRoute;
+  "/forgot-password": typeof AuthForgotPasswordRoute;
+  "/reset-password": typeof AuthResetPasswordRoute;
+  "/sign-in": typeof AuthSignInRoute;
+  "/sign-up": typeof AuthSignUpRoute;
+  "/dashboard/area-scan": typeof DashboardAreaScanRoute;
+  "/dashboard/crop-map": typeof DashboardCropMapRoute;
+  "/dashboard/farmer-alerts": typeof DashboardFarmerAlertsRoute;
+  "/dashboard/": typeof DashboardIndexRoute;
+  "/accept-invitation/$id": typeof AuthAcceptInvitationIdRoute;
+  "/dashboard/organization/my-organization": typeof DashboardOrganizationMyOrganizationRoute;
+  "/dashboard/organization/organization-invite": typeof DashboardOrganizationOrganizationInviteRoute;
+  "/dashboard/settings/account": typeof DashboardSettingsAccountRoute;
+  "/dashboard/settings/notification": typeof DashboardSettingsNotificationRoute;
+  "/dashboard/settings/scan": typeof DashboardSettingsScanRoute;
+  "/dashboard/organization/members/$id": typeof DashboardOrganizationMembersIdRoute;
+  "/dashboard/organization/members": typeof DashboardOrganizationMembersIndexRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/skelton': typeof SkeltonRoute
-  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
-  '/check-email': typeof AuthCheckEmailRoute
-  '/forgot-password': typeof AuthForgotPasswordRoute
-  '/reset-password': typeof AuthResetPasswordRoute
-  '/sign-in': typeof AuthSignInRoute
-  '/sign-up': typeof AuthSignUpRoute
-  '/dashboard/area-scan': typeof DashboardAreaScanRoute
-  '/dashboard/crop-map': typeof DashboardCropMapRoute
-  '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
-  '/dashboard': typeof DashboardIndexRoute
-  '/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
-  '/dashboard/organization/my-organization': typeof DashboardOrganizationMyOrganizationRoute
-  '/dashboard/organization/organization-invite': typeof DashboardOrganizationOrganizationInviteRoute
-  '/dashboard/settings/account': typeof DashboardSettingsAccountRoute
-  '/dashboard/settings/notification': typeof DashboardSettingsNotificationRoute
-  '/dashboard/settings/scan': typeof DashboardSettingsScanRoute
-  '/dashboard/organization/members/$id': typeof DashboardOrganizationMembersIdRoute
-  '/dashboard/organization/members': typeof DashboardOrganizationMembersIndexRoute
+  "/": typeof IndexRoute;
+  "/skelton": typeof SkeltonRoute;
+  "/dashboard/settings": typeof DashboardSettingsRouteRouteWithChildren;
+  "/check-email": typeof AuthCheckEmailRoute;
+  "/forgot-password": typeof AuthForgotPasswordRoute;
+  "/reset-password": typeof AuthResetPasswordRoute;
+  "/sign-in": typeof AuthSignInRoute;
+  "/sign-up": typeof AuthSignUpRoute;
+  "/dashboard/area-scan": typeof DashboardAreaScanRoute;
+  "/dashboard/crop-map": typeof DashboardCropMapRoute;
+  "/dashboard/farmer-alerts": typeof DashboardFarmerAlertsRoute;
+  "/dashboard": typeof DashboardIndexRoute;
+  "/accept-invitation/$id": typeof AuthAcceptInvitationIdRoute;
+  "/dashboard/organization/my-organization": typeof DashboardOrganizationMyOrganizationRoute;
+  "/dashboard/organization/organization-invite": typeof DashboardOrganizationOrganizationInviteRoute;
+  "/dashboard/settings/account": typeof DashboardSettingsAccountRoute;
+  "/dashboard/settings/notification": typeof DashboardSettingsNotificationRoute;
+  "/dashboard/settings/scan": typeof DashboardSettingsScanRoute;
+  "/dashboard/organization/members/$id": typeof DashboardOrganizationMembersIdRoute;
+  "/dashboard/organization/members": typeof DashboardOrganizationMembersIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteRouteWithChildren
-  '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/skelton': typeof SkeltonRoute
-  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
-  '/_auth/check-email': typeof AuthCheckEmailRoute
-  '/_auth/forgot-password': typeof AuthForgotPasswordRoute
-  '/_auth/reset-password': typeof AuthResetPasswordRoute
-  '/_auth/sign-in': typeof AuthSignInRoute
-  '/_auth/sign-up': typeof AuthSignUpRoute
-  '/dashboard/area-scan': typeof DashboardAreaScanRoute
-  '/dashboard/crop-map': typeof DashboardCropMapRoute
-  '/dashboard/farmer-alerts': typeof DashboardFarmerAlertsRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/_auth/accept-invitation/$id': typeof AuthAcceptInvitationIdRoute
-  '/dashboard/organization/my-organization': typeof DashboardOrganizationMyOrganizationRoute
-  '/dashboard/organization/organization-invite': typeof DashboardOrganizationOrganizationInviteRoute
-  '/dashboard/settings/account': typeof DashboardSettingsAccountRoute
-  '/dashboard/settings/notification': typeof DashboardSettingsNotificationRoute
-  '/dashboard/settings/scan': typeof DashboardSettingsScanRoute
-  '/dashboard/organization/members/$id': typeof DashboardOrganizationMembersIdRoute
-  '/dashboard/organization/members/': typeof DashboardOrganizationMembersIndexRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexRoute;
+  "/_auth": typeof AuthRouteRouteWithChildren;
+  "/dashboard": typeof DashboardRouteRouteWithChildren;
+  "/skelton": typeof SkeltonRoute;
+  "/dashboard/settings": typeof DashboardSettingsRouteRouteWithChildren;
+  "/_auth/check-email": typeof AuthCheckEmailRoute;
+  "/_auth/forgot-password": typeof AuthForgotPasswordRoute;
+  "/_auth/reset-password": typeof AuthResetPasswordRoute;
+  "/_auth/sign-in": typeof AuthSignInRoute;
+  "/_auth/sign-up": typeof AuthSignUpRoute;
+  "/dashboard/area-scan": typeof DashboardAreaScanRoute;
+  "/dashboard/crop-map": typeof DashboardCropMapRoute;
+  "/dashboard/farmer-alerts": typeof DashboardFarmerAlertsRoute;
+  "/dashboard/": typeof DashboardIndexRoute;
+  "/_auth/accept-invitation/$id": typeof AuthAcceptInvitationIdRoute;
+  "/dashboard/organization/my-organization": typeof DashboardOrganizationMyOrganizationRoute;
+  "/dashboard/organization/organization-invite": typeof DashboardOrganizationOrganizationInviteRoute;
+  "/dashboard/settings/account": typeof DashboardSettingsAccountRoute;
+  "/dashboard/settings/notification": typeof DashboardSettingsNotificationRoute;
+  "/dashboard/settings/scan": typeof DashboardSettingsScanRoute;
+  "/dashboard/organization/members/$id": typeof DashboardOrganizationMembersIdRoute;
+  "/dashboard/organization/members/": typeof DashboardOrganizationMembersIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | '/dashboard'
-    | '/skelton'
-    | '/dashboard/settings'
-    | '/check-email'
-    | '/forgot-password'
-    | '/reset-password'
-    | '/sign-in'
-    | '/sign-up'
-    | '/dashboard/area-scan'
-    | '/dashboard/crop-map'
-    | '/dashboard/farmer-alerts'
-    | '/dashboard/'
-    | '/accept-invitation/$id'
-    | '/dashboard/organization/my-organization'
-    | '/dashboard/organization/organization-invite'
-    | '/dashboard/settings/account'
-    | '/dashboard/settings/notification'
-    | '/dashboard/settings/scan'
-    | '/dashboard/organization/members/$id'
-    | '/dashboard/organization/members'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | "/dashboard"
+    | "/skelton"
+    | "/dashboard/settings"
+    | "/check-email"
+    | "/forgot-password"
+    | "/reset-password"
+    | "/sign-in"
+    | "/sign-up"
+    | "/dashboard/area-scan"
+    | "/dashboard/crop-map"
+    | "/dashboard/farmer-alerts"
+    | "/dashboard/"
+    | "/accept-invitation/$id"
+    | "/dashboard/organization/my-organization"
+    | "/dashboard/organization/organization-invite"
+    | "/dashboard/settings/account"
+    | "/dashboard/settings/notification"
+    | "/dashboard/settings/scan"
+    | "/dashboard/organization/members/$id"
+    | "/dashboard/organization/members";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | '/skelton'
-    | '/dashboard/settings'
-    | '/check-email'
-    | '/forgot-password'
-    | '/reset-password'
-    | '/sign-in'
-    | '/sign-up'
-    | '/dashboard/area-scan'
-    | '/dashboard/crop-map'
-    | '/dashboard/farmer-alerts'
-    | '/dashboard'
-    | '/accept-invitation/$id'
-    | '/dashboard/organization/my-organization'
-    | '/dashboard/organization/organization-invite'
-    | '/dashboard/settings/account'
-    | '/dashboard/settings/notification'
-    | '/dashboard/settings/scan'
-    | '/dashboard/organization/members/$id'
-    | '/dashboard/organization/members'
+    | "/"
+    | "/skelton"
+    | "/dashboard/settings"
+    | "/check-email"
+    | "/forgot-password"
+    | "/reset-password"
+    | "/sign-in"
+    | "/sign-up"
+    | "/dashboard/area-scan"
+    | "/dashboard/crop-map"
+    | "/dashboard/farmer-alerts"
+    | "/dashboard"
+    | "/accept-invitation/$id"
+    | "/dashboard/organization/my-organization"
+    | "/dashboard/organization/organization-invite"
+    | "/dashboard/settings/account"
+    | "/dashboard/settings/notification"
+    | "/dashboard/settings/scan"
+    | "/dashboard/organization/members/$id"
+    | "/dashboard/organization/members";
   id:
-    | '__root__'
-    | '/'
-    | '/_auth'
-    | '/dashboard'
-    | '/skelton'
-    | '/dashboard/settings'
-    | '/_auth/check-email'
-    | '/_auth/forgot-password'
-    | '/_auth/reset-password'
-    | '/_auth/sign-in'
-    | '/_auth/sign-up'
-    | '/dashboard/area-scan'
-    | '/dashboard/crop-map'
-    | '/dashboard/farmer-alerts'
-    | '/dashboard/'
-    | '/_auth/accept-invitation/$id'
-    | '/dashboard/organization/my-organization'
-    | '/dashboard/organization/organization-invite'
-    | '/dashboard/settings/account'
-    | '/dashboard/settings/notification'
-    | '/dashboard/settings/scan'
-    | '/dashboard/organization/members/$id'
-    | '/dashboard/organization/members/'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/_auth"
+    | "/dashboard"
+    | "/skelton"
+    | "/dashboard/settings"
+    | "/_auth/check-email"
+    | "/_auth/forgot-password"
+    | "/_auth/reset-password"
+    | "/_auth/sign-in"
+    | "/_auth/sign-up"
+    | "/dashboard/area-scan"
+    | "/dashboard/crop-map"
+    | "/dashboard/farmer-alerts"
+    | "/dashboard/"
+    | "/_auth/accept-invitation/$id"
+    | "/dashboard/organization/my-organization"
+    | "/dashboard/organization/organization-invite"
+    | "/dashboard/settings/account"
+    | "/dashboard/settings/notification"
+    | "/dashboard/settings/scan"
+    | "/dashboard/organization/members/$id"
+    | "/dashboard/organization/members/";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
-  SkeltonRoute: typeof SkeltonRoute
+  IndexRoute: typeof IndexRoute;
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren;
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
+  SkeltonRoute: typeof SkeltonRoute;
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/skelton': {
-      id: '/skelton'
-      path: '/skelton'
-      fullPath: '/skelton'
-      preLoaderRoute: typeof SkeltonRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/farmer-alerts': {
-      id: '/dashboard/farmer-alerts'
-      path: '/farmer-alerts'
-      fullPath: '/dashboard/farmer-alerts'
-      preLoaderRoute: typeof DashboardFarmerAlertsRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/crop-map': {
-      id: '/dashboard/crop-map'
-      path: '/crop-map'
-      fullPath: '/dashboard/crop-map'
-      preLoaderRoute: typeof DashboardCropMapRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/area-scan': {
-      id: '/dashboard/area-scan'
-      path: '/area-scan'
-      fullPath: '/dashboard/area-scan'
-      preLoaderRoute: typeof DashboardAreaScanRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/_auth/sign-up': {
-      id: '/_auth/sign-up'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof AuthSignUpRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/_auth/sign-in': {
-      id: '/_auth/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof AuthSignInRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/_auth/reset-password': {
-      id: '/_auth/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof AuthResetPasswordRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/_auth/forgot-password': {
-      id: '/_auth/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof AuthForgotPasswordRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/_auth/check-email': {
-      id: '/_auth/check-email'
-      path: '/check-email'
-      fullPath: '/check-email'
-      preLoaderRoute: typeof AuthCheckEmailRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/dashboard/settings': {
-      id: '/dashboard/settings'
-      path: '/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsRouteRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/settings/scan': {
-      id: '/dashboard/settings/scan'
-      path: '/scan'
-      fullPath: '/dashboard/settings/scan'
-      preLoaderRoute: typeof DashboardSettingsScanRouteImport
-      parentRoute: typeof DashboardSettingsRouteRoute
-    }
-    '/dashboard/settings/notification': {
-      id: '/dashboard/settings/notification'
-      path: '/notification'
-      fullPath: '/dashboard/settings/notification'
-      preLoaderRoute: typeof DashboardSettingsNotificationRouteImport
-      parentRoute: typeof DashboardSettingsRouteRoute
-    }
-    '/dashboard/settings/account': {
-      id: '/dashboard/settings/account'
-      path: '/account'
-      fullPath: '/dashboard/settings/account'
-      preLoaderRoute: typeof DashboardSettingsAccountRouteImport
-      parentRoute: typeof DashboardSettingsRouteRoute
-    }
-    '/dashboard/organization/organization-invite': {
-      id: '/dashboard/organization/organization-invite'
-      path: '/organization/organization-invite'
-      fullPath: '/dashboard/organization/organization-invite'
-      preLoaderRoute: typeof DashboardOrganizationOrganizationInviteRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/organization/my-organization': {
-      id: '/dashboard/organization/my-organization'
-      path: '/organization/my-organization'
-      fullPath: '/dashboard/organization/my-organization'
-      preLoaderRoute: typeof DashboardOrganizationMyOrganizationRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/_auth/accept-invitation/$id': {
-      id: '/_auth/accept-invitation/$id'
-      path: '/accept-invitation/$id'
-      fullPath: '/accept-invitation/$id'
-      preLoaderRoute: typeof AuthAcceptInvitationIdRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/dashboard/organization/members/': {
-      id: '/dashboard/organization/members/'
-      path: '/organization/members'
-      fullPath: '/dashboard/organization/members'
-      preLoaderRoute: typeof DashboardOrganizationMembersIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/organization/members/$id': {
-      id: '/dashboard/organization/members/$id'
-      path: '/organization/members/$id'
-      fullPath: '/dashboard/organization/members/$id'
-      preLoaderRoute: typeof DashboardOrganizationMembersIdRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
+    "/skelton": {
+      id: "/skelton";
+      path: "/skelton";
+      fullPath: "/skelton";
+      preLoaderRoute: typeof SkeltonRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/dashboard": {
+      id: "/dashboard";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof DashboardRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/_auth": {
+      id: "/_auth";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AuthRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/dashboard/": {
+      id: "/dashboard/";
+      path: "/";
+      fullPath: "/dashboard/";
+      preLoaderRoute: typeof DashboardIndexRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/farmer-alerts": {
+      id: "/dashboard/farmer-alerts";
+      path: "/farmer-alerts";
+      fullPath: "/dashboard/farmer-alerts";
+      preLoaderRoute: typeof DashboardFarmerAlertsRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/crop-map": {
+      id: "/dashboard/crop-map";
+      path: "/crop-map";
+      fullPath: "/dashboard/crop-map";
+      preLoaderRoute: typeof DashboardCropMapRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/area-scan": {
+      id: "/dashboard/area-scan";
+      path: "/area-scan";
+      fullPath: "/dashboard/area-scan";
+      preLoaderRoute: typeof DashboardAreaScanRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/_auth/sign-up": {
+      id: "/_auth/sign-up";
+      path: "/sign-up";
+      fullPath: "/sign-up";
+      preLoaderRoute: typeof AuthSignUpRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
+    "/_auth/sign-in": {
+      id: "/_auth/sign-in";
+      path: "/sign-in";
+      fullPath: "/sign-in";
+      preLoaderRoute: typeof AuthSignInRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
+    "/_auth/reset-password": {
+      id: "/_auth/reset-password";
+      path: "/reset-password";
+      fullPath: "/reset-password";
+      preLoaderRoute: typeof AuthResetPasswordRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
+    "/_auth/forgot-password": {
+      id: "/_auth/forgot-password";
+      path: "/forgot-password";
+      fullPath: "/forgot-password";
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
+    "/_auth/check-email": {
+      id: "/_auth/check-email";
+      path: "/check-email";
+      fullPath: "/check-email";
+      preLoaderRoute: typeof AuthCheckEmailRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
+    "/dashboard/settings": {
+      id: "/dashboard/settings";
+      path: "/settings";
+      fullPath: "/dashboard/settings";
+      preLoaderRoute: typeof DashboardSettingsRouteRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/settings/scan": {
+      id: "/dashboard/settings/scan";
+      path: "/scan";
+      fullPath: "/dashboard/settings/scan";
+      preLoaderRoute: typeof DashboardSettingsScanRouteImport;
+      parentRoute: typeof DashboardSettingsRouteRoute;
+    };
+    "/dashboard/settings/notification": {
+      id: "/dashboard/settings/notification";
+      path: "/notification";
+      fullPath: "/dashboard/settings/notification";
+      preLoaderRoute: typeof DashboardSettingsNotificationRouteImport;
+      parentRoute: typeof DashboardSettingsRouteRoute;
+    };
+    "/dashboard/settings/account": {
+      id: "/dashboard/settings/account";
+      path: "/account";
+      fullPath: "/dashboard/settings/account";
+      preLoaderRoute: typeof DashboardSettingsAccountRouteImport;
+      parentRoute: typeof DashboardSettingsRouteRoute;
+    };
+    "/dashboard/organization/organization-invite": {
+      id: "/dashboard/organization/organization-invite";
+      path: "/organization/organization-invite";
+      fullPath: "/dashboard/organization/organization-invite";
+      preLoaderRoute: typeof DashboardOrganizationOrganizationInviteRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/organization/my-organization": {
+      id: "/dashboard/organization/my-organization";
+      path: "/organization/my-organization";
+      fullPath: "/dashboard/organization/my-organization";
+      preLoaderRoute: typeof DashboardOrganizationMyOrganizationRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/_auth/accept-invitation/$id": {
+      id: "/_auth/accept-invitation/$id";
+      path: "/accept-invitation/$id";
+      fullPath: "/accept-invitation/$id";
+      preLoaderRoute: typeof AuthAcceptInvitationIdRouteImport;
+      parentRoute: typeof AuthRouteRoute;
+    };
+    "/dashboard/organization/members/": {
+      id: "/dashboard/organization/members/";
+      path: "/organization/members";
+      fullPath: "/dashboard/organization/members";
+      preLoaderRoute: typeof DashboardOrganizationMembersIndexRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/organization/members/$id": {
+      id: "/dashboard/organization/members/$id";
+      path: "/organization/members/$id";
+      fullPath: "/dashboard/organization/members/$id";
+      preLoaderRoute: typeof DashboardOrganizationMembersIdRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
   }
 }
 
 interface AuthRouteRouteChildren {
-  AuthCheckEmailRoute: typeof AuthCheckEmailRoute
-  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
-  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
-  AuthSignInRoute: typeof AuthSignInRoute
-  AuthSignUpRoute: typeof AuthSignUpRoute
-  AuthAcceptInvitationIdRoute: typeof AuthAcceptInvitationIdRoute
+  AuthCheckEmailRoute: typeof AuthCheckEmailRoute;
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute;
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute;
+  AuthSignInRoute: typeof AuthSignInRoute;
+  AuthSignUpRoute: typeof AuthSignUpRoute;
+  AuthAcceptInvitationIdRoute: typeof AuthAcceptInvitationIdRoute;
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
@@ -472,16 +472,16 @@ const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
   AuthAcceptInvitationIdRoute: AuthAcceptInvitationIdRoute,
-}
+};
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
-)
+);
 
 interface DashboardSettingsRouteRouteChildren {
-  DashboardSettingsAccountRoute: typeof DashboardSettingsAccountRoute
-  DashboardSettingsNotificationRoute: typeof DashboardSettingsNotificationRoute
-  DashboardSettingsScanRoute: typeof DashboardSettingsScanRoute
+  DashboardSettingsAccountRoute: typeof DashboardSettingsAccountRoute;
+  DashboardSettingsNotificationRoute: typeof DashboardSettingsNotificationRoute;
+  DashboardSettingsScanRoute: typeof DashboardSettingsScanRoute;
 }
 
 const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
@@ -489,23 +489,23 @@ const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
     DashboardSettingsAccountRoute: DashboardSettingsAccountRoute,
     DashboardSettingsNotificationRoute: DashboardSettingsNotificationRoute,
     DashboardSettingsScanRoute: DashboardSettingsScanRoute,
-  }
+  };
 
 const DashboardSettingsRouteRouteWithChildren =
   DashboardSettingsRouteRoute._addFileChildren(
     DashboardSettingsRouteRouteChildren,
-  )
+  );
 
 interface DashboardRouteRouteChildren {
-  DashboardSettingsRouteRoute: typeof DashboardSettingsRouteRouteWithChildren
-  DashboardAreaScanRoute: typeof DashboardAreaScanRoute
-  DashboardCropMapRoute: typeof DashboardCropMapRoute
-  DashboardFarmerAlertsRoute: typeof DashboardFarmerAlertsRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardOrganizationMyOrganizationRoute: typeof DashboardOrganizationMyOrganizationRoute
-  DashboardOrganizationOrganizationInviteRoute: typeof DashboardOrganizationOrganizationInviteRoute
-  DashboardOrganizationMembersIdRoute: typeof DashboardOrganizationMembersIdRoute
-  DashboardOrganizationMembersIndexRoute: typeof DashboardOrganizationMembersIndexRoute
+  DashboardSettingsRouteRoute: typeof DashboardSettingsRouteRouteWithChildren;
+  DashboardAreaScanRoute: typeof DashboardAreaScanRoute;
+  DashboardCropMapRoute: typeof DashboardCropMapRoute;
+  DashboardFarmerAlertsRoute: typeof DashboardFarmerAlertsRoute;
+  DashboardIndexRoute: typeof DashboardIndexRoute;
+  DashboardOrganizationMyOrganizationRoute: typeof DashboardOrganizationMyOrganizationRoute;
+  DashboardOrganizationOrganizationInviteRoute: typeof DashboardOrganizationOrganizationInviteRoute;
+  DashboardOrganizationMembersIdRoute: typeof DashboardOrganizationMembersIdRoute;
+  DashboardOrganizationMembersIndexRoute: typeof DashboardOrganizationMembersIndexRoute;
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
@@ -521,18 +521,18 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardOrganizationMembersIdRoute: DashboardOrganizationMembersIdRoute,
   DashboardOrganizationMembersIndexRoute:
     DashboardOrganizationMembersIndexRoute,
-}
+};
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
   DashboardRouteRouteChildren,
-)
+);
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   SkeltonRoute: SkeltonRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

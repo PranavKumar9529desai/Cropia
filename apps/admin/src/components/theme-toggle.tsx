@@ -23,18 +23,30 @@ export function ModeToggle({ reverse = false }: { reverse?: boolean }) {
         title={`Current: ${theme} - Click to cycle`}
       >
         <div className="relative h-full w-full flex items-center justify-center font-brand">
-          <Sun className={cn(
-            "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
-            theme === "light" ? "rotate-0 scale-100 opacity-100" : "rotate-90 scale-0 opacity-0"
-          )} />
-          <Moon className={cn(
-            "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
-            theme === "dark" ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
-          )} />
-          <Monitor className={cn(
-            "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
-            theme === "system" ? "scale-100 opacity-100" : "scale-50 opacity-0"
-          )} />
+          <Sun
+            className={cn(
+              "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
+              theme === "light"
+                ? "rotate-0 scale-100 opacity-100"
+                : "rotate-90 scale-0 opacity-0",
+            )}
+          />
+          <Moon
+            className={cn(
+              "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
+              theme === "dark"
+                ? "rotate-0 scale-100 opacity-100"
+                : "-rotate-90 scale-0 opacity-0",
+            )}
+          />
+          <Monitor
+            className={cn(
+              "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
+              theme === "system"
+                ? "scale-100 opacity-100"
+                : "scale-50 opacity-0",
+            )}
+          />
         </div>
         <span className="sr-only">Toggle theme</span>
       </Button>
@@ -53,24 +65,38 @@ export function ModeToggle({ reverse = false }: { reverse?: boolean }) {
             title={`Current: ${theme} - Click to cycle`}
           >
             <div className="relative h-full w-full flex items-center justify-center font-brand">
-              <Sun className={cn(
-                "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
-                theme === "light" ? "rotate-0 scale-100 opacity-100" : "rotate-90 scale-0 opacity-0"
-              )} />
-              <Moon className={cn(
-                "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
-                theme === "dark" ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
-              )} />
-              <Monitor className={cn(
-                "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
-                theme === "system" ? "scale-100 opacity-100" : "scale-50 opacity-0"
-              )} />
+              <Sun
+                className={cn(
+                  "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
+                  theme === "light"
+                    ? "rotate-0 scale-100 opacity-100"
+                    : "rotate-90 scale-0 opacity-0",
+                )}
+              />
+              <Moon
+                className={cn(
+                  "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
+                  theme === "dark"
+                    ? "rotate-0 scale-100 opacity-100"
+                    : "-rotate-90 scale-0 opacity-0",
+                )}
+              />
+              <Monitor
+                className={cn(
+                  "h-[1.2rem] w-[1.2rem] transition-all duration-300 absolute",
+                  theme === "system"
+                    ? "scale-100 opacity-100"
+                    : "scale-50 opacity-0",
+                )}
+              />
             </div>
             <span className="sr-only">Toggle theme</span>
           </Button>
           <span>{theme}</span>
         </>
-      ) : content}
+      ) : (
+        content
+      )}
     </div>
   );
 }

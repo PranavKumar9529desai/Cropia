@@ -64,7 +64,7 @@ async function main() {
       orgId = org.id;
       console.log(`✅ Organization created: ${org.id}`);
     }
-  } catch (e: any) {
+  } catch (error) {
     console.log(
       "⚠️ Creation failed or organization already exists. Searching...",
     );
@@ -85,7 +85,7 @@ async function main() {
   try {
     console.log(`📩 Sending invitation to: ${inviteEmail}`);
 
-    const invitation = await auth.api.createInvitation({
+    const invitation = await (auth.api as any).createInvitation({
       body: {
         email: inviteEmail,
         role: "admin",
@@ -97,7 +97,7 @@ async function main() {
           taluka: "Karad",
           village: "All",
         },
-      } as any, // Cast to any to allow custom fields in the API call
+      },
       headers,
     });
 
@@ -106,15 +106,17 @@ async function main() {
       // Log the jurisdiction to confirm it was processed
       console.log(
         "📍 Assigned Jurisdiction:",
-        (invitation as any).jurisdiction,
+        (invitation as Record<string, unknown>).jurisdiction,
       );
     } else {
       console.error("❌ Invitation object was not returned.");
     }
-  } catch (e: any) {
+  } catch (error) {
     // Detailed error logging to help debug Prisma/BetterAuth issues
-    console.error("❌ Invitation Error:", e?.message || e);
-    if (e?.body) console.error("Error Body:", e.body);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("❌ Invitation Error:", errorMessage);
+    if (error && typeof error === "object" && "body" in error)
+      console.error("Error Body:", (error as any).body);
   }
 }
 
