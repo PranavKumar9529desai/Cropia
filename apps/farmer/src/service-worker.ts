@@ -17,6 +17,17 @@ clientsClaim()
 
 precacheAndRoute(self.__WB_MANIFEST)
 
+// Cache translation files
+import { registerRoute } from 'workbox-routing';
+import { StaleWhileRevalidate } from 'workbox-strategies';
+
+registerRoute(
+  ({ url }) => url.pathname.startsWith('/locales/'),
+  new StaleWhileRevalidate({
+    cacheName: 'translations',
+  })
+);
+
 // Firebase Setup
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,

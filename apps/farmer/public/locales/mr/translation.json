@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "title": "सेटिंग्ज",
+    "language": "भाषा",
+    "location": "स्थान",
+    "profile": "प्रोफाइल"
+  },
+  "dashboard": {
+    "title": "डॅशबोर्ड",
+    "welcome": "परत स्वागत आहे"
+  },
+  "common": {
+    "save": "जतन करा",
+    "cancel": "रद्द करा",
+    "loading": "लोड होत आहे..."
+  },
+  "languages": {
+    "en": "English",
+    "mr": "मराठी",
+    "pa": "पंजाबी"
+  }
+}

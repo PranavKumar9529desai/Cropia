@@ -17,6 +17,7 @@ import {
 import { Step1AdminDetails } from "@/components/location/step-1-location-details";
 import { Step2MapDetails } from "@/components/location/step-2-map-details";
 import { SettingsLoader } from "@/components/settings/loader";
+import { LanguageSwitcher } from "@/components/settings/language-switcher";
 
 export const Route = createFileRoute("/dashboard/settings/location")({
   component: LocationSettings,
@@ -125,6 +126,20 @@ function LocationSettings() {
 
   return (
     <div className="w-full max-w-7xl space-y-8  pb-10 h-[calc(100vh-12rem)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+
+      {/* Language Settings Section - Added at the top for accessibility */}
+      <div className="flex flex-col lg:flex-row gap-8 border-b pb-8">
+        <div className="lg:w-1/3 space-y-2">
+          <h3 className="text-lg font-medium">Language Settings</h3>
+          <p className="text-sm text-muted-foreground">
+            Manage your preferred language.
+          </p>
+        </div>
+        <div className="lg:w-2/3">
+           <LanguageSwitcher />
+        </div>
+      </div>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Administrative Area Section */}

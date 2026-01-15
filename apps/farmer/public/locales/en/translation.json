@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "location": "Location",
+    "profile": "Profile"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading..."
+  },
+  "languages": {
+    "en": "English",
+    "mr": "Marathi",
+    "pa": "Punjabi"
+  }
+}

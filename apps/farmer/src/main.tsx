@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "@repo/ui/globals.css";
+import "./lib/i18n"; // Import i18n configuration
 import { Toaster } from "@repo/ui/components/sonner";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
