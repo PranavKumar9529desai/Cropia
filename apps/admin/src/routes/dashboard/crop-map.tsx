@@ -108,10 +108,11 @@ function RouteComponent() {
 
         <CropMap
           data={filteredData}
-          defaultView={defaultView}
+          defaultView={defaultView ?? undefined}
           onPointClick={(props) => setSelectedScan(props)}
           viewType={search.view || "points"}
           mapStyle={search.style || "satellite"}
+          showConnections={search.connections === "on"}
         />
 
         {/* Floating Time Slider Overlay */}

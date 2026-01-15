@@ -128,44 +128,80 @@ export default function CropMap({
 
   // Generate connection lines for same disease in proximity
   const connectionData = useMemo(() => {
-    if (!showConnections || !data || !data.features)
+    console.log("CropMap Debug: showConnections =", showConnections);
+    if (!showConnections || !data || !data.features) {
+      console.log("CropMap Debug: Connections disabled or no data available");
       return { type: "FeatureCollection" as const, features: [] };
-
-    const features: any[] = [];
-    const points = data.features;
-
-    for (let i = 0; i < points.length; i++) {
-      for (let j = i + 1; j < points.length; j++) {
-        const p1 = points[i];
-        const p2 = points[j];
-
-        // Match same disease (case insensitive) and not healthy/unknown
-        const d1 = p1.properties.disease?.toLowerCase();
-        const d2 = p2.properties.disease?.toLowerCase();
-
-        if (d1 === d2 && d1 !== "unknown" && d1 !== "healthy" && d1 !== "no issue") {
-          const coord1 = p1.geometry.coordinates;
-          const coord2 = p2.geometry.coordinates;
-
-          // Expanded distance check (approx 100km)
-          const dist = Math.sqrt(
-            Math.pow(coord1[0] - coord2[0], 2) + Math.pow(coord1[1] - coord2[1], 2)
-          );
-
-          if (dist < 1.0) {
-            features.push({
-              type: "Feature",
-              properties: { disease: p1.properties.disease },
-              geometry: {
-                type: "LineString",
-                coordinates: [coord1, coord2],
-              },
-            });
-          }
-        }
-      }
     }
 
+    const features: any[] = [];
+    const points = [...data.features];
+    console.log("CropMap Debug: Total scan points =", points.length);
+
+    // Group features by disease
+    const diseaseGroups: Record<string, any[]> = {};
+    points.forEach((p) => {
+      const disease = p.properties.disease?.toLowerCase();
+      // Log some samples to see if the property structure is correct
+      if (Math.random() < 0.05) {
+        console.log("CropMap Debug: Sample point properties:", p.properties);
+      }
+
+      if (
+        disease &&
+        disease !== "unknown" &&
+        disease !== "healthy" &&
+        disease !== "no issue"
+      ) {
+        if (!diseaseGroups[disease]) diseaseGroups[disease] = [];
+        diseaseGroups[disease].push(p);
+      }
+    });
+
+    console.log("CropMap Debug: Identified disease groups:", Object.keys(diseaseGroups));
+
+    // For each disease group, sort by date and create sequential lines
+    Object.values(diseaseGroups).forEach((group) => {
+      // Sort by date ascending
+      group.sort(
+        (a, b) =>
+          new Date(a.properties.date).getTime() -
+          new Date(b.properties.date).getTime(),
+      );
+
+      console.log(`CropMap Debug: Processing group with ${group.length} points for disease: ${group[0].properties.disease}`);
+
+      for (let i = 0; i < group.length - 1; i++) {
+        const p1 = group[i];
+        const p2 = group[i + 1];
+        const coord1 = p1.geometry.coordinates;
+        const coord2 = p2.geometry.coordinates;
+
+        // Distance check (approx 500km threshold as 1 deg ~ 111km)
+        const dist = Math.sqrt(
+          Math.pow(coord1[0] - coord2[0], 2) +
+          Math.pow(coord1[1] - coord2[1], 2),
+        );
+
+        if (dist < 5.0) {
+          features.push({
+            type: "Feature",
+            properties: {
+              disease: p1.properties.disease,
+              status: p1.properties.status,
+            },
+            geometry: {
+              type: "LineString",
+              coordinates: [coord1, coord2],
+            },
+          });
+        } else {
+          console.log(`CropMap Debug: Points too far apart (${dist.toFixed(2)} deg), skipping connection`);
+        }
+      }
+    });
+
+    console.log("CropMap Debug: Generated total connection features =", features.length);
     return { type: "FeatureCollection" as const, features };
   }, [data, showConnections]);
 
@@ -372,9 +408,17 @@ export default function CropMap({
               id="disease-connections"
               type="line"
               paint={{
-                "line-color": "#ef4444",
-                "line-width": 2,
-                "line-opacity": 0.8,
+                "line-color": [
+                  "match",
+                  ["get", "status"],
+                  "critical",
+                  "#ef4444",
+                  "warning",
+                  "#eab308",
+                  "#ef4444", // Fallback
+                ],
+                "line-width": 5,
+                "line-opacity": 1,
                 "line-dasharray": [2, 2],
               }}
             />
