@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { Card } from "@repo/ui/components/card";
@@ -47,6 +47,15 @@ function RouteComponent() {
   });
 
   const isLoading = status === "streaming" || status === "submitted";
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +64,6 @@ function RouteComponent() {
     sendMessage({ text: input });
     setInput("");
   };
-  // TODO: add the auto scroll behaviour to the scroll area
 
   return (
     <div className="container h-[calc(100vh-4rem)] flex flex-col  max-w-7xl mx-auto p-2 md:p-6 min-w-3xl w-full">
@@ -127,6 +135,7 @@ function RouteComponent() {
                 </div>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
       </Card>

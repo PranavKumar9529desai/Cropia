@@ -1,4 +1,9 @@
-import { createFileRoute, Outlet, redirect, useChildMatches } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useChildMatches,
+} from "@tanstack/react-router";
 import BottomNav from "@/components/dashboard/bottom-navigation";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import {
@@ -38,14 +43,17 @@ function RouteComponent() {
   const matches = useChildMatches();
   const lastMatch = matches[matches.length - 1];
   const fullRoute = matches[0]?.pathname || "";
-  const lastSegment = lastMatch?.pathname.split("/").filter(Boolean).pop() || "dashboard";
+  const lastSegment =
+    lastMatch?.pathname.split("/").filter(Boolean).pop() || "dashboard";
 
   const isSettingRoute = matches.some((match) =>
     match.routeId.startsWith("/dashboard/settings"),
   );
   const jurisdictionDisplay = getJurisdictionDisplay(jurisdiction);
 
-  const displayTitle = fullRoute.includes("organization") ? "My organization" : lastSegment;
+  const displayTitle = fullRoute.includes("organization")
+    ? "My organization"
+    : lastSegment;
 
   return (
     <SidebarProvider>

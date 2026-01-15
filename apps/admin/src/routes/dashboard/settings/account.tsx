@@ -43,7 +43,7 @@ function AccountSettings() {
     open: false,
     title: "",
     description: "",
-    onConfirm: () => { },
+    onConfirm: () => {},
   });
 
   const [name, setName] = useState(session?.user?.name || "");
@@ -108,7 +108,7 @@ function AccountSettings() {
 
   const executeUpdateProfile = async () => {
     setIsUpdatingProfile(true);
-    setConfirmConfig(prev => ({ ...prev, open: false }));
+    setConfirmConfig((prev) => ({ ...prev, open: false }));
     try {
       const { error } = await authClient.updateUser({ name });
       if (error) {
@@ -138,14 +138,15 @@ function AccountSettings() {
     setConfirmConfig({
       open: true,
       title: "Change Password",
-      description: "Are you sure you want to change your password? You will be logged out of other sessions.",
+      description:
+        "Are you sure you want to change your password? You will be logged out of other sessions.",
       onConfirm: executeChangePassword,
     });
   };
 
   const executeChangePassword = async () => {
     setIsChangingPassword(true);
-    setConfirmConfig(prev => ({ ...prev, open: false }));
+    setConfirmConfig((prev) => ({ ...prev, open: false }));
     try {
       const { error } = await authClient.changePassword({
         currentPassword,
@@ -319,7 +320,7 @@ function AccountSettings() {
 
       <ConfirmationDialog
         open={confirmConfig.open}
-        onOpenChange={(open) => setConfirmConfig(prev => ({ ...prev, open }))}
+        onOpenChange={(open) => setConfirmConfig((prev) => ({ ...prev, open }))}
         onConfirm={confirmConfig.onConfirm}
         title={confirmConfig.title}
         description={confirmConfig.description}

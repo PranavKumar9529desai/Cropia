@@ -4,17 +4,15 @@ import { useIsMobile } from "@repo/ui/hooks/use-mobile";
 import { createFileRoute } from "@tanstack/react-router";
 import { SettingsRoutes } from "@/components/settings/settings.constants";
 
-
 export const Route = createFileRoute("/dashboard/settings")({
   component: RouteComponent,
 });
-
 
 function RouteComponent() {
   const isMobile = useIsMobile();
   return (
     <>
-      <div className="hidden sm:block">
+      <div className="hidden sm:block container mx-auto max-w-7xl p-2 md:p-4">
         <h1 className="sm:text-4xl text-2xl font-bold font-brand">Settings</h1>
         <span className="text-muted-foreground font-brand">
           Manage your account settings
@@ -23,7 +21,9 @@ function RouteComponent() {
       {isMobile ? (
         <SettingsMobileLayout routes={SettingsRoutes} />
       ) : (
-        <SettingsDesktopLayout routes={SettingsRoutes} />
+        <div className="container mx-auto max-w-7xl">
+          <SettingsDesktopLayout routes={SettingsRoutes} />
+        </div>
       )}
     </>
   );

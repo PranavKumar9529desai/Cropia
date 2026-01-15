@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState, useMemo } from "react";
 import CropMap from "../../components/map/crop.map";
 import { apiClient } from "../../lib/rpc";
 import {
@@ -12,7 +12,12 @@ import {
 import { Button } from "@repo/ui/components/button";
 import { MapPin } from "lucide-react";
 import calculateViewState from "@/components/map/map.helper";
-import CropScanHeader from "../../components/map/crop-scan-header";
+import CropScanHeader from "@/components/map/crop-scan-header";
+import MapFilters from "@/components/map/map-filters";
+import MapTimeSlider from "@/components/map/map-time-slider";
+import MapLayerControl from "@/components/map/map-layer-control";
+import MapLegend from "@/components/map/map-legend";
+import MapStats from "@/components/map/map-stats";
 
 export const Route = createFileRoute("/dashboard/crop-map")({
   loader: async ({ context }) => {
@@ -31,9 +36,51 @@ export const Route = createFileRoute("/dashboard/crop-map")({
   component: RouteComponent,
 });
 
+import { useIsMobile } from "@repo/ui/hooks/use-mobile";
+
 function RouteComponent() {
+  const isMobile = useIsMobile();
   const { data, defaultView, jurisdiction } = Route.useLoaderData();
+  const search = Route.useSearch() as any;
+  const navigate = useNavigate();
   const [selectedScan, setSelectedScan] = useState<any>(null);
+  const [animationTimestamp, setAnimationTimestamp] = useState<number | null>(null);
+
+  // Client-side filtering (Crop, Disease, Status, and Date)
+  const filteredData = useMemo(() => {
+    if (!data || !data.features) return data;
+
+    const displayTimestamp = animationTimestamp ?? (search.date ? parseInt(search.date) : Infinity);
+
+    const filteredFeatures = data.features.filter((feature: any) => {
+      const { crop, disease, status, timestamp } = feature.properties;
+
+      if (search.crop && search.crop !== "all" && crop !== search.crop)
+        return false;
+      if (
+        search.disease &&
+        search.disease !== "all" &&
+        disease !== search.disease
+      )
+        return false;
+      if (
+        search.status &&
+        search.status !== "all" &&
+        status !== search.status
+      )
+        return false;
+
+      // Filter by timestamp (either animation or URL search)
+      if (timestamp > displayTimestamp) return false;
+
+      return true;
+    });
+
+    return {
+      ...data,
+      features: filteredFeatures,
+    };
+  }, [data, search.crop, search.disease, search.status, search.date, animationTimestamp]);
 
   // Function to optimize Cloudinary URL
   const getOptimizedUrl = (url: string) => {
@@ -48,14 +95,69 @@ function RouteComponent() {
     <div className="container mx-auto p-4 md:p-8 max-w-7xl animate-in fade-in duration-500 slide-in-from-bottom-4 space-y-4">
       <CropScanHeader jurisdiction={jurisdiction} />
 
+      <MapFilters data={data} />
+
       {/* Map Container */}
-      <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
+      <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden relative">
+        {/* Floating Overlays */}
+        <div className={`absolute top-4 left-4 z-10 flex flex-col gap-3 ${isMobile ? 'max-w-[calc(100%-100px)]' : ''}`}>
+          <MapStats data={filteredData} />
+          <MapLegend />
+        </div>
+
+        <div className="absolute top-4 right-4 z-10">
+          <MapLayerControl />
+        </div>
+
         <CropMap
-          data={data}
-          defaultView={defaultView}
+          data={filteredData}
+          defaultView={defaultView ?? undefined}
           onPointClick={(props) => setSelectedScan(props)}
+          viewType={search.view || "points"}
+          mapStyle={search.style || "satellite"}
+          showConnections={search.connections === "on"}
         />
+
+        {/* Floating Time Slider Overlay - Desktop Only */}
+        {!isMobile && (
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 w-[90%] md:w-[80%] lg:w-[60%]">
+            <MapTimeSlider
+              data={data}
+              onTimestampChange={(ts: number) => setAnimationTimestamp(ts)}
+              onAnimationEnd={(ts: number | undefined) => {
+                setAnimationTimestamp(null);
+                navigate({
+                  search: (prev: any) => ({
+                    ...prev,
+                    date: ts?.toString(),
+                  }),
+                });
+              }}
+              activeTimestamp={animationTimestamp ?? (search.date ? parseInt(search.date) : undefined)}
+            />
+          </div>
+        )}
       </div>
+
+      {/* Mobile Time Slider - Outside the map */}
+      {isMobile && (
+        <div className="pt-2">
+          <MapTimeSlider
+            data={data}
+            onTimestampChange={(ts: number) => setAnimationTimestamp(ts)}
+            onAnimationEnd={(ts: number | undefined) => {
+              setAnimationTimestamp(null);
+              navigate({
+                search: (prev: any) => ({
+                  ...prev,
+                  date: ts?.toString(),
+                }),
+              });
+            }}
+            activeTimestamp={animationTimestamp ?? (search.date ? parseInt(search.date) : undefined)}
+          />
+        </div>
+      )}
 
       {/* Scan Detail Dialog */}
       <Dialog open={!!selectedScan} onOpenChange={() => setSelectedScan(null)}>

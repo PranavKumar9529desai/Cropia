@@ -29,21 +29,21 @@ export function App() {
   return <RouterProvider router={router} />;
 }
 
-import { registerSW } from 'virtual:pwa-register'
+import { registerSW } from "virtual:pwa-register";
 
 const updateSW = registerSW({
   onNeedRefresh() {
-    if (confirm('New content available. Reload?')) {
-      updateSW(true)
+    if (confirm("New content available. Reload?")) {
+      updateSW(true);
     }
   },
   onRegistered(r) {
-    console.log('SW Registered', r)
+    console.log("SW Registered", r);
   },
   onRegisterError(error) {
-    console.log('SW Registration Error', error)
+    console.log("SW Registration Error", error);
   },
-})
+});
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

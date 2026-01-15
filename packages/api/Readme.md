@@ -9,3 +9,4 @@ http://localhost:4000/api/auth/reference
 - tsup to build api package which produces the js file needed by vercel
 
 bun --env-file=apps/api/.env.production packages/api/src/utils/query.ts
+

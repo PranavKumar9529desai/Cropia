@@ -14,7 +14,7 @@ import {
 } from "@repo/ui/components/avatar";
 import { Bell, ChevronsUpDown, LogOut, Settings } from "lucide-react";
 import { SidebarMenuButton, useSidebar } from "@repo/ui/components/sidebar";
-
+import { ModeToggle } from "@repo/ui/components/mode-toggle";
 
 interface UserInfo {
   name: string;
@@ -95,7 +95,7 @@ export const ProfileComponent = ({
           <LogOut className="mr-2 h-4 w-4" />
           Log out
         </DropdownMenuItem>
-        <DropdownMenuItem >
+        <DropdownMenuItem>
           <ModeToggle reverse={true} />
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -4,7 +4,6 @@ import { Button } from "@repo/ui/components/button";
 import { Bell, Settings } from "lucide-react";
 
 const getTitle = (pathname: string) => {
-
   return "Cropia";
 };
 
@@ -23,7 +22,7 @@ export function MobileTopbar({
       className="border-b bg-background/80 backdrop-blur-md"
       leftContent={
         <div className="flex flex-wrap gap-y-[2px] gap-x-[2px]">
-          {(title === "Cropia" || title === "Overview") ? (
+          {title === "Cropia" || title === "Overview" ? (
             <Link to="/dashboard" className="flex items-center gap-2">
               <img src="/favicon/favicon.svg" alt="Logo" className="size-8" />
               <div className="flex flex-col">
@@ -53,7 +52,6 @@ export function MobileTopbar({
             </span>
           )}
         </div>
-
       }
       rightContent={
         <div className="flex items-center gap-1">
@@ -67,7 +65,7 @@ export function MobileTopbar({
               <Settings className="h-5 w-5" />
             </Link>
           </Button>
-        </ div>
+        </div>
       }
     />
   );

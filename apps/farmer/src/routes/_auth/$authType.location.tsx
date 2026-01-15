@@ -135,7 +135,7 @@ export function RouteComponent() {
           } else {
             errorMessage = JSON.stringify((errorData as any).error);
           }
-        } catch (e) { }
+        } catch (e) {}
 
         toast.error(errorMessage, { id: toastId });
         return;

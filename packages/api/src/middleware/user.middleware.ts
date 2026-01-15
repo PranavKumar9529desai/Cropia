@@ -2,7 +2,9 @@ import { createMiddleware } from "hono/factory";
 import { farmerAuth } from "../auth";
 
 export const UserSessionMiddleware = createMiddleware(async (c, next) => {
-  const session = await farmerAuth.api.getSession({ headers: c.req.raw.headers });
+  const session = await farmerAuth.api.getSession({
+    headers: c.req.raw.headers,
+  });
 
   if (!session) {
     return c.json(

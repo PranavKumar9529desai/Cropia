@@ -32,7 +32,7 @@ export type Village = {
 export async function fetchStates(): Promise<State[]> {
   try {
     const response = await fetch(`${INDIA_LOCATION_API_BASE}/states`);
-    console.log("response from the location helpers", response)
+    console.log("response from the location helpers", response);
     if (!response.ok) throw new Error("Failed to fetch states");
     const data = await response.json();
     return data.data.states || [];

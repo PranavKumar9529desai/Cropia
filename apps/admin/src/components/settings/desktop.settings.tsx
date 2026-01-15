@@ -13,7 +13,7 @@ export const SettingsDesktopLayout = ({
   const location = useLocation();
 
   return (
-    <div className="h-screen ">
+    <div className="h-screen container ">
       <div>
         <Separator className="my-2" />
       </div>

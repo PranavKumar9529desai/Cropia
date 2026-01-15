@@ -30,7 +30,6 @@ import {
   DialogTrigger,
 } from "@repo/ui/components/dialog";
 
-
 const WeatherSkelton = () => {
   return (
     <div className="flex w-full h-full items-center justify-center">
@@ -204,7 +203,8 @@ function RouteComponent() {
                         Key Factors
                       </h4>
                       <p className="text-muted-foreground leading-relaxed">
-                        We analyze weather conditions hour-by-hour to ensure optimal chemical efficacy and prevent drift:
+                        We analyze weather conditions hour-by-hour to ensure
+                        optimal chemical efficacy and prevent drift:
                       </p>
                     </div>
 
@@ -215,7 +215,9 @@ function RouteComponent() {
                           Wind Speed
                         </div>
                         <p className="text-xs text-muted-foreground leading-relaxed">
-                          <strong>Max 15 km/h:</strong> High winds cause spray drift, wasting chemicals and harming nearby crops. Low wind is ideal.
+                          <strong>Max 15 km/h:</strong> High winds cause spray
+                          drift, wasting chemicals and harming nearby crops. Low
+                          wind is ideal.
                         </p>
                       </div>
 
@@ -225,7 +227,8 @@ function RouteComponent() {
                           Rain Probability
                         </div>
                         <p className="text-xs text-muted-foreground leading-relaxed">
-                          <strong>Max 30%:</strong> Spraying before rain washes chemicals away. We look for dry windows.
+                          <strong>Max 30%:</strong> Spraying before rain washes
+                          chemicals away. We look for dry windows.
                         </p>
                       </div>
                     </div>
@@ -238,13 +241,15 @@ function RouteComponent() {
                         <li className="flex items-start gap-2">
                           <CheckCircle className="h-3 w-3 text-green-600 dark:text-green-500 mt-0.5 shrink-0" />
                           <span>
-                            <strong>Safe:</strong> Ideal conditions. Spray now for best results.
+                            <strong>Safe:</strong> Ideal conditions. Spray now
+                            for best results.
                           </span>
                         </li>
                         <li className="flex items-start gap-2">
                           <AlertTriangle className="h-3 w-3 text-red-600 dark:text-red-500 mt-0.5 shrink-0" />
                           <span>
-                            <strong>Risk:</strong> High wind or rain expected. Wait for a better window.
+                            <strong>Risk:</strong> High wind or rain expected.
+                            Wait for a better window.
                           </span>
                         </li>
                       </ul>

@@ -1,11 +1,21 @@
 import { SettingsRoutes, SettingsRouteType } from "./settings.constants";
-import { Link, Outlet, useChildMatches, useLocation, useNavigate } from "@tanstack/react-router";
+import {
+  Link,
+  Outlet,
+  useChildMatches,
+  useLocation,
+  useNavigate,
+} from "@tanstack/react-router";
 import { ChevronRight, LogOut, X, Moon, User } from "lucide-react";
 import { Button } from "@repo/ui/components/button";
 import { authClient } from "@/lib/auth/auth-client";
 import { toast } from "@repo/ui/components/sonner";
 import { ModeToggle } from "../theme-toggle";
-import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
 import { Card, CardContent } from "@repo/ui/components/card";
 
 export const SettingsMobileLayout = ({
@@ -18,7 +28,9 @@ export const SettingsMobileLayout = ({
   const navigate = useNavigate();
 
   // Check if we are on the root settings page
-  const isRoot = matches.length === 0 || matches.some(m => m.routeId === '/dashboard/settings/');
+  const isRoot =
+    matches.length === 0 ||
+    matches.some((m) => m.routeId === "/dashboard/settings/");
 
   // Find the current route title
   const currentRoute = routes.find((r) => r.href === location.pathname);
@@ -27,20 +39,26 @@ export const SettingsMobileLayout = ({
     <div className="flex flex-col   md:hidden ">
       <div className="flex items-center justify-between px-3 py-4  bg-background border-b sticky top-0 z-20">
         <h1 className="text-xl font-bold font-brand tracking-tight z-10">
-          {isRoot ? "Settings" : (currentRoute?.title || "Settings")}
+          {isRoot ? "Settings" : currentRoute?.title || "Settings"}
         </h1>
         <Button
           variant="ghost"
           size="icon"
           className="rounded-full h-8 w-8"
-          onClick={() => isRoot ? navigate({ to: "/dashboard" }) : navigate({ to: "/dashboard/settings" })}
+          onClick={() =>
+            isRoot
+              ? navigate({ to: "/dashboard" })
+              : navigate({ to: "/dashboard/settings" })
+          }
         >
           <X className="w-5 h-5 text-muted-foreground" />
         </Button>
       </div>
 
       <div className="flex-1 overflow-y-auto pb-24">
-        {isRoot ? <SettingRouteComponent /> : (
+        {isRoot ? (
+          <SettingRouteComponent />
+        ) : (
           <div className="p-4">
             <Outlet />
           </div>
@@ -63,7 +81,7 @@ const SettingRouteComponent = () => {
         },
         onError: () => {
           toast.error("Failed to logout");
-        }
+        },
       },
     });
   };
@@ -83,7 +101,9 @@ const SettingRouteComponent = () => {
           </Avatar>
           <div className="flex-1 min-w-0">
             <h2 className="font-bold text-lg truncate">{user?.name}</h2>
-            <p className="text-sm text-muted-foreground truncate">{user?.email}</p>
+            <p className="text-sm text-muted-foreground truncate">
+              {user?.email}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -91,7 +111,9 @@ const SettingRouteComponent = () => {
       {/* Settings Grid */}
       <div className="space-y-4">
         <div className="px-1">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2 ml-1">General</h3>
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2 ml-1">
+            General
+          </h3>
           <Card className="border-none shadow-sm overflow-hidden bg-background">
             <div className="divide-y divide-border/40">
               {SettingsRoutes.map((route) => (
@@ -114,7 +136,9 @@ const SettingRouteComponent = () => {
         </div>
 
         <div className="px-1">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2 ml-1">Appearance</h3>
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80 mb-2 ml-1">
+            Appearance
+          </h3>
           <Card className="border-none shadow-sm overflow-hidden bg-background">
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -123,7 +147,9 @@ const SettingRouteComponent = () => {
                 </div>
                 <div className="flex flex-col">
                   <span className="font-medium text-base">Theme</span>
-                  <span className="text-xs text-muted-foreground">Adjust your view</span>
+                  <span className="text-xs text-muted-foreground">
+                    Adjust your view
+                  </span>
                 </div>
               </div>
               <ModeToggle />
@@ -148,4 +174,4 @@ const SettingRouteComponent = () => {
       </div>
     </div>
   );
-}
+};

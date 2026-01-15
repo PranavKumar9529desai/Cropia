@@ -25,10 +25,13 @@ export const requestPermission = async () => {
 
         token = await getToken(messaging, {
           vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-          serviceWorkerRegistration: registration
+          serviceWorkerRegistration: registration,
         });
       } catch (e) {
-        console.warn("Failed to get SW registration for FCM, falling back to default:", e);
+        console.warn(
+          "Failed to get SW registration for FCM, falling back to default:",
+          e,
+        );
         // Fallback (though this might cause the double-worker issue if SW isn't ready)
         token = await getToken(messaging, {
           vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,

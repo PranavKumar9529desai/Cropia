@@ -77,7 +77,11 @@ export const createLocationObject = (latitude: number, longitude: number) => {
  * Applies separate deterministic jitter to longitude and latitude based on the Scan ID.
  * This ensures that multiple scans at the exact same location appear as distinct dots.
  */
-const applyDeterministicJitter = (lng: number, lat: number, seedId: string): number[] => {
+const applyDeterministicJitter = (
+  lng: number,
+  lat: number,
+  seedId: string,
+): number[] => {
   let hash = 0;
   for (let i = 0; i < seedId.length; i++) {
     hash = seedId.charCodeAt(i) + ((hash << 5) - hash);
@@ -89,10 +93,10 @@ const applyDeterministicJitter = (lng: number, lat: number, seedId: string): num
 
   // Pseudo-random factors derived from different bits of the hash
   // Result is in range [-1, 1]
-  const xNoise = ((hash % 1000) / 500) - 1;
-  const yNoise = (((hash >> 5) % 1000) / 500) - 1;
+  const xNoise = (hash % 1000) / 500 - 1;
+  const yNoise = ((hash >> 5) % 1000) / 500 - 1;
 
-  return [lng + (xNoise * JITTER_SCALE), lat + (yNoise * JITTER_SCALE)];
+  return [lng + xNoise * JITTER_SCALE, lat + yNoise * JITTER_SCALE];
 };
 
 /**
@@ -132,7 +136,11 @@ export const transformToGeoJSON = (scans: ScanData[]): GeoJSONCollection => {
       // Apply Jitter to prevent stacking (uses ID as seed for consistency)
       // GeoJSON standard is [Longitude, Latitude]
       if (coordinates.length === 2 && scan.id) {
-        coordinates = applyDeterministicJitter(coordinates[0], coordinates[1], scan.id);
+        coordinates = applyDeterministicJitter(
+          coordinates[0],
+          coordinates[1],
+          scan.id,
+        );
       }
 
       return {
@@ -143,6 +151,8 @@ export const transformToGeoJSON = (scans: ScanData[]): GeoJSONCollection => {
           disease: scan.diagnosis || scan.visualIssue || "Unknown",
           visualIssue: scan.visualIssue || "Unknown",
           status: status,
+          status_weight: status === "critical" ? 3 : status === "warning" ? 2 : 1,
+          timestamp: scan.createdAt.getTime(),
           thumbnail: scan.imageUrl,
           date: scan.createdAt.toISOString(),
           locationText: scan.village || scan.district || "Unknown Location",

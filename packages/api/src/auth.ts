@@ -29,7 +29,15 @@ const baseConfig = {
 
   emailAndPassword: {
     enabled: true,
-    async sendResetPassword({ user, url, token }: { user: any; url: string; token?: string }) {
+    async sendResetPassword({
+      user,
+      url,
+      token,
+    }: {
+      user: any;
+      url: string;
+      token?: string;
+    }) {
       const resetLink = `${frontendUrl}/reset-password?token=${token || url.split("=")[1]}`;
       await transporter.sendMail({
         from: SENDER_EMAIL,
@@ -43,7 +51,15 @@ const baseConfig = {
   emailVerification: {
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
-    async sendVerificationEmail({ user, url, token }: { user: any; url: string; token: string }) {
+    async sendVerificationEmail({
+      user,
+      url,
+      token,
+    }: {
+      user: any;
+      url: string;
+      token: string;
+    }) {
       const verifyLink = `${frontendUrl}/verify-email?token=${token || url.split("=")[1]}`;
       await transporter.sendMail({
         from: SENDER_EMAIL,
@@ -56,6 +72,10 @@ const baseConfig = {
 
   session: {
     additionalFields: {
+      activeOrganizationId: {
+        type: "string" as any,
+        required: false,
+      },
       jurisdiction: {
         type: "json" as any,
         required: false,
@@ -72,7 +92,7 @@ const baseConfig = {
   databaseHooks: {
     session: {
       create: {
-        before: async (session: PrismaSession) => {
+        before: async (session: any) => {
           const member = await prisma.member.findFirst({
             where: { userId: session.userId },
             select: { organizationId: true, jurisdiction: true },
@@ -94,7 +114,7 @@ const baseConfig = {
         },
       },
     },
-  } as any,
+  },
 };
 
 const getPlugins = () => [
@@ -119,13 +139,7 @@ const getPlugins = () => [
        * Runs after an admin accepts an invitation.
        * Since ctx.session can be unreliable during signup, we find the session row manually.
        */
-      afterAcceptInvitation: async ({
-        invitation,
-        user,
-      }: {
-        invitation: Invitation;
-        user: User;
-      }) => {
+      afterAcceptInvitation: async ({ invitation, user }: any) => {
         console.log("🚀 CROPIA: Invite accepted for:", user.email);
 
         if (invitation && invitation.jurisdiction) {
@@ -152,7 +166,7 @@ const getPlugins = () => [
                 where: { id: latestSession.id },
                 data: {
                   activeOrganizationId: invitation.organizationId,
-                  jurisdiction: invitation.jurisdiction as any,
+                  jurisdiction: invitation.jurisdiction,
                 },
               });
               console.log("✅ Live Session row updated with Jurisdiction.");
@@ -195,4 +209,3 @@ export const adminAuth = betterAuth({
 
 // For backward compatibility or general use, we can export one as default or keep 'auth'
 export const auth = farmerAuth;
-

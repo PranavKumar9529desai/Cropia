@@ -245,15 +245,15 @@ function NotificationsPage() {
                                     >
                                       <span className="md:hidden">
                                         {notification.from.organizationName
-                                          ? notification.from.organizationName
-                                            .split(" ")
-                                            .length > 1
+                                          ? notification.from.organizationName.split(
+                                              " ",
+                                            ).length > 1
                                             ? notification.from.organizationName
-                                              .split(" ")
-                                              .map((word) =>
-                                                word[0].toUpperCase(),
-                                              )
-                                              .join(".")
+                                                .split(" ")
+                                                .map((word) =>
+                                                  word[0].toUpperCase(),
+                                                )
+                                                .join(".")
                                             : notification.from.organizationName
                                           : "Cropia"}
                                       </span>

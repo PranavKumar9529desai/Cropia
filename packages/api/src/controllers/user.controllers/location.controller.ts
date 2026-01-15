@@ -93,18 +93,18 @@ const LocationController = new Hono<{
     try {
       const pincode = c.req.param("pincode");
       if (!pincode || pincode.length < 6) {
-        return c.json(
-          { success: false, error: "Invalid pincode" },
-          400
-        );
+        return c.json({ success: false, error: "Invalid pincode" }, 400);
       }
 
       const locationData = await fetchLocationByPincode(pincode);
 
       if (!locationData) {
         return c.json(
-          { success: false, error: "Location details not found for this pincode" },
-          404
+          {
+            success: false,
+            error: "Location details not found for this pincode",
+          },
+          404,
         );
       }
 
@@ -113,7 +113,7 @@ const LocationController = new Hono<{
       console.error("Error fetching location by pincode:", error);
       return c.json(
         { success: false, error: "Failed to fetch location data" },
-        500
+        500,
       );
     }
   })
