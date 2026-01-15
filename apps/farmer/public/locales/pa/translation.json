@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "title": "ਸੈਟਿੰਗਾਂ",
+    "language": "ਭਾਸ਼ਾ",
+    "location": "ਸਥਾਨ",
+    "profile": "ਪ੍ਰੋਫਾਈਲ"
+  },
+  "dashboard": {
+    "title": "ਡੈਸ਼ਬੋਰਡ",
+    "welcome": "ਜੀ ਆਇਆਂ ਨੂੰ"
+  },
+  "common": {
+    "save": "ਸੇਵ ਕਰੋ",
+    "cancel": "ਰੱਦ ਕਰੋ",
+    "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ..."
+  },
+  "languages": {
+    "en": "English",
+    "mr": "मराठी",
+    "pa": "ਪੰਜਾਬੀ"
+  }
+}

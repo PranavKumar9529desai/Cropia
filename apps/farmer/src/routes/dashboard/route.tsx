@@ -13,6 +13,7 @@ import {
 } from "@repo/ui/components/sidebar";
 import { MobileTopbar } from "../../components/dashboard/mobile-topbar";
 import { useFCM } from "@/hooks/use-fcm";
+import { useLocationLanguage } from "@/hooks/use-location-language";
 import { getuserLocationStatus } from "../../utils/user-location";
 
 export const Route = createFileRoute("/dashboard")({
@@ -44,6 +45,7 @@ export const Route = createFileRoute("/dashboard")({
 
 function RouteComponent() {
   useFCM();
+  useLocationLanguage(); // Trigger auto-detection of language
   const { username, email, image } = Route.useLoaderData();
   const matches = useChildMatches();
   const isSettingRoute = matches.some((match) =>
