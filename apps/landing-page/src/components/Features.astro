@@ -28,16 +28,18 @@ import { Scan, Map, CloudRain, Wifi, Sprout, ShieldCheck } from "lucide-react";
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[400px]">
       
       <!-- Feature 1: AI Crop Doctor (Large Span) -->
-      <div class="group relative md:col-span-2 overflow-hidden rounded-3xl bg-gray-900/50 border border-white/5 shadow-2xl hover:border-emerald-500/30 transition-all duration-500">
+      <!-- Added: shadow-lg hover:shadow-emerald-500/20 hover:border-emerald-500/50 -->
+      <div class="group relative md:col-span-2 overflow-hidden rounded-3xl bg-gray-900/50 border border-white/5 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/20 hover:border-emerald-500/50 hover:-translate-y-1">
         <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
         <img 
           src="/features/ai-scan.png" 
           alt="AI Crop Doctor Interface" 
-          class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-80"
         />
         <div class="absolute bottom-0 left-0 p-8 z-20 max-w-lg">
           <div class="flex items-center gap-3 mb-3">
-            <div class="p-2 bg-emerald-500/20 rounded-lg backdrop-blur-md border border-emerald-500/30 text-emerald-400">
+            <!-- Added: group-hover:scale-110 -->
+            <div class="p-2 bg-emerald-500/20 rounded-lg backdrop-blur-md border border-emerald-500/30 text-emerald-400 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
               <Scan className="w-6 h-6" />
             </div>
             <h3 class="text-2xl font-semibold text-white">AI Crop Doctor</h3>
@@ -53,16 +55,18 @@ import { Scan, Map, CloudRain, Wifi, Sprout, ShieldCheck } from "lucide-react";
       </div>
 
       <!-- Feature 2: God View (Vertical Span) -->
-      <div class="group relative md:row-span-2 overflow-hidden rounded-3xl bg-gray-900/50 border border-white/5 shadow-2xl hover:border-blue-500/30 transition-all duration-500">
+      <!-- Added: hover:shadow-blue-500/20 hover:border-blue-500/50 -->
+      <div class="group relative md:row-span-2 overflow-hidden rounded-3xl bg-gray-900/50 border border-white/5 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/50 hover:-translate-y-1">
          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
         <img 
           src="/features/god-view.png" 
           alt="God View Dashboard" 
-          class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
+          class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-80"
         />
         <div class="absolute top-0 left-0 p-8 z-20 w-full">
            <div class="flex items-center justify-between mb-4">
-            <div class="p-2 bg-blue-500/20 rounded-lg backdrop-blur-md border border-blue-500/30 text-blue-400">
+            <!-- Added: group-hover:scale-110 -->
+             <div class="p-2 bg-blue-500/20 rounded-lg backdrop-blur-md border border-blue-500/30 text-blue-400 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3">
               <Map className="w-6 h-6" />
             </div>
           </div>
@@ -76,13 +80,15 @@ import { Scan, Map, CloudRain, Wifi, Sprout, ShieldCheck } from "lucide-react";
       </div>
 
       <!-- Feature 3: Smart Spray (Square) -->
-      <div class="group relative overflow-hidden rounded-3xl bg-gray-900/50 border border-white/5 shadow-2xl hover:border-amber-500/30 transition-all duration-500">
+      <!-- Added: hover:shadow-amber-500/20 hover:border-amber-500/50 -->
+      <div class="group relative overflow-hidden rounded-3xl bg-gray-900/50 border border-white/5 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:border-amber-500/50 hover:-translate-y-1">
         <div class="absolute inset-0 bg-gradient-to-tr from-gray-900 to-gray-800 z-0"></div>
-        <div class="absolute inset-0 opacity-40 mix-blend-overlay z-0 bg-[url('/features/smart-spray.png')] bg-cover bg-center transition-transform duration-700 group-hover:scale-110"></div>
+        <div class="absolute inset-0 opacity-40 mix-blend-overlay z-0 bg-[url('/features/smart-spray.png')] bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"></div>
         
         <div class="relative z-10 p-8 h-full flex flex-col justify-end">
           <div class="mb-auto">
-             <div class="w-12 h-12 flex items-center justify-center bg-amber-500/20 rounded-xl backdrop-blur-md border border-amber-500/30 text-amber-400 mb-6">
+            <!-- Added: group-hover:scale-110 -->
+             <div class="w-12 h-12 flex items-center justify-center bg-amber-500/20 rounded-xl backdrop-blur-md border border-amber-500/30 text-amber-400 mb-6 transition-transform duration-500 group-hover:scale-110">
               <CloudRain className="w-6 h-6" />
             </div>
           </div>
@@ -94,9 +100,10 @@ import { Scan, Map, CloudRain, Wifi, Sprout, ShieldCheck } from "lucide-react";
       </div>
 
       <!-- Feature 4: Offline First (Square - Info Card) -->
-      <div class="group relative overflow-hidden rounded-3xl bg-gray-950 border border-white/5 shadow-2xl p-8 flex flex-col justify-center items-center text-center hover:bg-gray-900 transition-colors duration-300">
+      <!-- Added: hover:shadow-emerald-500/10 hover:border-emerald-500/30 -->
+      <div class="group relative overflow-hidden rounded-3xl bg-gray-950 border border-white/5 shadow-lg p-8 flex flex-col justify-center items-center text-center transition-all duration-300 hover:bg-gray-900 hover:shadow-2xl hover:shadow-emerald-500/10 hover:border-emerald-500/30 hover:-translate-y-1">
         <div class="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-        <div class="w-16 h-16 flex items-center justify-center bg-gray-800/50 rounded-full mb-6 group-hover:scale-110 transition-transform duration-300">
+        <div class="w-16 h-16 flex items-center justify-center bg-gray-800/50 rounded-full mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
           <Wifi className="w-8 h-8 text-gray-400 group-hover:text-emerald-400 transition-colors" />
         </div>
         <h3 class="text-xl font-semibold text-white mb-3">Offline First</h3>
