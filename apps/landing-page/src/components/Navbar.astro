@@ -10,19 +10,19 @@ const links = [
 ---
 
 <nav id="navbar" class="fixed top-0 left-0 z-50 w-full transition-all duration-300">
-  <!-- Glassmorphism background that appears on scroll -->
-  <div class="navbar-bg absolute inset-0 bg-black/0 backdrop-blur-0 border-b border-transparent transition-all duration-300"></div>
+  <!-- Transparent by default - only shows background when scrolled -->
+  <div class="navbar-bg absolute inset-0 opacity-0 transition-all duration-300"></div>
   
-  <div class="container mx-auto px-6 py-4 relative z-10">
+  <div class="container mx-auto px-4 sm:px-6 py-3 relative z-10">
     <div class="flex items-center justify-between">
       <!-- Logo -->
       <a href="/" class="relative lg:right-28 flex items-center gap-2 hover:opacity-80 transition-opacity group">
         <img 
           src="/logo.png" 
           alt="Cropia" 
-          class="h-10 w-auto transition-transform group-hover:scale-105" 
+          class="h-9 w-auto transition-transform group-hover:scale-105" 
         />
-        <span class="text-xl font-bold font-brand tracking-tight text-white">Cropia</span>
+        <span class="text-lg font-bold font-brand tracking-tight text-white">Cropia</span>
       </a>
 
       <!-- Desktop Menu -->
@@ -30,7 +30,7 @@ const links = [
         {links.map((link) => (
           <a 
             href={link.href} 
-            class="nav-link relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white 
+            class="nav-link relative px-4 py-2 text-sm font-medium text-white/80 hover:text-white 
                    transition-all duration-300 rounded-lg group"
           >
             <span class="relative z-10">{link.name}</span>
@@ -47,7 +47,7 @@ const links = [
           href="https://cropia-farmer.vercel.app" 
           target="_blank"
           rel="noopener noreferrer"
-          class="ml-4 px-5 py-2.5 rounded-full text-sm font-semibold
+          class="ml-4 px-5 py-2 rounded-full text-sm font-semibold
                  bg-gradient-to-r from-emerald-500 to-teal-500 text-white
                  hover:from-emerald-400 hover:to-teal-400
                  shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40
@@ -60,41 +60,76 @@ const links = [
       <!-- Mobile Menu Button -->
       <button 
         id="mobile-menu-btn"
-        class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg 
-               text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300"
+        class="md:hidden w-9 h-9 flex items-center justify-center rounded-lg 
+               text-white hover:bg-white/10 transition-all duration-300"
         aria-label="Toggle menu"
       >
-        <Menu className="w-6 h-6 menu-open-icon" />
-        <X className="w-6 h-6 menu-close-icon hidden" />
+        <Menu className="w-5 h-5 menu-open-icon" />
+        <X className="w-5 h-5 menu-close-icon hidden" />
       </button>
     </div>
   </div>
 
   <!-- Mobile Menu Panel -->
-  <div id="mobile-menu" class="md:hidden absolute top-full left-0 w-full 
-                               bg-black/95 backdrop-blur-xl border-b border-white/10
+  <div id="mobile-menu" class="md:hidden fixed inset-0 top-0 left-0 w-full h-screen
+                               bg-gray-950/98 backdrop-blur-xl
                                transform -translate-y-full opacity-0 pointer-events-none
-                               transition-all duration-300">
-    <div class="container mx-auto px-6 py-6 space-y-2">
-      {links.map((link) => (
-        <a 
-          href={link.href} 
-          class="mobile-nav-link block px-4 py-3 text-lg font-medium text-white/70 hover:text-white 
-                 hover:bg-white/5 rounded-xl transition-all duration-200"
-        >
-          {link.name}
-        </a>
-      ))}
-      <div class="pt-4 border-t border-white/10 mt-4">
+                               transition-all duration-300 ease-out z-40">
+    <!-- Mobile Header -->
+    <div class="px-4 py-3 flex items-center justify-between border-b border-white/10">
+      <a href="/" class="flex items-center gap-2">
+        <img src="/logo.png" alt="Cropia" class="h-9 w-auto" />
+        <span class="text-lg font-bold font-brand tracking-tight text-white">Cropia</span>
+      </a>
+      <button 
+        id="mobile-menu-close"
+        class="w-9 h-9 flex items-center justify-center rounded-lg 
+               text-white hover:bg-white/10 transition-all duration-300"
+        aria-label="Close menu"
+      >
+        <X className="w-5 h-5" />
+      </button>
+    </div>
+    
+    <!-- Mobile Navigation Links -->
+    <div class="px-4 py-6 flex flex-col h-[calc(100vh-60px)]">
+      <div class="flex-1 space-y-1">
+        {links.map((link, index) => (
+          <a 
+            href={link.href} 
+            class="mobile-nav-link block px-4 py-3 text-base font-medium text-white/80 hover:text-white 
+                   hover:bg-white/5 rounded-lg transition-all duration-200
+                   border-b border-white/5 last:border-b-0"
+            style={`animation-delay: ${index * 50}ms`}
+          >
+            {link.name}
+          </a>
+        ))}
+      </div>
+      
+      <!-- Mobile CTA -->
+      <div class="pt-4 space-y-3">
         <a 
           href="https://cropia-farmer.vercel.app" 
           target="_blank"
           rel="noopener noreferrer"
-          class="block w-full py-3 text-center rounded-xl text-white font-semibold
+          class="block w-full py-3 text-center rounded-lg text-white font-semibold text-base
                  bg-gradient-to-r from-emerald-500 to-teal-500
-                 hover:from-emerald-400 hover:to-teal-400 transition-all duration-300"
+                 hover:from-emerald-400 hover:to-teal-400 
+                 shadow-lg shadow-emerald-500/30
+                 transition-all duration-300 active:scale-[0.98]"
         >
-          Get Started
+          Get Started — It's Free
+        </a>
+        <a 
+          href="https://cropia-admin.vercel.app" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block w-full py-3 text-center rounded-lg text-white/70 font-medium text-base
+                 border border-white/20 hover:border-white/40 hover:bg-white/5 hover:text-white
+                 transition-all duration-300 active:scale-[0.98]"
+        >
+          Admin Dashboard
         </a>
       </div>
     </div>
@@ -102,9 +137,9 @@ const links = [
 </nav>
 
 <style>
-  /* Scrolled state */
+  /* Scrolled state - solid background */
   #navbar.scrolled .navbar-bg {
-    @apply bg-black/80 backdrop-blur-xl border-b border-white/10;
+    @apply opacity-100 bg-gray-950/95 backdrop-blur-xl border-b border-white/10;
   }
   
   /* Active nav link */
@@ -120,11 +155,28 @@ const links = [
   #mobile-menu.open {
     @apply translate-y-0 opacity-100 pointer-events-auto;
   }
+  
+  /* Mobile link entrance animation */
+  #mobile-menu.open .mobile-nav-link {
+    animation: slideInFromRight 0.3s ease-out forwards;
+  }
+  
+  @keyframes slideInFromRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 </style>
 
 <script is:inline>
   const navbar = document.getElementById('navbar');
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
   const mobileMenu = document.getElementById('mobile-menu');
   const menuOpenIcon = document.querySelector('.menu-open-icon');
   const menuCloseIcon = document.querySelector('.menu-close-icon');
@@ -167,29 +219,38 @@ const links = [
     });
   }
 
-  // Mobile menu toggle
-  function toggleMobileMenu() {
-    const isOpen = mobileMenu.classList.toggle('open');
-    menuOpenIcon.classList.toggle('hidden', isOpen);
-    menuCloseIcon.classList.toggle('hidden', !isOpen);
-    
-    // Prevent body scroll when menu is open
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+  // Open mobile menu
+  function openMobileMenu() {
+    mobileMenu.classList.add('open');
+    menuOpenIcon.classList.add('hidden');
+    menuCloseIcon.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Close mobile menu
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    menuOpenIcon.classList.remove('hidden');
+    menuCloseIcon.classList.add('hidden');
+    document.body.style.overflow = '';
   }
 
   // Close mobile menu on link click
   mobileNavLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.remove('open');
-      menuOpenIcon.classList.remove('hidden');
-      menuCloseIcon.classList.add('hidden');
-      document.body.style.overflow = '';
-    });
+    link.addEventListener('click', closeMobileMenu);
   });
 
   // Event listeners
   window.addEventListener('scroll', handleScroll, { passive: true });
-  mobileMenuBtn?.addEventListener('click', toggleMobileMenu);
+  mobileMenuBtn?.addEventListener('click', openMobileMenu);
+  mobileMenuClose?.addEventListener('click', closeMobileMenu);
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+      closeMobileMenu();
+    }
+  });
 
   // Initial check
   handleScroll();
