@@ -1,0 +1,48 @@
+---
+import HeroVideo from '../components/HeroVideo.astro';
+import Features from '../components/Features.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Testimonials from '../components/Testimonials.astro';
+import FAQ from '../components/FAQ.astro';
+import CTA from '../components/CTA.astro';
+import Footer from '../components/Footer.astro';
+import Navbar from '../components/Navbar.astro';
+import '@repo/ui/globals.css';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<!-- Preload critical font for LCP optimization -->
+		<link 
+			rel="preload" 
+			href="https://fonts.gstatic.com/s/outfit/v11/QGYyz_MVcBeNP4NjuGObqx1XmO1I4TC1C4G-EiAou6Y.woff2" 
+			as="font" 
+			type="font/woff2" 
+			crossorigin 
+		/>
+		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		<title>Cropia - AI-Powered Crop Health Detection</title>
+		<meta name="description" content="Cropia empowers farmers with real-time, offline-first disease detection and provides government officials with a God View of regional crop health." />
+		<style is:global>
+			html {
+				scroll-behavior: smooth;
+			}
+		</style>
+	</head>
+	<body>
+		<Navbar />
+		<HeroVideo />
+		<Features />
+		<HowItWorks />
+		<Testimonials />
+		<FAQ />
+		<CTA />
+		<Footer />
+	</body>
+</html>

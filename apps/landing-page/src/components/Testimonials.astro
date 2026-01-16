@@ -1,0 +1,373 @@
+---
+import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Image } from "astro:assets";
+
+// Testimonial data
+const testimonials = [
+  {
+    id: 1,
+    quote: "Cropia detected early blight in my sugarcane field before I could even see it. The AI diagnosis and treatment plan saved my entire harvest that season.",
+    name: "Rajesh Kumar",
+    role: "Wheat & Sugarcane Farmer",
+    location: "Punjab, India",
+    image: "/testimonials/rajesh-kumar.png",
+    color: "emerald"
+  },
+  {
+    id: 2,
+    quote: "Living in a remote village, we rarely have internet. Cropia works completely offline - I scan my crops in the field and it syncs when I'm back in town.",
+    name: "Priya Devi",
+    role: "Organic Rice Farmer",
+    location: "Bihar, India",
+    image: "/testimonials/priya-devi.png",
+    color: "blue"
+  },
+  {
+    id: 3,
+    quote: "We can now visualize disease outbreaks across entire districts in real-time. Our response time to agricultural emergencies has improved by 10x.",
+    name: "Dr. Anand Sharma",
+    role: "District Agriculture Officer",
+    location: "Maharashtra, India",
+    image: "/testimonials/anand-sharma.png",
+    color: "purple"
+  },
+  {
+    id: 4,
+    quote: "Cropia helps us reach farmers in the most underserved regions. The simple interface and local language support make it accessible to everyone.",
+    name: "Sneha Patil",
+    role: "Program Director, AgriAid NGO",
+    location: "Karnataka, India",
+    image: "/testimonials/sneha-patil.png",
+    color: "amber"
+  }
+];
+
+const stats = [
+  { value: 100, suffix: "+", label: "Scans Daily" },
+  { value: 98, suffix: "%", label: "Accuracy Rate" },
+  { value: 15, suffix: "+", label: "States Covered" },
+  { value: 3, suffix: "", label: "Languages" }
+];
+---
+
+<section id="testimonials" class="relative py-24 bg-zinc-950 overflow-hidden">
+  <!-- Background Glow Effects -->
+  <div class="absolute top-1/4 right-0 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[150px] pointer-events-none"></div>
+  <div class="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+  
+  <div class="container mx-auto px-6 md:px-12 relative z-10">
+    <!-- Section Header -->
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <span class="text-emerald-400 font-bold tracking-widest text-sm uppercase mb-3 block font-brand">
+        Trusted Voices
+      </span>
+      <h2 class="text-4xl md:text-5xl font-light text-white mb-6 font-brand tracking-tight">
+        Stories from <br />
+        <span class="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-500">
+          the Field & Beyond
+        </span>
+      </h2>
+      <p class="text-lg text-gray-400 font-light leading-relaxed">
+        Hear from farmers, government officials, and NGO partners who are transforming agriculture with Cropia.
+      </p>
+    </div>
+
+    <!-- Testimonial Carousel Container -->
+    <div class="relative max-w-4xl mx-auto">
+      <!-- Carousel Wrapper -->
+      <div class="overflow-hidden rounded-3xl">
+        <div id="carousel-track" class="flex transition-transform duration-700 ease-out">
+          {testimonials.map((testimonial, index) => (
+            <div 
+              class="testimonial-slide w-full flex-shrink-0 px-4"
+              data-index={index}
+            >
+              <!-- Glassmorphism Card -->
+              <div class={`
+                relative p-8 md:p-12 rounded-3xl 
+                bg-gradient-to-br from-gray-900/80 to-gray-900/40
+                backdrop-blur-xl border border-white/10
+                shadow-2xl
+                transition-all duration-500
+                hover:border-${testimonial.color}-500/30
+                hover:shadow-${testimonial.color}-500/10
+              `}>
+                <!-- Quote Icon -->
+                <div class="absolute top-6 right-6 opacity-10">
+                  <Quote className="w-20 h-20 text-white" />
+                </div>
+                
+                <!-- Content -->
+                <div class="relative z-10">
+                  <!-- Quote Text -->
+                  <blockquote class="text-xl md:text-2xl text-gray-200 font-light leading-relaxed mb-8 italic">
+                    "{testimonial.quote}"
+                  </blockquote>
+                  
+                  <!-- Author Info -->
+                  <div class="flex items-center gap-4">
+                    <!-- Avatar -->
+                    <div class={`
+                      w-16 h-16 rounded-full overflow-hidden
+                      ring-2 ring-${testimonial.color}-400/30 ring-offset-2 ring-offset-zinc-950
+                      transition-all duration-300
+                      group-hover:ring-${testimonial.color}-400/60
+                    `}>
+                      <img 
+                        src={testimonial.image} 
+                        alt={testimonial.name}
+                        width="64"
+                        height="64"
+                        loading="lazy"
+                        decoding="async"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    <!-- Name & Role -->
+                    <div>
+                      <h4 class="text-white font-semibold text-lg">{testimonial.name}</h4>
+                      <p class="text-gray-400 text-sm">{testimonial.role}</p>
+                      <p class="text-gray-500 text-xs mt-0.5">📍 {testimonial.location}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Navigation Arrows -->
+      <button 
+        id="prev-btn"
+        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12
+               w-12 h-12 rounded-full bg-gray-800/80 backdrop-blur-sm border border-white/10
+               flex items-center justify-center text-white
+               hover:bg-gray-700 hover:border-emerald-500/30 hover:text-emerald-400
+               transition-all duration-300 shadow-lg
+               disabled:opacity-30 disabled:cursor-not-allowed"
+        aria-label="Previous testimonial"
+      >
+        <ChevronLeft className="w-6 h-6" />
+      </button>
+      
+      <button 
+        id="next-btn"
+        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12
+               w-12 h-12 rounded-full bg-gray-800/80 backdrop-blur-sm border border-white/10
+               flex items-center justify-center text-white
+               hover:bg-gray-700 hover:border-emerald-500/30 hover:text-emerald-400
+               transition-all duration-300 shadow-lg
+               disabled:opacity-30 disabled:cursor-not-allowed"
+        aria-label="Next testimonial"
+      >
+        <ChevronRight className="w-6 h-6" />
+      </button>
+
+      <!-- Pagination Dots -->
+      <div class="flex justify-center gap-3 mt-8">
+        {testimonials.map((_, index) => (
+          <button 
+            class={`pagination-dot w-3 h-3 rounded-full transition-all duration-300 
+                   ${index === 0 ? 'bg-emerald-400 scale-125' : 'bg-gray-600 hover:bg-gray-500'}`}
+            data-index={index}
+            aria-label={`Go to testimonial ${index + 1}`}
+          >
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div id="stats-section" class="mt-20 pt-12 border-t border-white/5">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+        {stats.map((stat, index) => (
+          <div class="text-center group">
+            <div class="flex items-baseline justify-center gap-1">
+              <span 
+                class="stat-number text-4xl md:text-5xl font-bold text-white font-brand transition-all duration-300 group-hover:text-emerald-400"
+                data-target={stat.value}
+                data-suffix={stat.suffix}
+              >
+                0{stat.suffix}
+              </span>
+            </div>
+            <p class="text-gray-400 text-sm md:text-base mt-2 font-light tracking-wide uppercase">
+              {stat.label}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Avatar color variants - need to be explicit for Tailwind */
+  .avatar-emerald { @apply from-emerald-400 to-emerald-600 ring-emerald-400/30; }
+  .avatar-blue { @apply from-blue-400 to-blue-600 ring-blue-400/30; }
+  .avatar-purple { @apply from-purple-400 to-purple-600 ring-purple-400/30; }
+  .avatar-amber { @apply from-amber-400 to-amber-600 ring-amber-400/30; }
+  
+  /* Pagination dot active pulse */
+  .pagination-dot.active {
+    @apply bg-emerald-400;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1.25); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.8; }
+  }
+  
+  /* Quote entrance animation */
+  .testimonial-slide blockquote {
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Stat number counter animation */
+  .stat-number {
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+
+<script is:inline>
+  // Carousel Logic
+  const track = document.getElementById('carousel-track');
+  const slides = document.querySelectorAll('.testimonial-slide');
+  const dots = document.querySelectorAll('.pagination-dot');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  
+  let currentIndex = 0;
+  let autoSlideInterval;
+  const SLIDE_INTERVAL = 5000; // 5 seconds
+
+  function updateCarousel(index) {
+    // Clamp index
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+    
+    currentIndex = index;
+    
+    // Move track
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    
+    // Update dots
+    dots.forEach((dot, i) => {
+      if (i === currentIndex) {
+        dot.classList.add('active', 'bg-emerald-400', 'scale-125');
+        dot.classList.remove('bg-gray-600');
+      } else {
+        dot.classList.remove('active', 'bg-emerald-400', 'scale-125');
+        dot.classList.add('bg-gray-600');
+      }
+    });
+  }
+
+  function nextSlide() {
+    updateCarousel(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    updateCarousel(currentIndex - 1);
+  }
+
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(nextSlide, SLIDE_INTERVAL);
+  }
+
+  function stopAutoSlide() {
+    clearInterval(autoSlideInterval);
+  }
+
+  // Event Listeners
+  nextBtn?.addEventListener('click', () => {
+    stopAutoSlide();
+    nextSlide();
+    startAutoSlide();
+  });
+
+  prevBtn?.addEventListener('click', () => {
+    stopAutoSlide();
+    prevSlide();
+    startAutoSlide();
+  });
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      stopAutoSlide();
+      updateCarousel(index);
+      startAutoSlide();
+    });
+  });
+
+  // Pause on hover
+  track?.addEventListener('mouseenter', stopAutoSlide);
+  track?.addEventListener('mouseleave', startAutoSlide);
+
+  // Init
+  startAutoSlide();
+
+  // --- COUNTER ANIMATION ---
+  const statsSection = document.getElementById('stats-section');
+  const statNumbers = document.querySelectorAll('.stat-number');
+  let hasAnimated = false;
+
+  function animateCounters() {
+    if (hasAnimated) return;
+    hasAnimated = true;
+
+    statNumbers.forEach(el => {
+      const target = parseInt(el.dataset.target, 10);
+      const suffix = el.dataset.suffix || '';
+      const duration = 2000; // 2 seconds
+      const startTime = performance.now();
+
+      function updateNumber(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function (ease-out cubic)
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const currentValue = Math.floor(easeOut * target);
+        
+        el.textContent = currentValue.toLocaleString() + suffix;
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateNumber);
+        } else {
+          el.textContent = target.toLocaleString() + suffix;
+        }
+      }
+
+      requestAnimationFrame(updateNumber);
+    });
+  }
+
+  // Intersection Observer for counter animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounters();
+        observer.disconnect(); // Only animate once
+      }
+    });
+  }, { threshold: 0.3 });
+
+  if (statsSection) {
+    observer.observe(statsSection);
+  }
+</script>

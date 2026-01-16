@@ -1,0 +1,457 @@
+---
+import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-react";
+---
+
+<!-- Outer wrapper with extra height to create scroll distance -->
+<div id="how-it-works-wrapper" class="relative bg-zinc-950">
+  <!-- Sticky container that stays in viewport while scrolling through wrapper -->
+  <section id="how-it-works" class="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+    <!-- Dynamic Background - Static Pulse -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none transition-colors duration-1000" id="bg-pulse"></div>
+
+    <!-- Progress indicator bar at top -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-white/10">
+      <div id="scroll-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-100 ease-out" style="width: 0%"></div>
+    </div>
+
+    <div class="container mx-auto px-6 md:px-12 relative z-10 py-12">
+      <!-- Header with Toggles -->
+      <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+         <span class="text-emerald-400 font-bold tracking-widest text-sm uppercase mb-3 block font-brand" id="section-subtitle">
+          Workflow
+        </span>
+        <h2 class="text-3xl md:text-5xl font-light text-white mb-6 md:mb-8 font-brand tracking-tight">
+          Precision in <br />
+          <span class="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-500" id="section-title-highlight">
+            Three Simple Steps
+          </span>
+        </h2>
+
+        <!-- Tab Switcher -->
+        <div class="inline-flex p-1 bg-white/5 border border-white/10 rounded-full relative">
+           <div id="tab-indicator" class="absolute top-1 left-1 bottom-1 w-[calc(50%-4px)] bg-gray-800 rounded-full shadow-lg transition-all duration-300 ease-out"></div>
+           
+           <button onclick="switchMode('farmer')" class="relative z-10 px-6 md:px-8 py-2 text-sm font-medium text-white transition-colors duration-300 hover:text-emerald-400 flex items-center gap-2" id="btn-farmer">
+              Farmers
+           </button>
+           <button onclick="switchMode('admin')" class="relative z-10 px-6 md:px-8 py-2 text-sm font-medium text-gray-400 transition-colors duration-300 hover:text-blue-400 flex items-center gap-2" id="btn-admin">
+              Admins
+           </button>
+        </div>
+      </div>
+
+      <!-- Process Flow Container -->
+      <div class="relative grid grid-cols-1" id="steps-container">
+      
+      <!-- SVG PATH OVERLAY (Shared) -->
+      <div class="absolute inset-0 pointer-events-none z-0">
+        <!-- Desktop Path -->
+        <svg class="hidden md:block w-full h-full" overflow="visible">
+          <path 
+            id="desktop-path" 
+            d="" 
+            fill="none" 
+            stroke="white" 
+            stroke-width="2" 
+            stroke-dasharray="4 4"
+            class="opacity-20 transition-all duration-700 ease-in-out"
+          />
+        </svg>
+
+        <!-- Mobile Path -->
+        <svg class="block md:hidden w-full h-full" overflow="visible">
+          <path 
+            id="mobile-path" 
+            d=""
+            fill="none" 
+            stroke="white" 
+            stroke-width="2" 
+            stroke-dasharray="4 4" 
+            class="opacity-20 transition-all duration-700"
+          />
+        </svg>
+
+        <!-- THE GLOWING DOT - positioned via left/top in JS for reliability -->
+        <div id="glow-dot" class="absolute w-4 h-4 rounded-full shadow-[0_0_20px_4px_currentColor] z-20 opacity-0 transition-opacity duration-300 text-emerald-400 bg-current" style="left: 0; top: 0;"></div>
+      </div>
+
+      <!-- VIEW: FARMER -->
+      <div id="farmer-view" class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 transition-all duration-500 transform opacity-100 scale-100 pointer-events-auto">
+          <!-- Step 1: Capture -->
+          <div id="f-step-1" class="step-card group relative flex flex-col items-center text-center">
+            <div class="relative z-10 mb-6">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
+                  <Smartphone class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+              </div>
+              <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">1</div>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-3">Snap & Upload</h3>
+            <p class="text-gray-400 font-light text-sm leading-relaxed max-w-xs mx-auto">Simply capture crop images offline. Data syncs automatically.</p>
+          </div>
+
+          <!-- Step 2: Diagnose -->
+          <div id="f-step-2" class="step-card group relative flex flex-col items-center text-center">
+            <div class="relative z-10 mb-6">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
+                  <Cpu class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+              </div>
+              <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">2</div>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-3">AI Diagnosis</h3>
+            <p class="text-gray-400 font-light text-sm leading-relaxed max-w-xs mx-auto">"Gatekeeper" AI identifies diseases instantly with >98% accuracy.</p>
+          </div>
+
+          <!-- Step 3: Resolve -->
+          <div id="f-step-3" class="step-card group relative flex flex-col items-center text-center">
+            <div class="relative z-10 mb-6">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
+                  <Sprout class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+              </div>
+              <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">3</div>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-3">Treat & Recover</h3>
+            <p class="text-gray-400 font-light text-sm leading-relaxed max-w-xs mx-auto">Receive localized treatment plans and protect your yield.</p>
+          </div>
+      </div>
+
+       <!-- VIEW: ADMIN -->
+      <div id="admin-view" class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 transition-all duration-500 transform opacity-0 scale-95 pointer-events-none">
+          <!-- Step 1: Monitor -->
+          <div id="a-step-1" class="step-card group relative flex flex-col items-center text-center">
+            <div class="relative z-10 mb-6">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
+                  <Globe class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+              </div>
+              <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">1</div>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-3">Global Matrix</h3>
+            <p class="text-gray-400 font-light text-sm leading-relaxed max-w-xs mx-auto">Visualize every scan across district and state lines in real-time.</p>
+          </div>
+
+          <!-- Step 2: Analyze -->
+          <div id="a-step-2" class="step-card group relative flex flex-col items-center text-center">
+            <div class="relative z-10 mb-6">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
+                  <Newspaper class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+              </div>
+              <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">2</div>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-3">Regional Intel</h3>
+            <p class="text-gray-400 font-light text-sm leading-relaxed max-w-xs mx-auto">AI aggregates data to generate news headlines and outbreak warnings.</p>
+          </div>
+
+          <!-- Step 3: Govern -->
+          <div id="a-step-3" class="step-card group relative flex flex-col items-center text-center">
+            <div class="relative z-10 mb-6">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
+                  <ShieldAlert class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+              </div>
+              <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">3</div>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-3">Allocated Response</h3>
+            <p class="text-gray-400 font-light text-sm leading-relaxed max-w-xs mx-auto">Deploy subsidies and chemicals to precise affected zones instantly.</p>
+          </div>
+      </div>
+    
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  /* === FARMER THEME (Natural/Green) === */
+  .farmer-mode .stop-color-main { stop-color: #10b981; } /* Emerald-500 */
+  .farmer-mode #glow-dot { @apply text-emerald-400; }
+  
+  /* Active States (Farmer) - Enhanced Glow */
+  #f-step-1.active .icon-box { 
+    @apply border-emerald-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(16, 185, 129, 0.4), 0 0 40px 12px rgba(16, 185, 129, 0.2);
+  }
+  #f-step-1.active .icon-box svg { @apply text-emerald-400; }
+  
+  #f-step-2.active .icon-box { 
+    @apply border-blue-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(59, 130, 246, 0.4), 0 0 40px 12px rgba(59, 130, 246, 0.2);
+  }
+  #f-step-2.active .icon-box svg { @apply text-blue-400; }
+  
+  #f-step-3.active .icon-box { 
+    @apply border-amber-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(251, 191, 36, 0.4), 0 0 40px 12px rgba(251, 191, 36, 0.2);
+  }
+  #f-step-3.active .icon-box svg { @apply text-amber-400; }
+
+  /* === ADMIN THEME (Tech/Blue-Purple) === */
+  .admin-mode .stop-color-main { stop-color: #3b82f6; } /* Blue-500 */
+  .admin-mode #glow-dot { @apply text-blue-400; }
+
+  /* Active States (Admin) - Enhanced Glow */
+  #a-step-1.active .icon-box { 
+    @apply border-blue-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(59, 130, 246, 0.4), 0 0 40px 12px rgba(59, 130, 246, 0.2);
+  }
+  #a-step-1.active .icon-box svg { @apply text-blue-400; }
+  
+  #a-step-2.active .icon-box { 
+    @apply border-purple-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(168, 85, 247, 0.4), 0 0 40px 12px rgba(168, 85, 247, 0.2);
+  }
+  #a-step-2.active .icon-box svg { @apply text-purple-400; }
+  
+  #a-step-3.active .icon-box { 
+    @apply border-red-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(248, 113, 113, 0.4), 0 0 40px 12px rgba(248, 113, 113, 0.2);
+  }
+  #a-step-3.active .icon-box svg { @apply text-red-400; }
+
+</style>
+
+<script is:inline>
+  let mode = 'farmer'; // 'farmer' | 'admin'
+  
+  // Elements
+  const wrapper = document.getElementById('how-it-works-wrapper');
+  const section = document.getElementById('how-it-works');
+  const progressBar = document.getElementById('scroll-progress-bar');
+  
+  // Configuration - Wrapper height determines scroll distance
+  const SCROLL_DISTANCE_VH = 250; // How much scroll distance for the animation
+  wrapper.style.height = `${SCROLL_DISTANCE_VH}vh`;
+  
+  // Add initial class
+  section.classList.add('farmer-mode');
+
+  function switchMode(newMode) {
+      if(mode === newMode) return;
+      mode = newMode;
+
+      const farmerView = document.getElementById('farmer-view');
+      const adminView = document.getElementById('admin-view');
+      const btnFarmer = document.getElementById('btn-farmer');
+      const btnAdmin = document.getElementById('btn-admin');
+      const tabIndicator = document.getElementById('tab-indicator');
+      const sectionSub = document.getElementById('section-subtitle');
+      const sectionTitle = document.getElementById('section-title-highlight');
+      const dot = document.getElementById('glow-dot');
+      const bgPulse = document.getElementById('bg-pulse');
+
+      // Update UI Tabs
+      if(mode === 'farmer') {
+          tabIndicator.style.transform = 'translateX(0)';
+          btnFarmer.classList.add('text-white');
+          btnFarmer.classList.remove('text-gray-400');
+          btnAdmin.classList.add('text-gray-400');
+          btnAdmin.classList.remove('text-white');
+
+          // Text Updates
+          sectionSub.textContent = 'For Farmers';
+          sectionSub.className = 'text-emerald-400 font-bold tracking-widest text-sm uppercase mb-3 block font-brand transition-colors';
+          sectionTitle.className = 'font-semibold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-500 transition-colors';
+          bgPulse.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none transition-colors duration-1000';
+          
+          // Progress bar color
+          progressBar.className = 'h-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-100 ease-out';
+          
+          // View Transition
+          farmerView.style.opacity = '1';
+          farmerView.style.pointerEvents = 'auto';
+          farmerView.style.transform = 'scale(1)';
+          
+          adminView.style.opacity = '0';
+          adminView.style.pointerEvents = 'none';
+          adminView.style.transform = 'scale(0.95)';
+
+          section.classList.remove('admin-mode');
+          section.classList.add('farmer-mode');
+
+      } else {
+          tabIndicator.style.transform = 'translateX(100%)';
+          btnAdmin.classList.add('text-white');
+          btnAdmin.classList.remove('text-gray-400');
+          btnFarmer.classList.add('text-gray-400');
+          btnFarmer.classList.remove('text-white');
+          
+          // Text Updates
+          sectionSub.textContent = 'For Administration';
+          sectionSub.className = 'text-blue-400 font-bold tracking-widest text-sm uppercase mb-3 block font-brand transition-colors';
+          sectionTitle.className = 'font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-500 transition-colors';
+          bgPulse.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none transition-colors duration-1000';
+
+          // Progress bar color
+          progressBar.className = 'h-full bg-gradient-to-r from-blue-400 to-purple-600 transition-all duration-100 ease-out';
+
+          // View Transition
+          adminView.style.opacity = '1';
+          adminView.style.pointerEvents = 'auto';
+          adminView.style.transform = 'scale(1)';
+          
+          farmerView.style.opacity = '0';
+          farmerView.style.pointerEvents = 'none';
+          farmerView.style.transform = 'scale(0.95)';
+
+          section.classList.remove('farmer-mode');
+          section.classList.add('admin-mode');
+      }
+
+      // Reset Dot
+      dot.style.opacity = '0';
+
+      // Recalculate Paths after transition
+      requestAnimationFrame(() => {
+           initPaths();
+           onScroll(); 
+      });
+  }
+  
+  // Make global so button onclick works
+  window.switchMode = switchMode;
+
+
+  // --- PATH ENGINE ---
+
+  let pathData = {
+    desktop: null,
+    mobile: null,
+    current: null,
+    length: 0
+  };
+
+  function initPaths() {
+    pathData.desktop = document.getElementById('desktop-path');
+    pathData.mobile = document.getElementById('mobile-path');
+
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    
+    // Select Steps based on MODE
+    const prefix = mode === 'farmer' ? 'f' : 'a';
+    const s1 = document.getElementById(`${prefix}-step-1`);
+    const s2 = document.getElementById(`${prefix}-step-2`);
+    const s3 = document.getElementById(`${prefix}-step-3`);
+    
+    if (isDesktop && pathData.desktop) {
+        if(s1 && s2 && s3) {
+            updatePathGeometry(pathData.desktop, s1, s2, s3, isDesktop);
+        }
+        pathData.current = pathData.desktop;
+    } else {
+        if(s1 && s2 && s3) {
+             updatePathGeometry(pathData.mobile, s1, s2, s3, isDesktop);
+        }
+        pathData.current = pathData.mobile;
+    }
+
+    if (pathData.current) {
+      pathData.length = pathData.current.getTotalLength();
+    }
+  }
+
+  function updatePathGeometry(pathElement, el1, el2, el3, isDesktop) {
+      const container = document.getElementById('steps-container');
+      const rectC = container.getBoundingClientRect();
+
+      // Helper to get center of the ICON BOX within the step card
+      const getIconCenter = (stepEl) => {
+          const iconBox = stepEl.querySelector('.icon-box');
+          const rect = iconBox.getBoundingClientRect();
+          return {
+              x: (rect.left + rect.width/2) - rectC.left,
+              y: (rect.top + rect.height/2) - rectC.top 
+          };
+      };
+
+      const p1 = getIconCenter(el1);
+      const p2 = getIconCenter(el2);
+      const p3 = getIconCenter(el3);
+      
+      let d = "";
+      if(isDesktop) {
+          d = `M ${p1.x},${p1.y} L ${p2.x},${p2.y} L ${p3.x},${p3.y}`;
+      } else {
+          d = `M ${p1.x},${p1.y} L ${p2.x},${p2.y} L ${p3.x},${p3.y}`;
+      }
+      
+      pathElement.setAttribute('d', d);
+  }
+
+  // --- STICKY SCROLL PROGRESS ENGINE ---
+  function getScrollProgress() {
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    
+    // How far we've scrolled into the wrapper
+    // When wrapper top hits viewport top, progress starts
+    // When wrapper bottom hits viewport bottom, progress ends
+    const scrollableDistance = wrapper.offsetHeight - windowHeight;
+    const currentScroll = -wrapperRect.top;
+    
+    // Clamp to 0-1 range
+    let progress = currentScroll / scrollableDistance;
+    progress = Math.max(0, Math.min(1, progress));
+    
+    return progress;
+  }
+
+  function onScroll() {
+    const dot = document.getElementById('glow-dot');
+    if (!wrapper || !pathData.current || !dot) return;
+
+    // Get progress based on scroll position within the wrapper
+    const progress = getScrollProgress();
+    
+    // Update progress bar
+    progressBar.style.width = `${progress * 100}%`;
+    
+    // Use progress directly for path animation
+    // Add slight padding at start/end so dot appears/disappears smoothly
+    const pathProgress = progress;
+
+    // Move Dot along path
+    if (pathData.length > 0) {
+      const point = pathData.current.getPointAtLength(pathProgress * pathData.length);
+      
+      // Fade in/out at edges
+      if (pathProgress <= 0.02 || pathProgress >= 0.98) {
+          dot.style.opacity = '0';
+      } else {
+          dot.style.opacity = '1';
+      }
+      
+      // Position dot
+      const dotSize = 16;
+      dot.style.left = `${point.x - dotSize / 2}px`;
+      dot.style.top = `${point.y - dotSize / 2}px`;
+    }
+    
+    // Activate steps based on progress
+    const prefix = mode === 'farmer' ? 'f' : 'a';
+    const s1 = document.getElementById(`${prefix}-step-1`);
+    const s2 = document.getElementById(`${prefix}-step-2`);
+    const s3 = document.getElementById(`${prefix}-step-3`);
+    
+    // Step activation thresholds - aligned with dot position on path
+    // Path: Step1 at 0% → Step2 at 50% → Step3 at 100%
+    if (pathProgress > 0.02) s1?.classList.add('active');
+    else s1?.classList.remove('active');
+    
+    if (pathProgress > 0.48) s2?.classList.add('active');
+    else s2?.classList.remove('active');
+    
+    if (pathProgress > 0.95) s3?.classList.add('active');
+    else s3?.classList.remove('active');
+  }
+
+  // Listeners - using requestAnimationFrame for smooth 60fps
+  window.addEventListener('scroll', () => requestAnimationFrame(onScroll), { passive: true });
+  window.addEventListener('resize', () => { initPaths(); onScroll(); });
+
+  // Init on load
+  document.addEventListener('DOMContentLoaded', () => {
+    initPaths();
+    onScroll();
+  });
+  
+  // Fallback init
+  setTimeout(() => { initPaths(); onScroll(); }, 100);
+
+</script>
