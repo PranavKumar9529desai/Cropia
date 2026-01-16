@@ -2,6 +2,7 @@
 import HeroVideo from '../components/HeroVideo.astro';
 import Features from '../components/Features.astro';
 import HowItWorks from '../components/HowItWorks.astro';
+import Testimonials from '../components/Testimonials.astro';
 import Navbar from '../components/Navbar.astro';
 import '@repo/ui/globals.css';
 ---
@@ -15,7 +16,8 @@ import '@repo/ui/globals.css';
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-		<title>Astro</title>
+		<title>Cropia - AI-Powered Crop Health Detection</title>
+		<meta name="description" content="Cropia empowers farmers with real-time, offline-first disease detection and provides government officials with a God View of regional crop health." />
 		<style is:global>
 			html {
 				scroll-behavior: smooth;
@@ -27,5 +29,6 @@ import '@repo/ui/globals.css';
 		<HeroVideo />
 		<Features />
 		<HowItWorks />
+		<Testimonials />
 	</body>
 </html>
