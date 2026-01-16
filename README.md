@@ -116,10 +116,10 @@ graph TD
     end
 
     subgraph Packages
-        UI[@repo/ui]
-        DB[@repo/db]
-        API[@repo/api]
-        TS[@repo/typescript-config]
+        UI["@repo/ui"]
+        DB["@repo/db"]
+        API["@repo/api"]
+        TS["@repo/typescript-config"]
     end
 
     F --> UI

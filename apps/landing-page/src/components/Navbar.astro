@@ -7,6 +7,9 @@ const links = [
   { name: "Testimonials", href: "#testimonials" },
   { name: "FAQ", href: "#faq" },
 ];
+
+import { Image } from "astro:assets";
+import logoImage from "../assets/logo.png";
 ---
 
 <nav id="navbar" class="fixed top-0 left-0 z-50 w-full transition-all duration-300">
@@ -17,10 +20,12 @@ const links = [
     <div class="flex items-center justify-between">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2 hover:opacity-80 transition-opacity group">
-        <img 
-          src="/logo.png" 
+        <Image 
+          src={logoImage} 
           alt="Cropia" 
           class="h-9 w-auto transition-transform group-hover:scale-105" 
+          width={36}
+          height={36}
         />
         <span class="text-lg font-bold font-brand tracking-tight text-white">Cropia</span>
       </a>
@@ -78,7 +83,7 @@ const links = [
     <!-- Mobile Header -->
     <div class="px-4 py-3 flex items-center justify-between border-b border-white/10">
       <a href="/" class="flex items-center gap-2">
-        <img src="/logo.png" alt="Cropia" class="h-9 w-auto" />
+        <Image src={logoImage} alt="Cropia" class="h-9 w-auto" width={36} height={36} />
         <span class="text-lg font-bold font-brand tracking-tight text-white">Cropia</span>
       </a>
       <button 

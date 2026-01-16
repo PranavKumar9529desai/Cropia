@@ -1,6 +1,10 @@
 ---
 import { cn } from "@repo/ui/lib/utils";
 import { Scan, Map, CloudRain, Wifi, Sprout, ShieldCheck } from "lucide-react";
+import { Image } from "astro:assets";
+import aiScanImg from "../assets/features/ai-scan.png";
+import godViewImg from "../assets/features/god-view.png";
+import smartSprayImg from "../assets/features/smart-spray.png";
 ---
 
 <section id="features" class="relative py-24 bg-black overflow-hidden">
@@ -31,9 +35,10 @@ import { Scan, Map, CloudRain, Wifi, Sprout, ShieldCheck } from "lucide-react";
       <!-- Added: shadow-lg hover:shadow-emerald-500/20 hover:border-emerald-500/50 -->
       <div class="group relative md:col-span-2 overflow-hidden rounded-3xl bg-gray-900/50 border border-white/5 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/20 hover:border-emerald-500/50 hover:-translate-y-1">
         <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
-        <img 
-          src="/features/ai-scan.png" 
+        <Image 
+          src={aiScanImg} 
           alt="AI Crop Doctor Interface" 
+          width={800}
           class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-80"
         />
         <div class="absolute bottom-0 left-0 p-8 z-20 max-w-lg">
@@ -58,9 +63,10 @@ import { Scan, Map, CloudRain, Wifi, Sprout, ShieldCheck } from "lucide-react";
       <!-- Added: hover:shadow-blue-500/20 hover:border-blue-500/50 -->
       <div class="group relative md:row-span-2 overflow-hidden rounded-3xl bg-gray-900/50 border border-white/5 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/50 hover:-translate-y-1">
          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
-        <img 
-          src="/features/god-view.png" 
+        <Image 
+          src={godViewImg} 
           alt="God View Dashboard" 
+          width={600}
           class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-80"
         />
         <div class="absolute top-0 left-0 p-8 z-20 w-full">
@@ -83,7 +89,13 @@ import { Scan, Map, CloudRain, Wifi, Sprout, ShieldCheck } from "lucide-react";
       <!-- Added: hover:shadow-amber-500/20 hover:border-amber-500/50 -->
       <div class="group relative overflow-hidden rounded-3xl bg-gray-900/50 border border-white/5 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-amber-500/20 hover:border-amber-500/50 hover:-translate-y-1">
         <div class="absolute inset-0 bg-gradient-to-tr from-gray-900 to-gray-800 z-0"></div>
-        <div class="absolute inset-0 opacity-40 mix-blend-overlay z-0 bg-[url('/features/smart-spray.png')] bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"></div>
+        <!-- Smart Spray Img -->
+        <Image 
+          src={smartSprayImg}
+          alt="Smart Spray Planning"
+          width={400} 
+          class="absolute inset-0 h-full w-full object-cover opacity-40 mix-blend-overlay z-0 transition-transform duration-700 ease-out group-hover:scale-110"
+        />
         
         <div class="relative z-10 p-8 h-full flex flex-col justify-end">
           <div class="mb-auto">

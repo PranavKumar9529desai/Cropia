@@ -2,6 +2,11 @@
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { Image } from "astro:assets";
 
+import rajeshImg from "../assets/testimonials/rajesh-kumar.png";
+import priyaImg from "../assets/testimonials/priya-devi.png";
+import anandImg from "../assets/testimonials/anand-sharma.png";
+import snehaImg from "../assets/testimonials/sneha-patil.png";
+
 // Testimonial data
 const testimonials = [
   {
@@ -10,7 +15,7 @@ const testimonials = [
     name: "Rajesh Kumar",
     role: "Wheat & Sugarcane Farmer",
     location: "Punjab, India",
-    image: "/testimonials/rajesh-kumar.png",
+    image: rajeshImg,
     color: "emerald"
   },
   {
@@ -19,7 +24,7 @@ const testimonials = [
     name: "Priya Devi",
     role: "Organic Rice Farmer",
     location: "Bihar, India",
-    image: "/testimonials/priya-devi.png",
+    image: priyaImg,
     color: "blue"
   },
   {
@@ -28,7 +33,7 @@ const testimonials = [
     name: "Dr. Anand Sharma",
     role: "District Agriculture Officer",
     location: "Maharashtra, India",
-    image: "/testimonials/anand-sharma.png",
+    image: anandImg,
     color: "purple"
   },
   {
@@ -37,7 +42,7 @@ const testimonials = [
     name: "Sneha Patil",
     role: "Program Director, AgriAid NGO",
     location: "Karnataka, India",
-    image: "/testimonials/sneha-patil.png",
+    image: snehaImg,
     color: "amber"
   }
 ];
@@ -113,13 +118,11 @@ const stats = [
                       transition-all duration-300
                       group-hover:ring-${testimonial.color}-400/60
                     `}>
-                      <img 
+                      <Image 
                         src={testimonial.image} 
                         alt={testimonial.name}
-                        width="64"
-                        height="64"
-                        loading="lazy"
-                        decoding="async"
+                        width={64}
+                        height={64}
                         class="w-full h-full object-cover"
                       />
                     </div>
