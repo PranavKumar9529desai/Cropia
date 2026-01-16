@@ -8,6 +8,7 @@ Built as a high-performance monorepo using **Turborepo**, **Bun**, and **Hono**,
 
 ## 🌐 Live Demos
 
+- **Landing Page:** [https://cropia-phi.vercel.app/](https://cropia-phi.vercel.app/)
 - **Admin Dashboard (Government/NGO):** [https://cropia-admin.vercel.app](https://cropia-admin.vercel.app)
 - **Farmer App:** [https://cropia-farmer.vercel.app](https://cropia-farmer.vercel.app)
 
@@ -47,14 +48,24 @@ Built as a high-performance monorepo using **Turborepo**, **Bun**, and **Hono**,
 
 - **Monorepo:** [Turborepo](https://turbo.build/)
 - **Runtime/Manager:** [Bun](https://bun.sh/) (v1.2.20)
+- **Dependency Management:**
+  - **Catalog:** Centralized versions in root `package.json`.
+  - **Peer Dependencies:** Preventing React duplication in shared UI packages.
 - **Language:** TypeScript (v5.9)
 
 **Frontend (Web & PWA)**
 
 - **Framework:** React (Vite)
+- **Marketing Site:** [Astro](https://astro.build/) (Static/Zero-JS)
 - **Styling:** Tailwind CSS + Shadcn UI (`@repo/ui`)
 - **State/Routing:** TanStack Query + TanStack Router
 - **Maps:** Mapbox / Leaflet (via React)
+
+**Why Astro for Landing Page?**
+We chose Astro over Next.js/React for the public site to ensure **maximum performance**:
+- **Zero JS Runtime:** Ships pure HTML/CSS by default.
+- **No Overhead:** Avoids the ~30kb React hydration cost for static pages.
+- **Islands Architecture:** Interactive components (React) are only loaded when needed.
 
 **Backend (API & Edge)**
 
@@ -83,6 +94,7 @@ The project follows a modern monorepo structure:
 ├── apps
 │   ├── farmer       # The Farmer PWA (Vite + React)
 │   ├── admin        # The Government Dashboard (Vite + React)
+│   ├── landing-page # Marketing Website (Astro)
 │   └── api          # Hono Backend (Business Logic + AI Agents)
 ├── packages
 │   ├── db           # Prisma Schema & MongoDB Client
@@ -90,6 +102,38 @@ The project follows a modern monorepo structure:
 │   ├── config       # Shared TS/Eslint Configs
 │   └── scripts      # Utility scripts
 └── turbo.json       # Build pipeline configuration
+```
+
+### Dependency Graph
+
+```mermaid
+graph TD
+    subgraph Apps
+        F[Farmer App]
+        A[Admin Dashboard]
+        L[Landing Page]
+        S[API Server]
+    end
+
+    subgraph Packages
+        UI[@repo/ui]
+        DB[@repo/db]
+        API[@repo/api]
+        TS[@repo/typescript-config]
+    end
+
+    F --> UI
+    A --> UI
+    L --> UI
+    F --> API
+    A --> API
+    S --> API
+    API --> DB
+    
+    %% Shared Configs
+    UI -.-> TS
+    DB -.-> TS
+    API -.-> TS
 
 ```
 
@@ -168,6 +212,7 @@ bun run dev
 
 ```
 
+- Landing Page: `http://localhost:4321`
 - Farmer App: `http://localhost:5173`
 - Admin App: `http://localhost:5174`
 - Backend API: `http://localhost:3000`
