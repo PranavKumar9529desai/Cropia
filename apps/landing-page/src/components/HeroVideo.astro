@@ -1,5 +1,6 @@
 ---
-import { Button } from "@repo/ui/components/button";
+import { buttonVariants } from "@repo/ui/components/button";
+import { cn } from "@repo/ui/lib/utils";
 ---
 
 <div class="relative h-screen w-full overflow-hidden">
@@ -42,12 +43,24 @@ import { Button } from "@repo/ui/components/button";
         Cropia empowers farmers with satellite imagery, real-time soil data, and precision analytics to maximize harvest potential.
       </p>
       <div class="flex flex-col sm:flex-row gap-4">
-        <Button asChild size="lg" className="text-base px-8 h-12 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-lg shadow-emerald-900/20 transition-all hover:scale-105">
-          <a href="/login" class="text-white">Get Started</a>
-        </Button>
-        <Button asChild variant="outline" size="lg" className="text-base px-8 h-12 rounded-full bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white backdrop-blur-md transition-all hover:scale-105">
-          <a href="#features" class="text-white">Learn More</a>
-        </Button>
+        <a
+          href="/login"
+          class={cn(
+            buttonVariants({ variant: "default", size: "lg" }),
+            "text-base px-8 h-12 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white border-0 shadow-lg shadow-emerald-900/20 transition-all hover:scale-105"
+          )}
+        >
+          Get Started
+        </a>
+        <a
+          href="#features"
+          class={cn(
+            buttonVariants({ variant: "outline", size: "lg" }),
+            "text-base px-8 h-12 rounded-full bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white backdrop-blur-md transition-all hover:scale-105"
+          )}
+        >
+          Learn More
+        </a>
       </div>
     </div>
   </div>

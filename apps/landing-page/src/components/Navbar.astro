@@ -1,5 +1,6 @@
 ---
-import { Button } from "@repo/ui/components/button";
+import { buttonVariants } from "@repo/ui/components/button";
+import { cn } from "@repo/ui/lib/utils";
 
 const links = [
   { name: "About", href: "#about" },
@@ -26,11 +27,15 @@ const links = [
           {link.name}
         </a>
       ))}
-      <Button asChild variant="default" className="rounded-full px-6 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
-        <a href="/login">
-          Sign In
-        </a>
-      </Button>
+      <a 
+        href="/login" 
+        class={cn(
+          buttonVariants({ variant: "default" }), 
+          "rounded-full px-6 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
+        )}
+      >
+        Sign In
+      </a>
     </div>
 
     <!-- Mobile Menu Button (Placeholder) -->
