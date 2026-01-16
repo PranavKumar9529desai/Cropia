@@ -2,38 +2,46 @@
 import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-react";
 ---
 
-<section id="how-it-works" class="relative py-24 bg-zinc-950 overflow-hidden min-h-[800px]">
-  <!-- Dynamic Background - Static Pulse -->
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none transition-colors duration-1000" id="bg-pulse"></div>
+<!-- Outer wrapper with extra height to create scroll distance -->
+<div id="how-it-works-wrapper" class="relative bg-zinc-950">
+  <!-- Sticky container that stays in viewport while scrolling through wrapper -->
+  <section id="how-it-works" class="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+    <!-- Dynamic Background - Static Pulse -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none transition-colors duration-1000" id="bg-pulse"></div>
 
-  <div class="container mx-auto px-6 md:px-12 relative z-10">
-    <!-- Header with Toggles -->
-    <div class="text-center max-w-2xl mx-auto mb-16">
-       <span class="text-emerald-400 font-bold tracking-widest text-sm uppercase mb-3 block font-brand" id="section-subtitle">
-        Workflow
-      </span>
-      <h2 class="text-4xl md:text-5xl font-light text-white mb-8 font-brand tracking-tight">
-        Precision in <br />
-        <span class="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-500" id="section-title-highlight">
-          Three Simple Steps
-        </span>
-      </h2>
-
-      <!-- Tab Switcher -->
-      <div class="inline-flex p-1 bg-white/5 border border-white/10 rounded-full relative">
-         <div id="tab-indicator" class="absolute top-1 left-1 bottom-1 w-[calc(50%-4px)] bg-gray-800 rounded-full shadow-lg transition-all duration-300 ease-out"></div>
-         
-         <button onclick="switchMode('farmer')" class="relative z-10 px-8 py-2 text-sm font-medium text-white transition-colors duration-300 hover:text-emerald-400 flex items-center gap-2" id="btn-farmer">
-            Farmers
-         </button>
-         <button onclick="switchMode('admin')" class="relative z-10 px-8 py-2 text-sm font-medium text-gray-400 transition-colors duration-300 hover:text-blue-400 flex items-center gap-2" id="btn-admin">
-            Admins
-         </button>
-      </div>
+    <!-- Progress indicator bar at top -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-white/10">
+      <div id="scroll-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-100 ease-out" style="width: 0%"></div>
     </div>
 
-    <!-- Process Flow Container -->
-    <div class="relative grid grid-cols-1" id="steps-container">
+    <div class="container mx-auto px-6 md:px-12 relative z-10 py-12">
+      <!-- Header with Toggles -->
+      <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+         <span class="text-emerald-400 font-bold tracking-widest text-sm uppercase mb-3 block font-brand" id="section-subtitle">
+          Workflow
+        </span>
+        <h2 class="text-3xl md:text-5xl font-light text-white mb-6 md:mb-8 font-brand tracking-tight">
+          Precision in <br />
+          <span class="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-500" id="section-title-highlight">
+            Three Simple Steps
+          </span>
+        </h2>
+
+        <!-- Tab Switcher -->
+        <div class="inline-flex p-1 bg-white/5 border border-white/10 rounded-full relative">
+           <div id="tab-indicator" class="absolute top-1 left-1 bottom-1 w-[calc(50%-4px)] bg-gray-800 rounded-full shadow-lg transition-all duration-300 ease-out"></div>
+           
+           <button onclick="switchMode('farmer')" class="relative z-10 px-6 md:px-8 py-2 text-sm font-medium text-white transition-colors duration-300 hover:text-emerald-400 flex items-center gap-2" id="btn-farmer">
+              Farmers
+           </button>
+           <button onclick="switchMode('admin')" class="relative z-10 px-6 md:px-8 py-2 text-sm font-medium text-gray-400 transition-colors duration-300 hover:text-blue-400 flex items-center gap-2" id="btn-admin">
+              Admins
+           </button>
+        </div>
+      </div>
+
+      <!-- Process Flow Container -->
+      <div class="relative grid grid-cols-1" id="steps-container">
       
       <!-- SVG PATH OVERLAY (Shared) -->
       <div class="absolute inset-0 pointer-events-none z-0">
@@ -145,9 +153,10 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           </div>
       </div>
     
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
 <style>
   /* === FARMER THEME (Natural/Green) === */
@@ -202,7 +211,14 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
   let mode = 'farmer'; // 'farmer' | 'admin'
   
   // Elements
+  const wrapper = document.getElementById('how-it-works-wrapper');
   const section = document.getElementById('how-it-works');
+  const progressBar = document.getElementById('scroll-progress-bar');
+  
+  // Configuration - Wrapper height determines scroll distance
+  const SCROLL_DISTANCE_VH = 250; // How much scroll distance for the animation
+  wrapper.style.height = `${SCROLL_DISTANCE_VH}vh`;
+  
   // Add initial class
   section.classList.add('farmer-mode');
 
@@ -234,6 +250,9 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           sectionTitle.className = 'font-semibold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-500 transition-colors';
           bgPulse.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none transition-colors duration-1000';
           
+          // Progress bar color
+          progressBar.className = 'h-full bg-gradient-to-r from-emerald-400 to-emerald-600 transition-all duration-100 ease-out';
+          
           // View Transition
           farmerView.style.opacity = '1';
           farmerView.style.pointerEvents = 'auto';
@@ -259,6 +278,9 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           sectionTitle.className = 'font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-500 transition-colors';
           bgPulse.className = 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none transition-colors duration-1000';
 
+          // Progress bar color
+          progressBar.className = 'h-full bg-gradient-to-r from-blue-400 to-purple-600 transition-all duration-100 ease-out';
+
           // View Transition
           adminView.style.opacity = '1';
           adminView.style.pointerEvents = 'auto';
@@ -276,8 +298,6 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
       dot.style.opacity = '0';
 
       // Recalculate Paths after transition
-      // We wait for CSS transition 500ms? 
-      // Actually we calculate immediately but loop ensures it catches up
       requestAnimationFrame(() => {
            initPaths();
            onScroll(); 
@@ -346,84 +366,91 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
       
       let d = "";
       if(isDesktop) {
-          // Horizontal line
-          // Since it's a grid, they should be roughly aligned Y-wise.
-          // We use the Y of the middle one to ensure a straight line if grid is perfect,
-          // or individual Ys if we want to follow distinct positions (safer).
           d = `M ${p1.x},${p1.y} L ${p2.x},${p2.y} L ${p3.x},${p3.y}`;
       } else {
-          // Vertical line
-           d = `M ${p1.x},${p1.y} L ${p2.x},${p2.y} L ${p3.x},${p3.y}`;
+          d = `M ${p1.x},${p1.y} L ${p2.x},${p2.y} L ${p3.x},${p3.y}`;
       }
       
       pathElement.setAttribute('d', d);
   }
 
-  function onScroll() {
-    const dot = document.getElementById('glow-dot');
-    if (!section || !pathData.current || !dot) return;
-
-    const rect = section.getBoundingClientRect();
+  // --- STICKY SCROLL PROGRESS ENGINE ---
+  function getScrollProgress() {
+    const wrapperRect = wrapper.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     
-    // Animation Range
-    const startOffset = windowHeight * 0.8;
-    const endOffset = windowHeight * 0.2;
-    const currentPos = windowHeight - rect.top;
-    const totalDistance = windowHeight + rect.height;
+    // How far we've scrolled into the wrapper
+    // When wrapper top hits viewport top, progress starts
+    // When wrapper bottom hits viewport bottom, progress ends
+    const scrollableDistance = wrapper.offsetHeight - windowHeight;
+    const currentScroll = -wrapperRect.top;
     
-    let progress = currentPos / totalDistance;
+    // Clamp to 0-1 range
+    let progress = currentScroll / scrollableDistance;
     progress = Math.max(0, Math.min(1, progress));
     
-    const rangeStart = 0.25;
-    const rangeEnd = 0.75;
-    let pathProgress = (progress - rangeStart) / (rangeEnd - rangeStart);
-    pathProgress = Math.max(0, Math.min(1, pathProgress));
+    return progress;
+  }
 
-    // Move Dot
-    const point = pathData.current.getPointAtLength(pathProgress * pathData.length);
+  function onScroll() {
+    const dot = document.getElementById('glow-dot');
+    if (!wrapper || !pathData.current || !dot) return;
+
+    // Get progress based on scroll position within the wrapper
+    const progress = getScrollProgress();
     
-    if (pathProgress <= 0.05 || pathProgress >= 0.95) {
-        dot.style.opacity = '0';
-    } else {
-        dot.style.opacity = '1';
+    // Update progress bar
+    progressBar.style.width = `${progress * 100}%`;
+    
+    // Use progress directly for path animation
+    // Add slight padding at start/end so dot appears/disappears smoothly
+    const pathProgress = progress;
+
+    // Move Dot along path
+    if (pathData.length > 0) {
+      const point = pathData.current.getPointAtLength(pathProgress * pathData.length);
+      
+      // Fade in/out at edges
+      if (pathProgress <= 0.02 || pathProgress >= 0.98) {
+          dot.style.opacity = '0';
+      } else {
+          dot.style.opacity = '1';
+      }
+      
+      // Position dot
+      const dotSize = 16;
+      dot.style.left = `${point.x - dotSize / 2}px`;
+      dot.style.top = `${point.y - dotSize / 2}px`;
     }
     
-    // Position dot using left/top for reliability. Dot is 16px (w-4), so offset by 8px to center.
-    const dotSize = 16; // w-4 = 1rem = 16px
-    dot.style.left = `${point.x - dotSize / 2}px`;
-    dot.style.top = `${point.y - dotSize / 2}px`;
-    
-    // COLOR LOGIC
+    // Activate steps based on progress
     const prefix = mode === 'farmer' ? 'f' : 'a';
     const s1 = document.getElementById(`${prefix}-step-1`);
     const s2 = document.getElementById(`${prefix}-step-2`);
     const s3 = document.getElementById(`${prefix}-step-3`);
     
-    // Thresholds
-    if (pathProgress > 0.1) s1?.classList.add('active');
+    // Step activation thresholds - evenly distributed
+    if (pathProgress > 0.05) s1?.classList.add('active');
     else s1?.classList.remove('active');
     
-    if (pathProgress > 0.5) s2?.classList.add('active');
+    if (pathProgress > 0.4) s2?.classList.add('active');
     else s2?.classList.remove('active');
     
-    if (pathProgress > 0.9) s3?.classList.add('active');
+    if (pathProgress > 0.75) s3?.classList.add('active');
     else s3?.classList.remove('active');
   }
 
-  // Listeners
-  window.addEventListener('scroll', () => requestAnimationFrame(onScroll));
+  // Listeners - using requestAnimationFrame for smooth 60fps
+  window.addEventListener('scroll', () => requestAnimationFrame(onScroll), { passive: true });
   window.addEventListener('resize', () => { initPaths(); onScroll(); });
-  
-  // Loop to catch layout shifts
-  setInterval(() => {
-      // Only lightweight recalc if needed, or just let resize handle it.
-      // But initial load images might shift things.
-      // We'll run it a few times then stop? No, low cost.
-  }, 1000);
 
-  // Init
+  // Init on load
+  document.addEventListener('DOMContentLoaded', () => {
+    initPaths();
+    onScroll();
+  });
+  
+  // Fallback init
   setTimeout(() => { initPaths(); onScroll(); }, 100);
-  setTimeout(() => { initPaths(); onScroll(); }, 1000);
 
 </script>

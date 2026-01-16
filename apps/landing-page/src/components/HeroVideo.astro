@@ -4,10 +4,14 @@ import { cn } from "@repo/ui/lib/utils";
 ---
 
 <div class="relative h-screen w-full overflow-hidden">
-  <!-- Layer 1: Poster Image -->
+  <!-- Layer 1: Poster Image (LCP Element - prioritized) -->
   <img
     src="/hero-poster.jpg"
-    alt="Hero Poster"
+    alt="Cropia - AI-Powered Crop Health Detection"
+    width="1920"
+    height="1080"
+    fetchpriority="high"
+    decoding="async"
     class="absolute inset-0 h-full w-full object-cover z-0"
   />
 
@@ -17,6 +21,8 @@ import { cn } from "@repo/ui/lib/utils";
     loop
     muted
     playsinline
+    preload="auto"
+    poster="/hero-poster.jpg"
     class="absolute inset-0 h-full w-full object-cover z-10 opacity-0 transition-opacity duration-1000"
     onloadeddata="this.classList.remove('opacity-0')"
   >
