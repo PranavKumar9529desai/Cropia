@@ -196,25 +196,46 @@ const links = [
   }
 
   // Update active nav link based on scroll position
+  // Uses getBoundingClientRect to correctly handle sticky/scroll-jacked sections
   function updateActiveLink() {
     const sections = ['features', 'how-it-works', 'testimonials', 'faq'];
-    const scrollPos = window.scrollY + 100;
+    const viewportHeight = window.innerHeight;
+    
+    // For how-it-works, we need to check its wrapper since the section is sticky
+    const howItWorksWrapper = document.getElementById('how-it-works-wrapper');
+    
+    let activeSection = null;
     
     sections.forEach(sectionId => {
-      const section = document.getElementById(sectionId);
-      if (section) {
-        const top = section.offsetTop;
-        const bottom = top + section.offsetHeight;
+      let element;
+      
+      // Special handling for how-it-works which uses sticky positioning
+      if (sectionId === 'how-it-works' && howItWorksWrapper) {
+        element = howItWorksWrapper;
+      } else {
+        element = document.getElementById(sectionId);
+      }
+      
+      if (element) {
+        const rect = element.getBoundingClientRect();
         
-        navLinks.forEach(link => {
-          if (link.getAttribute('href') === `#${sectionId}`) {
-            if (scrollPos >= top && scrollPos < bottom) {
-              link.classList.add('active');
-            } else {
-              link.classList.remove('active');
-            }
-          }
-        });
+        // Section is "active" if it's significantly in view
+        // Top of section is above viewport middle AND bottom is below viewport top
+        const isInView = rect.top < viewportHeight * 0.5 && rect.bottom > viewportHeight * 0.3;
+        
+        if (isInView) {
+          activeSection = sectionId;
+        }
+      }
+    });
+    
+    // Update nav link states
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === `#${activeSection}`) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
       }
     });
   }

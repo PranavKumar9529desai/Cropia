@@ -429,14 +429,15 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
     const s2 = document.getElementById(`${prefix}-step-2`);
     const s3 = document.getElementById(`${prefix}-step-3`);
     
-    // Step activation thresholds - evenly distributed
-    if (pathProgress > 0.05) s1?.classList.add('active');
+    // Step activation thresholds - aligned with dot position on path
+    // Path: Step1 at 0% → Step2 at 50% → Step3 at 100%
+    if (pathProgress > 0.02) s1?.classList.add('active');
     else s1?.classList.remove('active');
     
-    if (pathProgress > 0.4) s2?.classList.add('active');
+    if (pathProgress > 0.48) s2?.classList.add('active');
     else s2?.classList.remove('active');
     
-    if (pathProgress > 0.75) s3?.classList.add('active');
+    if (pathProgress > 0.95) s3?.classList.add('active');
     else s3?.classList.remove('active');
   }
 
