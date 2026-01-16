@@ -33,28 +33,21 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
     </div>
 
     <!-- Process Flow Container -->
-    <div class="relative min-h-[400px]" id="steps-container">
+    <div class="relative grid grid-cols-1" id="steps-container">
       
       <!-- SVG PATH OVERLAY (Shared) -->
       <div class="absolute inset-0 pointer-events-none z-0">
         <!-- Desktop Path -->
-        <svg class="hidden md:block w-full h-full" preserveAspectRatio="none">
+        <svg class="hidden md:block w-full h-full" overflow="visible">
           <path 
             id="desktop-path" 
             d="" 
             fill="none" 
-            stroke="url(#gradient-desktop)" 
+            stroke="white" 
             stroke-width="2" 
-            stroke-dasharray="8 8"
+            stroke-dasharray="4 4"
             class="opacity-20 transition-all duration-700 ease-in-out"
           />
-          <defs>
-            <linearGradient id="gradient-desktop" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#currentColor" class="stop-color-main" stop-opacity="0" />
-              <stop offset="50%" stop-color="#currentColor" class="stop-color-main" stop-opacity="1" />
-              <stop offset="100%" stop-color="#currentColor" class="stop-color-main" stop-opacity="0" />
-            </linearGradient>
-          </defs>
         </svg>
 
         <!-- Mobile Path -->
@@ -63,30 +56,23 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
             id="mobile-path" 
             d=""
             fill="none" 
-            stroke="url(#gradient-mobile)" 
+            stroke="white" 
             stroke-width="2" 
-            stroke-dasharray="8 8" 
+            stroke-dasharray="4 4" 
             class="opacity-20 transition-all duration-700"
           />
-           <defs>
-            <linearGradient id="gradient-mobile" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#currentColor" class="stop-color-main" stop-opacity="0" />
-              <stop offset="50%" stop-color="#currentColor" class="stop-color-main" stop-opacity="1" />
-              <stop offset="100%" stop-color="#currentColor" class="stop-color-main" stop-opacity="0" />
-            </linearGradient>
-          </defs>
         </svg>
 
-        <!-- THE GLOWING DOT -->
-        <div id="glow-dot" class="absolute w-4 h-4 rounded-full shadow-[0_0_20px_4px_currentColor] z-20 opacity-0 transition-opacity duration-300 text-emerald-400 bg-current"></div>
+        <!-- THE GLOWING DOT - positioned via left/top in JS for reliability -->
+        <div id="glow-dot" class="absolute w-4 h-4 rounded-full shadow-[0_0_20px_4px_currentColor] z-20 opacity-0 transition-opacity duration-300 text-emerald-400 bg-current" style="left: 0; top: 0;"></div>
       </div>
 
       <!-- VIEW: FARMER -->
-      <div id="farmer-view" class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 absolute inset-0 transition-all duration-500 transform opacity-100 scale-100 pointer-events-auto">
+      <div id="farmer-view" class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 transition-all duration-500 transform opacity-100 scale-100 pointer-events-auto">
           <!-- Step 1: Capture -->
           <div id="f-step-1" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
-              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
                   <Smartphone class="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">1</div>
@@ -98,7 +84,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <!-- Step 2: Diagnose -->
           <div id="f-step-2" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
-              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
                   <Cpu class="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">2</div>
@@ -110,7 +96,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <!-- Step 3: Resolve -->
           <div id="f-step-3" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
-              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
                   <Sprout class="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">3</div>
@@ -121,11 +107,11 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
       </div>
 
        <!-- VIEW: ADMIN -->
-      <div id="admin-view" class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 absolute inset-0 transition-all duration-500 transform opacity-0 scale-95 pointer-events-none">
+      <div id="admin-view" class="col-start-1 row-start-1 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12 transition-all duration-500 transform opacity-0 scale-95 pointer-events-none">
           <!-- Step 1: Monitor -->
           <div id="a-step-1" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
-              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
                   <Globe class="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">1</div>
@@ -137,7 +123,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <!-- Step 2: Analyze -->
           <div id="a-step-2" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
-              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
                   <Newspaper class="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">2</div>
@@ -149,7 +135,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <!-- Step 3: Govern -->
           <div id="a-step-3" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
-              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500">
+              <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
                   <ShieldAlert class="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">3</div>
@@ -168,29 +154,47 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
   .farmer-mode .stop-color-main { stop-color: #10b981; } /* Emerald-500 */
   .farmer-mode #glow-dot { @apply text-emerald-400; }
   
-  /* Active States (Farmer) */
-  #f-step-1.active .icon-box { @apply border-emerald-500/50 shadow-emerald-500/20 bg-gray-800; }
+  /* Active States (Farmer) - Enhanced Glow */
+  #f-step-1.active .icon-box { 
+    @apply border-emerald-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(16, 185, 129, 0.4), 0 0 40px 12px rgba(16, 185, 129, 0.2);
+  }
   #f-step-1.active .icon-box svg { @apply text-emerald-400; }
   
-  #f-step-2.active .icon-box { @apply border-blue-500/50 shadow-blue-500/20 bg-gray-800; }
+  #f-step-2.active .icon-box { 
+    @apply border-blue-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(59, 130, 246, 0.4), 0 0 40px 12px rgba(59, 130, 246, 0.2);
+  }
   #f-step-2.active .icon-box svg { @apply text-blue-400; }
   
-  #f-step-3.active .icon-box { @apply border-amber-500/50 shadow-amber-500/20 bg-gray-800; }
+  #f-step-3.active .icon-box { 
+    @apply border-amber-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(251, 191, 36, 0.4), 0 0 40px 12px rgba(251, 191, 36, 0.2);
+  }
   #f-step-3.active .icon-box svg { @apply text-amber-400; }
 
   /* === ADMIN THEME (Tech/Blue-Purple) === */
   .admin-mode .stop-color-main { stop-color: #3b82f6; } /* Blue-500 */
   .admin-mode #glow-dot { @apply text-blue-400; }
 
-  /* Active States (Admin) */
-  #a-step-1.active .icon-box { @apply border-blue-500/50 shadow-blue-500/20 bg-gray-800; }
+  /* Active States (Admin) - Enhanced Glow */
+  #a-step-1.active .icon-box { 
+    @apply border-blue-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(59, 130, 246, 0.4), 0 0 40px 12px rgba(59, 130, 246, 0.2);
+  }
   #a-step-1.active .icon-box svg { @apply text-blue-400; }
   
-  #a-step-2.active .icon-box { @apply border-purple-500/50 shadow-purple-500/20 bg-gray-800; }
+  #a-step-2.active .icon-box { 
+    @apply border-purple-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(168, 85, 247, 0.4), 0 0 40px 12px rgba(168, 85, 247, 0.2);
+  }
   #a-step-2.active .icon-box svg { @apply text-purple-400; }
   
-  #a-step-3.active .icon-box { @apply border-red-500/50 shadow-red-500/20 bg-gray-800; }
-  #a-step-3.active .icon-box svg { @apply text-red-500; }
+  #a-step-3.active .icon-box { 
+    @apply border-red-400 bg-gray-800;
+    box-shadow: 0 0 20px 6px rgba(248, 113, 113, 0.4), 0 0 40px 12px rgba(248, 113, 113, 0.2);
+  }
+  #a-step-3.active .icon-box svg { @apply text-red-400; }
 
 </style>
 
@@ -325,45 +329,31 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
   function updatePathGeometry(pathElement, el1, el2, el3, isDesktop) {
       const container = document.getElementById('steps-container');
       const rectC = container.getBoundingClientRect();
-      const rect1 = el1.getBoundingClientRect();
-      const rect2 = el2.getBoundingClientRect();
-      const rect3 = el3.getBoundingClientRect();
 
-      const getCenter = (rect) => ({
-          x: (rect.left + rect.width/2) - rectC.left,
-          y: (rect.top + rect.height/2) - rectC.top 
-      });
+      // Helper to get center of the ICON BOX within the step card
+      const getIconCenter = (stepEl) => {
+          const iconBox = stepEl.querySelector('.icon-box');
+          const rect = iconBox.getBoundingClientRect();
+          return {
+              x: (rect.left + rect.width/2) - rectC.left,
+              y: (rect.top + rect.height/2) - rectC.top 
+          };
+      };
 
-      // Adjust Y for icon center (approximate, since CSS puts badge at bottom)
-      // The icon box is 80x80 (w-20). The text is below. 
-      // We want line to go through the box center.
-      // The step-card is flex-col.
-      // Let's rely on getBoundingClientRect of the WHOLE card? No, clearer to aim for the icon-box?
-      // But we passed the card element.
-      // Offset: The icon box is at the top of the card.
-      const iconOffset = 40; // half of 80px
-
-      const p1 = getCenter(rect1);
-      const p2 = getCenter(rect2);
-      const p3 = getCenter(rect3);
+      const p1 = getIconCenter(el1);
+      const p2 = getIconCenter(el2);
+      const p3 = getIconCenter(el3);
       
-      // Override Y to match icon visual center relative to card top
-      // Actually simpler: just use the calculated centers but shift Y up because the Card content below > Card content above
-      // Let's refine:
-      
-      // Vertical correction factor
-      const yCorrection = -30; // Just eye-balling based on text height
-
       let d = "";
       if(isDesktop) {
           // Horizontal line
-          // Adjust Y to be flat if we want a straight line or curved?
           // Since it's a grid, they should be roughly aligned Y-wise.
-          const Y = p1.y + yCorrection; 
-          d = `M ${p1.x},${Y} L ${p2.x},${Y} L ${p3.x},${Y}`;
+          // We use the Y of the middle one to ensure a straight line if grid is perfect,
+          // or individual Ys if we want to follow distinct positions (safer).
+          d = `M ${p1.x},${p1.y} L ${p2.x},${p2.y} L ${p3.x},${p3.y}`;
       } else {
           // Vertical line
-           d = `M ${p1.x},${p1.y + yCorrection} L ${p2.x},${p2.y + yCorrection} L ${p3.x},${p3.y + yCorrection}`;
+           d = `M ${p1.x},${p1.y} L ${p2.x},${p2.y} L ${p3.x},${p3.y}`;
       }
       
       pathElement.setAttribute('d', d);
@@ -399,7 +389,10 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
         dot.style.opacity = '1';
     }
     
-    dot.style.transform = `translate(${point.x}px, ${point.y}px)`;
+    // Position dot using left/top for reliability. Dot is 16px (w-4), so offset by 8px to center.
+    const dotSize = 16; // w-4 = 1rem = 16px
+    dot.style.left = `${point.x - dotSize / 2}px`;
+    dot.style.top = `${point.y - dotSize / 2}px`;
     
     // COLOR LOGIC
     const prefix = mode === 'farmer' ? 'f' : 'a';
