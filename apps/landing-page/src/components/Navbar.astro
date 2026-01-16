@@ -1,48 +1,196 @@
 ---
-import { buttonVariants } from "@repo/ui/components/button";
-import { cn } from "@repo/ui/lib/utils";
+import { Menu, X } from "lucide-react";
 
 const links = [
-  { name: "About", href: "#about" },
   { name: "Features", href: "#features" },
-  { name: "Contact", href: "#contact" },
+  { name: "How It Works", href: "#how-it-works" },
+  { name: "Testimonials", href: "#testimonials" },
+  { name: "FAQ", href: "#faq" },
 ];
 ---
 
-<nav class="absolute top-0 left-0 z-50 w-full px-6 py-4 transition-all duration-300 ">
-  <div class="mx-auto flex max-w-7xl items-center justify-between">
-    <!-- Logo -->
-    <a href="/" class="relative right-56 flex items-center gap-2 hover:opacity-80 transition-opacity">
-      <img src="/logo.png" alt="Cropia" class="h-12 w-auto" />
-      <span class="text-2xl font-bold font-brand tracking-tighter text-white">Cropia</span>
-    </a>
+<nav id="navbar" class="fixed top-0 left-0 z-50 w-full transition-all duration-300">
+  <!-- Glassmorphism background that appears on scroll -->
+  <div class="navbar-bg absolute inset-0 bg-black/0 backdrop-blur-0 border-b border-transparent transition-all duration-300"></div>
+  
+  <div class="container mx-auto px-6 py-4 relative z-10">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="relative lg:right-28 flex items-center gap-2 hover:opacity-80 transition-opacity group">
+        <img 
+          src="/logo.png" 
+          alt="Cropia" 
+          class="h-10 w-auto transition-transform group-hover:scale-105" 
+        />
+        <span class="text-xl font-bold font-brand tracking-tight text-white">Cropia</span>
+      </a>
 
-    <!-- Desktop Menu -->
-    <div class="hidden md:flex items-center space-x-8">
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-1">
+        {links.map((link) => (
+          <a 
+            href={link.href} 
+            class="nav-link relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white 
+                   transition-all duration-300 rounded-lg group"
+          >
+            <span class="relative z-10">{link.name}</span>
+            <!-- Hover background -->
+            <span class="absolute inset-0 bg-white/0 group-hover:bg-white/10 rounded-lg transition-all duration-300"></span>
+            <!-- Active indicator (shows on hover) -->
+            <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-emerald-400 
+                        group-hover:w-6 transition-all duration-300 rounded-full"></span>
+          </a>
+        ))}
+        
+        <!-- CTA Button -->
+        <a 
+          href="https://cropia-farmer.vercel.app" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ml-4 px-5 py-2.5 rounded-full text-sm font-semibold
+                 bg-gradient-to-r from-emerald-500 to-teal-500 text-white
+                 hover:from-emerald-400 hover:to-teal-400
+                 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40
+                 transition-all duration-300 hover:scale-105 active:scale-95"
+        >
+          Get Started
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button 
+        id="mobile-menu-btn"
+        class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg 
+               text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300"
+        aria-label="Toggle menu"
+      >
+        <Menu className="w-6 h-6 menu-open-icon" />
+        <X className="w-6 h-6 menu-close-icon hidden" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Panel -->
+  <div id="mobile-menu" class="md:hidden absolute top-full left-0 w-full 
+                               bg-black/95 backdrop-blur-xl border-b border-white/10
+                               transform -translate-y-full opacity-0 pointer-events-none
+                               transition-all duration-300">
+    <div class="container mx-auto px-6 py-6 space-y-2">
       {links.map((link) => (
         <a 
           href={link.href} 
-          class="text-sm font-medium text-white/90 hover:text-white transition-colors hover:underline underline-offset-4 decoration-2 decoration-white/50"
+          class="mobile-nav-link block px-4 py-3 text-lg font-medium text-white/70 hover:text-white 
+                 hover:bg-white/5 rounded-xl transition-all duration-200"
         >
           {link.name}
         </a>
       ))}
-      <a 
-        href="/login" 
-        class={cn(
-          buttonVariants({ variant: "default" }), 
-          "rounded-full px-6 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20"
-        )}
-      >
-        Sign In
-      </a>
+      <div class="pt-4 border-t border-white/10 mt-4">
+        <a 
+          href="https://cropia-farmer.vercel.app" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block w-full py-3 text-center rounded-xl text-white font-semibold
+                 bg-gradient-to-r from-emerald-500 to-teal-500
+                 hover:from-emerald-400 hover:to-teal-400 transition-all duration-300"
+        >
+          Get Started
+        </a>
+      </div>
     </div>
-
-    <!-- Mobile Menu Button (Placeholder) -->
-    <button class="md:hidden text-white" aria-label="Menu">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-      </svg>
-    </button>
   </div>
 </nav>
+
+<style>
+  /* Scrolled state */
+  #navbar.scrolled .navbar-bg {
+    @apply bg-black/80 backdrop-blur-xl border-b border-white/10;
+  }
+  
+  /* Active nav link */
+  .nav-link.active {
+    @apply text-white;
+  }
+  
+  .nav-link.active span:last-child {
+    @apply w-6;
+  }
+  
+  /* Mobile menu open state */
+  #mobile-menu.open {
+    @apply translate-y-0 opacity-100 pointer-events-auto;
+  }
+</style>
+
+<script is:inline>
+  const navbar = document.getElementById('navbar');
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuOpenIcon = document.querySelector('.menu-open-icon');
+  const menuCloseIcon = document.querySelector('.menu-close-icon');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  // Scroll behavior - add background on scroll
+  function handleScroll() {
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+    
+    // Update active link based on scroll position
+    updateActiveLink();
+  }
+
+  // Update active nav link based on scroll position
+  function updateActiveLink() {
+    const sections = ['features', 'how-it-works', 'testimonials', 'faq'];
+    const scrollPos = window.scrollY + 100;
+    
+    sections.forEach(sectionId => {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        const top = section.offsetTop;
+        const bottom = top + section.offsetHeight;
+        
+        navLinks.forEach(link => {
+          if (link.getAttribute('href') === `#${sectionId}`) {
+            if (scrollPos >= top && scrollPos < bottom) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          }
+        });
+      }
+    });
+  }
+
+  // Mobile menu toggle
+  function toggleMobileMenu() {
+    const isOpen = mobileMenu.classList.toggle('open');
+    menuOpenIcon.classList.toggle('hidden', isOpen);
+    menuCloseIcon.classList.toggle('hidden', !isOpen);
+    
+    // Prevent body scroll when menu is open
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  // Close mobile menu on link click
+  mobileNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      menuOpenIcon.classList.remove('hidden');
+      menuCloseIcon.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Event listeners
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  mobileMenuBtn?.addEventListener('click', toggleMobileMenu);
+
+  // Initial check
+  handleScroll();
+</script>

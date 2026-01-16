@@ -1,0 +1,225 @@
+---
+import { ArrowRight, Smartphone, Monitor, Sparkles, Users, Leaf, Shield } from "lucide-react";
+---
+
+<section id="cta" class="relative py-32 overflow-hidden">
+  <!-- Animated Background -->
+  <div class="absolute inset-0 bg-gradient-to-b from-zinc-900 via-zinc-950 to-black"></div>
+  
+  <!-- Animated Gradient Orbs -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px]">
+    <div class="absolute inset-0 bg-emerald-500/20 rounded-full blur-[150px] animate-pulse-slow"></div>
+    <div class="absolute inset-10 bg-blue-500/15 rounded-full blur-[120px] animate-pulse-slower"></div>
+    <div class="absolute inset-20 bg-purple-500/10 rounded-full blur-[100px] animate-pulse-slow"></div>
+  </div>
+  
+  <!-- Grid Pattern -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px); background-size: 50px 50px;"></div>
+  
+  <div class="container mx-auto px-6 md:px-12 relative z-10">
+    <!-- Main Headline -->
+    <div class="text-center max-w-4xl mx-auto mb-16">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-8">
+        <Sparkles className="w-4 h-4 text-emerald-400" />
+        <span class="text-emerald-400 text-sm font-medium">Join 10,000+ farmers already using Cropia</span>
+      </div>
+      
+      <h2 class="text-4xl md:text-6xl lg:text-7xl font-light text-white mb-6 font-brand tracking-tight leading-tight">
+        Ready to 
+        <span class="relative inline-block">
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-400 to-teal-400 font-semibold">
+            protect
+          </span>
+          <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 12" fill="none">
+            <path d="M2 10C50 4 150 4 198 10" stroke="url(#underline-gradient)" stroke-width="3" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="underline-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#6ee7b7"/>
+                <stop offset="100%" stop-color="#14b8a6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        <br class="hidden sm:block" />
+        your harvest?
+      </h2>
+      
+      <p class="text-xl md:text-2xl text-gray-400 font-light max-w-2xl mx-auto">
+        Whether you're a farmer or a government official, 
+        <span class="text-white">Cropia has you covered.</span>
+      </p>
+    </div>
+
+    <!-- Dual CTA Cards -->
+    <div class="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+      
+      <!-- Farmer CTA -->
+      <div class="group relative">
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-3xl blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
+        <div class="relative p-8 lg:p-10 rounded-3xl bg-gradient-to-br from-gray-900 via-gray-900 to-emerald-950/30 border border-white/10 hover:border-emerald-500/30 transition-all duration-300">
+          
+          <!-- Icon -->
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/25">
+            <Smartphone className="w-8 h-8 text-white" />
+          </div>
+          
+          <!-- Content -->
+          <h3 class="text-2xl lg:text-3xl font-semibold text-white mb-3 font-brand">
+            I'm a Farmer
+          </h3>
+          <p class="text-gray-400 mb-6 leading-relaxed">
+            Point. Snap. Know. Get instant AI diagnosis for your crops in <span class="text-emerald-400 font-medium">under 5 seconds</span> — even without internet.
+          </p>
+          
+          <!-- Features -->
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3 text-gray-300 text-sm">
+              <div class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                <Leaf className="w-3 h-3 text-emerald-400" />
+              </div>
+              Works 100% offline in remote fields
+            </li>
+            <li class="flex items-center gap-3 text-gray-300 text-sm">
+              <div class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                <Shield className="w-3 h-3 text-emerald-400" />
+              </div>
+              Free forever for individual farmers
+            </li>
+            <li class="flex items-center gap-3 text-gray-300 text-sm">
+              <div class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-3 h-3 text-emerald-400" />
+              </div>
+              Smart spray & irrigation recommendations
+            </li>
+          </ul>
+          
+          <!-- CTA Button -->
+          <a 
+            href="https://cropia-farmer.vercel.app" 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group/btn w-full flex items-center justify-center gap-3 px-8 py-4 rounded-xl
+                   bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold text-lg
+                   hover:from-emerald-400 hover:to-teal-400 
+                   shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50
+                   transition-all duration-300 transform hover:-translate-y-0.5"
+          >
+            Start Scanning Free
+            <ArrowRight className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" />
+          </a>
+          
+          <p class="text-center text-gray-500 text-sm mt-4">
+            No signup required • Just open & scan
+          </p>
+        </div>
+      </div>
+
+      <!-- Admin/Government CTA -->
+      <div class="group relative">
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-3xl blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
+        <div class="relative p-8 lg:p-10 rounded-3xl bg-gradient-to-br from-gray-900 via-gray-900 to-purple-950/30 border border-white/10 hover:border-purple-500/30 transition-all duration-300">
+          
+          <!-- Icon -->
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center mb-6 shadow-lg shadow-purple-500/25">
+            <Monitor className="w-8 h-8 text-white" />
+          </div>
+          
+          <!-- Content -->
+          <h3 class="text-2xl lg:text-3xl font-semibold text-white mb-3 font-brand">
+            I'm an Official / NGO
+          </h3>
+          <p class="text-gray-400 mb-6 leading-relaxed">
+            Monitor crop health across your entire jurisdiction with our <span class="text-purple-400 font-medium">"God View"</span> real-time dashboard.
+          </p>
+          
+          <!-- Features -->
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-center gap-3 text-gray-300 text-sm">
+              <div class="w-5 h-5 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                <Users className="w-3 h-3 text-purple-400" />
+              </div>
+              District/State-level outbreak detection
+            </li>
+            <li class="flex items-center gap-3 text-gray-300 text-sm">
+              <div class="w-5 h-5 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-3 h-3 text-purple-400" />
+              </div>
+              AI-generated regional health reports
+            </li>
+            <li class="flex items-center gap-3 text-gray-300 text-sm">
+              <div class="w-5 h-5 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+                <Shield className="w-3 h-3 text-purple-400" />
+              </div>
+              Role-based access for your team
+            </li>
+          </ul>
+          
+          <!-- CTA Button -->
+          <a 
+            href="https://cropia-admin.vercel.app" 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group/btn w-full flex items-center justify-center gap-3 px-8 py-4 rounded-xl
+                   bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold text-lg
+                   hover:from-purple-400 hover:to-blue-400 
+                   shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50
+                   transition-all duration-300 transform hover:-translate-y-0.5"
+          >
+            Request Admin Access
+            <ArrowRight className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" />
+          </a>
+          
+          <p class="text-center text-gray-500 text-sm mt-4">
+            Free pilot for government departments
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Badges -->
+    <div class="mt-16 text-center">
+      <p class="text-gray-500 text-sm mb-6">Trusted by agriculture departments across</p>
+      <div class="flex flex-wrap justify-center items-center gap-8 opacity-60">
+        <div class="flex items-center gap-2 text-gray-400">
+          <span class="text-2xl">🇮🇳</span>
+          <span class="font-medium">Maharashtra</span>
+        </div>
+        <div class="w-px h-6 bg-gray-700"></div>
+        <div class="flex items-center gap-2 text-gray-400">
+          <span class="text-2xl">🇮🇳</span>
+          <span class="font-medium">Punjab</span>
+        </div>
+        <div class="w-px h-6 bg-gray-700 hidden sm:block"></div>
+        <div class="flex items-center gap-2 text-gray-400 hidden sm:flex">
+          <span class="text-2xl">🇮🇳</span>
+          <span class="font-medium">Karnataka</span>
+        </div>
+        <div class="w-px h-6 bg-gray-700 hidden md:block"></div>
+        <div class="flex items-center gap-2 text-gray-400 hidden md:flex">
+          <span class="text-2xl">🇮🇳</span>
+          <span class="font-medium">Bihar</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.05); }
+  }
+  
+  @keyframes pulse-slower {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.08); }
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+  
+  .animate-pulse-slower {
+    animation: pulse-slower 6s ease-in-out infinite;
+  }
+</style>
