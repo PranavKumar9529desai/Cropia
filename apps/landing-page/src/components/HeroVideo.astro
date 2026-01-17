@@ -3,6 +3,7 @@ import { buttonVariants } from "@repo/ui/components/button";
 import { cn } from "@repo/ui/lib/utils";
 import { Image } from "astro:assets";
 import posterImage from "../assets/hero-poster.jpg";
+import HeroParticles from "./HeroParticles.astro";
 ---
 
 <div class="relative h-screen w-full overflow-hidden">
@@ -37,6 +38,9 @@ import posterImage from "../assets/hero-poster.jpg";
 
   <!-- Layer 3: Overlay -->
   <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/60 to-black/30 z-20"></div>
+
+  <!-- Layer 3.5: Floating Particles -->
+  <HeroParticles />
 
   <!-- Layer 4: Content -->
   <div class="relative z-30 flex h-full items-center px-6 md:px-20">
