@@ -1,5 +1,4 @@
 ---
-import SplineDrone from '../components/SplineDrone';
 import { Image } from "astro:assets";
 import logoImage from "../assets/logo.png";
 import '@repo/ui/globals.css';
@@ -8,9 +7,6 @@ import '@fontsource/outfit/400.css';
 import '@fontsource/outfit/500.css';
 import '@fontsource/outfit/600.css';
 import '@fontsource/outfit/700.css';
-
-const buttonClass = "w-full max-w-sm py-4 px-6 bg-white/5 border border-white/10 rounded-xl hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 group flex items-center justify-center gap-3 shadow-lg hover:shadow-emerald-500/20 backdrop-blur-sm cursor-pointer no-underline";
-const textClass = "font-medium text-white/80 group-hover:text-emerald-400 text-lg transition-colors";
 
 const farmerUrl = import.meta.env.PUBLIC_FRONTEND_URL_FARMER_APP;
 const adminUrl = import.meta.env.PUBLIC_FRONTEND_URL_ADMIN_APP;
@@ -21,144 +17,366 @@ const guestLoginUrl = `${adminUrl}?email=${guestEmail}&password=${guestPassword}
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/features/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Cropia Demo</title>
-        <style>
-             body {
-                font-family: 'Outfit', sans-serif;
-            }
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/features/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Cropia Demo</title>
+  </head>
+  <body>
+    <!-- Background Ambient Glows -->
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
 
-            @keyframes rotate {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(360deg); }
-            }
+    <!-- Back Button -->
+    <a href="/" class="back-btn" aria-label="Go back to home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+    </a>
 
-            .glowing-border-wrapper {
-                position: relative;
-                padding: 1px;
-                border-radius: 0.75rem; /* rounded-xl */
-                overflow: hidden;
-                width: 100%;
-                max-width: 24rem; /* max-w-sm */
-                background: rgba(255, 255, 255, 0.05);
-            }
-
-            .running-glow {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100px;
-                height: 40px;
-                background: linear-gradient(90deg, transparent, #10b981, transparent);
-                filter: blur(10px);
-                opacity: 0.8;
-                offset-path: rect(0 100% 100% 0 round 0.75rem);
-                animation: move-glow 6s linear infinite;
-                z-index: 0;
-                pointer-events: none;
-            }
-
-            @keyframes move-glow {
-                0% {
-                    offset-distance: 0%;
-                }
-                100% {
-                    offset-distance: 100%;
-                }
-            }
-
-            .glowing-border-wrapper button,
-            .glowing-border-wrapper a {
-                position: relative;
-                z-index: 1;
-                background: #111111;
-                width: 100%;
-                height: 100%;
-                border-radius: calc(0.75rem - 1px);
-                border: none;
-                padding: 1rem 1.5rem;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                text-decoration: none;
-            }
-
-            .glowing-border-wrapper:hover .running-glow {
-                animation-duration: 3s;
-                opacity: 1;
-                background: linear-gradient(90deg, transparent, #34d399, transparent);
-            }
-        </style>
-	</head>
-	<body class="bg-[#111111] text-white overflow-hidden selection:bg-emerald-500/30">
-        <!-- Background Ambient Glow -->
-        <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-emerald-500/15 rounded-full blur-[180px] pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[150px] pointer-events-none"></div>
-        <div class="absolute top-1/2 right-1/4 w-80 h-80 bg-emerald-600/8 rounded-full blur-[140px] pointer-events-none"></div>
-
-        <!-- Back Button -->
-        <a href="/" class="fixed top-6 left-6 z-50 p-3 rounded-full bg-white/5 border border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 group backdrop-blur-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/70 group-hover:text-emerald-400 transition-colors">
-                <path d="m15 18-6-6 6-6"/>
-            </svg>
-        </a>
-
-        <div class="flex h-screen w-full relative z-10">
-            {/* Left Side - Content & Buttons */}
-            <div class="w-full  flex flex-col items-center justify-center p-6 lg:p-12 relative bg-[#111111]/50 backdrop-blur-sm">
-                
-                <div class="flex flex-col items-center mb-12 text-center">
-                    <a href="/" class="flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity group">
-                        <Image 
-                          src={logoImage} 
-                          alt="Cropia" 
-                          class="h-12 w-auto transition-transform group-hover:scale-105" 
-                          width={48}
-                          height={48}
-                          densities={[1.5, 2]}
-                        />
-                        <span class="text-2xl font-bold font-brand tracking-tight text-white">Cropia</span>
-                    </a>
-                  
-                    <h1 class="text-4xl md:text-5xl font-light text-white mb-2 tracking-tight">
-                        Experience <span class="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-500">Cropia.</span>
-                    </h1>
-                    <p class="text-gray-400 font-light max-w-sm">Explore the future of AI-driven farming with our interactive preview.</p>
-                </div>
-
-                <div class="flex flex-col gap-4 w-full items-center">
-                    <a href={farmerUrl} class={buttonClass}>
-                        <span class={textClass}>continue as farmer</span>
-                    </a>
-                    
-                    <a href={adminUrl} class={buttonClass}>
-                        <span class={textClass}>continue as admin</span>
-                    </a>
-                    
-                    <div class="glowing-border-wrapper">
-                        <div class="running-glow"></div>
-                        <a href={guestLoginUrl} class="group transition-all duration-300">
-                            <span class={textClass}>continue as guest</span>
-                            <span class="text-[10px] uppercase tracking-[0.15em] text-emerald-500/80 font-bold mt-1">
-                                Recommended for first-time users
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="mt-12 text-center opacity-60">
-                    <p class="text-xs text-gray-500 max-w-xs mx-auto">
-                        A seamless entry point for recruiters to explore our cutting-edge agricultural intelligence platform.
-                    </p>
-                </div>
-            </div>
-
+    <!-- Main Content -->
+    <main class="container">
+      <div class="content">
+        <!-- Logo & Header -->
+        <header class="header">
+          <a href="/" class="logo-link">
+            <Image 
+              src={logoImage} 
+              alt="Cropia" 
+              class="logo-img"
+              width={48}
+              height={48}
+              densities={[1.5, 2]}
+            />
+            <span class="logo-text">Cropia</span>
+          </a>
           
-        </div>
-	</body>
+          <h1 class="title">
+            Experience <span class="title-gradient">Cropia.</span>
+          </h1>
+          <p class="subtitle">Explore the future of AI-driven farming with our interactive preview.</p>
+        </header>
+
+        <!-- Action Buttons -->
+        <nav class="buttons">
+          <a href={farmerUrl} class="btn">
+            <span class="btn-text">continue as farmer</span>
+          </a>
+          
+          <a href={adminUrl} class="btn">
+            <span class="btn-text">continue as admin</span>
+          </a>
+          
+          <div class="btn-featured-wrapper">
+            <div class="running-glow"></div>
+            <a href={guestLoginUrl} class="btn-featured">
+              <span class="btn-text">continue as guest</span>
+              <span class="btn-badge">Recommended for first-time users</span>
+            </a>
+          </div>
+        </nav>
+
+     
+      </div>
+    </main>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Outfit', sans-serif;
+        background-color: #111111;
+        color: white;
+        min-height: 100vh;
+        min-height: 100dvh;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Background Glows */
+      .glow {
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .glow-1 {
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 600px;
+        background: rgba(16, 185, 129, 0.15);
+        filter: blur(180px);
+      }
+
+      .glow-2 {
+        bottom: -150px;
+        left: -100px;
+        width: 384px;
+        height: 384px;
+        background: rgba(16, 185, 129, 0.1);
+        filter: blur(150px);
+      }
+
+      .glow-3 {
+        top: 50%;
+        right: -100px;
+        width: 320px;
+        height: 320px;
+        background: rgba(5, 150, 105, 0.08);
+        filter: blur(140px);
+      }
+
+      /* Back Button */
+      .back-btn {
+        position: fixed;
+        top: 1.5rem;
+        left: 1.5rem;
+        z-index: 50;
+        padding: 0.75rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .back-btn:hover {
+        border-color: rgba(16, 185, 129, 0.5);
+        background: rgba(16, 185, 129, 0.1);
+        color: #34d399;
+      }
+
+      /* Main Container */
+      .container {
+        min-height: 100vh;
+        min-height: 100dvh;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1.5rem;
+        position: relative;
+        left: 0;
+        right: 0;
+        z-index: 10;
+      }
+
+      .content {
+        width: 100%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      /* Header Section */
+      .header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .logo-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        text-decoration: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .logo-link:hover {
+        opacity: 0.8;
+      }
+
+      .logo-link:hover .logo-img {
+        transform: scale(1.05);
+      }
+
+      .logo-img {
+        height: 48px;
+        width: auto;
+        transition: transform 0.3s ease;
+      }
+
+      .logo-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        letter-spacing: -0.025em;
+      }
+
+      .title {
+        font-size: 2.25rem;
+        font-weight: 300;
+        color: white;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.025em;
+      }
+
+      .title-gradient {
+        font-weight: 600;
+        background: linear-gradient(to right, #a7f3d0, #10b981);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .subtitle {
+        color: #9ca3af;
+        font-weight: 300;
+        max-width: 320px;
+        line-height: 1.5;
+      }
+
+      @media (min-width: 768px) {
+        .title {
+          font-size: 3rem;
+        }
+      }
+
+      /* Buttons */
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 1rem 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        cursor: pointer;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .btn:hover {
+        border-color: rgba(16, 185, 129, 0.5);
+        background: rgba(16, 185, 129, 0.1);
+        box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+      }
+
+      .btn:hover .btn-text {
+        color: #34d399;
+      }
+
+      .btn-text {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.8);
+        transition: color 0.3s ease;
+      }
+
+      /* Featured Button with Glow */
+      .btn-featured-wrapper {
+        position: relative;
+        padding: 1px;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .running-glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100px;
+        height: 40px;
+        background: linear-gradient(90deg, transparent, #10b981, transparent);
+        filter: blur(10px);
+        opacity: 0.8;
+        offset-path: rect(0 100% 100% 0 round 0.75rem);
+        animation: move-glow 6s linear infinite;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      @keyframes move-glow {
+        0% { offset-distance: 0%; }
+        100% { offset-distance: 100%; }
+      }
+
+      .btn-featured-wrapper:hover .running-glow {
+        animation-duration: 3s;
+        opacity: 1;
+        background: linear-gradient(90deg, transparent, #34d399, transparent);
+      }
+
+      .btn-featured {
+        position: relative;
+        z-index: 1;
+        background: #111111;
+        width: 100%;
+        padding: 1rem 1.5rem;
+        border-radius: calc(0.75rem - 1px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .btn-featured:hover .btn-text {
+        color: #34d399;
+      }
+
+      .btn-badge {
+        font-size: 0.625rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: rgba(16, 185, 129, 0.8);
+        font-weight: 700;
+        margin-top: 0.25rem;
+      }
+
+      /* Footer Note */
+      .footer-note {
+        margin-top: 2.5rem;
+        text-align: center;
+        opacity: 0.6;
+      }
+
+      .footer-note p {
+        font-size: 0.75rem;
+        color: #6b7280;
+        max-width: 280px;
+        line-height: 1.5;
+      }
+
+      /* Selection */
+      ::selection {
+        background: rgba(16, 185, 129, 0.3);
+      }
+    </style>
+  </body>
 </html>
