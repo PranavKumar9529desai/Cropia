@@ -97,8 +97,16 @@ const guestLoginUrl = `${adminUrl}?email=${guestEmail}&password=${guestPassword}
 	</head>
 	<body class="bg-[#111111] text-white overflow-hidden selection:bg-emerald-500/30">
         <!-- Background Ambient Glow -->
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-emerald-500/15 rounded-full blur-[180px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[150px] pointer-events-none"></div>
+        <div class="absolute top-1/2 right-1/4 w-80 h-80 bg-emerald-600/8 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <!-- Back Button -->
+        <a href="/" class="fixed top-6 left-6 z-50 p-3 rounded-full bg-white/5 border border-white/10 hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 group backdrop-blur-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/70 group-hover:text-emerald-400 transition-colors">
+                <path d="m15 18-6-6 6-6"/>
+            </svg>
+        </a>
 
         <div class="flex h-screen w-full relative z-10">
             {/* Left Side - Content & Buttons */}
