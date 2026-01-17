@@ -81,7 +81,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <div id="f-step-1" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
               <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
-                  <Smartphone class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+                  <Smartphone className="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">1</div>
             </div>
@@ -93,7 +93,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <div id="f-step-2" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
               <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
-                  <Cpu class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+                  <Cpu className="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">2</div>
             </div>
@@ -105,7 +105,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <div id="f-step-3" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
               <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
-                  <Sprout class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+                  <Sprout className="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">3</div>
             </div>
@@ -120,7 +120,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <div id="a-step-1" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
               <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
-                  <Globe class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+                  <Globe className="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">1</div>
             </div>
@@ -132,7 +132,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <div id="a-step-2" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
               <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
-                  <Newspaper class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+                  <Newspaper className="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">2</div>
             </div>
@@ -144,7 +144,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
           <div id="a-step-3" class="step-card group relative flex flex-col items-center text-center">
             <div class="relative z-10 mb-6">
               <div class="icon-box w-20 h-20 rounded-2xl bg-gray-900 border border-white/10 flex items-center justify-center shadow-lg transition-all duration-500 bg-gray-900">
-                  <ShieldAlert class="w-10 h-10 text-gray-500 transition-colors duration-500" />
+                  <ShieldAlert className="w-10 h-10 text-gray-500 transition-colors duration-500" />
               </div>
               <div class="badge absolute -bottom-3 -right-3 w-8 h-8 bg-black rounded-full border border-gray-800 flex items-center justify-center text-xs font-bold text-gray-500 z-20 transition-colors duration-500">3</div>
             </div>
@@ -207,7 +207,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
 
 </style>
 
-<script is:inline>
+<script>
   let mode = 'farmer'; // 'farmer' | 'admin'
   
   // Elements
@@ -217,12 +217,16 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
   
   // Configuration - Wrapper height determines scroll distance
   const SCROLL_DISTANCE_VH = 250; // How much scroll distance for the animation
-  wrapper.style.height = `${SCROLL_DISTANCE_VH}vh`;
+  if (wrapper) {
+    wrapper.style.height = `${SCROLL_DISTANCE_VH}vh`;
+  }
   
   // Add initial class
-  section.classList.add('farmer-mode');
+  if (section) {
+    section.classList.add('farmer-mode');
+  }
 
-  function switchMode(newMode) {
+  function switchMode(newMode: string) {
       if(mode === newMode) return;
       mode = newMode;
 
@@ -235,6 +239,8 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
       const sectionTitle = document.getElementById('section-title-highlight');
       const dot = document.getElementById('glow-dot');
       const bgPulse = document.getElementById('bg-pulse');
+
+      if (!farmerView || !adminView || !btnFarmer || !btnAdmin || !tabIndicator || !sectionSub || !sectionTitle || !dot || !bgPulse || !section || !progressBar) return;
 
       // Update UI Tabs
       if(mode === 'farmer') {
@@ -305,12 +311,19 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
   }
   
   // Make global so button onclick works
-  window.switchMode = switchMode;
+  (window as any).switchMode = switchMode;
 
 
   // --- PATH ENGINE ---
 
-  let pathData = {
+  interface PathData {
+    desktop: SVGPathElement | null;
+    mobile: SVGPathElement | null;
+    current: SVGPathElement | null;
+    length: number;
+  }
+
+  let pathData: PathData = {
     desktop: null,
     mobile: null,
     current: null,
@@ -318,8 +331,8 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
   };
 
   function initPaths() {
-    pathData.desktop = document.getElementById('desktop-path');
-    pathData.mobile = document.getElementById('mobile-path');
+    pathData.desktop = document.getElementById('desktop-path') as SVGPathElement | null;
+    pathData.mobile = document.getElementById('mobile-path') as SVGPathElement | null;
 
     const isDesktop = window.matchMedia('(min-width: 768px)').matches;
     
@@ -334,7 +347,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
             updatePathGeometry(pathData.desktop, s1, s2, s3, isDesktop);
         }
         pathData.current = pathData.desktop;
-    } else {
+    } else if (pathData.mobile) {
         if(s1 && s2 && s3) {
              updatePathGeometry(pathData.mobile, s1, s2, s3, isDesktop);
         }
@@ -346,13 +359,15 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
     }
   }
 
-  function updatePathGeometry(pathElement, el1, el2, el3, isDesktop) {
+  function updatePathGeometry(pathElement: SVGPathElement, el1: HTMLElement, el2: HTMLElement, el3: HTMLElement, isDesktop: boolean) {
       const container = document.getElementById('steps-container');
+      if (!container) return;
       const rectC = container.getBoundingClientRect();
 
       // Helper to get center of the ICON BOX within the step card
-      const getIconCenter = (stepEl) => {
+      const getIconCenter = (stepEl: HTMLElement) => {
           const iconBox = stepEl.querySelector('.icon-box');
+          if (!iconBox) return { x: 0, y: 0 };
           const rect = iconBox.getBoundingClientRect();
           return {
               x: (rect.left + rect.width/2) - rectC.left,
@@ -376,12 +391,11 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
 
   // --- STICKY SCROLL PROGRESS ENGINE ---
   function getScrollProgress() {
+    if (!wrapper) return 0;
     const wrapperRect = wrapper.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     
     // How far we've scrolled into the wrapper
-    // When wrapper top hits viewport top, progress starts
-    // When wrapper bottom hits viewport bottom, progress ends
     const scrollableDistance = wrapper.offsetHeight - windowHeight;
     const currentScroll = -wrapperRect.top;
     
@@ -394,7 +408,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
 
   function onScroll() {
     const dot = document.getElementById('glow-dot');
-    if (!wrapper || !pathData.current || !dot) return;
+    if (!wrapper || !pathData.current || !dot || !progressBar) return;
 
     // Get progress based on scroll position within the wrapper
     const progress = getScrollProgress();
@@ -403,7 +417,6 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
     progressBar.style.width = `${progress * 100}%`;
     
     // Use progress directly for path animation
-    // Add slight padding at start/end so dot appears/disappears smoothly
     const pathProgress = progress;
 
     // Move Dot along path
@@ -429,8 +442,7 @@ import { Smartphone, Cpu, Sprout, Globe, Newspaper, ShieldAlert } from "lucide-r
     const s2 = document.getElementById(`${prefix}-step-2`);
     const s3 = document.getElementById(`${prefix}-step-3`);
     
-    // Step activation thresholds - aligned with dot position on path
-    // Path: Step1 at 0% → Step2 at 50% → Step3 at 100%
+    // Step activation thresholds
     if (pathProgress > 0.02) s1?.classList.add('active');
     else s1?.classList.remove('active');
     

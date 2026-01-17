@@ -185,7 +185,7 @@ const stats = [
     <!-- Stats Section -->
     <div id="stats-section" class="mt-20 pt-12 border-t border-white/5">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-        {stats.map((stat, index) => (
+        {stats.map((stat) => (
           <div class="text-center group">
             <div class="flex items-baseline justify-center gap-1">
               <span 
@@ -246,7 +246,7 @@ const stats = [
   }
 </style>
 
-<script is:inline>
+<script>
   // Carousel Logic
   const track = document.getElementById('carousel-track');
   const slides = document.querySelectorAll('.testimonial-slide');
@@ -255,27 +255,31 @@ const stats = [
   const nextBtn = document.getElementById('next-btn');
   
   let currentIndex = 0;
-  let autoSlideInterval;
+  let autoSlideInterval: number | undefined;
   const SLIDE_INTERVAL = 5000; // 5 seconds
 
-  function updateCarousel(index) {
-    // Clamp index
-    if (index < 0) index = slides.length - 1;
-    if (index >= slides.length) index = 0;
+  function updateCarousel(index: number) {
+    if (!track) return;
     
-    currentIndex = index;
+    // Clamp index
+    let newIndex = index;
+    if (newIndex < 0) newIndex = slides.length - 1;
+    if (newIndex >= slides.length) newIndex = 0;
+    
+    currentIndex = newIndex;
     
     // Move track
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
     
     // Update dots
     dots.forEach((dot, i) => {
+      const htmlDot = dot as HTMLElement;
       if (i === currentIndex) {
-        dot.classList.add('active', 'bg-emerald-400', 'scale-125');
-        dot.classList.remove('bg-gray-600');
+        htmlDot.classList.add('active', 'bg-emerald-400', 'scale-125');
+        htmlDot.classList.remove('bg-gray-600');
       } else {
-        dot.classList.remove('active', 'bg-emerald-400', 'scale-125');
-        dot.classList.add('bg-gray-600');
+        htmlDot.classList.remove('active', 'bg-emerald-400', 'scale-125');
+        htmlDot.classList.add('bg-gray-600');
       }
     });
   }
@@ -289,11 +293,13 @@ const stats = [
   }
 
   function startAutoSlide() {
-    autoSlideInterval = setInterval(nextSlide, SLIDE_INTERVAL);
+    autoSlideInterval = window.setInterval(nextSlide, SLIDE_INTERVAL);
   }
 
   function stopAutoSlide() {
-    clearInterval(autoSlideInterval);
+    if (autoSlideInterval) {
+      clearInterval(autoSlideInterval);
+    }
   }
 
   // Event Listeners
@@ -334,12 +340,13 @@ const stats = [
     hasAnimated = true;
 
     statNumbers.forEach(el => {
-      const target = parseInt(el.dataset.target, 10);
-      const suffix = el.dataset.suffix || '';
+      const htmlEl = el as HTMLElement;
+      const target = parseInt(htmlEl.dataset.target || '0', 10);
+      const suffix = htmlEl.dataset.suffix || '';
       const duration = 2000; // 2 seconds
       const startTime = performance.now();
 
-      function updateNumber(currentTime) {
+      function updateNumber(currentTime: number) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         
@@ -347,12 +354,12 @@ const stats = [
         const easeOut = 1 - Math.pow(1 - progress, 3);
         const currentValue = Math.floor(easeOut * target);
         
-        el.textContent = currentValue.toLocaleString() + suffix;
+        htmlEl.textContent = currentValue.toLocaleString() + suffix;
         
         if (progress < 1) {
           requestAnimationFrame(updateNumber);
         } else {
-          el.textContent = target.toLocaleString() + suffix;
+          htmlEl.textContent = target.toLocaleString() + suffix;
         }
       }
 
