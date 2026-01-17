@@ -9,8 +9,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@splinetool/react-spline": "^4.0.0",
-    "@splinetool/runtime": "^1.9.0",
     "@astrojs/react": "^4.4.2",
     "@astrojs/tailwind": "^5.1.0",
     "@fontsource/outfit": "^5.2.8",
