@@ -2,6 +2,9 @@
 import { Github, Linkedin, Twitter, MapPin, Mail, Heart } from "lucide-react";
 import { Image } from "astro:assets";
 import logoImage from "../assets/logo.png";
+
+const farmerUrl = import.meta.env.FRONTEND_URL_FARMER_APP;
+const adminUrl = import.meta.env.FRONTEND_URL_ADMIN_APP;
 ---
 
 <footer class="relative bg-black border-t border-emerald-500/30">
@@ -100,7 +103,7 @@ import logoImage from "../assets/logo.png";
         <ul class="space-y-4">
           <li>
             <a 
-              href="https://cropia-farmer.vercel.app" 
+              href={farmerUrl} 
               target="_blank"
               rel="noopener noreferrer"
               class="text-gray-400 hover:text-emerald-400 transition-colors duration-200"
@@ -110,7 +113,7 @@ import logoImage from "../assets/logo.png";
           </li>
           <li>
             <a 
-              href="https://cropia-admin.vercel.app" 
+              href={adminUrl} 
               target="_blank"
               rel="noopener noreferrer"
               class="text-gray-400 hover:text-emerald-400 transition-colors duration-200"

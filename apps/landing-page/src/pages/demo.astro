@@ -9,8 +9,15 @@ import '@fontsource/outfit/500.css';
 import '@fontsource/outfit/600.css';
 import '@fontsource/outfit/700.css';
 
-const buttonClass = "w-full max-w-sm py-4 px-6 bg-white/5 border border-white/10 rounded-xl hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 group flex items-center justify-center gap-3 shadow-lg hover:shadow-emerald-500/20 backdrop-blur-sm cursor-pointer";
+const buttonClass = "w-full max-w-sm py-4 px-6 bg-white/5 border border-white/10 rounded-xl hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 group flex items-center justify-center gap-3 shadow-lg hover:shadow-emerald-500/20 backdrop-blur-sm cursor-pointer no-underline";
 const textClass = "font-medium text-white/80 group-hover:text-emerald-400 text-lg transition-colors";
+
+const farmerUrl = import.meta.env.FRONTEND_URL_FARMER_APP;
+const adminUrl = import.meta.env.FRONTEND_URL_ADMIN_APP;
+const guestEmail = import.meta.env.GUEST_EMAIL;
+const guestPassword = import.meta.env.FRONTEND_URL_GUEST_PASSWORD;
+
+const guestLoginUrl = `${adminUrl}?email=${guestEmail}&password=${guestPassword}`;
 ---
 
 <html lang="en">
@@ -64,7 +71,8 @@ const textClass = "font-medium text-white/80 group-hover:text-emerald-400 text-l
                 }
             }
 
-            .glowing-border-wrapper button {
+            .glowing-border-wrapper button,
+            .glowing-border-wrapper a {
                 position: relative;
                 z-index: 1;
                 background: #111111;
@@ -73,6 +81,11 @@ const textClass = "font-medium text-white/80 group-hover:text-emerald-400 text-l
                 border-radius: calc(0.75rem - 1px);
                 border: none;
                 padding: 1rem 1.5rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
             }
 
             .glowing-border-wrapper:hover .running-glow {
@@ -111,22 +124,22 @@ const textClass = "font-medium text-white/80 group-hover:text-emerald-400 text-l
                 </div>
 
                 <div class="flex flex-col gap-4 w-full items-center">
-                    <button class={buttonClass} onclick="alert('Farmer login functionality coming soon!')">
+                    <a href={farmerUrl} class={buttonClass}>
                         <span class={textClass}>continue as farmer</span>
-                    </button>
+                    </a>
                     
-                    <button class={buttonClass} onclick="alert('Admin login functionality coming soon!')">
+                    <a href={adminUrl} class={buttonClass}>
                         <span class={textClass}>continue as admin</span>
-                    </button>
+                    </a>
                     
                     <div class="glowing-border-wrapper">
                         <div class="running-glow"></div>
-                        <button class={`${buttonClass.replace('bg-white/5 border border-white/10', '')} !py-3 !flex-col !gap-1`} onclick="alert('Guest login functionality coming soon!')">
+                        <a href={guestLoginUrl} class="group transition-all duration-300">
                             <span class={textClass}>continue as guest</span>
-                            <span class="text-[10px] uppercase tracking-[0.15em] text-emerald-500/80 font-bold">
+                            <span class="text-[10px] uppercase tracking-[0.15em] text-emerald-500/80 font-bold mt-1">
                                 Recommended for first-time users
                             </span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 
