@@ -10,6 +10,9 @@ const links = [
 
 import { Image } from "astro:assets";
 import logoImage from "../assets/logo.png";
+
+const farmerUrl = import.meta.env.FRONTEND_URL_FARMER_APP;
+const adminUrl = import.meta.env.FRONTEND_URL_ADMIN_APP;
 ---
 
 <nav id="navbar" class="fixed top-0 left-0 z-50 w-full transition-all duration-300">
@@ -50,7 +53,7 @@ import logoImage from "../assets/logo.png";
         
         <!-- CTA Button -->
         <a 
-          href="https://cropia-farmer.vercel.app" 
+          href={farmerUrl} 
           target="_blank"
           rel="noopener noreferrer"
           class="ml-4 px-5 py-2 rounded-full text-sm font-semibold
@@ -116,7 +119,7 @@ import logoImage from "../assets/logo.png";
       <!-- Mobile CTA -->
       <div class="pt-4 space-y-3">
         <a 
-          href="https://cropia-farmer.vercel.app" 
+          href={farmerUrl} 
           target="_blank"
           rel="noopener noreferrer"
           class="block w-full py-3 text-center rounded-lg text-white font-semibold text-base
@@ -128,7 +131,7 @@ import logoImage from "../assets/logo.png";
           Get Started — It's Free
         </a>
         <a 
-          href="https://cropia-admin.vercel.app" 
+          href={adminUrl} 
           target="_blank"
           rel="noopener noreferrer"
           class="block w-full py-3 text-center rounded-lg text-white/70 font-medium text-base

@@ -2,10 +2,12 @@ import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { toast } from "@repo/ui/components/sonner";
 import { SignInForm, type SignInFormValues } from "@repo/ui/components/auth";
 import { authClient } from "../../lib/auth/auth-client";
+import { Route } from "../../routes/_auth/sign-in";
 
 export const SignIn = () => {
   const router = useRouter();
   const navigate = useNavigate();
+  const { email, password } = Route.useSearch();
 
   const handleSubmit = async (values: SignInFormValues) => {
     const toastId = toast.loading("signing in..!");
@@ -43,6 +45,13 @@ export const SignIn = () => {
   return (
     <SignInForm
       onSubmit={handleSubmit}
+      defaultValues={{
+        email,
+        password,
+      }}
+      readOnlyEmail={!!email}
+      readOnlyPassword={!!password}
+      isGuest={!!(email && password)}
       signUpLink={
         <Link
           to="/sign-up"
@@ -59,9 +68,9 @@ export const SignIn = () => {
           Forgot Password ?
         </Link>
       }
-      // currently disabled for admin
-      // TOOD: add flow where admin can signup usng goole accrount with same email as invitation email
-      // googleButton={<GoogleButton title="Continue With Google" />}
+    // currently disabled for admin
+    // TOOD: add flow where admin can signup usng goole accrount with same email as invitation email
+    // googleButton={<GoogleButton title="Continue With Google" />}
     />
   );
 };

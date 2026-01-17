@@ -67,6 +67,14 @@ We chose Astro over Next.js/React for the public site to ensure **maximum perfor
 - **No Overhead:** Avoids the ~30kb React hydration cost for static pages.
 - **Islands Architecture:** Interactive components (React) are only loaded when needed.
 
+#### ⚡ Proof of Concept: Perfect 100/100
+To validate our choice, the Cropia landing page achieves a **perfect score** on Google PageSpeed Insights (Desktop).
+
+![PageSpeed Score](./assets/readme/pagespeed-score.png)
+
+> [!TIP]
+> **View the Live Report:** [PageSpeed Insights - Cropia](https://pagespeed.web.dev/analysis/https-cropia-phi-vercel-app/f2pmtep1g7?form_factor=desktop)
+
 **Backend (API & Edge)**
 
 - **Framework:** [Hono](https://hono.dev/) (Lightweight, Edge-ready)
