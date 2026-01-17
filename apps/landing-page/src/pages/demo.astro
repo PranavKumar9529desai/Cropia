@@ -12,10 +12,10 @@ import '@fontsource/outfit/700.css';
 const buttonClass = "w-full max-w-sm py-4 px-6 bg-white/5 border border-white/10 rounded-xl hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all duration-300 group flex items-center justify-center gap-3 shadow-lg hover:shadow-emerald-500/20 backdrop-blur-sm cursor-pointer no-underline";
 const textClass = "font-medium text-white/80 group-hover:text-emerald-400 text-lg transition-colors";
 
-const farmerUrl = import.meta.env.FRONTEND_URL_FARMER_APP;
-const adminUrl = import.meta.env.FRONTEND_URL_ADMIN_APP;
-const guestEmail = import.meta.env.GUEST_EMAIL;
-const guestPassword = import.meta.env.FRONTEND_URL_GUEST_PASSWORD;
+const farmerUrl = import.meta.env.PUBLIC_FRONTEND_URL_FARMER_APP;
+const adminUrl = import.meta.env.PUBLIC_FRONTEND_URL_ADMIN_APP;
+const guestEmail = import.meta.env.PUBLIC_GUEST_EMAIL;
+const guestPassword = import.meta.env.PUBLIC_FRONTEND_URL_GUEST_PASSWORD;
 
 const guestLoginUrl = `${adminUrl}?email=${guestEmail}&password=${guestPassword}`;
 ---
