@@ -11,8 +11,8 @@ const links = [
 import { Image } from "astro:assets";
 import logoImage from "../assets/logo.png";
 
-const farmerUrl = import.meta.env.FRONTEND_URL_FARMER_APP;
-const adminUrl = import.meta.env.FRONTEND_URL_ADMIN_APP;
+const farmerUrl = import.meta.env.PUBLIC_FRONTEND_URL_FARMER_APP;
+const adminUrl = import.meta.env.PUBLIC_FRONTEND_URL_ADMIN_APP;
 ---
 
 <nav id="navbar" class="fixed top-0 left-0 z-50 w-full transition-all duration-300">
