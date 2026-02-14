@@ -58,33 +58,33 @@ function RouteComponent() {
   console.log(username, email, image);
   return (
     <SidebarProvider>
-      {/* Sidebar - visible on md and larger screens */}
-      <div className="hidden sm:flex gap-4">
-        <AppSidebar
-          userInfo={{ name: username || "", email: email || "", avatar: image }}
-        />
-        <div className="flex items-center h-10">
-          <div className="h-fit m-2">
-            <SidebarTrigger />
-          </div>
-          {route !== "settings" && (
-            <span className="text-lg font-semibold font-brand capitalize">
-              {route}
-            </span>
-          )}
-        </div>
-      </div>
+      <AppSidebar
+        userInfo={{ name: username || "", email: email || "", avatar: image }}
+      />
 
-      {/* Main content area */}
-      <SidebarInset className="h-svh overflow-hidden md:h-auto md:overflow-visible">
+      <SidebarInset className="flex flex-col h-svh overflow-hidden">
         {/* Mobile Topbar - visible only on mobile */}
-        {isSettingRoute ? null : (
+        {!isSettingRoute && (
           <div className="md:hidden py-1">
             <MobileTopbar />
           </div>
         )}
-        {/* <DashboardHeader /> */}
-        <div className="flex flex-1 flex-col p-4 md:p-6 overflow-y-auto md:overflow-visible pb-24 md:pb-6 no-scrollbar">
+
+        <header className="hidden md:flex h-14 shrink-0 items-center justify-between px-4 border-b sticky top-0 bg-background/80 backdrop-blur-sm z-10">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            {route !== "settings" && (
+              <>
+                <div className="h-4 w-px bg-border mx-1" />
+                <span className="text-lg font-semibold font-brand capitalize">
+                  {route}
+                </span>
+              </>
+            )}
+          </div>
+        </header>
+
+        <div className="flex flex-1 flex-col p-4 md:p-6 overflow-y-auto pb-24 md:pb-6 no-scrollbar">
           <Outlet />
         </div>
       </SidebarInset>

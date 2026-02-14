@@ -64,17 +64,21 @@ export function AppSidebar({ userInfo }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar collapsible="icon" className="">
-      <SidebarHeader className="shrink-0">
-        <div className="p-2 flex items-center gap-2 px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+    <Sidebar collapsible="icon" variant="inset">
+      <SidebarHeader className="">
+        <div className="flex items-center gap-3 px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
           <img
             src="/favicon/favicon.svg"
             alt="Cropia Logo"
             className="size-10 shrink-0"
           />
-          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand *:leading-tight">
+          <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden font-brand">
             <span className="text-lg font-bold text-foreground">Cropia</span>
-            <div className="text-xs text-primary">farmer</div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">
+                Farmer
+              </span>
+            </div>
           </div>
         </div>
       </SidebarHeader>
