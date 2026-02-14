@@ -130,13 +130,16 @@ export const SignInForm = ({
               type="submit"
               className={cn(
                 "w-full transition-all duration-300",
-                isGuest && "bg-primary hover:bg-primary/90 shadow-[0_0_20px_-2px] shadow-primary/50 animate-pulse-slow"
+                isGuest &&
+                  "bg-primary hover:bg-primary/90 shadow-[0_0_20px_-2px] shadow-primary/50 animate-pulse-slow",
               )}
               disabled={isSubmitting || form.formState.isSubmitting}
             >
               {isSubmitting || form.formState.isSubmitting
                 ? "Signing in..."
-                : isGuest ? "Continue as Guest" : "Submit"}
+                : isGuest
+                  ? "Continue as Guest"
+                  : "Submit"}
             </Button>
           </CardFooter>
         </form>
