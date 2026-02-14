@@ -370,25 +370,57 @@ const LocationController = new Hono<{
   // Get all locations (for admin or map view)
   .get("/all", async (c) => {
     try {
-      const locations = await prisma.location.findMany({
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
+      const { page, limit } = c.req.query();
+
+      const pageNum = parseInt(page || "1", 10);
+      const limitNum = parseInt(limit || "1000", 10); // Default to 1000 for map view compatibility
+
+      if (isNaN(pageNum) || pageNum < 1) {
+        return c.json({ success: false, error: "Invalid page number" }, 400);
+      }
+
+      if (isNaN(limitNum) || limitNum < 1) {
+        return c.json({ success: false, error: "Invalid limit number" }, 400);
+      }
+
+      // Prevent fetching too many records
+      const maxLimit = 10000;
+      const actualLimit = Math.min(limitNum, maxLimit);
+
+      const skip = (pageNum - 1) * actualLimit;
+
+      const [locations, total] = await Promise.all([
+        prisma.location.findMany({
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
             },
           },
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
+          orderBy: {
+            createdAt: "desc",
+          },
+          skip: skip,
+          take: actualLimit,
+        }),
+        prisma.location.count(),
+      ]);
+
+      const totalPages = Math.ceil(total / actualLimit);
 
       return c.json({
         success: true,
         data: locations,
-        count: locations.length,
+        count: total, // For backward compatibility
+        pagination: {
+          total,
+          page: pageNum,
+          limit: actualLimit,
+          totalPages,
+        },
       });
     } catch (error) {
       console.error("Error fetching locations:", error);
