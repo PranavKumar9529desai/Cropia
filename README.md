@@ -73,7 +73,7 @@ To validate our choice, the Cropia landing page achieves a **perfect score** on 
 ![PageSpeed Score](./assets/readme/pagespeed-score.png)
 
 > [!TIP]
-> **View the Live Report:** [PageSpeed Insights - Cropia](https://pagespeed.web.dev/analysis/https-cropia-phi-vercel-app/f2pmtep1g7?form_factor=desktop)
+> **View the Live Report:** [PageSpeed Insights - Cropia](https://pagespeed.web.dev/analysis/https-cropia-phi-vercel-app/0rmsft1v7h?form_factor=desktop)
 
 **Backend (API & Edge)**
 
