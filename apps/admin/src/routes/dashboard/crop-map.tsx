@@ -44,13 +44,16 @@ function RouteComponent() {
   const search = Route.useSearch() as any;
   const navigate = useNavigate();
   const [selectedScan, setSelectedScan] = useState<any>(null);
-  const [animationTimestamp, setAnimationTimestamp] = useState<number | null>(null);
+  const [animationTimestamp, setAnimationTimestamp] = useState<number | null>(
+    null,
+  );
 
   // Client-side filtering (Crop, Disease, Status, and Date)
   const filteredData = useMemo(() => {
     if (!data || !data.features) return data;
 
-    const displayTimestamp = animationTimestamp ?? (search.date ? parseInt(search.date) : Infinity);
+    const displayTimestamp =
+      animationTimestamp ?? (search.date ? parseInt(search.date) : Infinity);
 
     const filteredFeatures = data.features.filter((feature: any) => {
       const { crop, disease, status, timestamp } = feature.properties;
@@ -63,11 +66,7 @@ function RouteComponent() {
         disease !== search.disease
       )
         return false;
-      if (
-        search.status &&
-        search.status !== "all" &&
-        status !== search.status
-      )
+      if (search.status && search.status !== "all" && status !== search.status)
         return false;
 
       // Filter by timestamp (either animation or URL search)
@@ -80,7 +79,14 @@ function RouteComponent() {
       ...data,
       features: filteredFeatures,
     };
-  }, [data, search.crop, search.disease, search.status, search.date, animationTimestamp]);
+  }, [
+    data,
+    search.crop,
+    search.disease,
+    search.status,
+    search.date,
+    animationTimestamp,
+  ]);
 
   // Function to optimize Cloudinary URL
   const getOptimizedUrl = (url: string) => {
@@ -100,7 +106,9 @@ function RouteComponent() {
       {/* Map Container */}
       <div className="rounded-xl border bg-card text-card-foreground shadow overflow-hidden relative">
         {/* Floating Overlays */}
-        <div className={`absolute top-4 left-4 z-10 flex flex-col gap-3 ${isMobile ? 'max-w-[calc(100%-100px)]' : ''}`}>
+        <div
+          className={`absolute top-4 left-4 z-10 flex flex-col gap-3 ${isMobile ? "max-w-[calc(100%-100px)]" : ""}`}
+        >
           <MapStats data={filteredData} />
           <MapLegend />
         </div>
@@ -133,7 +141,10 @@ function RouteComponent() {
                   }),
                 });
               }}
-              activeTimestamp={animationTimestamp ?? (search.date ? parseInt(search.date) : undefined)}
+              activeTimestamp={
+                animationTimestamp ??
+                (search.date ? parseInt(search.date) : undefined)
+              }
             />
           </div>
         )}
@@ -154,7 +165,10 @@ function RouteComponent() {
                 }),
               });
             }}
-            activeTimestamp={animationTimestamp ?? (search.date ? parseInt(search.date) : undefined)}
+            activeTimestamp={
+              animationTimestamp ??
+              (search.date ? parseInt(search.date) : undefined)
+            }
           />
         </div>
       )}
@@ -172,12 +186,13 @@ function RouteComponent() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute top-4 left-4">
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md ${selectedScan.status === "healthy"
-                    ? "bg-green-500/80 text-white"
-                    : selectedScan.status === "warning"
-                      ? "bg-yellow-500/80 text-white"
-                      : "bg-red-500/80 text-white"
-                    }`}
+                  className={`px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md ${
+                    selectedScan.status === "healthy"
+                      ? "bg-green-500/80 text-white"
+                      : selectedScan.status === "warning"
+                        ? "bg-yellow-500/80 text-white"
+                        : "bg-red-500/80 text-white"
+                  }`}
                 >
                   {selectedScan.status.toUpperCase()}
                 </span>
@@ -202,30 +217,33 @@ function RouteComponent() {
               <div className="space-y-4">
                 {/* Status-specific highlight */}
                 <div
-                  className={`p-4 rounded-lg border ${selectedScan.status === "healthy"
-                    ? "bg-green-50 border-green-200"
-                    : selectedScan.status === "warning"
-                      ? "bg-yellow-50 border-yellow-200"
-                      : "bg-red-50 border-red-200"
-                    }`}
+                  className={`p-4 rounded-lg border ${
+                    selectedScan.status === "healthy"
+                      ? "bg-green-50 border-green-200"
+                      : selectedScan.status === "warning"
+                        ? "bg-yellow-50 border-yellow-200"
+                        : "bg-red-50 border-red-200"
+                  }`}
                 >
                   <h4
-                    className={`font-semibold mb-1 flex items-center gap-2 ${selectedScan.status === "healthy"
-                      ? "text-green-800"
-                      : selectedScan.status === "warning"
-                        ? "text-yellow-800"
-                        : "text-red-800"
-                      }`}
+                    className={`font-semibold mb-1 flex items-center gap-2 ${
+                      selectedScan.status === "healthy"
+                        ? "text-green-800"
+                        : selectedScan.status === "warning"
+                          ? "text-yellow-800"
+                          : "text-red-800"
+                    }`}
                   >
                     {selectedScan.crop}
                   </h4>
                   <p
-                    className={`text-sm ${selectedScan.status === "healthy"
-                      ? "text-green-700"
-                      : selectedScan.status === "warning"
-                        ? "text-yellow-700"
-                        : "text-red-700"
-                      }`}
+                    className={`text-sm ${
+                      selectedScan.status === "healthy"
+                        ? "text-green-700"
+                        : selectedScan.status === "warning"
+                          ? "text-yellow-700"
+                          : "text-red-700"
+                    }`}
                   >
                     {selectedScan.disease}
                   </p>

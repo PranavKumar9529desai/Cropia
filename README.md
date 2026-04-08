@@ -63,11 +63,13 @@ Built as a high-performance monorepo using **Turborepo**, **Bun**, and **Hono**,
 
 **Why Astro for Landing Page?**
 We chose Astro over Next.js/React for the public site to ensure **maximum performance**:
+
 - **Zero JS Runtime:** Ships pure HTML/CSS by default.
 - **No Overhead:** Avoids the ~30kb React hydration cost for static pages.
 - **Islands Architecture:** Interactive components (React) are only loaded when needed.
 
 #### ⚡ Proof of Concept: Perfect 100/100
+
 To validate our choice, the Cropia landing page achieves a **perfect score** on Google PageSpeed Insights (Desktop).
 
 ![PageSpeed Score](./assets/readme/pagespeed-score.png)
@@ -137,7 +139,7 @@ graph TD
     A --> API
     S --> API
     API --> DB
-    
+
     %% Shared Configs
     UI -.-> TS
     DB -.-> TS

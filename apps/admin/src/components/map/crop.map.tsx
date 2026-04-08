@@ -173,7 +173,7 @@ const CropMap = ({
         // Distance check (approx 500km threshold as 1 deg ~ 111km)
         const dist = Math.sqrt(
           Math.pow(coord1[0] - coord2[0], 2) +
-          Math.pow(coord1[1] - coord2[1], 2),
+            Math.pow(coord1[1] - coord2[1], 2),
         );
 
         if (dist < 5.0) {
@@ -201,10 +201,10 @@ const CropMap = ({
     if (!map) return;
 
     const colors: Record<string, [number, number, number]> = {
-      "healthy": [34, 197, 94],
-      "warning": [234, 179, 8],
-      "critical": [239, 68, 68],
-      "unknown": [100, 116, 139]
+      healthy: [34, 197, 94],
+      warning: [234, 179, 8],
+      critical: [239, 68, 68],
+      unknown: [100, 116, 139],
     };
 
     Object.entries(colors).forEach(([status, rgb]) => {
@@ -248,7 +248,9 @@ const CropMap = ({
   };
 
   return (
-    <div className={`${isMobile ? 'h-[450px]' : 'h-[600px]'} w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative`}>
+    <div
+      className={`${isMobile ? "h-[450px]" : "h-[600px]"} w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative`}
+    >
       <Map
         ref={mapRef}
         onLoad={onMapLoad}
@@ -319,42 +321,54 @@ const CropMap = ({
           type="heatmap"
           source="scans"
           layout={{
-            visibility: viewType === "heatmap" ? "visible" : "none"
+            visibility: viewType === "heatmap" ? "visible" : "none",
           }}
           paint={{
             "heatmap-weight": [
               "interpolate",
               ["linear"],
               ["get", "status_weight"],
-              0, 0,
-              3, 1
+              0,
+              0,
+              3,
+              1,
             ],
             "heatmap-intensity": [
               "interpolate",
               ["linear"],
               ["zoom"],
-              0, 1,
-              15, 3
+              0,
+              1,
+              15,
+              3,
             ],
             "heatmap-color": [
               "interpolate",
               ["linear"],
               ["heatmap-density"],
-              0, "rgba(33,102,172,0)",
-              0.2, "rgb(103,169,207)",
-              0.4, "rgb(209,229,240)",
-              0.6, "rgb(253,219,199)",
-              0.8, "rgb(239,138,98)",
-              1, "rgb(178,24,43)"
+              0,
+              "rgba(33,102,172,0)",
+              0.2,
+              "rgb(103,169,207)",
+              0.4,
+              "rgb(209,229,240)",
+              0.6,
+              "rgb(253,219,199)",
+              0.8,
+              "rgb(239,138,98)",
+              1,
+              "rgb(178,24,43)",
             ],
             "heatmap-radius": [
               "interpolate",
               ["linear"],
               ["zoom"],
-              0, 2,
-              15, 20
+              0,
+              2,
+              15,
+              20,
             ],
-            "heatmap-opacity": 0.8
+            "heatmap-opacity": 0.8,
           }}
         />
 
@@ -365,7 +379,7 @@ const CropMap = ({
           source="scans"
           filter={["has", "point_count"]}
           layout={{
-            visibility: viewType === "points" ? "visible" : "none"
+            visibility: viewType === "points" ? "visible" : "none",
           }}
           paint={{
             "circle-color": [
@@ -386,7 +400,7 @@ const CropMap = ({
               40,
             ],
             "circle-stroke-width": 2,
-            "circle-stroke-color": "#fff"
+            "circle-stroke-color": "#fff",
           }}
         />
 
@@ -398,8 +412,8 @@ const CropMap = ({
             layout: {
               ...(clusterCountLayer.layout as any),
               "text-size": 12,
-              visibility: viewType === "points" ? "visible" : "none"
-            }
+              visibility: viewType === "points" ? "visible" : "none",
+            },
           } as any)}
         />
 
@@ -411,8 +425,8 @@ const CropMap = ({
             layout: {
               ...(unclusteredPointLayer.layout as any),
               "icon-size": 1.0, // Large enough to be very clear
-              visibility: viewType === "points" ? "visible" : "none"
-            }
+              visibility: viewType === "points" ? "visible" : "none",
+            },
           } as any)}
         />
       </Map>

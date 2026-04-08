@@ -1,5 +1,10 @@
 import { useMemo } from "react";
-import { ScanSearch, Activity, AlertTriangle, CheckCircle2 } from "lucide-react";
+import {
+  ScanSearch,
+  Activity,
+  AlertTriangle,
+  CheckCircle2,
+} from "lucide-react";
 import { useIsMobile } from "@repo/ui/hooks/use-mobile";
 
 interface MapStatsProps {
@@ -42,17 +47,23 @@ export default function MapStats({ data }: MapStatsProps) {
         <div className="flex items-center gap-2.5">
           <div className="flex items-center gap-1" title="Critical">
             <Activity className="h-3 w-3 text-red-500" />
-            <span className="text-xs font-bold text-red-500">{stats.critical}</span>
+            <span className="text-xs font-bold text-red-500">
+              {stats.critical}
+            </span>
           </div>
 
           <div className="flex items-center gap-1" title="Warning">
             <AlertTriangle className="h-3 w-3 text-yellow-500" />
-            <span className="text-xs font-bold text-yellow-500">{stats.warning}</span>
+            <span className="text-xs font-bold text-yellow-500">
+              {stats.warning}
+            </span>
           </div>
 
           <div className="flex items-center gap-1" title="Healthy">
             <CheckCircle2 className="h-3 w-3 text-green-500" />
-            <span className="text-xs font-bold text-green-500">{stats.healthy}</span>
+            <span className="text-xs font-bold text-green-500">
+              {stats.healthy}
+            </span>
           </div>
         </div>
       </div>
@@ -64,7 +75,9 @@ export default function MapStats({ data }: MapStatsProps) {
       <div className="flex items-center gap-2">
         <ScanSearch className="h-4 w-4 text-primary" />
         <div className="flex flex-col">
-          <span className="text-[10px] uppercase text-muted-foreground font-bold leading-none">Scans</span>
+          <span className="text-[10px] uppercase text-muted-foreground font-bold leading-none">
+            Scans
+          </span>
           <span className="text-sm font-bold">{stats.total}</span>
         </div>
       </div>
@@ -74,17 +87,23 @@ export default function MapStats({ data }: MapStatsProps) {
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-1.5" title="Critical">
           <Activity className="h-3.5 w-3.5 text-red-500" />
-          <span className="text-xs font-bold text-red-500">{stats.critical}</span>
+          <span className="text-xs font-bold text-red-500">
+            {stats.critical}
+          </span>
         </div>
 
         <div className="flex items-center gap-1.5" title="Warning">
           <AlertTriangle className="h-3.5 w-3.5 text-yellow-500" />
-          <span className="text-xs font-bold text-yellow-500">{stats.warning}</span>
+          <span className="text-xs font-bold text-yellow-500">
+            {stats.warning}
+          </span>
         </div>
 
         <div className="flex items-center gap-1.5" title="Healthy">
           <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
-          <span className="text-xs font-bold text-green-500">{stats.healthy}</span>
+          <span className="text-xs font-bold text-green-500">
+            {stats.healthy}
+          </span>
         </div>
       </div>
     </div>
