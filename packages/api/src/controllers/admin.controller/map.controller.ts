@@ -25,7 +25,6 @@ const MapController = new Hono<{
     orderBy: { createdAt: "desc" },
     take: 1000, // Limit for performance, maybe paginate later
   });
-  console.log("scans", scans);
   // 3. Format for MapLibre
   const geoJson = transformToGeoJSON(scans);
 
