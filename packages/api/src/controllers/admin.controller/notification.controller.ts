@@ -116,24 +116,54 @@ const AdminNotificationController = new Hono<{
         });
 
         // If topic is 'all', broadcast to appropriate users
+        // Cascading jurisdiction: taluka → district → state
         if (topic === "all") {
-          // If admin has a jurisdiction (like a taluka), broadcast within that taluka
-          const users = await prisma.user.findMany({
-            where: jurisdiction?.taluka
-              ? { location: { taluka: jurisdiction.taluka } }
-              : {},
-            select: { id: true },
-          });
+          let users: { id: string }[] = [];
 
-          await prisma.notification.createMany({
-            data: users.map((user) => ({
-              userId: user.id,
-              title,
-              body,
-              imageUrl,
-              from,
-            })),
-          });
+          if (jurisdiction) {
+            const { taluka, district, state } = jurisdiction;
+
+            // 1. Try taluka-level (most specific)
+            if (taluka && taluka !== "All") {
+              users = await prisma.user.findMany({
+                where: { location: { taluka } },
+                select: { id: true },
+              });
+            }
+
+            // 2. Escalate to district if no users found at taluka level
+            if (users.length === 0 && district && district !== "All") {
+              users = await prisma.user.findMany({
+                where: { location: { district } },
+                select: { id: true },
+              });
+            }
+
+            // 3. Escalate to state if no users found at district level
+            if (users.length === 0 && state) {
+              users = await prisma.user.findMany({
+                where: { location: { state } },
+                select: { id: true },
+              });
+            }
+          } else {
+            // No jurisdiction — broadcast to all users
+            users = await prisma.user.findMany({
+              select: { id: true },
+            });
+          }
+
+          if (users.length > 0) {
+            await prisma.notification.createMany({
+              data: users.map((user) => ({
+                userId: user.id,
+                title,
+                body,
+                imageUrl,
+                from,
+              })),
+            });
+          }
         }
 
         return c.json({ success: true, message: "Sent to topic" });
